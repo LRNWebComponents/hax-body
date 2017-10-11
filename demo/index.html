@@ -11,6 +11,8 @@
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
     <link rel="import" href="../hax-body.html">
+    <link rel="import" href="../../hax-panel/hax-panel.html">
+    <link rel="import" href="../../paper-toast/paper-toast.html">
 
     <style is="custom-style" include="demo-pages-shared-styles">
     </style>
@@ -19,8 +21,40 @@
     <div class="vertical-section-container centered">
       <h3>Basic hax-body demo</h3>
       <demo-snippet>
-        <template>
-          <hax-body></hax-body>
+        <template is="dom-bind">
+          <hax-body id="body" edit-mode>
+            <h2>Heading 2</h2>
+            <p>A whole bunch of text in here that's awesome!</p>
+            <h3>Heading 3</h3>
+            <p>A whole bunch of text in here that's awesome!A whole bunch of text in here that's awesome!A whole bunch of text in here that's awesome!A whole bunch of text in here that's awesome!A whole bunch of text in here that's awesome!A whole bunch of text in here that's awesome!A whole bunch of text in here that's awesome!A whole bunch of text in here that's awesome!</p>
+            <p>Another paragraph that's a bit of a break from a whole bunch of text in here that's awesome!</p>
+          </hax-body>
+
+          <!-- potential wiring to make this work -->
+          <hax-panel id="panel" opened></hax-panel>
+          <paper-toast id="toast"></paper-toast>
+          <paper-button id="button">Enabled</paper-button>
+          <script>
+            var p = document.querySelector('#panel');
+            var b = document.querySelector('#body');
+            var button = document.querySelector('#button');
+            // alert if there was an error loading content
+            p.addEventListener('hax-content-insert', function(e) {
+              document.querySelector('#toast').show(e.detail.eventName);
+              b.haxInsert(e.detail.tag, e.detail.content);
+            });
+            // alert when something is added to the body in the form of a tag
+            b.addEventListener('hax-body-tag-added', function(e) {
+              console.log(e.detail);
+              document.querySelector('#toast').show(e.detail.node.localName + ' added!');
+            });
+            // simple toggle for state to ensure it matches
+            button.addEventListener('click', function(e) {
+              window.open = !window.open;
+              p.opened = window.open;
+              b.editMode = window.open;
+            });
+          </script>
         </template>
       </demo-snippet>
     </div>
