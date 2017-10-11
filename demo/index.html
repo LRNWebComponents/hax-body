@@ -15,10 +15,14 @@
     <link rel="import" href="../../paper-toast/paper-toast.html">
 
     <style is="custom-style" include="demo-pages-shared-styles">
+      .vertical-section-container {
+        max-width: 60em;
+        margin-left: 20em;
+      }
     </style>
   </head>
   <body>
-    <div class="vertical-section-container centered">
+    <div class="vertical-section-container">
       <h3>Basic hax-body demo</h3>
       <demo-snippet>
         <template is="dom-bind">
@@ -33,11 +37,11 @@
           <!-- potential wiring to make this work -->
           <hax-panel id="panel" opened></hax-panel>
           <paper-toast id="toast"></paper-toast>
-          <paper-button id="button">Enabled</paper-button>
+          <paper-button id="togglebutton">Enabled</paper-button>
           <script>
             var p = document.querySelector('#panel');
             var b = document.querySelector('#body');
-            var button = document.querySelector('#button');
+            var button = document.querySelector('#togglebutton');
             // alert if there was an error loading content
             p.addEventListener('hax-content-insert', function(e) {
               document.querySelector('#toast').show(e.detail.eventName);

@@ -8,8 +8,8 @@ A LRN element that will change the world.
 
 @microcopy - the mental model for this element
  - body is effectively a body of content that can be manipulated in the browser. This is for other HAX elements ultimately to interface with and reside in. It is the controller of input and output for all of HAX as it exists in a document. body is not the <body> tag but we need a similar mental model container for all our other elements.
- -
- -
+ - text-context - the context menu that shows up when an item is active so it can have text based operations performed to it.
+ - plate/grid plate - a plate or grid plate is a container that we can operate on in HAX. it can also have layout / "global" type of body operations performed on it such as delete, duplicate and higher level format styling.
 
 -->
 
@@ -32,25 +32,90 @@ A LRN element that will change the world.
       vaadin-context-menu ::shadow vaadin-context-menu-overlay {
         background-color: white;
       }
+      :host[edit-mode] #bodycontainer ::slotted(p:hover),
+      :host[edit-mode] #bodycontainer ::slotted(h1:hover),
+      :host[edit-mode] #bodycontainer ::slotted(h2:hover),
+      :host[edit-mode] #bodycontainer ::slotted(h3:hover),
+      :host[edit-mode] #bodycontainer ::slotted(h4:hover),
+      :host[edit-mode] #bodycontainer ::slotted(h5:hover),
+      :host[edit-mode] #bodycontainer ::slotted(h6:hover) {
+        box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14),
+          0 1px 10px 0 rgba(0, 0, 0, 0.12),
+          0 2px 4px -1px rgba(0, 0, 0, 0.4);
+      }
+      :host[edit-mode] #bodycontainer ::slotted(*:focus) {
+        margin: -.5em;
+        padding: .5em;
+        box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14),
+          0  6px 30px 5px rgba(0, 0, 0, 0.12),
+          0  8px 10px -5px rgba(0, 0, 0, 0.4) !important;
+        cursor:text !important;
+      }
+      :host[edit-mode] #bodycontainer ::slotted(hr[contenteditable]) {
+        box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14),
+          0 1px 10px 0 rgba(0, 0, 0, 0.12),
+          0 2px 4px -1px rgba(0, 0, 0, 0.4);
+        height: .5em;
+        color: black;
+      }
+      /** Fix to support safari as it defaults to none */
+      :host[edit-mode] #bodycontainer ::slotted(*[contenteditable]) {
+        -webkit-user-select: all;
+        user-select: all;
+        cursor:pointer;
+      }
+      #bodycontainer {
+        -webkit-user-select: text;
+        user-select: text;
+      }
+      :host .context-menu {
+        display: none;
+      }
+      :host[edit-mode] .context-menu {
+        display: block;
+      }
+      /**
+       * Context menus
+       */
+      .context-menu {
+        position: absolute;
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility .4s ease, opacity .4s ease;
+        z-index: 1;
+      }
+      .context-visible {
+        visibility: visible;
+        opacity: .95;
+        border: 1px solid black;
+      }
+      .context-visible:hover {
+        opacity: 1;
+      }
     </style>
     <vaadin-context-menu>
       <template>
         <paper-listbox>
-          <paper-item>First menu item</paper-item>
-          <paper-item>Second menu item</paper-item>
+          <paper-item>Option 1</paper-item>
+          <paper-item>Option 2</paper-item>
         </paper-listbox>
       </template>
     <div id="bodycontainer">
       <slot id="body"></slot>
     </div>
     </vaadin-context-menu>
+    <hax-text-context id="textcontextmenu" class="context-menu ignore-activation"></hax-text-context>
+    <hax-plate-context id="platecontextmenu" class="context-menu ignore-activation"></hax-plate-context>
   </template>
 
   <script>
     Polymer({
 
       is: 'hax-body',
-
+      listeners: {
+        'focusin': '_focusIn',
+        'mouseover': '_hoverOn',
+      },
       properties: {
         /**
          * State of if we are editing or not.
@@ -62,7 +127,28 @@ A LRN element that will change the world.
           notify: true,
           observer: '_editModeChanged',
         },
+        /**
+         * A reference to the active node in the slot.
+         */
+        activeNode: {
+          type: Object,
+          value: null,
+          notify: true,
+          observer: '_activeNodeChanged',
+        },
+        /**
+         * A reference to the currently hovered node in the slot.
+         */
+        activeHover: {
+          type: Object,
+          value: {},
+          notify: true,
+          observer: '_activeHoverChanged',
+        },
       },
+      /**
+       * Ready state to tee everything up.
+       */
       ready: function(e) {
         // mutation observer that ensures state of hax applied correctly
         this._observer = Polymer.dom(this).observeNodes(function(info) {
@@ -70,6 +156,11 @@ A LRN element that will change the world.
           if (info.addedNodes.length > 0) {
             info.addedNodes.map((node) => {
               node.contentEditable = this.editMode;
+              // if we have 1 item, focus on it
+              if (info.addedNodes.length === 1) {
+                node.focus();
+                document.execCommand('SelectAll');
+              }
               this.fire('hax-body-tag-added', {node: node});
             });
           }
@@ -83,18 +174,95 @@ A LRN element that will change the world.
         });
       },
       /**
+       * React to a new node being set to active.
+       */
+      _activeNodeChanged: function (newValue, oldValue) {
+        if (typeof newValue !== typeof undefined && newValue !== null) {
+          // position the operations / in context element
+          this._positionContextMenu(this.$.textcontextmenu, newValue, 0, 64);
+          this._positionContextMenu(this.$.platecontextmenu, newValue, 64, 0);
+        }
+        // hide menus if we don't have an active item
+        else if (newValue === null) {
+          this._hideContextMenu(this.$.textcontextmenu);
+          this._hideContextMenu(this.$.platecontextmenu);
+        }
+      },
+      /**
+       * React to a new node being hovered over.
+       */
+      _activeHoverChanged: function (newValue, oldValue) {
+        // if we have actually hovered on the element that's active, trigger
+        // the grid plate context menu to show up
+        if (typeof newValue !== typeof undefined && newValue !== null && this.activeNode === newValue) {
+          // position the operations / in context element
+          this._positionContextMenu(this.$.platecontextmenu, newValue, 64, 0);
+        }
+      },
+      /**
+       * Handle display and position of the context menu
+       */
+      _positionContextMenu: function (menu, target, xoffset, yoffset) {
+        menu.classList.add('context-visible');
+        let coordinates = target.getBoundingClientRect();
+        menu.style.left = (coordinates.left - xoffset) + 'px';
+        menu.style.top = (coordinates.top - yoffset) + 'px';
+      },
+      /**
+       * Simple hide / reset of whatever menu it's handed.
+       */
+      _hideContextMenu: function(menu) {
+        menu.classList.remove('context-visible');
+      },
+      /**
        * Allow filtered insert into the local DOM.
        */
       haxInsert: function(tag, content) {
-        var tags = ['p', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote'];
+        var tags = this._validTags();
         // verify this tag is a valid one
-        if (tag.includes(tag)) {
-          var toLocal = document.createElement(tag);
-          toLocal.innerHTML = content;
-          // send this into the root, which should filter it back down into the slot
-          Polymer.dom(this).appendChild(toLocal);
+        if (tags.includes(tag)) {
+          var newNode = document.createElement(tag);
+          newNode.innerHTML = content;
+          // insert at active insert point if we have one
+          if (this.activeNode !== null) {
+            Polymer.dom(this).insertBefore(newNode, this.activeNode.nextElementSibling);
+          }
+          else {
+            // send this into the root, which should filter it back down into the slot
+            Polymer.dom(this).appendChild(newNode);
+          }
         }
         return false;
+      },
+      /**
+       * Item has gained focus, change active element to match
+       */
+      _focusIn: function(e) {
+        var normalizedEvent = Polymer.dom(e);
+        var local = normalizedEvent.localTarget;
+        var tags = this._validTags();
+        if (tags.includes(e.target.tagName.toLowerCase()) && !local.classList.contains('ignore-activation')) {
+          this.activeNode = e.target;
+        }
+      },
+      /**
+       * Item hovered, present limited series of options.
+       */
+      _hoverOn: function(e) {
+        var normalizedEvent = Polymer.dom(e);
+        var local = normalizedEvent.localTarget;
+        var tags = this._validTags();
+        if (tags.includes(e.target.tagName.toLowerCase()) && !local.classList.contains('ignore-activation')) {
+          this.activeHover = e.target;
+        }
+      },
+      /**
+       * Return what tags are valid as part of the hax-body area for working against.
+       */
+      _validTags: function(e) {
+        // @todo need a global way of hijacking this
+        var tags = ['p', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote'];
+        return tags;
       },
       /**
        * Notice the change between states for editing.
@@ -115,7 +283,6 @@ A LRN element that will change the world.
           children[i].contentEditable = status;
         }
       },
-
     });
   </script>
 </dom-module>
