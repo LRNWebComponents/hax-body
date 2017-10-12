@@ -22,19 +22,38 @@ A context menu that provides common text based authoring options.
       }
       app-toolbar {
         background-color: white;
+        padding: 0 1em 0 0;
+        height: 2.5em;
+      }
+      hax-context-item {
+        margin: .25em .25em 0 .25em;
+      }
+      .close-cap {
+        margin: 0;
+        padding: 0 .1em 0 0;
+        border-right: 1px solid black;
       }
     </style>
     <app-toolbar>
+      <hax-context-item
+        icon="close"
+        label="Close menu"
+        event-name="close-menu"
+        class="close-cap"></hax-context-item>
       <hax-context-item-menu
+        selected-value="{{selectedValue}}"
+        id="formatsize"
+        icon="editor:format-size"
         label="Styles"
         event-name="text-tag">
-        <paper-item data-tag="p">Normal text</paper-item>
-        <paper-item data-tag="blockquote">Quote</paper-item>
-        <paper-item data-tag="h2">Title</paper-item>
-        <paper-item data-tag="h3">Heading</paper-item>
-        <paper-item data-tag="h4">Subheading</paper-item>
-        <paper-item data-tag="h5">Deeper Subheading</paper-item>
-        <paper-item data-tag="h6">Deepest Subheading</paper-item>
+        <paper-item value="p">Normal text</paper-item>
+        <paper-item value="blockquote">Quote</paper-item>
+        <paper-item value="h2">Title</paper-item>
+        <paper-item value="h3">Heading</paper-item>
+        <paper-item value="h4">Subheading</paper-item>
+        <paper-item value="h5">Deeper Subheading</paper-item>
+        <paper-item value="h6">Deepest Subheading</paper-item>
+        <paper-item value="code">Code</paper-item>
       </hax-context-item-menu>
       <hax-context-item
         icon="editor:format-bold"
@@ -46,18 +65,20 @@ A context menu that provides common text based authoring options.
         event-name="text-italic"></hax-context-item>
 
       <hax-context-item-menu
-        label="Alignment"
-        event-name="text-align">
-        <paper-item value="align-left">
-          <iron-icon left="" icon="editor:format-align-left"></iron-icon>
+        selected-value="{{justifyValue}}"
+        id="justify"
+        icon="[[justifyIcon]]"
+        label="Alignment">
+        <paper-item value="text-align-left">
+          <iron-icon icon="editor:format-align-left"></iron-icon>
         </paper-item>
-        <paper-item value="align-center">
+        <paper-item value="text-align-center">
           <iron-icon icon="editor:format-align-center"></iron-icon>
         </paper-item>
-        <paper-item value="align-right">
+        <paper-item value="text-align-right">
           <iron-icon icon="editor:format-align-right"></iron-icon>
         </paper-item>
-        <paper-item value="justify">
+        <paper-item value="text-justify-full">
           <iron-icon icon="editor:format-align-justify"></iron-icon>
         </paper-item>
       </hax-context-item-menu>
@@ -65,10 +86,22 @@ A context menu that provides common text based authoring options.
         icon="editor:format-list-numbered"
         label="Numbered list"
         event-name="text-list-numbered"></hax-context-item>
-        <hax-context-item
+      <hax-context-item
         icon="editor:format-list-bulleted"
         label="Bulleted list"
         event-name="text-list-bulleted"></hax-context-item>
+      <hax-context-item
+        icon="editor:format-strikethrough"
+        label="Cross out"
+        event-name="text-strikethrough"></hax-context-item>
+      <hax-context-item
+        icon="editor:format-underlined"
+        label="Underline"
+        event-name="text-underline"></hax-context-item>
+      <hax-context-item
+        icon="editor:format-clear"
+        label="Underline"
+        event-name="text-remove-format"></hax-context-item>
     </app-toolbar>
   </template>
 
@@ -79,12 +112,36 @@ A context menu that provides common text based authoring options.
       listeners: {
         'hax-context-item-selected': '_haxContextOperation',
       },
+      properties: {
+        /**
+         * Justify icon to reflect state.
+         */
+        justifyIcon: {
+          type: String,
+          value: 'editor:format-align-left',
+        },
+        /**
+         * Selected value to match format of the tag currently.
+         */
+        selectedValue: {
+          type: String,
+          value: 'p',
+          notify: true,
+        },
+        /**
+         * Selected value to match text direction currently.
+         */
+        justifyValue: {
+          type: String,
+          value: 'text-align-left',
+          notify: true,
+        },
+      },
       /**
        * Respond to simple modifications.
        */
       _haxContextOperation: function(e) {
         let detail = e.detail;
-        console.log(detail.eventName);
         // support a simple insert event to bubble up or everything else
         switch(detail.eventName) {
           // wow these are way too easy
@@ -100,9 +157,29 @@ A context menu that provides common text based authoring options.
           case 'text-list-bulleted':
             document.execCommand('insertUnorderedList');
           break;
-          case 'text-align':
-            console.log(detail);
-            //document.execCommand('insertUnorderedList');
+          case 'text-underline':
+            document.execCommand('underline');
+          break;
+          case 'text-remove-format':
+            document.execCommand('removeFormat');
+          break;
+          case 'text-strikethrough':
+            document.execCommand('strikeThrough');
+          break;
+          case 'text-align-left':
+            this.justifyIcon = detail.target.children[0].attributes[0].nodeValue;
+          break;
+          case 'text-align-center':
+            this.justifyIcon = detail.target.children[0].attributes[0].nodeValue;
+          break;
+          case 'text-align-right':
+            this.justifyIcon = detail.target.children[0].attributes[0].nodeValue;
+          break;
+          case 'text-justify-full':
+            this.justifyIcon = detail.target.children[0].attributes[0].nodeValue;
+          break;
+          default:
+            console.log('command not handled by context menu; bubbling up ' + detail.eventName);
           break;
         }
       },

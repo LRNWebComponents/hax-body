@@ -20,20 +20,24 @@ A context menu that provides common grid plate based authoring options.
       :host {
         display: block;
         background-color: white;
+        width: 3em;
       }
       hax-context-item-menu,
       hax-context-item {
         display: block;
+        margin: 0;
         width: 100%;
-        clear: both;
+      }
+      hax-context-item ::shadow paper-icon-button {
+        height: 2.75em;
       }
     </style>
     <hax-context-item-menu
       label="Styles"
       event-name="grid-plate-style">
-      <paper-item data-style="normal">Normal</paper-item>
-      <paper-item data-style="grid-plate-center">Center</paper-item>
-      <paper-item data-style="grid-plate-explode">Explode</paper-item>
+      <paper-item value="normal">Normal</paper-item>
+      <paper-item value="grid-plate-center">Center</paper-item>
+      <paper-item value="grid-plate-explode">Explode</paper-item>
     </hax-context-item-menu>
     <hax-context-item
       icon="content-copy"

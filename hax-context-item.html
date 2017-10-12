@@ -34,14 +34,20 @@ A single button in the hax panel for consistency.
       }
       paper-icon-button {
         color: rgba(0,0,0,0.66);
+        margin: .25em 0;
         text-transform: none;
         background-color: #ffffff;
-        height: 2em;
-        width: 2em;
-        min-width: 2em;
+        min-width: 1.5em;
         display: flex;
         padding: 0;
-        margin: 0;
+      }
+      paper-icon-button ::shadow iron-icon {
+        padding: .25em;
+        height: 1.5em;
+      }
+      paper-icon-button:hover {
+        background-color: var(--paper-grey-300, grey);
+        border-radius: 50%;
       }
       :host[wide] paper-button {
         width: unset;

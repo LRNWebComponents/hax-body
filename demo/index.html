@@ -47,10 +47,9 @@
               document.querySelector('#toast').show(e.detail.eventName);
               b.haxInsert(e.detail.tag, e.detail.content);
             });
-            // alert when something is added to the body in the form of a tag
-            b.addEventListener('hax-body-tag-added', function(e) {
-              console.log(e.detail);
-              document.querySelector('#toast').show(e.detail.node.localName + ' added!');
+            // alert if there was an error loading content
+            b.addEventListener('hax-body-tag-removed', function(e) {
+              document.querySelector('#toast').show('deleted ' + e.detail.node.tagName);
             });
             // simple toggle for state to ensure it matches
             button.addEventListener('click', function(e) {

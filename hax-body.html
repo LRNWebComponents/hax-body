@@ -21,16 +21,18 @@ A LRN element that will change the world.
         min-height: 2em;
         min-width: 2em;
       }
-      ::-moz-selection {
-        background-color: var(--hax-body-highlight, --paper-yellow-300);
-        color: black;
-      }
-      ::selection {
-        background-color: var(--hax-body-highlight, --paper-yellow-300);
-        color: black;
-      }
       vaadin-context-menu ::shadow vaadin-context-menu-overlay {
         background-color: white;
+      }
+
+      :host[edit-mode] #bodycontainer ::slotted(*.justify-center) {
+        text-align: center;
+      }
+      :host[edit-mode] #bodycontainer ::slotted(*.justify-right) {
+        text-align: right;
+      }
+      :host[edit-mode] #bodycontainer ::slotted(*.justify-text) {
+        text-align: justify;
       }
       :host[edit-mode] #bodycontainer ::slotted(p:hover),
       :host[edit-mode] #bodycontainer ::slotted(h1:hover),
@@ -43,19 +45,21 @@ A LRN element that will change the world.
           0 1px 10px 0 rgba(0, 0, 0, 0.12),
           0 2px 4px -1px rgba(0, 0, 0, 0.4);
       }
-      :host[edit-mode] #bodycontainer ::slotted(*:focus) {
-        margin: -.5em;
+      :host[edit-mode] #bodycontainer ::slotted(*.active-edit[contenteditable]) {
         padding: .5em;
         box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14),
           0  6px 30px 5px rgba(0, 0, 0, 0.12),
           0  8px 10px -5px rgba(0, 0, 0, 0.4) !important;
         cursor:text !important;
       }
+      :host[edit-mode] #bodycontainer ::slotted(code.active-edit[contenteditable]) {
+        display: block;
+      }
       :host[edit-mode] #bodycontainer ::slotted(hr[contenteditable]) {
         box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14),
           0 1px 10px 0 rgba(0, 0, 0, 0.12),
           0 2px 4px -1px rgba(0, 0, 0, 0.4);
-        height: .5em;
+        height: .1em;
         color: black;
       }
       /** Fix to support safari as it defaults to none */
@@ -63,6 +67,17 @@ A LRN element that will change the world.
         -webkit-user-select: all;
         user-select: all;
         cursor:pointer;
+      }
+
+      :host[edit-mode] #bodycontainer ::slotted(*[contenteditable]::-moz-selection),
+      :host[edit-mode] #bodycontainer ::slotted(*[contenteditable] *::-moz-selection) {
+        background-color: var(--hax-body-highlight, --paper-yellow-300);
+        color: black;
+      }
+      :host[edit-mode] #bodycontainer ::slotted(*[contenteditable]::selection),
+      :host[edit-mode] #bodycontainer ::slotted(*[contenteditable] *::selection) {
+        background-color: var(--hax-body-highlight, --paper-yellow-300);
+        color: black;
       }
       #bodycontainer {
         -webkit-user-select: text;
@@ -93,7 +108,7 @@ A LRN element that will change the world.
         opacity: 1;
       }
     </style>
-    <vaadin-context-menu>
+    <vaadin-context-menu selector=".has-menu">
       <template>
         <paper-listbox>
           <paper-item>Option 1</paper-item>
@@ -114,7 +129,7 @@ A LRN element that will change the world.
       is: 'hax-body',
       listeners: {
         'focusin': '_focusIn',
-        'mouseover': '_hoverOn',
+        'hax-context-item-selected': '_haxContextOperation',
       },
       properties: {
         /**
@@ -159,7 +174,9 @@ A LRN element that will change the world.
               // if we have 1 item, focus on it
               if (info.addedNodes.length === 1) {
                 node.focus();
-                document.execCommand('SelectAll');
+                if (node.tagName !== 'HR') {
+                  document.execCommand('SelectAll');
+                }
               }
               this.fire('hax-body-tag-added', {node: node});
             });
@@ -167,55 +184,14 @@ A LRN element that will change the world.
           // if we dropped nodes via the UI (delete event basically)
           if (info.removedNodes.length > 0) {
             // handle removing items... not sure we need to do anything here
-            info.addedNodes.map(function(node) {
+            info.removedNodes.map((node) => {
               this.fire('hax-body-tag-removed', {node: node});
             });
           }
         });
       },
       /**
-       * React to a new node being set to active.
-       */
-      _activeNodeChanged: function (newValue, oldValue) {
-        if (typeof newValue !== typeof undefined && newValue !== null) {
-          // position the operations / in context element
-          this._positionContextMenu(this.$.textcontextmenu, newValue, 0, 64);
-          this._positionContextMenu(this.$.platecontextmenu, newValue, 64, 0);
-        }
-        // hide menus if we don't have an active item
-        else if (newValue === null) {
-          this._hideContextMenu(this.$.textcontextmenu);
-          this._hideContextMenu(this.$.platecontextmenu);
-        }
-      },
-      /**
-       * React to a new node being hovered over.
-       */
-      _activeHoverChanged: function (newValue, oldValue) {
-        // if we have actually hovered on the element that's active, trigger
-        // the grid plate context menu to show up
-        if (typeof newValue !== typeof undefined && newValue !== null && this.activeNode === newValue) {
-          // position the operations / in context element
-          this._positionContextMenu(this.$.platecontextmenu, newValue, 64, 0);
-        }
-      },
-      /**
-       * Handle display and position of the context menu
-       */
-      _positionContextMenu: function (menu, target, xoffset, yoffset) {
-        menu.classList.add('context-visible');
-        let coordinates = target.getBoundingClientRect();
-        menu.style.left = (coordinates.left - xoffset) + 'px';
-        menu.style.top = (coordinates.top - yoffset) + 'px';
-      },
-      /**
-       * Simple hide / reset of whatever menu it's handed.
-       */
-      _hideContextMenu: function(menu) {
-        menu.classList.remove('context-visible');
-      },
-      /**
-       * Allow filtered insert into the local DOM.
+       * Insert new tag + content into the local DOM as a node.
        */
       haxInsert: function(tag, content) {
         var tags = this._validTags();
@@ -231,8 +207,124 @@ A LRN element that will change the world.
             // send this into the root, which should filter it back down into the slot
             Polymer.dom(this).appendChild(newNode);
           }
+          return true;
         }
         return false;
+      },
+      /**
+       * Duplicate node into the local DOM below the current item if we can.
+       */
+      haxDuplicateNode: function(node) {
+        var nodeClone = node.cloneNode(true);
+        // shouldn't be possible but might as well check
+        if (this.activeNode !== null) {
+          Polymer.dom(this).insertBefore(nodeClone, this.activeNode.nextElementSibling);
+        }
+        else {
+          Polymer.dom(this).appendChild(nodeClone);
+        }
+        return true;
+      },
+      /**
+       * Convert an element from one tag to another.
+       */
+      haxChangeTagName: function (node, tagName) {
+        // Create a replacement tag of the desired type
+        var replacement = document.createElement(tagName);
+        // Grab all of the original's attributes, and pass them to the replacement
+        for(var i = 0, l = node.attributes.length; i < l; ++i){
+          var nodeName  = node.attributes.item(i).nodeName;
+          var nodeValue = node.attributes.item(i).nodeValue;
+          replacement.setAttribute(nodeName, nodeValue);
+        }
+        // Persist contents
+        replacement.innerHTML = node.innerHTML;
+        // Switch!
+        Polymer.dom(this).replaceChild(replacement, node);
+        return node;
+      },
+      /**
+       * Delete the node passed in
+       */
+      haxDeleteNode: function(node) {
+        // shift active to a viable replacement
+        if (this.activeNode.previousElementSibling !== null) {
+          this.activeNode.previousElementSibling.focus();
+        }
+        else if (this.activeNode.nextElementSibling !== null) {
+          this.activeNode.nextElementSibling.focus();
+        }
+        else {
+          this.activeNode = null;
+        }
+        return Polymer.dom(this).removeChild(node);
+      },
+      /**
+       * Respond to hax operations.
+       */
+      _haxContextOperation: function(e) {
+        let detail = e.detail;
+        // support a simple insert event to bubble up or everything else
+        switch(detail.eventName) {
+          case 'p':
+          case 'h2':
+          case 'h3':
+          case 'h4':
+          case 'h5':
+          case 'h6':
+          case 'code':
+          case 'blockquote':
+            // trigger the default selected value in context menu to match
+            this.$.textcontextmenu.selectedValue = detail.eventName;
+            this.activeNode = this.haxChangeTagName(this.activeNode, detail.eventName);
+            this.activeNode.focus();
+          break;
+          case 'text-align-left':
+            this.activeNode.classList.add('justify-left');
+            this.$.textcontextmenu.justifyValue = 'text-align-left';
+            this.activeNode.classList.remove('justify-center');
+            this.activeNode.classList.remove('justify-right');
+            this.activeNode.classList.remove('justify-text');
+            document.execCommand('justifyLeft', false, null);
+          break;
+          case 'text-align-center':
+            this.activeNode.classList.remove('justify-left');
+            this.activeNode.classList.add('justify-center');
+            this.$.textcontextmenu.justifyValue = 'text-align-center';
+            this.activeNode.classList.remove('justify-right');
+            this.activeNode.classList.remove('justify-text');
+            document.execCommand('justifyCenter', false, null);
+          break;
+          case 'text-align-right':
+            this.activeNode.classList.remove('justify-left');
+            this.activeNode.classList.remove('justify-center');
+            this.activeNode.classList.add('justify-right');
+            this.$.textcontextmenu.justifyValue = 'text-align-right';
+            this.activeNode.classList.remove('justify-text');
+            document.execCommand('justifyRight', false, null);
+          break;
+          case 'text-justify-full':
+            this.activeNode.classList.remove('justify-left');
+            this.activeNode.classList.remove('justify-center');
+            this.activeNode.classList.remove('justify-right');
+            this.activeNode.classList.add('justify-text');
+            this.$.textcontextmenu.justifyValue = 'text-justify-full';
+            document.execCommand('justifyJustify', false, null);
+          break;
+          case 'grid-plate-duplicate':
+            this.haxDuplicateNode(this.activeNode);
+          break;
+          case 'grid-plate-delete':
+            this.haxDeleteNode(this.activeNode);
+          break;
+          case 'close-menu':
+            // this is the equivalent of hiding menus and resetting the board
+            this.activeNode = null;
+          break;
+          default:
+            console.log(detail);
+          break;
+        }
       },
       /**
        * Item has gained focus, change active element to match
@@ -246,22 +338,11 @@ A LRN element that will change the world.
         }
       },
       /**
-       * Item hovered, present limited series of options.
-       */
-      _hoverOn: function(e) {
-        var normalizedEvent = Polymer.dom(e);
-        var local = normalizedEvent.localTarget;
-        var tags = this._validTags();
-        if (tags.includes(e.target.tagName.toLowerCase()) && !local.classList.contains('ignore-activation')) {
-          this.activeHover = e.target;
-        }
-      },
-      /**
        * Return what tags are valid as part of the hax-body area for working against.
        */
       _validTags: function(e) {
         // @todo need a global way of hijacking this
-        var tags = ['p', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote'];
+        var tags = ['p', 'div', 'hr', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'code'];
         return tags;
       },
       /**
@@ -282,6 +363,71 @@ A LRN element that will change the world.
         for (var i = 0, len = children.length; i < len; i++) {
           children[i].contentEditable = status;
         }
+      },
+      /**
+       * React to a new node being set to active.
+       */
+      _activeNodeChanged: function (newValue, oldValue) {
+        // clean up the older one
+        if (typeof oldValue !== typeof undefined && oldValue != null) {
+          oldValue.classList.remove('active-edit');
+        }
+        if (typeof newValue !== typeof undefined && newValue !== null) {
+          newValue.classList.add('active-edit');
+          this.$.textcontextmenu.selectedValue = newValue.tagName.toLowerCase();
+          // position the operations / in context element
+          this._positionContextMenu(this.$.textcontextmenu, newValue, 47, 54);
+          if (newValue.classList.contains('justify-center')) {
+            this.$.textcontextmenu.justifyIcon = 'editor:format-align-center';
+            this.$.textcontextmenu.justifyValue = 'text-align-center';
+          }
+          else if (newValue.classList.contains('justify-right')) {
+            this.$.textcontextmenu.justifyIcon = 'editor:format-align-right';
+            this.$.textcontextmenu.justifyValue = 'text-align-right';
+          }
+          else if (newValue.classList.contains('justify-text')) {
+            this.$.textcontextmenu.justifyIcon = 'editor:format-align-justify';
+            this.$.textcontextmenu.justifyValue = 'text-justify-full';
+          }
+          else {
+            this.$.textcontextmenu.justifyIcon = 'editor:format-align-left';
+            this.$.textcontextmenu.justifyValue = 'text-align-left';
+          }
+          this._positionContextMenu(this.$.platecontextmenu, newValue, 47, 3);
+        }
+        // hide menus if we don't have an active item
+        else if (newValue === null) {
+          this._hideContextMenu(this.$.textcontextmenu);
+          this._hideContextMenu(this.$.platecontextmenu);
+          this.$.textcontextmenu.justifyIcon = 'editor:format-align-left';
+          this.$.textcontextmenu.justifyValue = 'text-align-left';
+        }
+      },
+      /**
+       * React to a new node being hovered over.
+       */
+      _activeHoverChanged: function (newValue, oldValue) {
+        // if we have actually hovered on the element that's active, trigger
+        // the grid plate context menu to show up
+        if (typeof newValue !== typeof undefined && newValue !== null && this.activeNode === newValue) {
+          // position the operations / in context element
+          this._positionContextMenu(this.$.platecontextmenu, newValue, 47, 3);
+        }
+      },
+      /**
+       * Handle display and position of the context menu
+       */
+      _positionContextMenu: function (menu, target, xoffset, yoffset) {
+        menu.classList.add('context-visible');
+        let coordinates = target.getBoundingClientRect();
+        menu.style.left = (document.documentElement.scrollLeft + coordinates.left - xoffset) + 'px';
+        menu.style.top = (document.documentElement.scrollTop + coordinates.top - yoffset) + 'px';
+      },
+      /**
+       * Simple hide / reset of whatever menu it's handed.
+       */
+      _hideContextMenu: function(menu) {
+        menu.classList.remove('context-visible');
       },
     });
   </script>
