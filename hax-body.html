@@ -315,6 +315,7 @@ A LRN element that will change the world.
         // shouldn't be possible but might as well check
         if (this.activeNode !== null) {
           Polymer.dom(this).insertBefore(nodeClone, this.activeNode.nextElementSibling);
+          this.activeNode = nodeClone;
         }
         else {
           Polymer.dom(this).appendChild(nodeClone);
