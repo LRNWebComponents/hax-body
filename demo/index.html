@@ -12,6 +12,7 @@
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
     <link rel="import" href="../hax-body.html">
     <link rel="import" href="../../hax-panel/hax-panel.html">
+    <link rel="import" href="../../lrnsys-layout/lrnsys-dialog.html">
     <link rel="import" href="../../paper-toast/paper-toast.html">
 
     <style is="custom-style" include="demo-pages-shared-styles">
@@ -37,6 +38,12 @@
           <!-- potential wiring to make this work -->
           <hax-panel id="panel" opened></hax-panel>
           <paper-toast id="toast"></paper-toast>
+          <lrnsys-dialog body-append id="dialog" title="See HTML">
+            <h2 slot="header">HTML generated</h2>
+            <div>
+              <textarea id="textarea" rows="20" style="width:100%;"></textarea>
+            </div>
+          </lrnsys-dialog>
           <paper-button id="togglebutton">Enabled</paper-button>
           <script>
             var p = document.querySelector('#panel');
@@ -46,6 +53,15 @@
             p.addEventListener('hax-content-insert', function(e) {
               document.querySelector('#toast').show(e.detail.eventName);
               b.haxInsert(e.detail.tag, e.detail.content);
+            });
+            // alert if there was an error loading content
+            p.addEventListener('hax-item-selected', function(e) {
+              document.querySelector('#toast').show(e.detail.eventName);
+              if (e.detail.eventName === 'advanced-import-export') {
+                let content = b.haxToContent();
+                document.querySelector('#textarea').innerHTML = content;
+                document.querySelector('#dialog').toggleDialog();
+              }
             });
             // alert if there was an error loading content
             b.addEventListener('hax-body-tag-removed', function(e) {

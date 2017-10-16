@@ -179,9 +179,6 @@ A context menu that provides common text based authoring options.
           case 'text-justify-full':
             this.justifyIcon = detail.target.children[0].attributes[0].nodeValue;
           break;
-          default:
-            console.log('command not handled by context menu; bubbling up ' + detail.eventName);
-          break;
         }
       },
     });
