@@ -39,17 +39,17 @@ An icon / button that has support for multiple options via drop down.
         text-transform: none;
         background-color: #ffffff;
         display: flex;
-        min-width: 1.5em;
+        min-width: 24px;
       }
       :host[wide] paper-menu-button {
         width: unset;
       }
       paper-menu-button .label {
-        font-size: .75em;
-        margin-top: .25em;
+        font-size: 12px;
+        margin-top: 4px;
       }
       paper-menu-button .button-inner {
-        padding-top: .5em;
+        padding-top: 8px;
         text-align: center;
       }
       paper-icon-button {
@@ -57,18 +57,18 @@ An icon / button that has support for multiple options via drop down.
         margin: 0;
         text-transform: none;
         background-color: #ffffff;
-        min-width: 1.5em;
+        min-width: 24px;
         display: flex;
         padding: 0;
+        border-radius: 0;
       }
       paper-icon-button ::shadow iron-icon {
-        padding: .125em .125em 0 .125em;
-        margin: .25em 0 0 0;
-        height: 1.5em;
+        padding: 8px;
+        height: 24px;
+        margin: 0;
       }
       paper-icon-button:hover {
         background-color: var(--paper-grey-300, grey);
-        border-radius: 50%;
       }
       .flip-icon {
         transform: rotateY(180deg);
@@ -77,7 +77,7 @@ An icon / button that has support for multiple options via drop down.
         pointer-events: none;
       }
     </style>
-    <paper-menu-button>
+    <paper-menu-button id="menubutton">
       <paper-icon-button id="button" icon="[[icon]]" hidden$="[[!icon]]" slot="dropdown-trigger" class$="[[iconClass]]"></paper-icon-button>
       <paper-listbox id="listbox" slot="dropdown-content" selected="{{selected}}">
         <slot id="items"></slot>
@@ -86,8 +86,8 @@ An icon / button that has support for multiple options via drop down.
 
     <paper-tooltip
       for="button"
-      position="bottom"
-      offset="14">
+      position="[[direction]]"
+      offset="10">
       [[label]]
     </paper-tooltip>
   </template>
@@ -96,7 +96,9 @@ An icon / button that has support for multiple options via drop down.
     Polymer({
 
       is: 'hax-context-item-menu',
-
+      listeners: {
+        'menubutton.tap': '_menubuttonTap',
+      },
       properties: {
         /**
          * Selected value to translate into numeric selection.
@@ -131,6 +133,13 @@ An icon / button that has support for multiple options via drop down.
           type: Boolean,
           value: false,
           reflectToAttribute: true,
+        },
+        /**
+         * Direction for the tooltip
+         */
+        direction: {
+          type: String,
+          value: 'top',
         },
         /**
          * Icon for the button.
@@ -168,6 +177,18 @@ An icon / button that has support for multiple options via drop down.
         }
       },
       /**
+       * Ensure menu is visible / default'ed.
+       */
+      _menubuttonTap: function(e) {
+        this.$.listbox.style.display = 'inherit';
+      },
+      /**
+       * Ensure menu is hidden.
+       */
+      hideMenu: function() {
+        this.$.listbox.style.display = 'none';
+      },
+      /**
        * Notice the selected value has changed.
        */
       _selectedValueUpdated: function(newValue, oldValue) {
@@ -178,7 +199,7 @@ An icon / button that has support for multiple options via drop down.
           // check for tag match since we have to filter out text nodes
           for (var i = 0, len = children.length; i < len; i++) {
             if (children[i].tagName === 'PAPER-ITEM') {
-              if (children[i].attributes.value.nodeValue === newValue) {
+              if (typeof children[i].attributes.value !== typeof undefined && children[i].attributes.value.nodeValue === newValue) {
                 this._blockEvent = true;
                 this.selected = j;
                 len = i;
@@ -211,12 +232,12 @@ An icon / button that has support for multiple options via drop down.
           // ensure we have a value; if so, this becomes the event to look for
           // also use our flag to ensure machine setting the tag default doesn't
           // equate to firing off a selected event.
-          if (!this._blockEvent && typeof item.attributes.value.nodeValue !== typeof undefined) {
+          if (!this._blockEvent && typeof item.attributes !== typeof undefined && typeof item.attributes.value !== typeof undefined && typeof item.attributes.value.nodeValue !== typeof undefined) {
             // weird but this makes the menu close when we fire up an event
-            // that indicates soemthing higher should do something. This
+            // that indicates something higher should do something. This
             // avoids an annoying UX error where the menu stays open for
             // no reason.
-            this.$.button.click();
+            this.hideMenu();
             this.fire('hax-context-item-selected', {target: item, eventName: item.attributes.value.nodeValue});
           }
           // we only block 1 time if it's available

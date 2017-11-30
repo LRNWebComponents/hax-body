@@ -21,8 +21,10 @@ A LRN element that will change the world.
         min-height: 2em;
         min-width: 2em;
       }
-      vaadin-context-menu ::shadow vaadin-context-menu-overlay {
-        background-color: white;
+      vaadin-context-menu {
+        --vaadin-context-menu-overlay: {
+          box-shadow: none;
+        }
       }
       :host #bodycontainer ::slotted(.hax-context-menu) {
         padding: 0;
@@ -33,51 +35,39 @@ A LRN element that will change the world.
         transition: visibility .4s ease, opacity .4s ease;
         z-index: 1;
       }
+      :host #bodycontainer ::slotted(#haxinputmixer) {
+        z-index: 2;
+      }
       :host #bodycontainer ::slotted(.hax-context-visible) {
         visibility: visible;
-        opacity: .95;
+        opacity: 1;
         border: 1px solid black;
         display: block;
       }
-      :host #bodycontainer ::slotted(.hax-context-visible:hover) {
-        opacity: 1;
-      }
-      :host[edit-mode] #bodycontainer ::slotted(*.justify-center) {
-        text-align: center;
-      }
-      :host[edit-mode] #bodycontainer ::slotted(*.justify-right) {
-        text-align: right;
-      }
-      :host[edit-mode] #bodycontainer ::slotted(*.justify-text) {
-        text-align: justify;
-      }
-      :host[edit-mode] #bodycontainer ::slotted(p:hover),
-      :host[edit-mode] #bodycontainer ::slotted(h1:hover),
-      :host[edit-mode] #bodycontainer ::slotted(h2:hover),
-      :host[edit-mode] #bodycontainer ::slotted(h3:hover),
-      :host[edit-mode] #bodycontainer ::slotted(h4:hover),
-      :host[edit-mode] #bodycontainer ::slotted(h5:hover),
-      :host[edit-mode] #bodycontainer ::slotted(h6:hover) {
-        box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14),
-          0 1px 10px 0 rgba(0, 0, 0, 0.12),
-          0 2px 4px -1px rgba(0, 0, 0, 0.4);
+
+      :host[edit-mode] #bodycontainer ::slotted(*[contenteditable]:hover) {
+        -webkit-box-shadow: 0 0 0 3px #34e79a;
+        box-shadow: 0 0 0 3px #34e79a;
       }
       :host[edit-mode] #bodycontainer ::slotted(*.hax-active[contenteditable]) {
+        -webkit-box-shadow: 0 0 0 3px #03a87c !important;
+        box-shadow: 0 0 0 3px #03a87c !important;
+        cursor: text !important;
+        outline-color: #34e79a !important;
+      }
+      :host[edit-mode] #bodycontainer ::slotted(p.hax-active[contenteditable]) {
         padding: .5em;
-        box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14),
-          0  6px 30px 5px rgba(0, 0, 0, 0.12),
-          0  8px 10px -5px rgba(0, 0, 0, 0.4) !important;
-        cursor:text !important;
       }
       :host[edit-mode] #bodycontainer ::slotted(code.hax-active[contenteditable]) {
         display: block;
       }
       :host[edit-mode] #bodycontainer ::slotted(hr[contenteditable]) {
-        box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14),
-          0 1px 10px 0 rgba(0, 0, 0, 0.12),
-          0 2px 4px -1px rgba(0, 0, 0, 0.4);
-        height: .1em;
+        padding: .5em;
         color: black;
+      }
+      :host[edit-mode] #bodycontainer ::slotted(video-player[contenteditable]),
+      :host[edit-mode] #bodycontainer ::slotted(iframe[contenteditable]) {
+        border: .5em solid transparent;
       }
       /** Fix to support safari as it defaults to none */
       :host[edit-mode] #bodycontainer ::slotted(*[contenteditable]) {
@@ -190,20 +180,27 @@ A LRN element that will change the world.
       }
     </style>
 
-    <vaadin-context-menu selector=".has-menu">
+    <vaadin-context-menu selector=".has-pie-menu">
       <template>
-        <paper-listbox>
-          <paper-item>Option 1</paper-item>
-          <paper-item>Option 2</paper-item>
-        </paper-listbox>
+        <pie-menu
+          id="pie"
+          center-label="Move" center-icon="open-with"
+          top-label="Up" top-icon="arrow-upward"
+          left-label="Left" left-icon="arrow-back"
+          bottom-label="Bottom" bottom-icon="arrow-downward"
+          right-label="Right" right-icon="arrow-forward"></pie-menu>
       </template>
-    <div id="bodycontainer">
+    <div id="bodycontainer" class="ignore-activation">
       <slot id="body"></slot>
     </div>
     </vaadin-context-menu>
     <div id="contextcontainer">
       <hax-text-context id="textcontextmenu" class="hax-context-menu ignore-activation"></hax-text-context>
+      <hax-image-context id="imagecontextmenu" class="hax-context-menu ignore-activation"></hax-image-context>
+      <hax-iframe-context id="iframecontextmenu" class="hax-context-menu ignore-activation"></hax-iframe-context>
+      <hax-ce-context id="cecontextmenu" class="hax-context-menu ignore-activation"></hax-ce-context>
       <hax-plate-context id="platecontextmenu" class="hax-context-menu ignore-activation"></hax-plate-context>
+      <hax-input-mixer id="haxinputmixer" class="hax-context-menu ignore-activation"></hax-input-mixer>
     </div>
   </template>
 
@@ -213,7 +210,9 @@ A LRN element that will change the world.
       is: 'hax-body',
       listeners: {
         'focusin': '_focusIn',
+        'mousedown': '_focusIn',
         'hax-context-item-selected': '_haxContextOperation',
+        'hax-input-mixer-update': '_haxInputMixerOperation',
       },
       properties: {
         /**
@@ -263,7 +262,7 @@ A LRN element that will change the world.
           // if we've got new nodes, we have to react to that
           if (info.addedNodes.length > 0) {
             info.addedNodes.map((node) => {
-              if (typeof node.tagName !== typeof undefined && node.tagName !== 'HAX-TEXT-CONTEXT' && node.tagName !== 'HAX-PLATE-CONTEXT') {
+              if (this._haxElementTest(node)) {
                 node.contentEditable = this.editMode;
                 this.fire('hax-body-tag-added', {node: node});
               }
@@ -273,10 +272,8 @@ A LRN element that will change the world.
           if (info.removedNodes.length > 0) {
             // handle removing items... not sure we need to do anything here
             info.removedNodes.map((node) => {
-              if (typeof node.tagName !== typeof undefined && node.tagName !== 'HAX-TEXT-CONTEXT' && node.tagName !== 'HAX-PLATE-CONTEXT') {
-                if (!node.classList.contains('hax-active')) {
-                  this.fire('hax-body-tag-removed', {node: node});
-                }
+              if (this._haxElementTest(node) && !node.classList.contains('hax-active')) {
+                this.fire('hax-body-tag-removed', {node: node});
               }
             });
           }
@@ -285,12 +282,22 @@ A LRN element that will change the world.
       /**
        * Insert new tag + content into the local DOM as a node.
        */
-      haxInsert: function(tag, content) {
+      haxInsert: function(tag, content, properties = {}) {
         var tags = this._validTags();
         // verify this tag is a valid one
         if (tags.includes(tag)) {
-          var newNode = document.createElement(tag);
-          newNode.innerHTML = content;
+          // create a new element fragment w/ content in it
+          // if this is a custom-element it won't expand though
+          var frag = document.createElement(tag);
+          frag.innerHTML = content;
+          // clone the fragment which will force an escalation to full node
+          var newNode = frag.cloneNode(true);
+          // support for properties if they exist
+          for (var property in properties) {
+            if (properties.hasOwnProperty(property)) {
+              newNode.setAttribute(property, properties[property]);
+            }
+          }
           // insert at active insert point if we have one
           if (this.activeNode !== null) {
             Polymer.dom(this).insertBefore(newNode, this.activeNode.nextElementSibling);
@@ -318,20 +325,70 @@ A LRN element that will change the world.
         let children = Polymer.dom(this.$.body).getDistributedNodes();
         var content = '';
         for (var i = 0, len = children.length; i < len; i++) {
-          if (typeof children[i].tagName !== typeof undefined && children[i].tagName !== 'HAX-TEXT-CONTEXT' && children[i].tagName !== 'HAX-PLATE-CONTEXT') {
+          if (this._haxElementTest(children[i])) {
             // delete this property since it's silly
             children[i].contentEditable = false;
-            content += children[i].outerHTML + "\n";
+            // see if this is a custom element
+            if (children[i].tagName.indexOf('-') > 0) {
+              // dig into the light dom and make sure we ONLY save that or else
+              // we'll save things in that weird shadow / light DOM cross over
+              // which then will keep unpacking over and over again
+              content += this.haxNodeToContent(children[i]);
+            }
+            else {
+              content += children[i].outerHTML + "\n";
+            }
           }
         }
-        // remove the contenteditable property as it isn't needed on export
+        // remove the contenteditable property
         content = content.replace(/\scontenteditable=\"false\"/g, '');
+        // remove HAX specific classes / scoping classes
+        content = content.replace(/style-scope\slrnapp-book/g, '');
         // remove empty class structures
         content = content.replace(/\sclass=\"\"/g, '');
         // re-apply contenteditable if needed
         this._applyContentEditable(this.editMode);
         // set active again
         this.set('activeNode', __active);
+        return content;
+      },
+      /**
+       * Convert a node to the correct content object for saving.
+       */
+      haxNodeToContent: function(node) {
+        var content = '';
+        // start to rebuild the same tag we got in a generalized way
+        content += '<' + node.tagName.toLowerCase();
+        // grab all of the original's attributes, and pass them to the replacement
+        for(var j = 0, l = node.attributes.length; j < l; ++j){
+          var nodeName  = node.attributes.item(j).nodeName;
+          var nodeValue = node.attributes.item(j).nodeValue;
+          content += ' ' + nodeName + '="' + nodeValue + '"';
+        }
+        // set the opening tag
+        content += '>' + "\n";
+        // get content that is in the slots
+        let slotnodes = Polymer.dom(node).getEffectiveChildNodes();
+        // ensure there's something inside of this
+        if (slotnodes.length > 0) {
+          // loop through everything found in the slotted area and put it back in
+          for (var j = 0, len2 = slotnodes.length; j < len2; j++) {
+            // @todo this might delete comment tags and other non elements
+            // in the page.
+            if (typeof slotnodes[j].tagName !== typeof undefined) {
+              // if we're a custom element, keep digging, otherwise a simple
+              // self append is fine.
+              if (slotnodes[j].tagName.indexOf('-') > 0) {
+                content += this.haxNodeToContent(slotnodes[j]);
+              }
+              else {
+                content += '  ' + slotnodes[j].outerHTML + "\n";
+              }
+            }
+          }
+        }
+        // close the tag
+        content += '</' + node.tagName.toLowerCase() + '>' + "\n";
         return content;
       },
       /**
@@ -357,14 +414,50 @@ A LRN element that will change the world.
        */
       hideContextMenus: function() {
         this._hideContextMenu(this.$.textcontextmenu);
+        this._hideContextMenu(this.$.imagecontextmenu);
+        this._hideContextMenu(this.$.iframecontextmenu);
+
         this._hideContextMenu(this.$.platecontextmenu);
+        this._hideContextMenu(this.$.cecontextmenu);
+        this._hideContextMenu(this.$.haxinputmixer);
       },
       /**
        * Reposition context menus to match an element.
        */
       positionContextMenus: function(node) {
-        this._positionContextMenu(this.$.textcontextmenu, node, '-48px', '-56px');
-        this._positionContextMenu(this.$.platecontextmenu, node, '-48px', '-5px');
+        // specialized menu based on the type of contextual menu we need
+        switch (node.tagName) {
+          // HTML primatives need manually defined and built out
+          case 'IMG':
+            this.__activeContextType = this.$.imagecontextmenu;
+            this._positionContextMenu(this.__activeContextType, node, -46, -46);
+          break;
+          case 'IFRAME':
+          case 'VIDEO':
+          case 'AUDIO':
+            this.__activeContextType = this.$.iframecontextmenu;
+            this._positionContextMenu(this.__activeContextType, node, -46, -46);
+          break;
+          default:
+            // check and see if we have a haxproperties function in place
+            // this opens the door for ANY custom-element to use HAX and supply
+            // properties for the three settings areas.
+            if (typeof node.getHaxProperties === "function") {
+              this.__activeContextType = this.$.cecontextmenu;
+              let props = node.getHaxProperties();
+              props.element = this.activeNode;
+              this.__activeContextType.setHaxProperties(props);
+            }
+            else {
+              this.__activeContextType = this.$.textcontextmenu;
+            }
+            this._positionContextMenu(this.__activeContextType, node, -46, -46);
+          break;
+        }
+        this._positionContextMenu(this.$.platecontextmenu, node, -46, -5);
+        setTimeout( () => {
+  	      this.__activeContextType.scrollIntoView({block: "center", behavior: "smooth", inline: "center"});
+  	    }, 200);
       },
       /**
        * Move grid plate around
@@ -437,6 +530,7 @@ A LRN element that will change the world.
         let detail = e.detail;
         // support a simple insert event to bubble up or everything else
         switch(detail.eventName) {
+          // text based operations for primatives
           case 'p':
           case 'h2':
           case 'h3':
@@ -450,37 +544,14 @@ A LRN element that will change the world.
             this.activeNode = this.haxChangeTagName(this.activeNode, detail.eventName);
           break;
           case 'text-align-left':
-            this.activeNode.classList.add('justify-left');
-            this.$.textcontextmenu.justifyValue = 'text-align-left';
-            this.activeNode.classList.remove('justify-center');
-            this.activeNode.classList.remove('justify-right');
-            this.activeNode.classList.remove('justify-text');
-            document.execCommand('justifyLeft', false, null);
-          break;
-          case 'text-align-center':
-            this.activeNode.classList.remove('justify-left');
-            this.activeNode.classList.add('justify-center');
-            this.$.textcontextmenu.justifyValue = 'text-align-center';
-            this.activeNode.classList.remove('justify-right');
-            this.activeNode.classList.remove('justify-text');
-            document.execCommand('justifyCenter', false, null);
+            this.activeNode.style.textAlign = null;
+            this.positionContextMenus(this.activeNode);
           break;
           case 'text-align-right':
-            this.activeNode.classList.remove('justify-left');
-            this.activeNode.classList.remove('justify-center');
-            this.activeNode.classList.add('justify-right');
-            this.$.textcontextmenu.justifyValue = 'text-align-right';
-            this.activeNode.classList.remove('justify-text');
-            document.execCommand('justifyRight', false, null);
+            this.activeNode.style.textAlign = 'right';
+            this.positionContextMenus(this.activeNode);
           break;
-          case 'text-justify-full':
-            this.activeNode.classList.remove('justify-left');
-            this.activeNode.classList.remove('justify-center');
-            this.activeNode.classList.remove('justify-right');
-            this.activeNode.classList.add('justify-text');
-            this.$.textcontextmenu.justifyValue = 'text-justify-full';
-            document.execCommand('justifyJustify', false, null);
-          break;
+          // grid plate based operations
           case 'grid-plate-duplicate':
             this.haxDuplicateNode(this.activeNode);
           break;
@@ -497,20 +568,149 @@ A LRN element that will change the world.
             // this is the equivalent of hiding menus and resetting the board
             this.activeNode = null;
           break;
+          case 'hax-edit-property':
+            let haxInputMixer = this.$.haxinputmixer;
+            haxInputMixer.label = detail.target.label;
+            haxInputMixer.options = detail.target.options;
+            haxInputMixer.icon = detail.target.icon;
+            haxInputMixer.description = detail.target.description;
+            haxInputMixer.required = detail.target.required;
+            haxInputMixer.validation = detail.target.validation;
+            haxInputMixer.validationType = detail.target.validationType;
+            haxInputMixer.inputMethod = detail.target.inputMethod;
+            haxInputMixer.value = '';
+            // see if response should bind to the slot or property
+            if (typeof detail.target.propertyToBind !== typeof undefined && detail.target.propertyToBind != null && detail.target.propertyToBind != false) {
+              haxInputMixer.propertyToBind = detail.target.propertyToBind;
+              if (typeof this.activeNode[detail.target.propertyToBind] !== typeof undefined) {
+                haxInputMixer.value = this.activeNode[detail.target.propertyToBind];
+              }
+            }
+            else {
+              haxInputMixer.slotToBind = detail.target.slotToBind;
+              // @todo need a way of querying the slot's current value
+              //haxInputMixer.value = this.activeNode[detail.target.slotToBind];
+            }
+            // make input mixer show up
+            this._positionContextMenu(haxInputMixer, this.$.cecontextmenu, 0, -88);
+          break;
+          // image/iframe based operations
+          case 'hax-align-left':
+            this.activeNode.style.float = null;
+            this.activeNode.style.margin = null;
+            this.activeNode.style.display = null;
+            this.positionContextMenus(this.activeNode);
+          break;
+          case 'hax-align-center':
+            this.activeNode.style.float = null;
+            this.activeNode.style.margin = '0 auto';
+            this.activeNode.style.display = 'block';
+            this.positionContextMenus(this.activeNode);
+          break;
+          case 'hax-align-right':
+            this.activeNode.style.float = 'right';
+            this.activeNode.style.margin = null;
+            this.activeNode.style.display = null;
+            this.positionContextMenus(this.activeNode);
+          break;
+          case 'hax-size-change':
+            this.activeNode.style.width = detail.value + '%';
+            this.positionContextMenus(this.activeNode);
+          break;
+          // iframe based operations
+          case 'iframe-link':
+            var url = null;
+            if (this.activeNode.tagName == 'VIDEO-PLAYER') {
+              url = prompt("Link to embed:", this.activeNode.source);
+            }
+            else {
+              url = prompt("Link to embed:", this.activeNode.src);
+            }
+            if (url !== null && url !== '') {
+              // special support for our custom video-player
+              if (this.activeNode.tagName == 'VIDEO-PLAYER') {
+                this.activeNode.source = url;
+              }
+              else {
+                this.activeNode.src = url;
+              }
+              this.positionContextMenus(this.activeNode);
+            }
+          break;
+          // image operations
+          case 'image-src':
+            var url = null;
+            if (this.activeNode.tagName == 'MEDIA-IMAGE') {
+              url = prompt("Image URL:", this.activeNode.source);
+            }
+            else {
+              url = prompt("Image URL:", this.activeNode.src);
+            }
+            if (url !== null && url !== '') {
+              // special support for our custom video-player
+              if (this.activeNode.tagName == 'MEDIA-IMAGE') {
+                this.activeNode.source = url;
+              }
+              else {
+                this.activeNode.src = url;
+              }
+              this.positionContextMenus(this.activeNode);
+            }
+          break;
+          // alt info, convert this in the future
+          case 'image-alt':
+            var alt = prompt("Image alt information:", this.activeNode.alt);
+            if (alt !== null) {
+              this.activeNode.alt = alt;
+            }
+          break;
           default:
+            // implies an event we haven't trapped for yet
             console.log(detail);
           break;
         }
       },
       /**
+       * Respond to an input mixer call.
+       */
+      _haxInputMixerOperation: function(e) {
+        // this is a big deal how simple this part is in the end
+        let mixer = e.detail.inputMixer;
+        console.log(mixer);
+        // if we have a property to bind, set that value from the
+        // widget that was dictated by the element itself
+        if (mixer.propertyToBind != null) {
+          this.activeNode[mixer.propertyToBind] = mixer.value;
+        }
+        // if we're told instead to do a slot bind, make a span tag
+        // with height same as parent and then mix in the innerHTML
+        else if (mixer.slotToBind != null) {
+          item = document.createElement('span');
+          item.style.height = 'inherit';
+          item.innerHTML = mixer.value;
+          //item.attribute.slot = mixer.slotToBind;
+          item.slot = mixer.slotToBind;
+          this.activeNode.appendChild(item);
+        }
+        // hide mixer
+        this._hideContextMenu(this.$.haxinputmixer);
+      },
+      /**
        * Item has gained focus, change active element to match
        */
       _focusIn: function(e) {
-        var normalizedEvent = Polymer.dom(e);
-        var local = normalizedEvent.localTarget;
-        var tags = this._validTags();
-        if (tags.includes(e.target.tagName.toLowerCase()) && !local.classList.contains('ignore-activation')) {
-          this.activeNode = e.target;
+        // only worry about these when we are in edit mode
+        if (this.editMode) {
+          var normalizedEvent = Polymer.dom(e);
+          var local = normalizedEvent.localTarget;
+          var tags = this._validTags();
+          // ensure this is a tag we care about / have support for
+          if (tags.includes(local.tagName.toLowerCase()) && !local.classList.contains('ignore-activation')) {
+            this.activeNode = e.target;
+          }
+          if (local.classList.contains('ignore-activation')) {
+            e.stopPropagation();
+          }
         }
       },
       /**
@@ -518,7 +718,7 @@ A LRN element that will change the world.
        */
       _validTags: function(e) {
         // @todo need a global way of hijacking this for integrations
-        var tags = ['p', 'div', 'ol', 'ul', 'li', 'iframe', 'a', 'hr', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'code'];
+        var tags = ['p', 'div', 'ol', 'ul', 'li', 'a', 'hr', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'code', 'img', 'iframe', 'video', 'audio', 'hax-blox', 'video-player', 'media-image'];
         return tags;
       },
       /**
@@ -529,7 +729,7 @@ A LRN element that will change the world.
         if (typeof oldValue !== typeof undefined) {
           this.fire('hax-body-state', {editMode: newValue});
           this._applyContentEditable(newValue);
-          if (typeof this.activeNode !== typeof undefined && this.activeNode !== null) {
+          if (newValue !== false && typeof this.activeNode !== typeof undefined && this.activeNode !== null) {
             this.positionContextMenus(this.activeNode);
           }
         }
@@ -539,12 +739,21 @@ A LRN element that will change the world.
         }
       },
       /**
+       * Test if this is a HAX element or not
+       */
+      _haxElementTest: function(node) {
+        if (typeof node.tagName !== typeof undefined && (node.tagName.substring(0, 4) !== "HAX-" || node.tagName === 'HAX-BLOX')) {
+          return true;
+        }
+        return false;
+      },
+      /**
        * Walk everything we find and either enable or disable editable state.
        */
       _applyContentEditable: function(status) {
         let children = Polymer.dom(this.$.body).getDistributedNodes();
         for (var i = 0, len = children.length; i < len; i++) {
-          if (typeof children[i].tagName !== typeof undefined && children[i].tagName !== 'HAX-TEXT-CONTEXT' && children[i].tagName !== 'HAX-PLATE-CONTEXT') {
+          if (this._haxElementTest(children[i])) {
             children[i].contentEditable = status;
           }
         }
@@ -557,7 +766,7 @@ A LRN element that will change the world.
         if (typeof oldValue !== typeof undefined && oldValue != null) {
           oldValue.classList.remove('hax-active');
         }
-        if (typeof newValue !== typeof undefined && newValue !== null) {
+        if (this.editMode && typeof newValue !== typeof undefined && newValue !== null) {
           // remove the menu, establish the new active, then reapply
           // this is nessecary because the context menu gets appended into
           // the document
@@ -566,21 +775,37 @@ A LRN element that will change the world.
           this.$.textcontextmenu.selectedValue = newValue.tagName.toLowerCase();
           // position the operations / in context element
           this.positionContextMenus(newValue);
-          if (newValue.classList.contains('justify-center')) {
-            this.$.textcontextmenu.justifyIcon = 'editor:format-align-center';
-            this.$.textcontextmenu.justifyValue = 'text-align-center';
-          }
-          else if (newValue.classList.contains('justify-right')) {
+          if (newValue.style.textAlign == 'right') {
             this.$.textcontextmenu.justifyIcon = 'editor:format-align-right';
             this.$.textcontextmenu.justifyValue = 'text-align-right';
           }
-          else if (newValue.classList.contains('justify-text')) {
-            this.$.textcontextmenu.justifyIcon = 'editor:format-align-justify';
-            this.$.textcontextmenu.justifyValue = 'text-justify-full';
-          }
-          else {
+          else if (newValue.style.textAlign == 'left') {
             this.$.textcontextmenu.justifyIcon = 'editor:format-align-left';
             this.$.textcontextmenu.justifyValue = 'text-align-left';
+          }
+          else if (newValue.style.float == 'left') {
+            this.$.iframecontextmenu.justifyIcon = 'editor:format-align-left';
+            this.$.iframecontextmenu.justifyValue = 'hax-align-left';
+            this.$.cecontextmenu.justifyIcon = 'editor:format-align-left';
+            this.$.cecontextmenu.justifyValue = 'hax-align-left';
+            this.$.imagecontextmenu.justifyIcon = 'editor:format-align-left';
+            this.$.imagecontextmenu.justifyValue = 'hax-align-left';
+          }
+          else if (newValue.style.float == 'right') {
+            this.$.iframecontextmenu.justifyIcon = 'editor:format-align-right';
+            this.$.iframecontextmenu.justifyValue = 'hax-align-right';
+            this.$.cecontextmenu.justifyIcon = 'editor:format-align-right';
+            this.$.cecontextmenu.justifyValue = 'hax-align-right';
+            this.$.imagecontextmenu.justifyIcon = 'editor:format-align-right';
+            this.$.imagecontextmenu.justifyValue = 'hax-align-right';
+          }
+          else if (newValue.style.margin == '0 auto') {
+            this.$.iframecontextmenu.justifyIcon = 'editor:format-align-center';
+            this.$.iframecontextmenu.justifyValue = 'hax-align-center';
+            this.$.cecontextmenu.justifyIcon = 'editor:format-align-center';
+            this.$.cecontextmenu.justifyValue = 'hax-align-center';
+            this.$.imagecontextmenu.justifyIcon = 'editor:format-align-center';
+            this.$.imagecontextmenu.justifyValue = 'hax-align-center';
           }
         }
         // just hide menus if we don't have an active item
@@ -598,7 +823,7 @@ A LRN element that will change the world.
         // the grid plate context menu to show up
         if (typeof newValue !== typeof undefined && newValue !== null && this.activeNode === newValue) {
           // position the operations / in context element
-          this._positionContextMenu(this.$.platecontextmenu, newValue, '-48px', '-5px');
+          this._positionContextMenu(this.$.platecontextmenu, newValue, -48, -5);
         }
       },
       /**
@@ -606,9 +831,14 @@ A LRN element that will change the world.
        */
       _positionContextMenu: function (menu, target, xoffset, yoffset) {
         menu.classList.add('hax-context-visible');
-        Polymer.dom(this).insertBefore(menu, target);
-        menu.style["margin-left"] = xoffset;
-        menu.style["margin-top"] = yoffset;
+        try {
+          Polymer.dom(this).insertBefore(menu, target);
+        }
+        catch(err) {
+          Polymer.dom(target.parentNode).insertBefore(menu, target);
+        }
+        menu.style["margin-left"] = (xoffset + target.offsetLeft) + 'px';
+        menu.style["margin-top"] = yoffset + 'px';
       },
       /**
        * Simple hide / reset of whatever menu it's handed.

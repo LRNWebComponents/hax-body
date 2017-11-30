@@ -16,8 +16,7 @@
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
     "web-component-tester": "^4.0.0",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
-    "hax-panel": "LRNWebComponents/hax-panel#^0.0.4",
-    "paper-toast": "PolymerElements/paper-toast#^2.0.0",
-    "lrnsys-layout": "LRNWebComponents/lrnsys-layout#^1.1.2"
+    "hax-panel": "LRNWebComponents/hax-panel#^0.0.3",
+    "paper-toast": "PolymerElements/paper-toast#^2.0.0"
   }
 }
