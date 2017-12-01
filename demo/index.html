@@ -12,6 +12,7 @@
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
     <link rel="import" href="../hax-body.html">
     <link rel="import" href="../../hax-panel/hax-panel.html">
+    <link rel="import" href="../../hax-manager/hax-manager.html">
     <link rel="import" href="../../lrnsys-layout/lrnsys-dialog.html">
     <link rel="import" href="../../paper-toast/paper-toast.html">
 
@@ -114,6 +115,51 @@
             </lrnsys-collapselist-item>
           </span>
           </hax-panel>
+          <hax-manager id="manager" style="background-color:green;">
+            <div slot="sources">
+              MY STUFF
+            </div>
+            <hax-manager-source
+            slot="sources"
+            call-to-action="Search youtube"
+            request-end-point="https://www.googleapis.com/youtube/v3/search"
+            request-params='{
+            "part":"snippet",
+            "q":"",
+            "key": "AIzaSyAF9zKXv-fxus9GNqn40SHzTn6F8A7h-Yo",
+            "type": "video",
+            "maxResults":"12"}'
+            query-param="q"
+            response-map='{
+              "root": "items",
+              "url": "https://www.youtube.com/watch?v=",
+              "id": "id.videoId",
+              "title": "snippet.title",
+              "description": "snippet.description",
+              "image": "snippet.thumbnails.high.url"}'>
+            </hax-manager-source>
+            <hax-manager-source
+            slot="sources"
+            call-to-action="Search Vimeo"
+            request-end-point="https://api.vimeo.com/videos"
+            request-params='{
+            "access_token": "0a718b853bad87571d52e9fb554e0a43",
+            "query": "",
+            "direction": "asc",
+            "sort": "alphabetical",
+            "filter": "CC",
+            "per_page":"12"
+            }'
+            query-param="query"
+            response-map='{
+              "root": "data",
+              "url": "",
+              "id": "link",
+              "title": "name",
+              "description": "description",
+              "image": "pictures.sizes.0.link"}'>
+            </hax-manager-source>
+          </hax-manager>
           <paper-toast id="toast"></paper-toast>
           <paper-button id="togglebutton">Enabled</paper-button>
           <lrnsys-dialog body-append id="dialog" title="See HTML">
@@ -124,6 +170,7 @@
           </lrnsys-dialog>
           <script>
             var p = document.querySelector('#panel');
+            var m = document.querySelector('#manager');
             var b = document.querySelector('#body');
             var button = document.querySelector('#togglebutton');
             // alert if there was an error loading content
@@ -136,9 +183,20 @@
               }
               b.haxInsert(e.detail.tag, e.detail.content, properties);
             });
+             // alert if there was an error loading content
+            m.addEventListener('hax-content-insert', function(e) {
+              document.querySelector('#toast').show(e.detail.eventName);
+              var properties = {};
+              // support for properties to be set automatically optionally
+              if (typeof e.detail.properties !== typeof undefined) {
+                properties = e.detail.properties;
+              }
+              b.haxInsert(e.detail.tag, e.detail.content, properties);
+            });
             // alert if there was an error loading content
             p.addEventListener('hax-item-selected', function(e) {
               document.querySelector('#toast').show(e.detail.eventName);
+              console.log(e.detail);
               if (e.detail.eventName === 'advanced-import-export') {
                 let content = b.haxToContent();
                 document.querySelector('#textarea').innerHTML = content;
