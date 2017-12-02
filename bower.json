@@ -21,7 +21,8 @@
     "paper-slider": "PolymerElements/paper-slider#^2.0.4",
     "paper-checkbox": "PolymerElements/paper-checkbox#^2.0.1",
     "hax-body-behaviors": "LRNWebComponents/hax-body-behaviors#^1.1.0",
-    "hax-manager": "LRNWebComponents/hax-manager#^0.0.2"
+    "hax-manager": "LRNWebComponents/hax-manager#^0.0.3",
+    "lrn-icons": "LRNWebComponents/lrn-icons#^1.0.13"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
