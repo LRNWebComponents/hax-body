@@ -120,6 +120,7 @@
               MY STUFF
             </div>
             <hax-manager-source
+            id="source1"
             slot="sources"
             call-to-action="Search youtube"
             request-end-point="https://www.googleapis.com/youtube/v3/search"
@@ -170,7 +171,7 @@
           </lrnsys-dialog>
           <script>
             var p = document.querySelector('#panel');
-            var m = document.querySelector('#manager');
+            var m = document.querySelector('#source1');
             var b = document.querySelector('#body');
             var button = document.querySelector('#togglebutton');
             // alert if there was an error loading content
