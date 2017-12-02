@@ -175,12 +175,12 @@
               "id": "link",
               "title": "name",
               "description": "description",
-              "image": "pictures.sizes.0.link"}'>
+              "image": "pictures.sizes.1.link"}'>
             </hax-manager-source>
           </hax-manager>
           <paper-toast id="toast"></paper-toast>
           <paper-button id="togglebutton">Enabled</paper-button>
-          <lrnsys-dialog body-append id="dialog" title="See HTML">
+          <lrnsys-dialog body-append id="exportdialog" title="See HTML">
             <h2 slot="header">HTML generated</h2>
             <div>
               <textarea id="textarea" rows="20" style="width:100%;"></textarea>
@@ -242,7 +242,7 @@
               if (e.detail.eventName === 'advanced-import-export') {
                 let content = b.haxToContent();
                 document.querySelector('#textarea').innerHTML = content;
-                document.querySelector('#dialog').toggleDialog();
+                document.querySelector('#exportdialog').toggleDialog();
               }
             });
             // alert if there was an error loading content
