@@ -157,34 +157,31 @@ required for populating input.
           while (slot.firstChild !== null) {
             slot.removeChild(slot.firstChild);
           }
-          let settings = newValue.settings;
+          let settings = newValue.settings.quick;
           var item;
           // @todo kick stuff into the local dom as options
           for (i = 0; i < settings.length; i++) {
             let setting = settings[i];
-            // if this is a setting on the quick, place it there
-            if (setting.type == 'quick') {
-              // create a new context item for the quick
-              item = document.createElement('hax-context-item');
-              item.eventName = 'hax-edit-property';
-              item.label = setting.title;
-              item.options = setting.options;
-              item.icon = setting.icon;
-              item.inputMethod = setting.inputMethod;
-              item.required = setting.required;
-              item.options = setting.options;
-              item.validation = setting.validation;
-              item.validationType = setting.validationType;
-              item.description = setting.description;
-              // property or slot if it doesn't exist
-              if (typeof setting.property !== typeof undefined) {
-                item.propertyToBind = setting.property;
-              }
-              else {
-                item.slotToBind = setting.slot;
-              }
-              slot.appendChild(item);
+            // create a new context item for the quick
+            item = document.createElement('hax-context-item');
+            item.eventName = 'hax-edit-property';
+            item.label = setting.title;
+            item.options = setting.options;
+            item.icon = setting.icon;
+            item.inputMethod = setting.inputMethod;
+            item.required = setting.required;
+            item.options = setting.options;
+            item.validation = setting.validation;
+            item.validationType = setting.validationType;
+            item.description = setting.description;
+            // property or slot if it doesn't exist
+            if (typeof setting.property !== typeof undefined) {
+              item.propertyToBind = setting.property;
             }
+            else {
+              item.slotToBind = setting.slot;
+            }
+            slot.appendChild(item);
           }
         }
       },
