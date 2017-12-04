@@ -13,6 +13,7 @@
     <link rel="import" href="../hax-body.html">
     <link rel="import" href="../../hax-panel/hax-panel.html">
     <link rel="import" href="../../hax-manager/hax-manager.html">
+    <link rel="import" href="../../hax-manager/hax-manager-source.html">
     <link rel="import" href="../../lrnsys-layout/lrnsys-dialog.html">
     <link rel="import" href="../../paper-toast/paper-toast.html">
 
@@ -115,11 +116,11 @@
             </lrnsys-collapselist-item>
           </span>
           </hax-panel>
-          <hax-manager id="manager" style="background-color:green;">
+          <hax-manager id="manager" style="background-color:green;" sources-list='["My media","Youtube","Vimeo"]'>
             <hax-manager-source
             id="source1"
             slot="sources"
-            call-to-action="Search ELMS Media"
+            call-to-action="Search Media"
             user="SERVICE_ELMSMEDIA_LN"
             pass="106025726eea79168e7b9d3aff6330"
             request-end-point="http://data-media.elmsln.local/node.json"
@@ -138,7 +139,7 @@
             <hax-manager-source
             id="source2"
             slot="sources"
-            call-to-action="Search youtube"
+            call-to-action="Search Youtube"
             request-end-point="https://www.googleapis.com/youtube/v3/search"
             request-params='{
             "part":"snippet",
@@ -180,6 +181,7 @@
           </hax-manager>
           <paper-toast id="toast"></paper-toast>
           <paper-button id="togglebutton">Enabled</paper-button>
+          <paper-button id="managerbutton">Manager</paper-button>
           <lrnsys-dialog body-append id="exportdialog" title="See HTML">
             <h2 slot="header">HTML generated</h2>
             <div>
@@ -193,7 +195,8 @@
             var m2 = document.querySelector('#source2');
             var m3 = document.querySelector('#source3');
             var b = document.querySelector('#body');
-            var button = document.querySelector('#togglebutton');
+            var togglebutton = document.querySelector('#togglebutton');
+            var managerbutton = document.querySelector('#managerbutton');
             // alert if there was an error loading content
             p.addEventListener('hax-content-insert', function(e) {
               document.querySelector('#toast').show(e.detail.eventName);
@@ -250,10 +253,14 @@
               document.querySelector('#toast').show('deleted ' + e.detail.node.tagName);
             });
             // simple toggle for state to ensure it matches
-            button.addEventListener('click', function(e) {
+            togglebutton.addEventListener('click', function(e) {
               window.open = !window.open;
               p.opened = window.open;
               b.editMode = window.open;
+            });
+            // simple toggle for state to ensure it matches
+            managerbutton.addEventListener('click', function(e) {
+              man.toggleDialog();
             });
           </script>
         </template>
