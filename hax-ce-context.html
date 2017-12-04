@@ -162,9 +162,9 @@ required for populating input.
           // @todo kick stuff into the local dom as options
           for (i = 0; i < settings.length; i++) {
             let setting = settings[i];
-            // if this is a setting on the bar, place it there
-            if (setting.type == 'bar') {
-              // create a new context item for the bar
+            // if this is a setting on the quick, place it there
+            if (setting.type == 'quick') {
+              // create a new context item for the quick
               item = document.createElement('hax-context-item');
               item.eventName = 'hax-edit-property';
               item.label = setting.title;
