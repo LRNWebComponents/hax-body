@@ -745,12 +745,22 @@ A LRN element that will change the world.
           var normalizedEvent = Polymer.dom(e);
           var local = normalizedEvent.localTarget;
           var tags = this._validTags();
-          // ensure this is a tag we care about / have support for
-          if (tags.includes(local.tagName.toLowerCase()) && !local.classList.contains('ignore-activation')) {
-            this.activeNode = local;
-          }
-          if (local.classList.contains('ignore-activation')) {
-            e.stopPropagation();
+          let node = local;
+          console.log(node);
+          console.log(node.parentNode);
+          if (this._haxElementTest(node) && node.parentNode != null) {
+            // keep looking til we are juuuust below the container
+            while (node.parentNode.id != 'bodycontainer') {
+              node = node.parentNode;
+            }
+            // ensure this is a tag we care about / have support for
+            if (tags.includes(node.tagName.toLowerCase()) && !node.classList.contains('ignore-activation')) {
+              this.activeNode = node;
+              e.stopPropagation();
+            }
+            else if (node.classList.contains('ignore-activation')) {
+              e.stopPropagation();
+            }
           }
         }
       },
