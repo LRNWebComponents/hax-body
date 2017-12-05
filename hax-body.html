@@ -266,6 +266,14 @@ A LRN element that will change the world.
           notify: true,
           observer: '_activeHoverChanged',
         },
+        /**
+         * Property to help w/ alignment in different layouts.
+         */
+        contextOffsetLeft: {
+          type: Number,
+          reflectToAttribute: true,
+          value: 0,
+        },
       },
       /**
        * Ready state to tee everything up.
@@ -502,7 +510,17 @@ A LRN element that will change the world.
       /**
        * Convert an element from one tag to another.
        */
-      haxChangeTagName: function (node, tagName) {
+      haxReplaceNode: function (node, replacement) {
+        // ensure we're not in the document tree for the replaced node
+        this.hideContextMenus();
+        // Switch!
+        Polymer.dom(this).replaceChild(replacement, node);
+        return replacement;
+      },
+      /**
+       * Convert an element from one tag to another.
+       */
+      haxChangeTagName: function (node, tagName, newNode) {
         // ensure we're not in the document tree for the replaced node
         this.hideContextMenus();
         // Create a replacement tag of the desired type
@@ -851,7 +869,11 @@ A LRN element that will change the world.
         catch(err) {
           Polymer.dom(target.parentNode).insertBefore(menu, target);
         }
-        menu.style["margin-left"] = (xoffset + target.offsetLeft) + 'px';
+        let offset = 0;
+        if (target.offsetLeft != 0) {
+          offset = target.offsetLeft + this.contextOffsetLeft;
+        }
+        menu.style["margin-left"] = (xoffset + offset ) + 'px';
         menu.style["margin-top"] = yoffset + 'px';
       },
       /**

@@ -13,7 +13,7 @@
     <link rel="import" href="../hax-body.html">
     <link rel="import" href="../../hax-panel/hax-panel.html">
     <link rel="import" href="../../hax-manager/hax-manager.html">
-    <link rel="import" href="../../hax-manager/hax-manager-source.html">
+    <link rel="import" href="../../hax-manager/hax-source.html">
     <link rel="import" href="../../lrnsys-layout/lrnsys-dialog.html">
     <link rel="import" href="../../paper-toast/paper-toast.html">
 
@@ -45,7 +45,7 @@
       <h3>Basic hax-body demo</h3>
       <demo-snippet>
         <template is="dom-bind">
-          <hax-body id="body" edit-mode>
+          <hax-body id="body" edit-mode context-offset-left="-324">
             <h2>Heading 2</h2>
             <p>A whole bunch of text in here that's awesome!</p>
             <h3>Heading 3</h3>
@@ -117,7 +117,7 @@
           </span>
           </hax-panel>
           <hax-manager id="manager" style="background-color:green;" sources-list='["My media","Youtube","Vimeo"]'>
-            <hax-manager-source
+            <hax-source
             id="source1"
             slot="sources"
             call-to-action="Search Media"
@@ -135,8 +135,8 @@
               "title": "title",
               "description": "body",
               "image": "field_image.url"}'>
-            </hax-manager-source>
-            <hax-manager-source
+            </hax-source>
+            <hax-source
             id="source2"
             slot="sources"
             call-to-action="Search Youtube"
@@ -155,8 +155,8 @@
               "title": "snippet.title",
               "description": "snippet.description",
               "image": "snippet.thumbnails.high.url"}'>
-            </hax-manager-source>
-            <hax-manager-source
+            </hax-source>
+            <hax-source
             id="source3"
             slot="sources"
             call-to-action="Search Vimeo"
@@ -177,11 +177,10 @@
               "title": "name",
               "description": "description",
               "image": "pictures.sizes.1.link"}'>
-            </hax-manager-source>
+            </hax-source>
           </hax-manager>
           <paper-toast id="toast"></paper-toast>
           <paper-button id="togglebutton">Enabled</paper-button>
-          <paper-button id="managerbutton">Manager</paper-button>
           <lrnsys-dialog body-append id="exportdialog" title="See HTML">
             <h2 slot="header">HTML generated</h2>
             <div>
@@ -197,7 +196,7 @@
             var b = document.querySelector('#body');
             var togglebutton = document.querySelector('#togglebutton');
             var managerbutton = document.querySelector('#managerbutton');
-            // alert if there was an error loading content
+            // panel says to insert something
             p.addEventListener('hax-content-insert', function(e) {
               document.querySelector('#toast').show(e.detail.eventName);
               var properties = {};
@@ -207,9 +206,9 @@
               }
               b.haxInsert(e.detail.tag, e.detail.content, properties);
             });
-             // alert if there was an error loading content
-            m1.addEventListener('hax-content-insert', function(e) {
-              man.toggleDialog();
+            // insert an item from hax-manager saying to do so
+            man.addEventListener('hax-content-insert', function(e) {
+              console.log(e.detail);
               document.querySelector('#toast').show(e.detail.eventName);
               var properties = {};
               // support for properties to be set automatically optionally
@@ -218,27 +217,31 @@
               }
               b.haxInsert(e.detail.tag, e.detail.content, properties);
             });
-            m2.addEventListener('hax-content-insert', function(e) {
-              man.toggleDialog();
-              document.querySelector('#toast').show(e.detail.eventName);
-              var properties = {};
-              // support for properties to be set automatically optionally
-              if (typeof e.detail.properties !== typeof undefined) {
-                properties = e.detail.properties;
-              }
-              b.haxInsert(e.detail.tag, e.detail.content, properties);
+            // replace existing node that is active in hax-body
+            man.addEventListener('hax-content-replace-active', function(e) {
+              console.log(e.detail);
+              b.activeNode = b.haxReplaceNode(b.activeNode, e.detail);
             });
-            m3.addEventListener('hax-content-insert', function(e) {
-              man.toggleDialog();
+             // sources have their own events at this level
+             // which is a little weird but sources live in the app
+             // layer and not in the item they are slotted in
+             // Because we have 3 examples in this demo, we have 3 calls
+            m1.addEventListener('hax-source-selected', function(e) {
+              man.activeElement = e.detail;
+              man.selectStep('configure');
               document.querySelector('#toast').show(e.detail.eventName);
-              var properties = {};
-              // support for properties to be set automatically optionally
-              if (typeof e.detail.properties !== typeof undefined) {
-                properties = e.detail.properties;
-              }
-              b.haxInsert(e.detail.tag, e.detail.content, properties);
             });
-            // alert if there was an error loading content
+            m2.addEventListener('hax-source-selected', function(e) {
+              man.activeElement = e.detail;
+              man.selectStep('configure');
+              document.querySelector('#toast').show(e.detail.eventName);
+            });
+            m3.addEventListener('hax-source-selected', function(e) {
+              man.activeElement = e.detail;
+              man.selectStep('configure');
+              document.querySelector('#toast').show(e.detail.eventName);
+            });
+            // illustrate the import/export button
             p.addEventListener('hax-item-selected', function(e) {
               document.querySelector('#toast').show(e.detail.eventName);
               console.log(e.detail);
@@ -247,20 +250,32 @@
                 document.querySelector('#textarea').innerHTML = content;
                 document.querySelector('#exportdialog').toggleDialog();
               }
+              else if (e.detail.eventName === 'hax-manager-open') {
+                man.resetManager();
+                man.toggleDialog();
+              }
             });
-            // alert if there was an error loading content
+            // alert for demo purposes
             b.addEventListener('hax-body-tag-removed', function(e) {
               document.querySelector('#toast').show('deleted ' + e.detail.node.tagName);
+            });
+            // settings button selected from hax-ce-context bar
+            // which means we should skip to the settings page after
+            // we set the thing selected as the active element to work
+            // on in the manager
+            b.addEventListener('hax-context-item-selected', function(e) {
+              if (e.detail.eventName == 'hax-manager-configure') {
+                man.activeElement = man.nodeToHaxElement(b.activeNode);
+                man.editExistingNode = true;
+                man.selectStep('configure');
+                man.toggleDialog();
+              }
             });
             // simple toggle for state to ensure it matches
             togglebutton.addEventListener('click', function(e) {
               window.open = !window.open;
               p.opened = window.open;
               b.editMode = window.open;
-            });
-            // simple toggle for state to ensure it matches
-            managerbutton.addEventListener('click', function(e) {
-              man.toggleDialog();
             });
           </script>
         </template>
