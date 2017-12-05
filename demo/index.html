@@ -9,7 +9,6 @@
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
     <link rel="import" href="../../lrnsys-layout/lrnsys-dialog.html">
-    <link rel="import" href="../../paper-toast/paper-toast.html">
     <!-- required for just about any app using HAX though them all being separate allows developers to replace or not use any one of the pieces and just implement the capabilities that the element is providing as far as elements and binding. -->
     <link rel="import" href="../hax-body.html">
     <link rel="import" href="../hax-panel.html">
@@ -178,7 +177,6 @@
               "image": "pictures.sizes.1.link"}'>
             </hax-source>
           </hax-manager>
-          <paper-toast id="toast"></paper-toast>
           <paper-button id="togglebutton">Enabled</paper-button>
           <lrnsys-dialog body-append id="exportdialog" title="See HTML">
             <h2 slot="header">HTML generated</h2>
@@ -197,7 +195,6 @@
             var managerbutton = document.querySelector('#managerbutton');
             // panel says to insert something
             p.addEventListener('hax-content-insert', function(e) {
-              document.querySelector('#toast').show(e.detail.eventName);
               var properties = {};
               // support for properties to be set automatically optionally
               if (typeof e.detail.properties !== typeof undefined) {
@@ -208,7 +205,6 @@
             // insert an item from hax-manager saying to do so
             man.addEventListener('hax-content-insert', function(e) {
               console.log(e.detail);
-              document.querySelector('#toast').show(e.detail.eventName);
               var properties = {};
               // support for properties to be set automatically optionally
               if (typeof e.detail.properties !== typeof undefined) {
@@ -228,21 +224,17 @@
             m1.addEventListener('hax-source-selected', function(e) {
               man.activeElement = e.detail;
               man.selectStep('configure');
-              document.querySelector('#toast').show(e.detail.eventName);
             });
             m2.addEventListener('hax-source-selected', function(e) {
               man.activeElement = e.detail;
               man.selectStep('configure');
-              document.querySelector('#toast').show(e.detail.eventName);
             });
             m3.addEventListener('hax-source-selected', function(e) {
               man.activeElement = e.detail;
               man.selectStep('configure');
-              document.querySelector('#toast').show(e.detail.eventName);
             });
             // illustrate the import/export button
             p.addEventListener('hax-item-selected', function(e) {
-              document.querySelector('#toast').show(e.detail.eventName);
               console.log(e.detail);
               if (e.detail.eventName === 'advanced-import-export') {
                 let content = b.haxToContent();
@@ -253,10 +245,6 @@
                 man.resetManager();
                 man.toggleDialog();
               }
-            });
-            // alert for demo purposes
-            b.addEventListener('hax-body-tag-removed', function(e) {
-              document.querySelector('#toast').show('deleted ' + e.detail.node.tagName);
             });
             // settings button selected from hax-ce-context bar
             // which means we should skip to the settings page after
