@@ -2,18 +2,20 @@
 <link rel="import" href="../vaadin-context-menu/vaadin-context-menu.html">
 <link rel="import" href="../paper-menu/paper-menu.html">
 <link rel="import" href="../paper-item/paper-item.html">
-<link rel="import" href="../hax-blox/hax-blox.html">
 <link rel="import" href="../pie-menu/pie-menu.html">
 <link rel="import" href="../vaadin-context-menu/vaadin-context-menu.html">
-<link rel="import" href="../video-player/video-player.html">
-<link rel="import" href="../media-image/media-image.html">
 
+<link rel="import" href="hax-blox.html">
 <link rel="import" href="hax-text-context.html">
 <link rel="import" href="hax-image-context.html">
 <link rel="import" href="hax-iframe-context.html">
 <link rel="import" href="hax-ce-context.html">
 <link rel="import" href="hax-plate-context.html">
 <link rel="import" href="hax-input-mixer.html">
+
+<link rel="import" href="../video-player/video-player.html">
+<link rel="import" href="../media-image/media-image.html">
+
 <!--
 `hax-body`
 A LRN element that will change the world.
@@ -59,44 +61,43 @@ A LRN element that will change the world.
         display: block;
       }
 
-      :host[edit-mode] #bodycontainer ::slotted(*[contenteditable]:hover) {
+      :host[edit-mode] #bodycontainer ::slotted(*[data-editable]:hover) {
         -webkit-box-shadow: 0 0 0 3px #34e79a;
         box-shadow: 0 0 0 3px #34e79a;
       }
-      :host[edit-mode] #bodycontainer ::slotted(*.hax-active[contenteditable]) {
+      :host[edit-mode] #bodycontainer ::slotted(*.hax-active[data-editable]) {
         -webkit-box-shadow: 0 0 0 3px #03a87c !important;
         box-shadow: 0 0 0 3px #03a87c !important;
         cursor: text !important;
         outline-color: #34e79a !important;
       }
-      :host[edit-mode] #bodycontainer ::slotted(p.hax-active[contenteditable]) {
+      :host[edit-mode] #bodycontainer ::slotted(p.hax-active[data-editable]) {
         padding: .5em;
       }
-      :host[edit-mode] #bodycontainer ::slotted(code.hax-active[contenteditable]) {
+      :host[edit-mode] #bodycontainer ::slotted(code.hax-active[data-editable]) {
         display: block;
       }
-      :host[edit-mode] #bodycontainer ::slotted(hr[contenteditable]) {
+      :host[edit-mode] #bodycontainer ::slotted(hr[data-editable]) {
         padding: .5em;
         color: black;
       }
-      :host[edit-mode] #bodycontainer ::slotted(video-player[contenteditable]),
-      :host[edit-mode] #bodycontainer ::slotted(iframe[contenteditable]) {
+      :host[edit-mode] #bodycontainer ::slotted(video-player[data-editable]),
+      :host[edit-mode] #bodycontainer ::slotted(iframe[data-editable]) {
         border: .5em solid transparent;
       }
       /** Fix to support safari as it defaults to none */
-      :host[edit-mode] #bodycontainer ::slotted(*[contenteditable]) {
-        -webkit-user-select: all;
-        user-select: all;
+      :host[edit-mode] #bodycontainer ::slotted(*[data-editable]) {
+        -webkit-user-select: text;
         cursor:pointer;
       }
 
-      :host[edit-mode] #bodycontainer ::slotted(*[contenteditable]::-moz-selection),
-      :host[edit-mode] #bodycontainer ::slotted(*[contenteditable] *::-moz-selection) {
+      :host[edit-mode] #bodycontainer ::slotted(*[data-editable]::-moz-selection),
+      :host[edit-mode] #bodycontainer ::slotted(*[data-editable] *::-moz-selection) {
         background-color: var(--hax-body-highlight, --paper-yellow-300);
         color: black;
       }
-      :host[edit-mode] #bodycontainer ::slotted(*[contenteditable]::selection),
-      :host[edit-mode] #bodycontainer ::slotted(*[contenteditable] *::selection) {
+      :host[edit-mode] #bodycontainer ::slotted(*[data-editable]::selection),
+      :host[edit-mode] #bodycontainer ::slotted(*[data-editable] *::selection) {
         background-color: var(--hax-body-highlight, --paper-yellow-300);
         color: black;
       }
@@ -285,7 +286,11 @@ A LRN element that will change the world.
           if (info.addedNodes.length > 0) {
             info.addedNodes.map((node) => {
               if (this._haxElementTest(node)) {
-                node.contentEditable = this.editMode;
+                if (this._HTMLPrimativeTest(node)) {
+                  node.contentEditable = this.editMode;
+                }
+                // this does the real targetting
+                node.setAttribute('data-editable', this.editMode);
                 this.fire('hax-body-tag-added', {node: node});
               }
             });
@@ -348,22 +353,26 @@ A LRN element that will change the world.
         var content = '';
         for (var i = 0, len = children.length; i < len; i++) {
           if (this._haxElementTest(children[i])) {
-            // delete this property since it's silly
-            children[i].contentEditable = false;
+            children[i].setAttribute('data-editable', false);
             // see if this is a custom element
-            if (children[i].tagName.indexOf('-') > 0) {
+            if (this._HTMLPrimativeTest(children[i])) {
+              children[i].contentEditable = false;
+              content += children[i].outerHTML + "\n";
+            }
+            else {
               // dig into the light dom and make sure we ONLY save that or else
               // we'll save things in that weird shadow / light DOM cross over
               // which then will keep unpacking over and over again
               content += this.haxNodeToContent(children[i]);
             }
-            else {
-              content += children[i].outerHTML + "\n";
-            }
           }
         }
         // remove the contenteditable property
         content = content.replace(/\scontenteditable=\"false\"/g, '');
+        // remove the data-editable attribute
+        content = content.replace(/\sdata-editable=\"true\"/g, '');
+        // remove the data-editable attribute
+        content = content.replace(/\sdata-editable=\"false\"/g, '');
         // remove HAX specific classes / scoping classes
         content = content.replace(/style-scope\slrnapp-book/g, '');
         // remove empty class structures
@@ -384,8 +393,8 @@ A LRN element that will change the world.
         // grab all of the original's attributes, and pass them to the replacement
         for(var j = 0, l = node.attributes.length; j < l; ++j){
           var nodeName  = node.attributes.item(j).nodeName;
-          var nodeValue = node.attributes.item(j).nodeValue;
-          content += ' ' + nodeName + '="' + nodeValue + '"';
+          var value = node.attributes.item(j).value;
+          content += ' ' + nodeName + '="' + value + '"';
         }
         // set the opening tag
         content += '>' + "\n";
@@ -478,7 +487,7 @@ A LRN element that will change the world.
         }
         this._positionContextMenu(this.$.platecontextmenu, node, -46, -5);
         setTimeout( () => {
-  	      this.__activeContextType.scrollIntoView({block: "center", behavior: "smooth", inline: "center"});
+  	      this.__activeContextType.scrollIntoView({behavior: "smooth", inline: "center"});
   	    }, 200);
       },
       /**
@@ -528,8 +537,8 @@ A LRN element that will change the world.
         // Grab all of the original's attributes, and pass them to the replacement
         for(var i = 0, l = node.attributes.length; i < l; ++i){
           var nodeName  = node.attributes.item(i).nodeName;
-          var nodeValue = node.attributes.item(i).nodeValue;
-          replacement.setAttribute(nodeName, nodeValue);
+          var value = node.attributes.item(i).value;
+          replacement.setAttribute(nodeName, value);
         }
         // Persist contents
         replacement.innerHTML = node.innerHTML;
@@ -738,7 +747,7 @@ A LRN element that will change the world.
           var tags = this._validTags();
           // ensure this is a tag we care about / have support for
           if (tags.includes(local.tagName.toLowerCase()) && !local.classList.contains('ignore-activation')) {
-            this.activeNode = e.target;
+            this.activeNode = local;
           }
           if (local.classList.contains('ignore-activation')) {
             e.stopPropagation();
@@ -780,13 +789,27 @@ A LRN element that will change the world.
         return false;
       },
       /**
+       * Test if this is a HAX element or not
+       */
+      _HTMLPrimativeTest: function(node) {
+        if (typeof node.tagName !== typeof undefined && node.tagName.indexOf('-') == -1) {
+          return true;
+        }
+        return false;
+      },
+      /**
        * Walk everything we find and either enable or disable editable state.
        */
       _applyContentEditable: function(status) {
         let children = Polymer.dom(this.$.body).getDistributedNodes();
         for (var i = 0, len = children.length; i < len; i++) {
-          if (this._haxElementTest(children[i])) {
+          // we have to tell the browser that primatives are editable
+          if (this._HTMLPrimativeTest(children[i])) {
             children[i].contentEditable = status;
+          }
+          // this does the real targetting
+          if (this._haxElementTest(children[i])) {
+            children[i].setAttribute('data-editable', status);
           }
         }
       },

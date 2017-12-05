@@ -1,0 +1,373 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../app-layout/app-layout.html">
+<link rel="import" href="../paper-tabs/paper-tabs.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../iron-pages/iron-pages.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+
+<link rel="import" href="hax-preview.html">
+
+<!--
+`hax-manager`
+A LRN element for brokering the UI for api endpoints both in querying and uploading of new media to eventually bubble up an event for hax-body to have content inserted into it. This is a wiring closet of sorts to ensure we can talk to any backend that's returning a slew of widgets / media to insert.
+
+@demo demo/index.html
+
+@microcopy - the mental model for this element
+ - hax-manager - the modal for selecting a source for getting something added to hax-body. This will bubble an event up to an app which will then invoke the haxInsert function on hax-body in order to get the selected item onto the body area for usage.
+ - hax-body - the body tag that's beening clicked / focused and built; our WYSIWYG replacement.
+ - hax-panel - a panel off to the side that has possible options. Clicking in this panel is most likely what invokes hax-manager to display though this is also managed by a higher app (lrnapp-book in initial development)
+ - source - an API end point for querying and returning possible items for insert. For example, if a youtube is a source then it'll be expected to return data that can be mapped in such a way that it can display a grid of videos. Hitting vimeo we'd expect the same thing; enough data to be able to assemble a grid of videos to select / work with.
+ - endpoints - much of hax-manager is about routing data to and from the current application to backends. So uploads need to go some place, this is managing the UI aspect of that transaction while expecting to be fed an endpoint to handle the backend aspect.
+
+-->
+
+<dom-module id="hax-manager">
+  <template>
+    <style>
+      :host {
+        display: block;
+        --hax-manager-steps-color: #FFFFFF;
+        --hax-manager-header: #0d47a1;
+        --hax-manager-ink-color: white;
+      }
+      #dialog {
+        position: fixed;
+        top: 5%;
+        right: 5%;
+        bottom: 5%;
+        left: 5%;
+        overflow: auto;
+      }
+      #dialogcontent {
+        height: 100%;
+      }
+      #activesources {
+        height: 100vh;
+      }
+      .preview-buttons {
+        position: sticky;
+        z-index: 2;
+        bottom: 0;
+        left: 0;
+        background-color: white;
+      }
+      .step-wrapper {
+        margin: 0;
+        padding: .5em;
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 2em;
+        vertical-align: middle;
+      }
+      .step-wrapper span {
+        display: inline-block;
+      }
+      #step {
+        display: inline-block;
+        --paper-toggle-button-checked-bar-color:  var(--paper-green-500);
+        --paper-toggle-button-checked-button-color:  var(--paper-green-500);
+        --paper-toggle-button-checked-ink-color: var(--paper-green-500);
+        --paper-toggle-button-unchecked-bar-color:  var(--paper-indigo-900);
+        --paper-toggle-button-unchecked-button-color:  var(--paper-indigo-900);
+        --paper-toggle-button-unchecked-ink-color: var(--paper-indigo-900);
+      }
+      .pages-tabs,
+      .sources-tabs {
+        --paper-tabs-selection-bar: {
+          border-bottom: 4px solid var(--hax-manager-steps-color, var(--paper-yellow-a100));
+        };
+        --paper-tabs-container: {
+          margin: 0;
+          display: flex;
+          align-items: flex-end;
+          background: var(--hax-manager-header);
+          color: var(--hax-manager-ink-color);
+        };
+        --paper-tab-content-unselected: {
+          opacity: .8;
+          background-color: blue;
+        };
+        --paper-tab-ink: var(--hax-manager-ink-color);
+        --paper-tab: {
+          font-family: 'Roboto', 'Noto', sans-serif;
+          -webkit-font-smoothing: antialiased;
+          width: 100%;
+          text-transform: uppercase;
+        };
+      }
+    </style>
+    <paper-dialog id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
+      <div id="dialogheader">
+        <h3>[[managerTitle]]</h3>
+        <div class="step-wrapper">
+          <span>Select</span><paper-toggle-button id="step" checked="{{activeStep}}" disabled></paper-toggle-button>
+          <span>Configure</span>
+        </div>
+      </div>
+      <div class="dialog-contents" id="dialogcontent">
+        <iron-pages
+          selected="{{activeStep}}"
+          fallback-selection="select"
+          role="main">
+          <div data-value="select">
+            <paper-tabs class="pages-tabs" selected="{{activePage}}" scrollable fit-container autoselect>
+              <paper-tab>New</paper-tab>
+              <paper-tab hidden$="[[!sourcesList.length]]">Browse</paper-tab>
+            </paper-tabs>
+            <iron-pages
+              selected="{{activePage}}"
+              fallback-selection="link">
+              <div>
+                <div>
+                  <slot name="upload"></slot>
+                </div>
+                <paper-input id="url" label="URL"></paper-input>
+                <paper-button id="newassetconfigure" confirm raised>Configure</paper-button>
+              </div>
+              <div>
+                <paper-tabs class="sources-tabs" selected="{{activeSource}}" scrollable fit-container autoselect>
+                  <template is="dom-repeat" items="[[sourcesList]]" as="item">
+                    <paper-tab>[[item]]</paper-tab>
+                  </template>
+                </paper-tabs>
+                <iron-pages
+                  id="activesources"
+                  selected="{{activeSource}}"
+                  fallback-selection="my-media">
+                  <slot name="sources"></slot>
+                </iron-pages>
+              </div>
+            </iron-pages>
+          </div>
+          <div>
+            <hax-preview id="preview" element="{{activeElement}}"></hax-preview>
+            <div class="preview-buttons">
+              <paper-button id="insert" confirm raised>Insert</paper-button>
+              <paper-button id="cancel" raised>Cancel</paper-button>
+            </div>
+          </div>
+        </iron-pages>
+      </div>
+    </paper-dialog>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'hax-manager',
+      listeners: {
+        'cancel.tap': 'cancel',
+        'newassetconfigure.tap': 'newAssetConfigure',
+        'insert.tap': 'insertHaxElement',
+      },
+      properties: {
+        /**
+         * Title when open.
+         */
+        managerTitle: {
+          type: String,
+          computed: '_computeManagerTitle(activeStep)',
+        },
+        /**
+         * Title when open.
+         */
+        editExistingNode: {
+          type: Boolean,
+          value: false,
+        },
+        /**
+         * Active step currently selected
+         */
+        activeStep: {
+          type: Boolean,
+          value: false,
+        },
+        /**
+         * Active page currently selected
+         */
+        activePage: {
+          type: String,
+          value: 0,
+        },
+        /**
+         * Active source currently selected
+         */
+        activeSource: {
+          type: String,
+          value: 0,
+        },
+        /**
+         * Active element
+         */
+        activeElement: {
+          type: Object,
+          observer: '_activeElementChanged',
+        },
+        /**
+         * List of sources so they can be added as tabs.
+         * Users will still need to utilize the slot="sources"
+         */
+        sourcesList: {
+          type: Array,
+          value: [],
+        },
+      },
+      /**
+       * Form title of the modal based on the step.
+       */
+      _computeManagerTitle: function(step) {
+        if (!step) {
+          return 'Select content';
+        }
+        else {
+          return 'Configure item';
+        }
+      },
+      /**
+       * Notice active element changed.
+       */
+      _activeElementChanged: function(newValue, oldValue) {
+        if (typeof oldValue !== typeof undefined) {
+          this.$.preview.advancedForm = false;
+          this.$.step.disabled = false;
+        }
+      },
+      /**
+       * Bubble up insert event.
+       */
+      insertHaxElement: function(e) {
+        // bubble up the inject event / element to the body
+        let previewNode = this.$.preview.getPreviewNode();
+        if (this.editExistingNode) {
+          this.fire('hax-content-replace-active', previewNode);
+        }
+        else {
+          let element = this.nodeToHaxElement(previewNode);
+          this.fire('hax-content-insert', element);
+        }
+        // reset self
+        this.resetManager();
+        // close window
+        this.toggleDialog();
+      },
+      /**
+       * Convert a node to a HAX element. Hax elements ensure
+       * a certain level of sanitization by verifying tags and
+       * properties / attributes that have values.
+       */
+      nodeToHaxElement: function(node) {
+        let styles = '';
+        // support our simple shift around styles
+        if (typeof node.style !== typeof undefined) {
+          // ensure our supported inline styles come along
+          if (node.style.float != null && node.style.float != '') {
+            styles += 'float:' + node.style.float + '; ';
+          }
+          if (node.style.margin != null && node.style.margin != '') {
+            styles += 'margin:' + node.style.margin + '; ';
+          }
+          if (node.style.display != null && node.style.display != '') {
+            styles += 'display:' + node.style.display + '; ';
+          }
+          if (node.style.width != null && node.style.width != '') {
+            styles += 'width:' + node.style.width + '; ';
+          }
+        }
+        // build out the properties to send along
+        let props = {
+          "style": styles,
+        };
+        for (var property in node.properties) {
+          // make sure we only set things that have a value
+          if (node.properties.hasOwnProperty(property) && typeof node[property] !== undefined && node[property] != null && node[property] != '') {
+            props[property] = node[property];
+          }
+        }
+        let element = {
+          "eventName": 'insert-element',
+          "tag": node.tagName.toLowerCase(),
+          "properties": props,
+          "content": this.getHAXSlot(node),
+        };
+        return element;
+      },
+      /**
+       * Slot content w/ support for custom elements in slot.
+       */
+      getHAXSlot: function(node) {
+        let content = '';
+        let slotnodes = Polymer.dom(node).getEffectiveChildNodes();
+        // ensure there's something inside of this
+        if (slotnodes.length > 0) {
+          // loop through everything found in the slotted area and put it back in
+          for (var j = 0, len2 = slotnodes.length; j < len2; j++) {
+            if (typeof slotnodes[j].tagName !== typeof undefined) {
+              // if we're a custom element, keep digging, otherwise a simple
+              // self append is fine.
+              if (slotnodes[j].tagName.indexOf('-') > 0) {
+                content += this.getHAXSlot(slotnodes[j]);
+              }
+              else {
+                content += '  ' + slotnodes[j].outerHTML + "\n";
+              }
+            }
+          }
+        }
+        return content;
+      },
+      /**
+       * Reset things on the display to their defaults.
+       */
+      resetManager: function() {
+        this.editExistingNode = false;
+        this.activeStep = false;
+        this.activePage = 0;
+        this.activeSource = 0;
+        this.activeElement = {};
+      },
+      /**
+       * Cancel and close.
+       */
+      cancel: function(e) {
+        // reset and close dialog
+        this.resetManager();
+        this.toggleDialog();
+      },
+      /**
+       * Configure asset after upload or URL passed in.
+       */
+      newAssetConfigure: function() {
+        // @todo need to process what this is before we ship it along
+        this.activeElement = {
+          'tag': 'video-player',
+          'properties': {
+            'source': this.$.url.value,
+          },
+          'content':'',
+        };
+        this.activeStep = true;
+      },
+      /**
+       * Toggle ourselves.
+       */
+      toggleDialog: function() {
+        this.$.dialog.toggle();
+      },
+      /**
+       * Set step to configure or insert
+       */
+      selectStep: function(step) {
+        if (step == 'configure') {
+          this.activeStep = true;
+        }
+        else {
+          this.activeStep = false;
+        }
+      },
+    });
+  </script>
+</dom-module>

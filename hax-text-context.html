@@ -209,16 +209,16 @@ A context menu that provides common text based authoring options.
             document.execCommand('unlink');
           break;
           case 'text-align-left':
-            this.justifyIcon = detail.target.children[0].attributes[0].nodeValue;
+            this.justifyIcon = detail.target.children[0].attributes[0].value;
           break;
           case 'text-align-center':
-            this.justifyIcon = detail.target.children[0].attributes[0].nodeValue;
+            this.justifyIcon = detail.target.children[0].attributes[0].value;
           break;
           case 'text-align-right':
-            this.justifyIcon = detail.target.children[0].attributes[0].nodeValue;
+            this.justifyIcon = detail.target.children[0].attributes[0].value;
           break;
           case 'text-justify-full':
-            this.justifyIcon = detail.target.children[0].attributes[0].nodeValue;
+            this.justifyIcon = detail.target.children[0].attributes[0].value;
           break;
           case 'close-menu':
             this.$.justify.hideMenu();
