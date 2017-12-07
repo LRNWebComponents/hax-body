@@ -72,7 +72,7 @@
       }
 
     </style>
-    <paper-input label="[[callToAction]]" value="{{query}}" style="margin: 20px;"></paper-input>
+    <paper-input label="Search [[details.title]]" value="{{query}}" style="margin: 20px;"></paper-input>
     <iron-ajax
       id="request"
       url="[[requestEndPoint]]"
@@ -107,13 +107,7 @@
         'itemlist.tap': '_itemSelected',
       },
       properties: {
-        /**
-         * Call to action in the input field for search.
-         */
-        callToAction: {
-          type: String,
-          value: 'Search for content',
-        },
+
         /**
          * Basic auth user.
          */
@@ -156,6 +150,23 @@
           type: Object,
         },
         /**
+         * Source details for use in the browser
+         */
+        details: {
+          type: Object,
+          value: {
+            "title": "Title",
+            "icon": "android",
+            "image": "",
+            "color": "blue",
+            "author": "author",
+            "teaser": "teaser",
+            "description": "Description of the soure",
+            "examples": "examples",
+            "status": "available",
+          },
+        },
+        /**
          * Response map of where to look in the response data in order to translate
          * it to our map of what we want to render as cards on output.
          */
@@ -163,11 +174,13 @@
           type: Object,
           value: {
             "root": "items",
+            "gizmoType": "video",
             "id": "meta.id",
             "url": "meta.url",
             "title": "meta.title",
             "description": "meta.description",
-            "image": "meta.image"
+            "image": "meta.thumbnail",
+            "customGizmoType": "meta.type",
           },
         },
         /**
@@ -260,7 +273,17 @@
                 'title': this._resolveObjectPath(map.title, data[i]),
                 'description': this._resolveObjectPath(map.description, data[i]),
                 'image' : this._resolveObjectPath(map.image, data[i]),
+                'gizmoType' : map.gizmoType,
               };
+              // gizmo type is also supported in the mapping element itself
+              // Think an asset management backend as opposed to a specific
+              // type of asset like video. If the item coming across can
+              // effectively check what kind of gizmo is required for it
+              // to work then we need to support that asset declaring the
+              // gizmo type needed
+              if (typeof map.customGizmoType !== typeof undefined) {
+                media[i].gizmoType = this._resolveObjectPath(map.customGizmoType, data[i]);
+              }
             }
             // this will trigger an aggressive repaint of the cards
             this.set('media', []);

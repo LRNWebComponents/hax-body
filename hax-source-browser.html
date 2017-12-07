@@ -1,0 +1,76 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-list/iron-list.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../grafitto-filter/grafitto-filter.html">
+<link rel="import" href="hax-source-browser-item.html">
+
+<!--
+`hax-source-browser`
+Browse a list of sources. This provides a listing of our gizmos that we've integrated with.
+
+@demo demo/index.html
+
+@microcopy - the mental model for this element
+ - hax-source - a source of data
+ - gizmo - silly name for the general public when talking about hax-source and what it provides in the end
+-->
+
+<dom-module id="hax-source-browser">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <slot></slot>
+    <paper-input label="Sources" id="input"></paper-input>
+    <grafitto-filter id="filter" items=[[sourceList]] like="" where="title" as="sources">
+      <template>
+        <iron-list id="ironlist" items=[[sources]] as="source">
+          <template>
+            [[source]]
+            <hax-source-browser-item
+              index="[[source.index]]"
+              title="[[source.title]]"
+              icon="[[source.details.icon]]"
+              image="[[source.details.image]]"
+              color="[[source.details.color]]"
+              author="[[source.details.author]]"
+              teaser="[[source.details.teaser]]"
+              description="[[source.details.description]]"
+              examples="[[source.details.examples]]"
+              status="[[source.details.status]]"></hax-source-browser-item>
+          </template>
+        </iron-list>
+      </template>
+    </grafitto-filter>
+  </template>
+  <script>
+    Polymer({
+
+      is: 'hax-source-browser',
+
+      properties: {
+        /**
+         * List of sources.
+         */
+        sourceList: {
+          type: Array,
+          value: [],
+        },
+      },
+      /**
+       * Ready
+       */
+      ready: function() {
+        this.set('sourceList', Polymer.HaxStore.instance.sourceList);
+//        this.$$('#ironlist').fire('iron-resize');
+        this.$.filter.like = '';
+        // handle value change
+        this.$.input.addEventListener("value-changed", (from, to) => {
+          this.$.filter.like = from.detail.value;
+        });
+      },
+    });
+  </script>
+</dom-module>

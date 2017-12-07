@@ -5,9 +5,14 @@
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="../iron-pages/iron-pages.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../vaadin-upload/vaadin-upload.html">
 
+<link rel="import" href="../materializecss-styles/materializecss-styles.html">
 <link rel="import" href="hax-preview.html">
+<link rel="import" href="hax-source-browser.html">
+
 
 <!--
 `hax-manager`
@@ -26,23 +31,25 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
 
 <dom-module id="hax-manager">
   <template>
-    <style>
+    <style include="materializecss-styles">
       :host {
         display: block;
-        --hax-manager-steps-color: #FFFFFF;
-        --hax-manager-header: #0d47a1;
-        --hax-manager-ink-color: white;
+        --hax-manager-steps-color: #000000;
+        --hax-manager-tab-color: #0d47a1;
+        --hax-manager-ink-color: #FFFFFF;
       }
       #dialog {
         position: fixed;
-        top: 5%;
-        right: 5%;
-        bottom: 5%;
-        left: 5%;
+        top: 8%;
+        right: 8%;
+        bottom: 8%;
+        left: 8%;
         overflow: auto;
       }
       #dialogcontent {
         height: 100%;
+        padding:0;
+        margin:0;
       }
       #activesources {
         height: 100vh;
@@ -54,58 +61,97 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         left: 0;
         background-color: white;
       }
-      .step-wrapper {
-        margin: 0;
-        padding: .5em;
-        position: absolute;
-        top: 0;
-        right: 0;
-        height: 2em;
-        vertical-align: middle;
-      }
-      .step-wrapper span {
-        display: inline-block;
-      }
       #step {
         display: inline-block;
         --paper-toggle-button-checked-bar-color:  var(--paper-green-500);
         --paper-toggle-button-checked-button-color:  var(--paper-green-500);
         --paper-toggle-button-checked-ink-color: var(--paper-green-500);
-        --paper-toggle-button-unchecked-bar-color:  var(--paper-indigo-900);
-        --paper-toggle-button-unchecked-button-color:  var(--paper-indigo-900);
-        --paper-toggle-button-unchecked-ink-color: var(--paper-indigo-900);
+        --paper-toggle-button-unchecked-bar-color:  var(--paper-amber-900);
+        --paper-toggle-button-unchecked-button-color:  var(--paper-amber-900);
+        --paper-toggle-button-unchecked-ink-color: var(--paper-amber-900);
       }
-      .pages-tabs,
-      .sources-tabs {
+      .pages-tabs {
         --paper-tabs-selection-bar: {
-          border-bottom: 4px solid var(--hax-manager-steps-color, var(--paper-yellow-a100));
+          border-bottom: 3px solid var(--hax-manager-steps-color);
         };
         --paper-tabs-container: {
           margin: 0;
-          display: flex;
-          align-items: flex-end;
-          background: var(--hax-manager-header);
+          background: var(--hax-manager-tab-color);
           color: var(--hax-manager-ink-color);
+          transition: opacity .3s ease;
         };
         --paper-tab-content-unselected: {
-          opacity: .8;
-          background-color: blue;
+          opacity: .9;
+          color: grey;
         };
         --paper-tab-ink: var(--hax-manager-ink-color);
         --paper-tab: {
           font-family: 'Roboto', 'Noto', sans-serif;
           -webkit-font-smoothing: antialiased;
-          width: 100%;
           text-transform: uppercase;
         };
       }
+      .step-toggle-wrapper {
+        margin: 0;
+        padding: .8em;
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 1.2em;
+      }
+      paper-toggle-button {
+        display: inline-block;
+        vertical-align: middle;
+      }
+      .step-toggle-wrapper div {
+        display: inline-block;
+        padding: 0 .8em;
+        vertical-align: middle;
+      }
+      #dialogheader {
+        margin: 0;
+        padding: 1.2em;
+        border-bottom: 1px solid black;
+      }
+      #dialogheader h2 {
+        margin: 0;
+        font-size: 1.8em
+      }
+      paper-tab iron-icon  {
+        padding-right: 1em;
+      }
+      vaadin-upload.thick-border {
+        --primary-color: #3f51b5;
+        --dark-primary-color: #063;
+        --light-primary-color: #6c9;
+        --error-color: darkred;
+
+        border: 2px solid #ccc;
+        padding: 14px;
+        background: #eee;
+        border-radius: 0;
+      }
+      vaadin-upload.thick-border[dragover] {
+        border-color: #396;
+      }
+      .page-area {
+        padding: 2em;
+      }
+      .add-url-are,
+      .add-upload-area {
+        margin: 1em 0;
+      }
+      .url-description {
+        font-size: .8em;
+        color:grey;
+      }
     </style>
     <paper-dialog id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
-      <div id="dialogheader">
-        <h3>[[managerTitle]]</h3>
-        <div class="step-wrapper">
-          <span>Select</span><paper-toggle-button id="step" checked="{{activeStep}}" disabled></paper-toggle-button>
-          <span>Configure</span>
+      <div id="dialogheader" class="indigo white-text">
+        <h2>[[managerTitle]]</h2>
+        <div class="step-toggle-wrapper">
+          <div>Select</div><paper-toggle-button id="step" checked="{{activeStep}}" disabled></paper-toggle-button>
+          <div>Configure</div>
         </div>
       </div>
       <div class="dialog-contents" id="dialogcontent">
@@ -114,32 +160,38 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
           fallback-selection="select"
           role="main">
           <div data-value="select">
-            <paper-tabs class="pages-tabs" selected="{{activePage}}" scrollable fit-container autoselect>
-              <paper-tab>New</paper-tab>
-              <paper-tab hidden$="[[!sourcesList.length]]">Browse</paper-tab>
+            <paper-tabs class="pages-tabs" selected="{{activePage}}" autoselect>
+              <paper-tab><iron-icon icon="image:add-to-photos"></iron-icon>Add Something</paper-tab>
+              <paper-tab hidden$="[[!sourceList.length]]">
+                <iron-icon icon="search"></iron-icon>Find Something</paper-tab>
+              <paper-tab hidden$="[[!staxList.length]]">
+                <iron-icon icon="view-quilt"></iron-icon>Make Gizmo</paper-tab>
             </paper-tabs>
             <iron-pages
+              id="activepage"
               selected="{{activePage}}"
               fallback-selection="link">
-              <div>
-                <div>
-                  <slot name="upload"></slot>
+              <div class="page-area add-area">
+                <div class="add-url-area">
+                  <paper-input id="url" label="URL" type="url" auto-validate></paper-input>
+                  <div class="url-description">A full URL with http:// referencing a link that already exists on the web.</div>
                 </div>
-                <paper-input id="url" label="URL"></paper-input>
-                <paper-button id="newassetconfigure" confirm raised>Configure</paper-button>
+                <div class="add-upload-area">
+                  <vaadin-upload target$="{{uploadPath}}" method="POST" form-data-name="file-upload"></vaadin-upload>
+                </div>
+                <paper-button id="newassetconfigure" confirm raised>Configure item</paper-button>
               </div>
-              <div>
-                <paper-tabs class="sources-tabs" selected="{{activeSource}}" scrollable fit-container autoselect>
-                  <template is="dom-repeat" items="[[sourcesList]]" as="item">
-                    <paper-tab>[[item]]</paper-tab>
-                  </template>
-                </paper-tabs>
+              <div class="page-area">
+                <hax-source-browser id="sourcebrowser"></hax-source-browser>
                 <iron-pages
                   id="activesources"
                   selected="{{activeSource}}"
                   fallback-selection="my-media">
-                  <slot name="sources"></slot>
+                    <slot name="sources"></slot>
                 </iron-pages>
+              </div>
+              <div class="page-area">
+                Element browser based on asking the slot what we can use
               </div>
             </iron-pages>
           </div>
@@ -211,7 +263,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
          * List of sources so they can be added as tabs.
          * Users will still need to utilize the slot="sources"
          */
-        sourcesList: {
+        sourceList: {
           type: Array,
           value: [],
         },
@@ -221,10 +273,10 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
        */
       _computeManagerTitle: function(step) {
         if (!step) {
-          return 'Select content';
+          return 'Select';
         }
         else {
-          return 'Configure item';
+          return 'Configure Gizmo';
         }
       },
       /**
@@ -260,6 +312,8 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
        * properties / attributes that have values.
        */
       nodeToHaxElement: function(node) {
+        // build out the properties to send along
+        let props = {};
         let styles = '';
         // support our simple shift around styles
         if (typeof node.style !== typeof undefined) {
@@ -276,11 +330,11 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
           if (node.style.width != null && node.style.width != '') {
             styles += 'width:' + node.style.width + '; ';
           }
+          // only set styles if we have nothing
+          if (styles != '') {
+            props.style = styles;
+          }
         }
-        // build out the properties to send along
-        let props = {
-          "style": styles,
-        };
         for (var property in node.properties) {
           // make sure we only set things that have a value
           if (node.properties.hasOwnProperty(property) && typeof node[property] !== undefined && node[property] != null && node[property] != '') {
@@ -323,6 +377,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
        * Reset things on the display to their defaults.
        */
       resetManager: function() {
+        this.sourceList = Polymer.HaxStore.instance.sourceList;
         this.editExistingNode = false;
         this.activeStep = false;
         this.activePage = 0;

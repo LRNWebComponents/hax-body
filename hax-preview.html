@@ -21,17 +21,27 @@ An element that can generate a form
       :host {
         display: block;
       }
-      .step-wrapper {
-        float: right;
-        padding: .5em;
+      .step-toggle-wrapper {
+        margin: 0;
+        padding: .8em;
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 1.2em;
+      }
+      .step-toggle-wrapper paper-toggle-button {
+        display: inline-block;
         vertical-align: middle;
       }
-      .step-wrapper span {
+      .step-toggle-wrapper div {
         display: inline-block;
+        vertical-align: middle;
+        padding: 0 .8em;
       }
       paper-card.form-wrapper {
-        margin-bottom: 5em;
+        margin: 3em 0;
         width: 100%;
+        min-height: 10em;
       }
 
       vaadin-split-layout {
@@ -57,8 +67,8 @@ An element that can generate a form
       </div>
       <!-- critique panel -->
       <div class="vaadin-split-layout-panel">
-        <div class="step-wrapper">
-          <span>Configure</span><paper-toggle-button id="step" checked="{{advancedForm}}" disabled="[[!previewNode]]"></paper-toggle-button><span>Advanced</span>
+        <div class="step-toggle-wrapper">
+          <div>Configure</div><paper-toggle-button id="step" checked="{{advancedForm}}" disabled="[[!previewNode]]"></paper-toggle-button><div>Advanced</div>
         </div>
         <paper-card class="form-wrapper">
           <eco-json-schema-object id="form" schema="[[schema]]" value="{{value}}"></eco-json-schema-object>

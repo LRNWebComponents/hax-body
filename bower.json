@@ -4,6 +4,7 @@
   "main": "hax-body.html",
   "dependencies": {
     "polymer": "Polymer/polymer#^1.10.1",
+    "vaadin-upload": "vaadin/vaadin-upload#^2.1.3",
     "vaadin-context-menu": "vaadin/vaadin-context-menu#^2.0.0",
     "paper-listbox": "PolymerElements/paper-listbox#^2.0.0",
     "paper-item": "PolymerElements/paper-item#^2.0.0",
@@ -12,7 +13,7 @@
     "paper-menu-button": "PolymerElements/paper-menu-button#^2.0.0",
     "video-player": "LRNWebComponents/video-player#^1.4.0",
     "pie-menu": "LRNWebComponents/pie-menu",
-    "media-image": "LRNWebComponents/media-image#^0.0.5",
+    "media-image": "LRNWebComponents/media-image#^0.0.6",
     "md-extra-icons": "LRNWebComponents/md-extra-icons#^0.0.4",
     "paper-input": "PolymerElements/paper-input#^2.0.4",
     "paper-swatch-picker": "PolymerElements/paper-swatch-picker#^2.0.1",
@@ -28,7 +29,12 @@
     "paper-card": "PolymerElements/paper-card#^2.0.0",
     "paper-tabs": "PolymerElements/paper-tabs#^2.0.0",
     "juicy-html": "Juicy/juicy-html#^2.0.2",
-    "iron-a11y-keys": "PolymerElements/iron-a11y-keys#^2.0.0"
+    "iron-a11y-keys": "PolymerElements/iron-a11y-keys#^2.0.0",
+    "grafitto-filter": "grafitto/grafitto-filter#^0.0.3",
+    "schema-behaviors": "LRNWebComponents/schema-behaviors#^0.1.0",
+    "wikipedia-query": "LRNWebComponents/wikipedia-query#^1.0.2",
+    "iron-image": "PolymerElements/iron-image#^2.1.2",
+    "lrn-table": "LRNWebComponents/lrn-table#^0.3.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

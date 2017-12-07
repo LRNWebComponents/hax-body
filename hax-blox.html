@@ -1,6 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../juicy-html/juicy-html.html">
 <link rel="import" href="../hax-body-behaviors/hax-body-behaviors.html">
+<link rel="import" href="../schema-behaviors/schema-behaviors.html">
 
 <!--
 `hax-blox`
@@ -17,6 +18,15 @@ A LRN element for managing layout systems and templates.
    which then only show up if a layout implements them.
  - layout - a layout relates to a file in the layouts directory of this project
 -->
+
+<hax-blox>
+  <p slot="area1">
+    stuff
+  </p>
+  <p slot="area2">
+    things
+  </p>
+</hax-blox>
 
 <dom-module id="hax-blox">
   <template>
@@ -50,7 +60,7 @@ A LRN element for managing layout systems and templates.
   <script>
     Polymer({
       is: 'hax-blox',
-      behaviors: [HAXBehaviors.PropertiesBehaviors],
+      behaviors: [HAXBehaviors.PropertiesBehaviors,SchemaBehaviors.Schema],
       properties: {
         /**
          * Layout to render. This expects to import an associated template.
@@ -126,7 +136,7 @@ A LRN element for managing layout systems and templates.
        * Ready.
        */
       ready: function() {
-        // Establish hax properties if they exist
+        // Establish hax property binding
         let props = {
           'canScale': false,
           'canPosition': false,

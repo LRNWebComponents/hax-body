@@ -16,6 +16,7 @@
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
     <link rel="import" href="../../lrnsys-layout/lrnsys-dialog.html">
     <!-- required for just about any app using HAX though them all being separate allows developers to replace or not use any one of the pieces and just implement the capabilities that the element is providing as far as elements and binding. -->
+    <link rel="import" href="../hax-store.html">
     <link rel="import" href="../hax-body.html">
     <link rel="import" href="../hax-panel.html">
     <link rel="import" href="../hax-manager.html">
@@ -49,6 +50,103 @@
       <h3>Basic hax-body demo</h3>
       <demo-snippet>
         <template is="dom-bind">
+          <hax-store>
+            <div slot="elements">
+              <video-player></video-player>
+              <wikipedia-query></wikipedia-query>
+              <lrn-table></lrn-table>
+              <media-image></media-image>
+            </div>
+            <div slot="sources">
+            <hax-source
+            id="source1"
+            details='{
+            "title":"Media",
+            "icon":"perm-media",
+            "color":"blue",
+            "author": "ELMS: Learning Network",
+            "teaser": "Our media solution",
+            "description": "The backend for ELMS:LN that allows for asset management and recall. Allows for remote referencing of things as well as tagging them by course so that we know where things are used after the fact.",
+            "status": "available"
+            }'
+            name="ELMS:LN Media"
+            user="SERVICE_ELMSMEDIA_LN"
+            pass="106025726eea79168e7b9d3aff6330"
+            request-end-point="http://data-media.elmsln.local/node.json"
+            request-params='{
+            "deep-load-refs":"file",
+            "title":""}'
+            query-param="title"
+            response-map='{
+              "root": "list",
+              "gizmoType": "video",
+              "url": "http://media.elmsln.local/entity_iframe/node/",
+              "id": "nid",
+              "title": "title",
+              "description": "body",
+              "image": "field_image.url",
+              "customGizmoType": "type"}'>
+            </hax-source>
+            <hax-source
+            id="source2"
+            details='{
+            "title":"Youtube",
+            "icon":"perm-media",
+            "color":"red",
+            "author": "Google, Youtube LLC",
+            "teaser": "Popular public video solution",
+            "description": "Remember that anything you place here though will be out in the open. Great for OER.",
+            "status": "available"
+            }'
+            request-end-point="https://www.googleapis.com/youtube/v3/search"
+            request-params='{
+            "part":"snippet",
+            "q":"",
+            "key": "AIzaSyAF9zKXv-fxus9GNqn40SHzTn6F8A7h-Yo",
+            "type": "video",
+            "maxResults":"12"}'
+            query-param="q"
+            response-map='{
+              "root": "items",
+              "gizmoType": "video",
+              "url": "https://www.youtube.com/watch?v=",
+              "id": "id.videoId",
+              "title": "snippet.title",
+              "description": "snippet.description",
+              "image": "snippet.thumbnails.high.url"}'>
+            </hax-source>
+            <hax-source
+            id="source3"
+            details='{
+            "title":"Vimeo",
+            "icon":"perm-media",
+            "color":"blue",
+            "author": "Vimeo Inc.",
+            "teaser": "Popular video community",
+            "description": "Vimeo is a great place for artists and higher quality video. There is also the ability to have more control over the storage and delivery of media as needed.",
+            "status": "available"
+            }'
+            request-end-point="https://api.vimeo.com/videos"
+            request-params='{
+            "access_token": "0a718b853bad87571d52e9fb554e0a43",
+            "query": "",
+            "direction": "asc",
+            "sort": "alphabetical",
+            "filter": "CC",
+            "per_page":"12"
+            }'
+            query-param="query"
+            response-map='{
+              "root": "data",
+              "gizmoType": "video",
+              "url": "",
+              "id": "link",
+              "title": "name",
+              "description": "description",
+              "image": "pictures.sizes.1.link"}'>
+            </hax-source>
+            </div>
+          </hax-store>
           <hax-body id="body" edit-mode context-offset-left="-324">
             <h2>Heading 2</h2>
             <p>A whole bunch of text in here that's awesome!</p>
@@ -120,69 +218,7 @@
             </lrnsys-collapselist-item>
           </span>
           </hax-panel>
-          <hax-manager id="manager" style="background-color:green;" sources-list='["My media","Youtube","Vimeo"]'>
-            <hax-source
-            id="source1"
-            slot="sources"
-            call-to-action="Search Media"
-            user="SERVICE_ELMSMEDIA_LN"
-            pass="106025726eea79168e7b9d3aff6330"
-            request-end-point="http://data-media.elmsln.local/node.json"
-            request-params='{
-            "deep-load-refs":"file",
-            "title":""}'
-            query-param="title"
-            response-map='{
-              "root": "list",
-              "url": "http://media.elmsln.local/entity_iframe/node/",
-              "id": "nid",
-              "title": "title",
-              "description": "body",
-              "image": "field_image.url"}'>
-            </hax-source>
-            <hax-source
-            id="source2"
-            slot="sources"
-            call-to-action="Search Youtube"
-            request-end-point="https://www.googleapis.com/youtube/v3/search"
-            request-params='{
-            "part":"snippet",
-            "q":"",
-            "key": "AIzaSyAF9zKXv-fxus9GNqn40SHzTn6F8A7h-Yo",
-            "type": "video",
-            "maxResults":"12"}'
-            query-param="q"
-            response-map='{
-              "root": "items",
-              "url": "https://www.youtube.com/watch?v=",
-              "id": "id.videoId",
-              "title": "snippet.title",
-              "description": "snippet.description",
-              "image": "snippet.thumbnails.high.url"}'>
-            </hax-source>
-            <hax-source
-            id="source3"
-            slot="sources"
-            call-to-action="Search Vimeo"
-            request-end-point="https://api.vimeo.com/videos"
-            request-params='{
-            "access_token": "0a718b853bad87571d52e9fb554e0a43",
-            "query": "",
-            "direction": "asc",
-            "sort": "alphabetical",
-            "filter": "CC",
-            "per_page":"12"
-            }'
-            query-param="query"
-            response-map='{
-              "root": "data",
-              "url": "",
-              "id": "link",
-              "title": "name",
-              "description": "description",
-              "image": "pictures.sizes.1.link"}'>
-            </hax-source>
-          </hax-manager>
+          <hax-manager id="manager"></hax-manager>
           <paper-button id="togglebutton">Enabled</paper-button>
           <lrnsys-dialog body-append id="exportdialog" title="See HTML">
             <h2 slot="header">HTML generated</h2>
