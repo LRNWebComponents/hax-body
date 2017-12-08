@@ -19,15 +19,6 @@ A LRN element for managing layout systems and templates.
  - layout - a layout relates to a file in the layouts directory of this project
 -->
 
-<hax-blox>
-  <p slot="area1">
-    stuff
-  </p>
-  <p slot="area2">
-    things
-  </p>
-</hax-blox>
-
 <dom-module id="hax-blox">
   <template>
     <style>
@@ -60,7 +51,7 @@ A LRN element for managing layout systems and templates.
   <script>
     Polymer({
       is: 'hax-blox',
-      behaviors: [HAXBehaviors.PropertiesBehaviors,SchemaBehaviors.Schema],
+      behaviors: [HAXBehaviors.PropertiesBehaviors, SchemaBehaviors.Schema],
       properties: {
         /**
          * Layout to render. This expects to import an associated template.
@@ -141,6 +132,22 @@ A LRN element for managing layout systems and templates.
           'canScale': false,
           'canPosition': false,
           'canEditSource': false,
+          'gizmo': {
+            'title': 'Hax Blox',
+            'descrption': 'This allows you to group and organize content into a layout.',
+            'icon': 'editor:border-all',
+            'color': 'blue',
+            'groups': ['Content', 'Layout', 'Design'],
+            'handles': [
+              {
+                'type': 'content',
+                'slot': 'slot'
+              }
+            ],
+            'meta': {
+              'author': 'LRNWebComponents'
+            }
+          },
           'settings': {
             "quick": [
               {
@@ -160,23 +167,6 @@ A LRN element for managing layout systems and templates.
                 'icon': 'view-quilt',
               },
             ],
-            "configure": [
-              {
-                'property': 'primaryColor',
-                'title': 'Primary color',
-                'description': 'Select the primary color used in the video',
-                'inputMethod': 'colorpicker',
-                'icon': 'editor:format-color-fill',
-              },
-              {
-                'property': 'secondaryColor',
-                'title': 'Secondary color',
-                'description': 'Select the secondary color used for the video',
-                'inputMethod': 'colorpicker',
-                'icon': 'editor:format-color-fill',
-              },
-            ],
-            "advanced": [],
           }
         };
         this.setHaxProperties(props);

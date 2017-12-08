@@ -25,7 +25,7 @@
     <style is="custom-style" include="demo-pages-shared-styles">
       .vertical-section-container {
         max-width: 60em;
-        margin-left: 20em;
+        margin-left: 10em;
       }
       hax-panel {
         font-size: .8rem;
@@ -35,13 +35,15 @@
           background-color: #fafafa;
           padding: 0;
           border-right: 1px solid #c8c8c8;
-          overflow-y: scroll;
-          width: 300px !important;
-          box-shadow: 0 76px 8px 0 rgba(0, 0, 0, 0.4);
+          border-bottom: 1px solid #c8c8c8;
+          width: 100px !important;
+          box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.4);
           height: 100vh;
-          top: 0;
-          position: sticky;
+          position: fixed;
         }
+      }
+      lrnsys-collapselist-item .label {
+        text-align: center;
       }
     </style>
   </head>
@@ -59,95 +61,92 @@
             </div>
             <div slot="sources">
             <hax-source
-            id="source1"
-            details='{
-            "title":"Media",
-            "icon":"perm-media",
-            "color":"blue",
-            "author": "ELMS: Learning Network",
-            "teaser": "Our media solution",
-            "description": "The backend for ELMS:LN that allows for asset management and recall. Allows for remote referencing of things as well as tagging them by course so that we know where things are used after the fact.",
-            "status": "available"
-            }'
-            name="ELMS:LN Media"
-            user="SERVICE_ELMSMEDIA_LN"
-            pass="106025726eea79168e7b9d3aff6330"
-            request-end-point="http://data-media.elmsln.local/node.json"
-            request-params='{
-            "deep-load-refs":"file",
-            "title":""}'
-            query-param="title"
-            response-map='{
-              "root": "list",
-              "gizmoType": "video",
-              "url": "http://media.elmsln.local/entity_iframe/node/",
-              "id": "nid",
-              "title": "title",
-              "description": "body",
-              "image": "field_image.url",
-              "customGizmoType": "type"}'>
-            </hax-source>
+              id="source1"
+              details='{
+              "title":"Media",
+              "icon":"perm-media",
+              "color":"blue",
+              "author": "ELMS: Learning Network",
+              "teaser": "Our media solution",
+              "description": "The backend for ELMS:LN that allows for asset management and recall. Allows for remote referencing of things as well as tagging them by course so that we know where things are used after the fact.",
+              "status": "available"
+              }'
+              name="ELMS:LN Media"
+              user="SERVICE_ELMSMEDIA_LN"
+              pass="106025726eea79168e7b9d3aff6330"
+              request-end-point="http://data-media.elmsln.local/node.json"
+              request-params='{
+              "deep-load-refs":"file",
+              "title":""}'
+              query-param="title"
+              response-map='{
+                "root": "list",
+                "gizmoType": "video",
+                "url": "http://media.elmsln.local/entity_iframe/node/",
+                "id": "nid",
+                "title": "title",
+                "description": "body",
+                "image": "field_image.url",
+                "customGizmoType": "type"}'></hax-source>
             <hax-source
-            id="source2"
-            details='{
-            "title":"Youtube",
-            "icon":"perm-media",
-            "color":"red",
-            "author": "Google, Youtube LLC",
-            "teaser": "Popular public video solution",
-            "description": "Remember that anything you place here though will be out in the open. Great for OER.",
-            "status": "available"
-            }'
-            request-end-point="https://www.googleapis.com/youtube/v3/search"
-            request-params='{
-            "part":"snippet",
-            "q":"",
-            "key": "AIzaSyAF9zKXv-fxus9GNqn40SHzTn6F8A7h-Yo",
-            "type": "video",
-            "maxResults":"12"}'
-            query-param="q"
-            response-map='{
-              "root": "items",
-              "gizmoType": "video",
-              "url": "https://www.youtube.com/watch?v=",
-              "id": "id.videoId",
-              "title": "snippet.title",
-              "description": "snippet.description",
-              "image": "snippet.thumbnails.high.url"}'>
-            </hax-source>
+              id="source2"
+              details='{
+              "title":"Youtube",
+              "icon":"av:play-arrow",
+              "color":"red",
+              "author": "Google, Youtube LLC",
+              "teaser": "Popular public video solution",
+              "description": "Remember that anything you place here though will be out in the open. Great for OER.",
+              "status": "available"
+              }'
+              request-end-point="https://www.googleapis.com/youtube/v3/search"
+              request-params='{
+              "part":"snippet",
+              "q":"",
+              "key": "AIzaSyAF9zKXv-fxus9GNqn40SHzTn6F8A7h-Yo",
+              "type": "video",
+              "maxResults":"12"}'
+              query-param="q"
+              response-map='{
+                "root": "items",
+                "gizmoType": "video",
+                "url": "https://www.youtube.com/watch?v=",
+                "id": "id.videoId",
+                "title": "snippet.title",
+                "description": "snippet.description",
+                "image": "snippet.thumbnails.high.url"}'></hax-source>
             <hax-source
-            id="source3"
-            details='{
-            "title":"Vimeo",
-            "icon":"perm-media",
-            "color":"blue",
-            "author": "Vimeo Inc.",
-            "teaser": "Popular video community",
-            "description": "Vimeo is a great place for artists and higher quality video. There is also the ability to have more control over the storage and delivery of media as needed.",
-            "status": "available"
-            }'
-            request-end-point="https://api.vimeo.com/videos"
-            request-params='{
-            "access_token": "0a718b853bad87571d52e9fb554e0a43",
-            "query": "",
-            "direction": "asc",
-            "sort": "alphabetical",
-            "filter": "CC",
-            "per_page":"12"
-            }'
-            query-param="query"
-            response-map='{
-              "root": "data",
-              "gizmoType": "video",
-              "url": "",
-              "id": "link",
-              "title": "name",
-              "description": "description",
-              "image": "pictures.sizes.1.link"}'>
-            </hax-source>
+              id="source3"
+              details='{
+              "title":"Vimeo",
+              "icon":"av:play-circle-filled",
+              "color":"blue",
+              "author": "Vimeo Inc.",
+              "teaser": "Popular video community",
+              "description": "Vimeo is a great place for artists and higher quality video. There is also the ability to have more control over the storage and delivery of media as needed.",
+              "status": "available"
+              }'
+              request-end-point="https://api.vimeo.com/videos"
+              request-params='{
+              "access_token": "0a718b853bad87571d52e9fb554e0a43",
+              "query": "",
+              "direction": "asc",
+              "sort": "alphabetical",
+              "filter": "CC",
+              "per_page":"12"
+              }'
+              query-param="query"
+              response-map='{
+                "root": "data",
+                "gizmoType": "video",
+                "url": "",
+                "id": "link",
+                "title": "name",
+                "description": "description",
+                "image": "pictures.sizes.1.link"}'></hax-source>
             </div>
           </hax-store>
-          <hax-body id="body" edit-mode context-offset-left="-324">
+          <hax-body id="body" edit-mode context-offset-left="-185">
             <h2>Heading 2</h2>
             <p>A whole bunch of text in here that's awesome!</p>
             <h3>Heading 3</h3>
@@ -159,7 +158,7 @@
           <hax-panel id="panel" opened show-advanced>
             <span slot="post">
               <lrnsys-collapselist-item>
-              <span slot="label"><div class="label">Engagements</div></span>
+              <span slot="label"><div class="label">Future</div></span>
               <span slot="content">
                 <hax-panel-item
                   icon="touch-app"
@@ -197,12 +196,7 @@
                   label="Poll"
                   event-name="poll"
                   voice-command="insert poll"></hax-panel-item>
-              </span>
-            </lrnsys-collapselist-item>
-            <lrnsys-collapselist-item>
-              <span slot="label"><div class="label">Assessments</div></span>
-              <span slot="content">
-                <hax-panel-item
+                  <hax-panel-item
                   icon="assignment"
                   icon-class="yellow-text text-darken-2"
                   label="Assignment"
@@ -220,8 +214,8 @@
           </hax-panel>
           <hax-manager id="manager"></hax-manager>
           <paper-button id="togglebutton">Enabled</paper-button>
-          <lrnsys-dialog body-append id="exportdialog" title="See HTML">
-            <h2 slot="header">HTML generated</h2>
+          <lrnsys-dialog body-append id="exportdialog" title="HTML">
+            <h2 slot="header">HTML</h2>
             <div>
               <textarea id="textarea" rows="20" style="width:100%;"></textarea>
             </div>
@@ -265,6 +259,7 @@
              // Because we have 3 examples in this demo, we have 3 calls
             m1.addEventListener('hax-source-selected', function(e) {
               man.activeElement = e.detail;
+              console.log('hi');
               man.selectStep('configure');
             });
             m2.addEventListener('hax-source-selected', function(e) {

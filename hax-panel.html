@@ -24,7 +24,7 @@ as the events being bubbled up include HTML nodes to inject into something
         display: block;
       }
       app-drawer {
-        --app-drawer-width: 300px;
+        --app-drawer-width: 100px;
         touch-action: auto;
         transition: all .3s ease;
       }
@@ -33,36 +33,16 @@ as the events being bubbled up include HTML nodes to inject into something
         -webkit-box-shadow: 0 0 0 3px #34e79a;
         box-shadow: 0 0 0 3px #34e79a;
       }
+      lrnsys-collapselist-item .label {
+        text-align: center;
+      }
     </style>
     <app-drawer id="drawer" opened="{{opened}}" disable-swipe persistent transition-duration="300">
 
       <div style="height: 100%; overflow: auto;">
-        <slot name="pre"></slot>
         <lrnsys-collapselist-item opened>
-          <span slot="label"><div class="label">Global</div></span>
-          <span slot="content" style="display:flex;">
-            <hax-panel-item
-              icon="undo"
-              icon-class="black-text"
-              label="Undo"
-              event-name="undo" wide></hax-panel-item>
-            <hax-panel-item
-              icon="redo"
-              icon-class="black-text"
-              label="Redo"
-              event-name="redo" wide></hax-panel-item>
-          </span>
-        </lrnsys-collapselist-item>
-        <slot name="after-global"></slot>
-        <lrnsys-collapselist-item opened>
-          <span slot="label"><div class="label">Content</div></span>
+          <span slot="label"><div class="label">Create</div></span>
           <span slot="content">
-            <hax-panel-item
-              icon="editor:text-fields"
-              icon-class="grey-text text-darken-1"
-              label="Text"
-              event-name="text"
-              voice-command="insert text"></hax-panel-item>
             <hax-panel-item
               icon="editor:title"
               icon-class="green-text text-darken-1"
@@ -70,11 +50,34 @@ as the events being bubbled up include HTML nodes to inject into something
               event-name="header"
               voice-command="insert heading"></hax-panel-item>
             <hax-panel-item
-              icon="editor:format-quote"
-              icon-class="purple-text text-darken-1"
-              label="Quote"
-              event-name="blockquote"
-              voice-command="insert block quote"></hax-panel-item>
+              icon="editor:text-fields"
+              icon-class="grey-text text-darken-1"
+              label="Text"
+              event-name="text"
+              voice-command="insert text"></hax-panel-item>
+            <hax-panel-item
+              icon="device:graphic-eq"
+              icon-class="amber-text text-darken-1"
+              label="Gizmo"
+              event-name="hax-manager-open"
+              voice-command="insert gizmo"></hax-panel-item>
+            <hax-panel-item
+              icon="view-quilt"
+              icon-class="red-text text-darken-1"
+              label="Blox"
+              event-name="layout"
+              voice-command="insert block"></hax-panel-item>
+          </span>
+        </lrnsys-collapselist-item>
+        <lrnsys-collapselist-item hidden$="[[!showAdvanced]]">
+          <span slot="label"><div class="label">Extras</div></span>
+          <span slot="content">
+            <hax-panel-item
+              icon="view-agenda"
+              icon-class="red-text text-darken-1"
+              label="Stax"
+              event-name="layout"
+              voice-command="insert stack"></hax-panel-item>
             <hax-panel-item
               icon="editor:space-bar"
               icon-class="blue-text text-darken-1"
@@ -82,26 +85,9 @@ as the events being bubbled up include HTML nodes to inject into something
               event-name="divider"
               voice-command="insert divider"></hax-panel-item>
             <hax-panel-item
-              icon="view-quilt"
-              icon-class="red-text text-darken-1"
-              label="Stack"
-              event-name="layout"
-              voice-command="insert stack"></hax-panel-item>
-            <hax-panel-item
-              icon="device:graphic-eq"
-              icon-class="amber-text text-darken-1"
-              label="Gizmo"
-              event-name="hax-manager-open"
-              voice-command="insert gizmo"></hax-panel-item>
-          </span>
-        </lrnsys-collapselist-item>
-        <lrnsys-collapselist-item hidden$="[[!showAdvanced]]">
-          <span slot="label"><div class="label">Advanced</div></span>
-          <span slot="content">
-            <hax-panel-item
               icon="communication:import-export"
               label="Export"
-              event-name="advanced-import-export" wide></hax-panel-item>
+              event-name="advanced-import-export"></hax-panel-item>
           </span>
         </lrnsys-collapselist-item>
         <slot name="post"></slot>

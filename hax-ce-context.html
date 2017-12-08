@@ -86,7 +86,7 @@ required for populating input.
       <hax-context-item
         icon="settings"
         label="Settings"
-        event-name="hax-manager-configure"></hax-context-item>
+        event-name="hax-manager-configure" hidden$="[[!__hasSettingsForm]]"></hax-context-item>
     </app-toolbar>
   </template>
 
@@ -157,6 +157,17 @@ required for populating input.
             slot.removeChild(slot.firstChild);
           }
           let settings = newValue.settings.quick;
+          let configure = newValue.settings.configure;
+          let advanced = newValue.settings.advanced;
+          // support things that could technically have no configuration
+          // or advanced form but have quick settings
+          // This doesn't make a ton of sense but it is possible
+          if (configure.length || advanced.length) {
+            this.__hasSettingsForm = true;
+          }
+          else {
+            this.__hasSettingsForm = false;
+          }
           var item;
           // @todo kick stuff into the local dom as options
           for (i = 0; i < settings.length; i++) {

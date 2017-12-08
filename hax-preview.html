@@ -69,6 +69,7 @@ An element that can generate a form
       <div class="vaadin-split-layout-panel">
         <div class="step-toggle-wrapper">
           <div>Configure</div><paper-toggle-button id="step" checked="{{advancedForm}}" disabled="[[!previewNode]]"></paper-toggle-button><div>Advanced</div>
+
         </div>
         <paper-card class="form-wrapper">
           <eco-json-schema-object id="form" schema="[[schema]]" value="{{value}}"></eco-json-schema-object>
@@ -137,6 +138,13 @@ An element that can generate a form
           value: false,
         },
         /**
+         * If we should show source view or not.
+         */
+        canEditSource: {
+          type: Boolean,
+          computed: '_computedEditSource(formKey)',
+        },
+        /**
          * Form key from hax to target.
          */
         formKey: {
@@ -144,6 +152,19 @@ An element that can generate a form
           computed: '_computedFormKey(advancedForm)',
           observer: '_formKeyChanged',
         },
+      },
+      /**
+       * Edit source.
+       */
+      _computedEditSource: function(newValue, oldValue) {
+        if (typeof newValue !== typeof undefined) {
+          let node = this.previewNode;
+          if (typeof node.getHaxProperties === "function") {
+            let props = node.getHaxProperties();
+            return props.canEditSource;
+          }
+        }
+        return true;
       },
       /**
        * Schema file changed.
@@ -249,6 +270,10 @@ An element that can generate a form
           for (var value in props.settings[this.formKey]) {
             if (props.settings[this.formKey].hasOwnProperty(value) && typeof props.settings[this.formKey][value].property !== typeof undefined && typeof this.value[props.settings[this.formKey][value].property] !== typeof undefined) {
               node.setAttribute(props.settings[this.formKey][value].property, this.value[props.settings[this.formKey][value].property]);
+            }
+            else {
+              // @todo add support for disabling based on not having advanced
+              // form
             }
           }
         }

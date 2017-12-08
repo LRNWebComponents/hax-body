@@ -1,6 +1,9 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-list/iron-list.html">
 <link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-item/paper-item.html">
 <link rel="import" href="../grafitto-filter/grafitto-filter.html">
 <link rel="import" href="hax-source-browser-item.html">
 
@@ -21,25 +24,36 @@ Browse a list of sources. This provides a listing of our gizmos that we've integ
       :host {
         display: block;
       }
+      hax-source-browser-item {
+        margin: 1em;
+      }
     </style>
     <slot></slot>
     <paper-input label="Sources" id="input"></paper-input>
-    <grafitto-filter id="filter" items=[[sourceList]] like="" where="title" as="sources">
+    <paper-dropdown-menu label="Type">
+      <paper-listbox slot="dropdown-content" selected="1">
+        <paper-item>Media</paper-item>
+        <paper-item>Video</paper-item>
+        <paper-item>Content</paper-item>
+      </paper-listbox>
+    </paper-dropdown-menu>
+    <grafitto-filter id="filter" items=[[sourceList]] like="{{search}}" where="title" as="sources">
       <template>
-        <iron-list id="ironlist" items=[[sources]] as="source">
+        <iron-list id="ironlist" items=[[sources]] as="source" grid>
           <template>
-            [[source]]
+            <div class="source-container">
             <hax-source-browser-item
               index="[[source.index]]"
               title="[[source.title]]"
-              icon="[[source.details.icon]]"
-              image="[[source.details.image]]"
-              color="[[source.details.color]]"
-              author="[[source.details.author]]"
-              teaser="[[source.details.teaser]]"
-              description="[[source.details.description]]"
-              examples="[[source.details.examples]]"
-              status="[[source.details.status]]"></hax-source-browser-item>
+              icon="[[source.icon]]"
+              image="[[source.tag]]"
+              color="[[source.color]]"
+              meta="[[source.meta]]"
+              groups="[[source.groups]]"
+              handles="[[source.handles]]"
+              description="[[source.description]]"
+              tag="[[source.tag]]"></hax-source-browser-item>
+            </div>
           </template>
         </iron-list>
       </template>
@@ -58,13 +72,19 @@ Browse a list of sources. This provides a listing of our gizmos that we've integ
           type: Array,
           value: [],
         },
+        /**
+         * Search term
+         */
+        search: {
+          type: String,
+        },
       },
       /**
        * Ready
        */
       ready: function() {
         this.set('sourceList', Polymer.HaxStore.instance.sourceList);
-//        this.$$('#ironlist').fire('iron-resize');
+        //this.$$('#ironlist').fire('iron-resize');
         this.$.filter.like = '';
         // handle value change
         this.$.input.addEventListener("value-changed", (from, to) => {

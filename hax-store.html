@@ -50,11 +50,18 @@
             type: Object,
           },
           /**
+           * Available gizmos.
+           */
+          gizmoList: {
+            type: Array,
+            value: [],
+          },
+          /**
            * Available elements.
            */
           elementList: {
-            type: Array,
-            value: [],
+            type: Object,
+            value: {},
           },
           /**
            * Available elements.
@@ -83,50 +90,20 @@
          */
         ready: function() {
           this._observer =
-            // notice elements when they update
-            Polymer.dom(this.$.elements).observeNodes( (info) => {
-              this.processNewElements(info.addedNodes);
-            });
-            // notice sources when they update
-            Polymer.dom(this.$.sources).observeNodes( (info) => {
-              this.processNewSources(info.addedNodes);
-            });
+          // notice elements when they update
+          Polymer.dom(this.$.elements).observeNodes( (info) => {
+            this.processNewElements(info.addedNodes);
+          });
+          // notice sources when they update
+          Polymer.dom(this.$.sources).observeNodes( (info) => {
+            this.processNewSources(info.addedNodes);
+          });
         },
         /**
          * Process new elements
          */
         processNewElements: function(e) {
           // when new nodes show up in the slots then fire the needed pieces
-          this._computeElementList();
-        },
-        /**
-         * Process sources and assemble the list
-         */
-        processNewSources: function() {
-          // be aggressive, be be, aggressive.. in the rebuild
-          this._computesourceList();
-        },
-        /**
-         * Compute element list from the slot's element area
-         */
-        _computesourceList: function() {
-          let effectiveChildren = Polymer.dom(this.$.sources).getEffectiveChildNodes();
-          let sourceNodes = effectiveChildren[0].children;
-          // loop over the sources to see if they are valid
-          // before we claim they exist
-          for (var i = 0; i < sourceNodes.length; i++) {
-            // verify responseMap exists
-            if (typeof sourceNodes[i].attributes.details !== typeof undefined) {
-              let details = JSON.parse(sourceNodes[i].attributes.details.value);
-              details.index = i;
-              this.sourceList.push(details);
-            }
-          }
-        },
-        /**
-         * Compute element list from the slot's element area
-         */
-        _computeElementList: function() {
           var effectiveChildren = Polymer.dom(this.$.elements).getEffectiveChildNodes();
           let elementNodes = Polymer.dom(effectiveChildren[0]).children;
           for (var i = 0; i < elementNodes.length; i++) {
@@ -142,9 +119,23 @@
             catch(err) {
               // error in the event this is a double registration so we still work
             }
-            // sets the place holder; event bubbles will have to fill in the gaps
-            if (typeof this.elementList[name] === typeof undefined) {
-              this.set('elementList.' + name, {});
+          }
+        },
+        /**
+         * Compute element list from the slot's element area
+         */
+        processNewSources: function() {
+          let effectiveChildren = Polymer.dom(this.$.sources).getEffectiveChildNodes();
+          let sourceNodes = effectiveChildren[0].children;
+          // loop over the sources to see if they are valid
+          // before we claim they exist
+          for (var i = 0; i < sourceNodes.length; i++) {
+            // verify responseMap exists
+            if (typeof sourceNodes[i].attributes.details !== typeof undefined) {
+              let details = JSON.parse(sourceNodes[i].attributes.details.value);
+              // index helps with page selection when needed
+              details.index = i;
+              this.sourceList.push(details);
             }
           }
         },
@@ -169,7 +160,6 @@
           // notice hax property definitions coming from anywhere
           document.body.addEventListener('hax-properties-set', this._haxPropertySet.bind(this));
         },
-
         /**
          * Save property to this object which may have come from...
          * anywhere.
@@ -190,6 +180,15 @@
          */
         _haxPropertySet: function(e) {
           if (e.detail && e.detail.properties && e.detail.tag) {
+            let gizmo = e.detail.properties.gizmo;
+            if (gizmo) {
+              gizmo.tag = e.detail.tag;
+              this.push('gizmoList', gizmo);
+              console.log(gizmo);
+            }
+            else {
+              console.log(e.detail);
+            }
             this.set('elementList.' + e.detail.tag, e.detail.properties);
           }
         },

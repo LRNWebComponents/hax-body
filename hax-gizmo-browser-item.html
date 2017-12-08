@@ -12,8 +12,8 @@
 <link rel="import" href="../materializecss-styles/colors.html">
 
 <!--
-`hax-source-browser-item`
-A button on the hax-source-browser app display
+`hax-gizmo-browser-item`
+A button on the hax-gizmo-browser app display
 
 @demo demo/index.html
 
@@ -21,7 +21,7 @@ A button on the hax-source-browser app display
  - 
 -->
 
-<dom-module id="hax-source-browser-item">
+<dom-module id="hax-gizmo-browser-item">
   <template>
     <style include="materializecss-styles-colors">
       :host {
@@ -70,7 +70,7 @@ A button on the hax-source-browser app display
   <script>
     Polymer({
 
-      is: 'hax-source-browser-item',
+      is: 'hax-gizmo-browser-item',
 
       properties: {
         /**
@@ -104,7 +104,7 @@ A button on the hax-source-browser app display
           type: String
         },
         /**
-         * Author related to this source
+         * Author related to this gizmo
          */
         author: {
           type: String
@@ -140,7 +140,7 @@ A button on the hax-source-browser app display
       _fireEvent: function(e) {
         var normalizedEvent = Polymer.dom(e);
         var local = normalizedEvent.localTarget;
-        this.fire('hax-source-selected', this.index);
+        this.fire('hax-gizmo-selected', this.index);
       }
     });
   </script>
