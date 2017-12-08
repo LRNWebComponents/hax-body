@@ -133,6 +133,12 @@ A button on the hax-gizmo-browser app display
         status: {
           type: Array
         },
+        /**
+         * Tag
+         */
+        tag: {
+          type: String,
+        },
       },
       /**
        * Fire an event that includes the eventName of what was just pressed.
@@ -140,7 +146,8 @@ A button on the hax-gizmo-browser app display
       _fireEvent: function(e) {
         var normalizedEvent = Polymer.dom(e);
         var local = normalizedEvent.localTarget;
-        this.fire('hax-gizmo-selected', this.index);
+        let element = Polymer.HaxStore.haxElementPrototype(this.tag);
+        Polymer.HaxStore.write('activeHaxElement', element, this);
       }
     });
   </script>

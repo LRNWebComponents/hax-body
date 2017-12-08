@@ -1,5 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-list/iron-list.html">
+<link rel="import" href="../iron-pages/iron-pages.html">
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-listbox/paper-listbox.html">
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
@@ -28,7 +29,6 @@ Browse a list of sources. This provides a listing of our gizmos that we've integ
         margin: 1em;
       }
     </style>
-    <slot></slot>
     <paper-input label="Sources" id="input"></paper-input>
     <paper-dropdown-menu label="Type">
       <paper-listbox slot="dropdown-content" selected="1">
@@ -37,7 +37,7 @@ Browse a list of sources. This provides a listing of our gizmos that we've integ
         <paper-item>Content</paper-item>
       </paper-listbox>
     </paper-dropdown-menu>
-    <grafitto-filter id="filter" items=[[sourceList]] like="{{search}}" where="title" as="sources">
+    <grafitto-filter id="filter" items=[[__sourceList]] like="{{search}}" where="title" as="sources">
       <template>
         <iron-list id="ironlist" items=[[sources]] as="source" grid>
           <template>
@@ -58,6 +58,12 @@ Browse a list of sources. This provides a listing of our gizmos that we've integ
         </iron-list>
       </template>
     </grafitto-filter>
+    <iron-pages
+      id="activesources"
+      selected="{{activeSource}}"
+      fallback-selection="my-media">
+        <slot></slot>
+    </iron-pages>
   </template>
   <script>
     Polymer({
@@ -66,13 +72,6 @@ Browse a list of sources. This provides a listing of our gizmos that we've integ
 
       properties: {
         /**
-         * List of sources.
-         */
-        sourceList: {
-          type: Array,
-          value: [],
-        },
-        /**
          * Search term
          */
         search: {
@@ -80,16 +79,35 @@ Browse a list of sources. This provides a listing of our gizmos that we've integ
         },
       },
       /**
-       * Ready
+       * Attached
        */
-      ready: function() {
-        this.set('sourceList', Polymer.HaxStore.instance.sourceList);
-        //this.$$('#ironlist').fire('iron-resize');
-        this.$.filter.like = '';
+      attached: function() {
+        this.resetBrowser();
+        this.$.filter.addEventListener('change', function(e){
+          this.$.filter.like = e.target.value;
+        });
         // handle value change
         this.$.input.addEventListener("value-changed", (from, to) => {
+          this.$.filter.value = '';
           this.$.filter.like = from.detail.value;
         });
+        this.$.filter.$$('#ironlist').fire('iron-resize');
+
+        document.body.addEventListener('hax-store-property-updated', this._haxStorePropertyUpdated.bind(this));
+      },
+      /**
+       * Store updated, sync.
+       */
+      _haxStorePropertyUpdated: function(e) {
+        if (e.detail && typeof e.detail.value !== typeof undefined && e.detail.property) {
+          this.set(e.detail.property, e.detail.value);
+        }
+      },
+      /**
+       * Reset this browser.
+       */
+      resetBrowser: function() {
+         this.set('__sourceList', Polymer.HaxStore.instance.sourceList);
       },
     });
   </script>

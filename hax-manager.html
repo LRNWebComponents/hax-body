@@ -52,7 +52,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         padding:0;
         margin:0;
       }
-      #activesources {
+      #sourcebrowser {
         height: 100vh;
       }
       .preview-buttons {
@@ -175,7 +175,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
               <div class="page-area add-area">
                 <div class="add-url-area">
                   <paper-input id="url" label="URL" type="url" auto-validate></paper-input>
-                  <div class="url-description">A full URL with http:// referencing a link that already exists on the web.</div>
+                <div class="url-description">A full URL with http:// referencing a link that already exists on the web.</div>
                 </div>
                 <div class="add-upload-area">
                   <vaadin-upload target$="{{uploadPath}}" method="POST" form-data-name="file-upload"></vaadin-upload>
@@ -183,13 +183,9 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
                 <paper-button id="newassetconfigure" confirm raised>Configure item</paper-button>
               </div>
               <div class="page-area">
-                <hax-source-browser id="sourcebrowser"></hax-source-browser>
-                <iron-pages
-                  id="activesources"
-                  selected="{{activeSource}}"
-                  fallback-selection="my-media">
-                    <slot name="sources"></slot>
-                </iron-pages>
+                <hax-source-browser id="sourcebrowser">
+                  <slot></slot>
+                </hax-source-browser>
               </div>
               <div class="page-area">
                 <hax-gizmo-browser id="gizmobrowser"></hax-gizmo-browser>
@@ -197,7 +193,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
             </iron-pages>
           </div>
           <div>
-            <hax-preview id="preview" element="{{activeElement}}"></hax-preview>
+            <hax-preview id="preview" element="{{activeHaxElement}}"></hax-preview>
             <div class="preview-buttons">
               <paper-button id="insert" confirm raised>Insert</paper-button>
               <paper-button id="cancel" raised>Cancel</paper-button>
@@ -247,18 +243,11 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
           value: 0,
         },
         /**
-         * Active source currently selected
-         */
-        activeSource: {
-          type: String,
-          value: 0,
-        },
-        /**
          * Active element
          */
-        activeElement: {
+        activeHaxElement: {
           type: Object,
-          observer: '_activeElementChanged',
+          observer: '_activeHaxElementChanged',
         },
         /**
          * List of sources so they can be added as tabs.
@@ -268,6 +257,22 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
           type: Array,
           value: [],
         },
+      },
+      /**
+       * Attached to the DOM, now fire that we exist.
+       */
+      attached: function() {
+        // fire an event that this is the manager
+        this.fire('hax-register-manager', this);
+        document.body.addEventListener('hax-store-property-updated', this._haxStorePropertyUpdated.bind(this));
+      },
+      /**
+       * Store updated, sync.
+       */
+      _haxStorePropertyUpdated: function(e) {
+        if (e.detail && typeof e.detail.value !== typeof undefined && e.detail.property) {
+          this.set(e.detail.property, e.detail.value);
+        }
       },
       /**
        * Form title of the modal based on the step.
@@ -283,10 +288,11 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
       /**
        * Notice active element changed.
        */
-      _activeElementChanged: function(newValue, oldValue) {
+      _activeHaxElementChanged: function(newValue, oldValue) {
         if (typeof oldValue !== typeof undefined) {
           this.$.preview.advancedForm = false;
           this.$.step.disabled = false;
+          this.selectStep('configure');
         }
       },
       /**
@@ -295,13 +301,10 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
       insertHaxElement: function(e) {
         // bubble up the inject event / element to the body
         let previewNode = this.$.preview.getPreviewNode();
-        if (this.editExistingNode) {
-          this.fire('hax-content-replace-active', previewNode);
-        }
-        else {
-          let element = this.nodeToHaxElement(previewNode);
-          this.fire('hax-content-insert', element);
-        }
+        let element = this.nodeToHaxElement(previewNode);
+        element.replace = this.editExistingNode;
+        element.replacement = previewNode;
+        this.fire('hax-insert-content', element);
         // reset self
         this.resetManager();
         // close window
@@ -382,8 +385,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         this.editExistingNode = false;
         this.activeStep = false;
         this.activePage = 0;
-        this.activeSource = 0;
-        this.activeElement = {};
+        Polymer.HaxStore.write('activeHaxElement', {}, this);
       },
       /**
        * Cancel and close.
@@ -397,15 +399,18 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
        * Configure asset after upload or URL passed in.
        */
       newAssetConfigure: function() {
-        // @todo need to process what this is before we ship it along
-        this.activeElement = {
-          'tag': 'video-player',
-          'properties': {
-            'source': this.$.url.value,
-          },
-          'content':'',
+        let values = {
+          url: this.$.url.value
         };
-        this.activeStep = true;
+        // we have no clue what this is.. let's try and guess..
+        let type = Polymer.HaxStore.guessGizmoType(values);
+        let gizmo = Polymer.HaxStore.guessGizmo(type, values);
+        if (typeof gizmo.tag !== typeof undefined) {
+          Polymer.HaxStore.write('activeHaxElement', gizmo, this);
+        }
+        else {
+          Polymer.HaxStore.toast("Sorry, I don't know how to handle that link yet.");
+        }
       },
       /**
        * Toggle ourselves.

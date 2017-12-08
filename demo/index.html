@@ -17,10 +17,12 @@
     <link rel="import" href="../../lrnsys-layout/lrnsys-dialog.html">
     <!-- required for just about any app using HAX though them all being separate allows developers to replace or not use any one of the pieces and just implement the capabilities that the element is providing as far as elements and binding. -->
     <link rel="import" href="../hax-store.html">
-    <link rel="import" href="../hax-body.html">
-    <link rel="import" href="../hax-panel.html">
-    <link rel="import" href="../hax-manager.html">
+    <link rel="import" href="../hax-autoloader.html">
     <link rel="import" href="../hax-source.html">
+    <link rel="import" href="../hax-manager.html">
+    <link rel="import" href="../hax-panel.html">
+    <link rel="import" href="../hax-body.html">
+    <link rel="import" href="../hax-export-dialog.html">
 
     <style is="custom-style" include="demo-pages-shared-styles">
       .vertical-section-container {
@@ -49,261 +51,199 @@
   </head>
   <body>
     <div class="vertical-section-container">
-      <h3>Basic hax-body demo</h3>
-      <demo-snippet>
-        <template is="dom-bind">
-          <hax-store>
-            <div slot="elements">
-              <video-player></video-player>
-              <wikipedia-query></wikipedia-query>
-              <lrn-table></lrn-table>
-              <media-image></media-image>
-            </div>
-            <div slot="sources">
-            <hax-source
-              id="source1"
-              details='{
-              "title":"Media",
-              "icon":"perm-media",
-              "color":"blue",
-              "author": "ELMS: Learning Network",
-              "teaser": "Our media solution",
-              "description": "The backend for ELMS:LN that allows for asset management and recall. Allows for remote referencing of things as well as tagging them by course so that we know where things are used after the fact.",
-              "status": "available"
-              }'
-              name="ELMS:LN Media"
-              user="SERVICE_ELMSMEDIA_LN"
-              pass="106025726eea79168e7b9d3aff6330"
-              request-end-point="http://data-media.elmsln.local/node.json"
-              request-params='{
-              "deep-load-refs":"file",
-              "title":""}'
-              query-param="title"
-              response-map='{
-                "root": "list",
-                "gizmoType": "video",
-                "url": "http://media.elmsln.local/entity_iframe/node/",
-                "id": "nid",
-                "title": "title",
-                "description": "body",
-                "image": "field_image.url",
-                "customGizmoType": "type"}'></hax-source>
-            <hax-source
-              id="source2"
-              details='{
-              "title":"Youtube",
-              "icon":"av:play-arrow",
-              "color":"red",
-              "author": "Google, Youtube LLC",
-              "teaser": "Popular public video solution",
-              "description": "Remember that anything you place here though will be out in the open. Great for OER.",
-              "status": "available"
-              }'
-              request-end-point="https://www.googleapis.com/youtube/v3/search"
-              request-params='{
-              "part":"snippet",
-              "q":"",
-              "key": "AIzaSyAF9zKXv-fxus9GNqn40SHzTn6F8A7h-Yo",
-              "type": "video",
-              "maxResults":"12"}'
-              query-param="q"
-              response-map='{
-                "root": "items",
-                "gizmoType": "video",
-                "url": "https://www.youtube.com/watch?v=",
-                "id": "id.videoId",
-                "title": "snippet.title",
-                "description": "snippet.description",
-                "image": "snippet.thumbnails.high.url"}'></hax-source>
-            <hax-source
-              id="source3"
-              details='{
-              "title":"Vimeo",
-              "icon":"av:play-circle-filled",
-              "color":"blue",
-              "author": "Vimeo Inc.",
-              "teaser": "Popular video community",
-              "description": "Vimeo is a great place for artists and higher quality video. There is also the ability to have more control over the storage and delivery of media as needed.",
-              "status": "available"
-              }'
-              request-end-point="https://api.vimeo.com/videos"
-              request-params='{
-              "access_token": "0a718b853bad87571d52e9fb554e0a43",
-              "query": "",
-              "direction": "asc",
-              "sort": "alphabetical",
-              "filter": "CC",
-              "per_page":"12"
-              }'
-              query-param="query"
-              response-map='{
-                "root": "data",
-                "gizmoType": "video",
-                "url": "",
-                "id": "link",
-                "title": "name",
-                "description": "description",
-                "image": "pictures.sizes.1.link"}'></hax-source>
-            </div>
-          </hax-store>
-          <hax-body id="body" edit-mode context-offset-left="-185">
-            <h2>Heading 2</h2>
-            <p>A whole bunch of text in here that's awesome!</p>
-            <h3>Heading 3</h3>
-            <p>A whole bunch of text in here that's awesome!A whole bunch of text in here that's awesome!A whole bunch of text in here that's awesome!A whole bunch of text in here that's awesome!A whole bunch of text in here that's awesome!A whole bunch of text in here that's awesome!A whole bunch of text in here that's awesome!A whole bunch of text in here that's awesome!</p>
-            <p>Another paragraph that's a bit of a break from a whole bunch of text in here that's awesome!</p>
-          </hax-body>
+      <template is="dom-bind">
+        <hax-store></hax-store>
+        <hax-autoloader>
+          <video-player></video-player>
+          <wikipedia-query></wikipedia-query>
+          <lrn-table></lrn-table>
+          <media-image></media-image>
+        </hax-autoloader>
+        <hax-export-dialog></hax-export-dialog>
+        <hax-manager id="manager">
+          <hax-source
+            details='{
+            "title":"Media",
+            "icon":"perm-media",
+            "color":"blue",
+            "author": "ELMS: Learning Network",
+            "teaser": "Our media solution",
+            "description": "The backend for ELMS:LN that allows for asset management and recall. Allows for remote referencing of things as well as tagging them by course so that we know where things are used after the fact.",
+            "status": "available"
+            }'
+            name="ELMS:LN Media"
+            user="SERVICE_ELMSMEDIA_LN"
+            pass="106025726eea79168e7b9d3aff6330"
+            request-end-point="http://data-media.elmsln.local/node.json"
+            request-params='{
+            "deep-load-refs":"file",
+            "title":""}'
+            query-param="title"
+            response-map='{
+              "root": "list",
+              "gizmoType": "video",
+              "url": "http://media.elmsln.local/entity_iframe/node/",
+              "id": "nid",
+              "title": "title",
+              "description": "body",
+              "image": "field_image.url",
+              "customGizmoType": "type"}'></hax-source>
+          <hax-source
+            details='{
+            "title":"Youtube",
+            "icon":"av:play-arrow",
+            "color":"red",
+            "author": "Google, Youtube LLC",
+            "teaser": "Popular public video solution",
+            "description": "Remember that anything you place here though will be out in the open. Great for OER.",
+            "status": "available"
+            }'
+            request-end-point="https://www.googleapis.com/youtube/v3/search"
+            request-params='{
+            "part":"snippet",
+            "q":"",
+            "key": "AIzaSyAF9zKXv-fxus9GNqn40SHzTn6F8A7h-Yo",
+            "type": "video",
+            "maxResults":"12"}'
+            query-param="q"
+            response-map='{
+              "root": "items",
+              "gizmoType": "video",
+              "url": "https://www.youtube.com/watch?v=",
+              "id": "id.videoId",
+              "title": "snippet.title",
+              "description": "snippet.description",
+              "image": "snippet.thumbnails.high.url"}'></hax-source>
+          <hax-source
+            details='{
+            "title":"Vimeo",
+            "icon":"av:play-circle-filled",
+            "color":"blue",
+            "author": "Vimeo Inc.",
+            "teaser": "Popular video community",
+            "description": "Vimeo is a great place for artists and higher quality video. There is also the ability to have more control over the storage and delivery of media as needed.",
+            "status": "available"
+            }'
+            request-end-point="https://api.vimeo.com/videos"
+            request-params='{
+            "access_token": "0a718b853bad87571d52e9fb554e0a43",
+            "query": "",
+            "direction": "asc",
+            "sort": "alphabetical",
+            "filter": "CC",
+            "per_page":"12"
+            }'
+            query-param="query"
+            response-map='{
+              "root": "data",
+              "gizmoType": "video",
+              "url": "",
+              "id": "link",
+              "title": "name",
+              "description": "description",
+              "image": "pictures.sizes.1.link"}'></hax-source>
+        </hax-manager>
+        <hax-body id="body" context-offset-left="-164">
+          <h1>Click edit in the top left</h1>
+          <p>Welcome to HAX. An entirely different way to author, edit and create content. HAX solves the problem your content contributors always complain about - getting things on the internet. It's 2017, and yet much of the internet is still constrained to WYSIWYG editors started in 2001. They are better then nothing; but we can build so much more then that now! HAX stands for Headless Authoring eXperience. Because authoring experience makes and breaks any platform!</p>
+          <h2>Goals of HAX</h2>
+          <ul>
+            <li>Create a second to none content authoring experience (AX) that works in any platform</li>
+            <li>Make content that is accessible, mobile friendly, engaging, and schematized by default.</li>
+            <li>Create a second to none developer experience (DX) to extend HAX by simply extending the web as a platform via webcomponents</li>
+            <li>Further the mission of education through openly available toolsets</li>
+            <li>Create integrations with CMSs and static site generators that will have us power them</li>
+          </ul>
+          <h3>Technical bit</h3>
+          <p>HAX is built on a browser standard called Webcomponents. Its utilizing Polymer 1.x.x to do much of the heavy lifting. In the future we may move to Polymer 3 or StencilJS or pure webcomponents. This was produced by a very small team so there's only so many hours in a day.</p>
+          <video-player source="https://www.youtube.com/watch?v=bzH4seWf8rQ" resource="#9bca8e1e-8b7b-5c41-0248" prefix="oer:http://oerschema.org/ schema:http://schema.org/ dc:http://purl.org/dc/terms/ foaf:http://xmlns.com/foaf/0.1/ cc:http://creativecommons.org/ns# bib:http://bib.schema.org " responsive="" video-style="style1" class="x-scope video-player-0">
+          </video-player>
 
-          <!-- potential wiring to make this work -->
-          <hax-panel id="panel" opened show-advanced>
-            <span slot="post">
-              <lrnsys-collapselist-item>
-              <span slot="label"><div class="label">Future</div></span>
-              <span slot="content">
+        </hax-body>
+        <!-- potential wiring to make this work -->
+        <hax-panel id="panel" show-advanced>
+          <span slot="post">
+            <lrnsys-collapselist-item>
+            <span slot="label"><div class="label">Future</div></span>
+            <span slot="content">
+              <hax-panel-item
+                icon="touch-app"
+                icon-class="blue-text"
+                label="Interactive video"
+                event-name="h5p-interactive-video"
+                voice-command="insert interactive video"></hax-panel-item>
+              <hax-panel-item
+                icon="hardware:videogame-asset"
+                icon-class="red-text"
+                label="Self-check"
+                event-name="h5p-multiple-choice"
+                voice-command="insert self check"></hax-panel-item>
+              <hax-panel-item
+                icon="timeline"
+                icon-class="yellow-text text-darken-4"
+                label="Timeline"
+                event-name="timeline"
+                voice-command="insert timeline"></hax-panel-item>
+              <hax-panel-item
+                icon="maps:place"
+                icon-class="green-text"
+                label="Map"
+                event-name="map"
+                voice-command="insert map"></hax-panel-item>
+              <hax-panel-item
+                icon="social:share"
+                icon-class="pink-text"
+                label="JMOL"
+                event-name="jmol"
+                voice-command="insert molecule"></hax-panel-item>
+              <hax-panel-item
+                icon="social:poll"
+                icon-class="orange-text"
+                label="Poll"
+                event-name="poll"
+                voice-command="insert poll"></hax-panel-item>
                 <hax-panel-item
-                  icon="touch-app"
-                  icon-class="blue-text"
-                  label="Interactive video"
-                  event-name="h5p-interactive-video"
-                  voice-command="insert interactive video"></hax-panel-item>
-                <hax-panel-item
-                  icon="hardware:videogame-asset"
-                  icon-class="red-text"
-                  label="Self-check"
-                  event-name="h5p-multiple-choice"
-                  voice-command="insert self check"></hax-panel-item>
-                <hax-panel-item
-                  icon="timeline"
-                  icon-class="yellow-text text-darken-4"
-                  label="Timeline"
-                  event-name="timeline"
-                  voice-command="insert timeline"></hax-panel-item>
-                <hax-panel-item
-                  icon="maps:place"
-                  icon-class="green-text"
-                  label="Map"
-                  event-name="map"
-                  voice-command="insert map"></hax-panel-item>
-                <hax-panel-item
-                  icon="social:share"
-                  icon-class="pink-text"
-                  label="JMOL"
-                  event-name="jmol"
-                  voice-command="insert molecule"></hax-panel-item>
-                <hax-panel-item
-                  icon="social:poll"
-                  icon-class="orange-text"
-                  label="Poll"
-                  event-name="poll"
-                  voice-command="insert poll"></hax-panel-item>
-                  <hax-panel-item
-                  icon="assignment"
-                  icon-class="yellow-text text-darken-2"
-                  label="Assignment"
-                  event-name="assignment"
-                  voice-command="insert assignment"></hax-panel-item>
-                <hax-panel-item
-                  icon="assessment"
-                  icon-class="purple-text text-darken-2"
-                  label="Quiz"
-                  event-name="quiz"
-                  voice-command="insert quiz"></hax-panel-item>
-              </span>
-            </lrnsys-collapselist-item>
-          </span>
-          </hax-panel>
-          <hax-manager id="manager"></hax-manager>
-          <paper-button id="togglebutton">Enabled</paper-button>
-          <lrnsys-dialog body-append id="exportdialog" title="HTML">
-            <h2 slot="header">HTML</h2>
-            <div>
-              <textarea id="textarea" rows="20" style="width:100%;"></textarea>
-            </div>
-          </lrnsys-dialog>
-          <script>
-            var p = document.querySelector('#panel');
-            var man = document.querySelector('#manager');
-            var m1 = document.querySelector('#source1');
-            var m2 = document.querySelector('#source2');
-            var m3 = document.querySelector('#source3');
-            var b = document.querySelector('#body');
-            var togglebutton = document.querySelector('#togglebutton');
-            var managerbutton = document.querySelector('#managerbutton');
-            // panel says to insert something
-            p.addEventListener('hax-content-insert', function(e) {
-              var properties = {};
-              // support for properties to be set automatically optionally
-              if (typeof e.detail.properties !== typeof undefined) {
-                properties = e.detail.properties;
-              }
-              b.haxInsert(e.detail.tag, e.detail.content, properties);
-            });
-            // insert an item from hax-manager saying to do so
-            man.addEventListener('hax-content-insert', function(e) {
-              console.log(e.detail);
-              var properties = {};
-              // support for properties to be set automatically optionally
-              if (typeof e.detail.properties !== typeof undefined) {
-                properties = e.detail.properties;
-              }
-              b.haxInsert(e.detail.tag, e.detail.content, properties);
-            });
-            // replace existing node that is active in hax-body
-            man.addEventListener('hax-content-replace-active', function(e) {
-              console.log(e.detail);
-              b.activeNode = b.haxReplaceNode(b.activeNode, e.detail);
-            });
-             // sources have their own events at this level
-             // which is a little weird but sources live in the app
-             // layer and not in the item they are slotted in
-             // Because we have 3 examples in this demo, we have 3 calls
-            m1.addEventListener('hax-source-selected', function(e) {
-              man.activeElement = e.detail;
-              console.log('hi');
+                icon="assignment"
+                icon-class="yellow-text text-darken-2"
+                label="Assignment"
+                event-name="assignment"
+                voice-command="insert assignment"></hax-panel-item>
+              <hax-panel-item
+                icon="assessment"
+                icon-class="purple-text text-darken-2"
+                label="Quiz"
+                event-name="quiz"
+                voice-command="insert quiz"></hax-panel-item>
+            </span>
+          </lrnsys-collapselist-item>
+        </span>
+        </hax-panel>
+        <script>
+          var p = document.querySelector('#panel');
+          var man = document.querySelector('#manager');
+          var b = document.querySelector('#body');
+          // illustrate the import/export button
+          p.addEventListener('hax-item-selected', function(e) {
+            console.log(e.detail);
+            if (e.detail.eventName === 'hax-manager-open') {
+              man.resetManager();
+              man.toggleDialog();
+            }
+          });
+          // settings button selected from hax-ce-context bar
+          // which means we should skip to the settings page after
+          // we set the thing selected as the active element to work
+          // on in the manager
+          b.addEventListener('hax-context-item-selected', function(e) {
+            if (e.detail.eventName == 'hax-manager-configure') {
+              man.activeElement = man.nodeToHaxElement(b.activeNode);
+              man.editExistingNode = true;
               man.selectStep('configure');
-            });
-            m2.addEventListener('hax-source-selected', function(e) {
-              man.activeElement = e.detail;
-              man.selectStep('configure');
-            });
-            m3.addEventListener('hax-source-selected', function(e) {
-              man.activeElement = e.detail;
-              man.selectStep('configure');
-            });
-            // illustrate the import/export button
-            p.addEventListener('hax-item-selected', function(e) {
-              console.log(e.detail);
-              if (e.detail.eventName === 'advanced-import-export') {
-                let content = b.haxToContent();
-                document.querySelector('#textarea').innerHTML = content;
-                document.querySelector('#exportdialog').toggleDialog();
-              }
-              else if (e.detail.eventName === 'hax-manager-open') {
-                man.resetManager();
-                man.toggleDialog();
-              }
-            });
-            // settings button selected from hax-ce-context bar
-            // which means we should skip to the settings page after
-            // we set the thing selected as the active element to work
-            // on in the manager
-            b.addEventListener('hax-context-item-selected', function(e) {
-              if (e.detail.eventName == 'hax-manager-configure') {
-                man.activeElement = man.nodeToHaxElement(b.activeNode);
-                man.editExistingNode = true;
-                man.selectStep('configure');
-                man.toggleDialog();
-              }
-            });
-            // simple toggle for state to ensure it matches
-            togglebutton.addEventListener('click', function(e) {
-              window.open = !window.open;
-              p.opened = window.open;
-              b.editMode = window.open;
-            });
-          </script>
-        </template>
-      </demo-snippet>
+              man.toggleDialog();
+            }
+          });
+        </script>
+      </template>
     </div>
   </body>
 </html>

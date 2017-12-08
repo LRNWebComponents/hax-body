@@ -1,6 +1,8 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../lrnsys-layout/lrnsys-collapselist-item.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="hax-panel-item.html">
 
 <!--
@@ -36,9 +38,54 @@ as the events being bubbled up include HTML nodes to inject into something
       lrnsys-collapselist-item .label {
         text-align: center;
       }
+      #button {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        margin-left: 0;
+        transition: margin .3s;
+        background-color: #EEEEEE;
+        height: 38px;
+        width: 38px;
+        border: 1px solid #DDDDDD;
+      }
+      #button[data-opened] {
+        margin-left: 100px;
+      }
+      #htmlexport {
+        position: fixed;
+        top: 38px;
+        left: 0;
+        z-index: 2;
+        margin-left: 0;
+        transition: margin .3s;
+        background-color: #EEEEEE;
+        height: 38px;
+        width: 38px;
+        border: 1px solid #DDDDDD;
+      }
+      #htmlexport[data-opened] {
+        margin-left: 100px;
+      }
     </style>
-    <app-drawer id="drawer" opened="{{opened}}" disable-swipe persistent transition-duration="300">
-
+    <paper-icon-button data-opened$="[[editMode]]" on-tap="_clickButton" icon="power-settings-new" id="button"></paper-icon-button>
+    <paper-tooltip
+      for="button"
+      position="right"
+      offset="10"
+      animation-delay="0">
+      [[__tipText]]
+    </paper-tooltip>
+    <paper-icon-button hidden$="[[!showHTMLExport]]" data-opened$="[[editMode]]" on-tap="_htmlExport" icon="code" id="htmlexport"></paper-icon-button>
+    <paper-tooltip
+      for="htmlexport"
+      position="right"
+      offset="10"
+      animation-delay="0">
+      Export
+    </paper-tooltip>
+    <app-drawer id="drawer" opened="{{editMode}}" disable-swipe persistent transition-duration="300">
       <div style="height: 100%; overflow: auto;">
         <lrnsys-collapselist-item opened>
           <span slot="label"><div class="label">Create</div></span>
@@ -69,7 +116,7 @@ as the events being bubbled up include HTML nodes to inject into something
               voice-command="insert block"></hax-panel-item>
           </span>
         </lrnsys-collapselist-item>
-        <lrnsys-collapselist-item hidden$="[[!showAdvanced]]">
+        <lrnsys-collapselist-item>
           <span slot="label"><div class="label">Extras</div></span>
           <span slot="content">
             <hax-panel-item
@@ -84,10 +131,6 @@ as the events being bubbled up include HTML nodes to inject into something
               label="Divider"
               event-name="divider"
               voice-command="insert divider"></hax-panel-item>
-            <hax-panel-item
-              icon="communication:import-export"
-              label="Export"
-              event-name="advanced-import-export"></hax-panel-item>
           </span>
         </lrnsys-collapselist-item>
         <slot name="post"></slot>
@@ -106,19 +149,34 @@ as the events being bubbled up include HTML nodes to inject into something
         /**
          * State of the panel
          */
-        opened: {
+        editMode: {
           type: Boolean,
           reflectToAttribute: true,
-          notify: true,
-          value: false,
+          observer: '_editModeChanged',
         },
         /**
          * Showing advanced area.
          */
-        showAdvanced: {
+        showHTMLExport: {
           type: Boolean,
-          value: false,
+          value: true,
         },
+      },
+      /**
+       * Attached to the DOM; now we can fire event to the store that
+       * we exist and are the thing being edited.
+       */
+      attached: function() {
+        this.fire('hax-register-panel', this);
+        document.body.addEventListener('hax-store-property-updated', this._haxStorePropertyUpdated.bind(this));
+      },
+      /**
+       * Store updated, sync.
+       */
+      _haxStorePropertyUpdated: function(e) {
+        if (e.detail && typeof e.detail.value !== typeof undefined && e.detail.property) {
+          this.set(e.detail.property, e.detail.value);
+        }
       },
       /**
        * Process event for simple content inserts.
@@ -130,22 +188,22 @@ as the events being bubbled up include HTML nodes to inject into something
           case 'text':
             detail.tag = 'p';
             detail.content = 'New paragraph';
-            this.fire('hax-content-insert', detail);
+            this.fire('hax-insert-content', detail);
           break;
           case 'divider':
             detail.tag = 'hr';
             detail.content = '';
-            this.fire('hax-content-insert', detail);
+            this.fire('hax-insert-content', detail);
           break;
           case 'header':
             detail.tag = 'h2';
             detail.content = 'Heading';
-            this.fire('hax-content-insert', detail);
+            this.fire('hax-insert-content', detail);
           break;
           case 'blockquote':
             detail.tag = 'blockquote';
             detail.content = 'Quote';
-            this.fire('hax-content-insert', detail);
+            this.fire('hax-insert-content', detail);
           break;
           case 'layout':
             detail.tag = 'hax-blox';
@@ -153,7 +211,7 @@ as the events being bubbled up include HTML nodes to inject into something
             detail.properties = {
               'layout': 'cols-50-50',
             };
-            this.fire('hax-content-insert', detail);
+            this.fire('hax-insert-content', detail);
           break;
           case 'undo':
             document.execCommand('undo');
@@ -167,10 +225,35 @@ as the events being bubbled up include HTML nodes to inject into something
         }
       },
       /**
+       * _editModeChanged
+       */
+      _editModeChanged: function(newValue, oldValue) {
+        if (typeof newValue !== typeof undefined && newValue) {
+          this.__tipText = 'save';
+        }
+        else {
+          this.__tipText = 'edit';
+        }
+      },
+      /**
+       * Toggle the drawer when the button is clicked.
+       */
+      _clickButton: function(e) {
+        this.toggle();
+      },
+      /**
+       * HTML Export trigger.
+       */
+      _htmlExport: function(e) {
+        //simple toggle
+        Polymer.HaxStore.instance.haxExport.toggleDialog();
+      },
+      /**
        * Toggle the panel.
        */
       toggle: function(e) {
-        this.$.drawer.toggle();
+        Polymer.HaxStore.write('editMode', !this.editMode, this);
+        this.$.drawer.opened = this.editMode;
       }
     });
   </script>

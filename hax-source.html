@@ -209,6 +209,17 @@
       },
       observers: ['_setBasicAuth(user, pass)'],
       /**
+       * Ready.
+       */
+      attached: function() {
+        // This also allows stores to be added dynamically
+        // and anywhere in the DOM, even though within hax-manager
+        // makes the most sense since that's where it is presented
+        // fire event so we know that sources exist and we can track
+        // their details for visualization in hax-source-browser as an item
+        this.fire('hax-register-source', this.details);
+      },
+      /**
        * Set basic auth header if we have a u / p
        */
       _setBasicAuth(user, pass) {

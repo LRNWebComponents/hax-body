@@ -26,7 +26,7 @@ Browse a list of gizmos. This provides a listing of custom elements for people t
     </style>
     <slot></slot>
     <paper-input label="Gizmos" id="input"></paper-input>
-    <grafitto-filter id="filter" items=[[gizmoList]] like="{{search}}" where="title" as="gizmos">
+    <grafitto-filter id="filter" items=[[__gizmoList]] like="{{search}}" where="title" as="gizmos">
       <template>
         <iron-list id="ironlist" items=[[gizmos]] as="gizmo" grid>
           <template>
@@ -34,6 +34,7 @@ Browse a list of gizmos. This provides a listing of custom elements for people t
             <hax-gizmo-browser-item
               index="[[gizmo.index]]"
               title="[[gizmo.title]]"
+              tag="[[gizmo.tag]]"
               icon="[[gizmo.icon]]"
               image="[[gizmo.image]]"
               color="[[gizmo.color]]"
@@ -55,13 +56,6 @@ Browse a list of gizmos. This provides a listing of custom elements for people t
 
       properties: {
         /**
-         * List of gizmo.
-         */
-        gizmoList: {
-          type: Array,
-          value: [],
-        },
-        /**
          * Search term
          */
         search: {
@@ -69,17 +63,35 @@ Browse a list of gizmos. This provides a listing of custom elements for people t
         },
       },
       /**
-       * Ready
+       * Attached
        */
-      ready: function() {
-        this.set('gizmoList', Polymer.HaxStore.instance.gizmoList);
-        console.log(this.gizmoList);
-        //this.$$('#ironlist').fire('iron-resize');
-        this.$.filter.like = '';
+      attached: function() {
+        this.resetBrowser();
+        this.$.filter.addEventListener('change', function(e){
+          this.$.filter.like = e.target.value;
+        });
         // handle value change
         this.$.input.addEventListener("value-changed", (from, to) => {
+          this.$.filter.value = '';
           this.$.filter.like = from.detail.value;
         });
+        this.$.filter.$$('#ironlist').fire('iron-resize');
+
+        document.body.addEventListener('hax-store-property-updated', this._haxStorePropertyUpdated.bind(this));
+      },
+      /**
+       * Store updated, sync.
+       */
+      _haxStorePropertyUpdated: function(e) {
+        if (e.detail && typeof e.detail.value !== typeof undefined && e.detail.property) {
+          this.set(e.detail.property, e.detail.value);
+        }
+      },
+      /**
+       * Reset this browser.
+       */
+      resetBrowser: function() {
+         this.set('__gizmoList', Polymer.HaxStore.instance.gizmoList);
       },
     });
   </script>
