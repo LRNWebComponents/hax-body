@@ -109,17 +109,17 @@ as the events being bubbled up include HTML nodes to inject into something
               label="Gizmo"
               event-name="hax-manager-open"
               voice-command="insert gizmo"></hax-panel-item>
+          </span>
+        </lrnsys-collapselist-item>
+        <lrnsys-collapselist-item>
+          <span slot="label"><div class="label">More</div></span>
+          <span slot="content">
             <hax-panel-item
               icon="view-quilt"
               icon-class="red-text text-darken-1"
               label="Blox"
               event-name="layout"
               voice-command="insert block"></hax-panel-item>
-          </span>
-        </lrnsys-collapselist-item>
-        <lrnsys-collapselist-item>
-          <span slot="label"><div class="label">Extras</div></span>
-          <span slot="content">
             <hax-panel-item
               icon="view-agenda"
               icon-class="red-text text-darken-1"
@@ -134,7 +134,7 @@ as the events being bubbled up include HTML nodes to inject into something
               voice-command="insert divider"></hax-panel-item>
           </span>
         </lrnsys-collapselist-item>
-        <slot name="post"></slot>
+        <slot></slot>
       </div>
     </app-drawer>
   </template>
@@ -213,6 +213,11 @@ as the events being bubbled up include HTML nodes to inject into something
               'layout': 'cols-50-50',
             };
             this.fire('hax-insert-content', detail);
+          break;
+          case 'hax-manager-open':
+            Polymer.HaxStore.instance.haxManager.resetManager();
+            Polymer.HaxStore.write('activeHaxElement', {}, this);
+            Polymer.HaxStore.instance.haxManager.toggleDialog();
           break;
           case 'undo':
             document.execCommand('undo');

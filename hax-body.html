@@ -724,6 +724,21 @@ A LRN element that will change the world.
               this.activeNode.alt = alt;
             }
           break;
+          // settings button selected from hax-ce-context bar
+          // which means we should skip to the settings page after
+          // we set the thing selected as the active element to work
+          // on in the manager
+          case 'hax-manager-configure':
+            // reset the manager
+            Polymer.HaxStore.instance.haxManager.resetManager();
+            // write activeElement updated so it'll go into the preview
+            let haxElement = Polymer.HaxStore.nodeToHaxElement(Polymer.HaxStore.instance.activeNode);
+            Polymer.HaxStore.write('activeHaxElement', haxElement, this);
+            // clean up the manager before opening
+            Polymer.HaxStore.instance.haxManager.editExistingNode = true;
+            Polymer.HaxStore.instance.haxManager.selectStep('configure');
+            Polymer.HaxStore.instance.haxManager.toggleDialog();
+          break;
           default:
             // implies an event we haven't trapped for yet
             console.log(detail);
@@ -847,7 +862,9 @@ A LRN element that will change the world.
           newValue.classList.add('hax-active');
           this.$.textcontextmenu.selectedValue = newValue.tagName.toLowerCase();
           // position the operations / in context element
-          this.positionContextMenus(newValue);
+          this.async( () => {
+            this.positionContextMenus(Polymer.HaxStore.instance.activeNode);
+          });
           if (newValue.style.textAlign == 'right') {
             this.$.textcontextmenu.justifyIcon = 'editor:format-align-right';
             this.$.textcontextmenu.justifyValue = 'text-align-right';

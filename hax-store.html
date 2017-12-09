@@ -156,8 +156,7 @@
          * Source selected, pass this event to the manager.
          */
         _haxStoreSourceSelected: function(e) {
-          this.activeElement = e.detail;
-          this.haxManager.selectStep('configure');
+          // we don't have to do anything yet for a soure being selected here
         },
         /**
          * Set the haxManager node so we can interface with it.
@@ -254,6 +253,73 @@
 
       });
       /**
+       * Convert a node to a HAX element. Hax elements ensure
+       * a certain level of sanitization by verifying tags and
+       * properties / attributes that have values.
+       */
+      Polymer.HaxStore.nodeToHaxElement = (node) => {
+        // build out the properties to send along
+        let props = {};
+        let styles = '';
+        // support our simple shift around styles
+        if (typeof node.style !== typeof undefined) {
+          // ensure our supported inline styles come along
+          if (node.style.float != null && node.style.float != '') {
+            styles += 'float:' + node.style.float + '; ';
+          }
+          if (node.style.margin != null && node.style.margin != '') {
+            styles += 'margin:' + node.style.margin + '; ';
+          }
+          if (node.style.display != null && node.style.display != '') {
+            styles += 'display:' + node.style.display + '; ';
+          }
+          if (node.style.width != null && node.style.width != '') {
+            styles += 'width:' + node.style.width + '; ';
+          }
+          // only set styles if we have nothing
+          if (styles != '') {
+            props.style = styles;
+          }
+        }
+        for (var property in node.properties) {
+          // make sure we only set things that have a value
+          if (node.properties.hasOwnProperty(property) && typeof node[property] !== undefined && node[property] != null && node[property] != '') {
+            props[property] = node[property];
+          }
+        }
+        let element = {
+          "eventName": 'insert-element',
+          "tag": node.tagName.toLowerCase(),
+          "properties": props,
+          "content": Polymer.HaxStore.getHAXSlot(node),
+        };
+        return element;
+      };
+      /**
+       * Slot content w/ support for custom elements in slot.
+       */
+      Polymer.HaxStore.getHAXSlot = (node) => {
+        let content = '';
+        let slotnodes = Polymer.dom(node).getEffectiveChildNodes();
+        // ensure there's something inside of this
+        if (slotnodes.length > 0) {
+          // loop through everything found in the slotted area and put it back in
+          for (var j = 0, len2 = slotnodes.length; j < len2; j++) {
+            if (typeof slotnodes[j].tagName !== typeof undefined) {
+              // if we're a custom element, keep digging, otherwise a simple
+              // self append is fine.
+              if (slotnodes[j].tagName.indexOf('-') > 0) {
+                content += Polymer.HaxStore.getHAXSlot(slotnodes[j]);
+              }
+              else {
+                content += '  ' + slotnodes[j].outerHTML + "\n";
+              }
+            }
+          }
+        }
+        return content;
+      };
+      /**
        * Shortcut to standardize the write / read process.
        */
       Polymer.HaxStore.write = (prop, value, obj) => {
@@ -264,8 +330,11 @@
        */
       Polymer.HaxStore.guessGizmoType = (guess) => {
         if (typeof guess.url !== typeof undefined) {
-          if (guess.url.indexOf('vimeo') != -1 || guess.url.indexOf('youtube') != -1 || guess.url.indexOf('youtu.be') != -1) {
+          if (guess.url.indexOf('vimeo.com') != -1 || guess.url.indexOf('youtube.com') != -1 || guess.url.indexOf('youtube-nocookie.com') != -1 || guess.url.indexOf('youtu.be') != -1) {
             return 'video';
+          }
+          else if (guess.url.indexOf('soundcloud.com') != -1) {
+            return 'audio';
           }
           else if (guess.url.indexOf('.jpg') != -1 || guess.url.indexOf('.jpeg') != -1 || guess.url.indexOf('.gif') != -1) {
             return 'image';

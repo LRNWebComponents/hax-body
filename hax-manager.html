@@ -136,6 +136,9 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         border-color: #396;
       }
       .page-area {
+        padding: 0 2em;
+      }
+      .page-area.add-area {
         padding: 2em;
       }
       .add-url-are,
@@ -319,8 +322,8 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
        */
       insertHaxElement: function(e) {
         // bubble up the inject event / element to the body
-        let previewNode = this.$.preview.getPreviewNode();
-        let element = this.nodeToHaxElement(previewNode);
+        let previewNode = this.$.preview.previewNode;
+        let element = Polymer.HaxStore.nodeToHaxElement(previewNode);
         element.replace = this.editExistingNode;
         element.replacement = previewNode;
         this.fire('hax-insert-content', element);
@@ -330,82 +333,15 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         this.toggleDialog();
       },
       /**
-       * Convert a node to a HAX element. Hax elements ensure
-       * a certain level of sanitization by verifying tags and
-       * properties / attributes that have values.
-       */
-      nodeToHaxElement: function(node) {
-        // build out the properties to send along
-        let props = {};
-        let styles = '';
-        // support our simple shift around styles
-        if (typeof node.style !== typeof undefined) {
-          // ensure our supported inline styles come along
-          if (node.style.float != null && node.style.float != '') {
-            styles += 'float:' + node.style.float + '; ';
-          }
-          if (node.style.margin != null && node.style.margin != '') {
-            styles += 'margin:' + node.style.margin + '; ';
-          }
-          if (node.style.display != null && node.style.display != '') {
-            styles += 'display:' + node.style.display + '; ';
-          }
-          if (node.style.width != null && node.style.width != '') {
-            styles += 'width:' + node.style.width + '; ';
-          }
-          // only set styles if we have nothing
-          if (styles != '') {
-            props.style = styles;
-          }
-        }
-        for (var property in node.properties) {
-          // make sure we only set things that have a value
-          if (node.properties.hasOwnProperty(property) && typeof node[property] !== undefined && node[property] != null && node[property] != '') {
-            props[property] = node[property];
-          }
-        }
-        let element = {
-          "eventName": 'insert-element',
-          "tag": node.tagName.toLowerCase(),
-          "properties": props,
-          "content": this.getHAXSlot(node),
-        };
-        return element;
-      },
-      /**
-       * Slot content w/ support for custom elements in slot.
-       */
-      getHAXSlot: function(node) {
-        let content = '';
-        let slotnodes = Polymer.dom(node).getEffectiveChildNodes();
-        // ensure there's something inside of this
-        if (slotnodes.length > 0) {
-          // loop through everything found in the slotted area and put it back in
-          for (var j = 0, len2 = slotnodes.length; j < len2; j++) {
-            if (typeof slotnodes[j].tagName !== typeof undefined) {
-              // if we're a custom element, keep digging, otherwise a simple
-              // self append is fine.
-              if (slotnodes[j].tagName.indexOf('-') > 0) {
-                content += this.getHAXSlot(slotnodes[j]);
-              }
-              else {
-                content += '  ' + slotnodes[j].outerHTML + "\n";
-              }
-            }
-          }
-        }
-        return content;
-      },
-      /**
        * Reset things on the display to their defaults.
        */
       resetManager: function() {
         this.sourceList = Polymer.HaxStore.instance.sourceList;
         this.editExistingNode = false;
         this.$.url.value = '';
+        this.$.step.disabled = true;
         this.selectStep('select');
         this.activePage = 0;
-        Polymer.HaxStore.write('activeHaxElement', {}, this);
       },
       /**
        * Cancel and close.
@@ -424,9 +360,9 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         };
         // we have no clue what this is.. let's try and guess..
         let type = Polymer.HaxStore.guessGizmoType(values);
-        let gizmo = Polymer.HaxStore.guessGizmo(type, values);
+        let haxElement = Polymer.HaxStore.guessGizmo(type, values);
         if (typeof gizmo.tag !== typeof undefined) {
-          Polymer.HaxStore.write('activeHaxElement', gizmo, this);
+          Polymer.HaxStore.write('activeHaxElement', haxElement, this);
         }
         else {
           Polymer.HaxStore.toast("Sorry, I don't know how to handle that link yet.");

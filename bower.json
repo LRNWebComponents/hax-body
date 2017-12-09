@@ -24,7 +24,7 @@
     "paper-toggle-button": "PolymerElements/paper-toggle-button#^2.0.0",
     "vaadin-split-layout": "vaadin/vaadin-split-layout#^1.1.0",
     "elmsln-loading": "LRNWebComponents/elmsln-loading#^1.0.0",
-    "eco-json-schema-form": "LRNWebComponents/eco-json-schema-form#1.0.0-lrn2",
+    "eco-json-schema-form": "LRNWebComponents/eco-json-schema-form#1.0.0-lrn3",
     "iron-list": "PolymerElements/iron-list#^2.0.12",
     "paper-card": "PolymerElements/paper-card#^2.0.0",
     "paper-tabs": "PolymerElements/paper-tabs#^2.0.0",
@@ -35,7 +35,9 @@
     "wikipedia-query": "LRNWebComponents/wikipedia-query#^1.1.0",
     "iron-image": "PolymerElements/iron-image#^2.1.2",
     "lrn-table": "LRNWebComponents/lrn-table#^0.4.0",
-    "lrnsys-pdf": "LRNWebComponents/lrnsys-pdf#^0.2.0"
+    "lrnsys-pdf": "LRNWebComponents/lrnsys-pdf#^0.2.0",
+    "dropdown-select": "LRNWebComponents/dropdown-select",
+    "materializecss-styles": "LRNWebComponents/materializecss-styles#^1.1.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

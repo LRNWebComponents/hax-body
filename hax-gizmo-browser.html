@@ -2,6 +2,7 @@
 <link rel="import" href="../iron-list/iron-list.html">
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../grafitto-filter/grafitto-filter.html">
+<link rel="import" href="../dropdown-select/dropdown-select.html">
 <link rel="import" href="hax-gizmo-browser-item.html">
 
 <!--
@@ -24,25 +25,31 @@ Browse a list of gizmos. This provides a listing of custom elements for people t
         margin: 1em;
       }
     </style>
-    <slot></slot>
-    <paper-input label="Gizmos" id="input"></paper-input>
-    <grafitto-filter id="filter" items=[[__gizmoList]] like="{{search}}" where="title" as="gizmos">
+    <app-toolbar>
+      <dropdown-select id="filtertype" label="Filter gizmos by" value="title">
+        <paper-item value="title">Title</paper-item>
+        <paper-item value="status">Status</paper-item>
+        <paper-item value="description">Description</paper-item>
+      </dropdown-select>
+      <paper-input label="Filter" id="inputfilter" aria-controls="filter" value="" always-float-label></paper-input>
+    </app-toolbar>
+    <grafitto-filter id="filter" items="[[__gizmoList]]" like=""  where="title" as="filtered">
       <template>
-        <iron-list id="ironlist" items=[[gizmos]] as="gizmo" grid>
+        <iron-list id="ironlist" items="[[filtered]]" as="gizmo" grid>
           <template>
             <div class="gizmo-container">
-            <hax-gizmo-browser-item
-              index="[[gizmo.index]]"
-              title="[[gizmo.title]]"
-              tag="[[gizmo.tag]]"
-              icon="[[gizmo.icon]]"
-              image="[[gizmo.image]]"
-              color="[[gizmo.color]]"
-              author="[[gizmo.author]]"
-              teaser="[[gizmo.teaser]]"
-              description="[[gizmo.description]]"
-              examples="[[gizmo.examples]]"
-              status="[[gizmo.status]]"></hax-gizmo-browser-item>
+              <hax-gizmo-browser-item
+                index="[[gizmo.index]]"
+                title="[[gizmo.title]]"
+                tag="[[gizmo.tag]]"
+                icon="[[gizmo.icon]]"
+                image="[[gizmo.image]]"
+                color="[[gizmo.color]]"
+                author="[[gizmo.author]]"
+                teaser="[[gizmo.teaser]]"
+                description="[[gizmo.description]]"
+                examples="[[gizmo.examples]]"
+                status="[[gizmo.status]]"></hax-gizmo-browser-item>
             </div>
           </template>
         </iron-list>
@@ -67,16 +74,14 @@ Browse a list of gizmos. This provides a listing of custom elements for people t
        */
       attached: function() {
         this.resetBrowser();
-        this.$.filter.addEventListener('change', function(e){
-          this.$.filter.like = e.target.value;
+        this.$$('#inputfilter').addEventListener('change', (e) => {
+          this.$$('#filter').like = e.target.value;
         });
-        // handle value change
-        this.$.input.addEventListener("value-changed", (from, to) => {
-          this.$.filter.value = '';
-          this.$.filter.like = from.detail.value;
+        this.$$('#filtertype').addEventListener('change', (e) => {
+          this.$$('#inputfilter').value = '';
+          this.$$('#filter').where = e.detail.value;
+          this.$$('#filter').like = '';
         });
-        this.$.filter.$$('#ironlist').fire('iron-resize');
-
         document.body.addEventListener('hax-store-property-updated', this._haxStorePropertyUpdated.bind(this));
       },
       /**
@@ -92,6 +97,10 @@ Browse a list of gizmos. This provides a listing of custom elements for people t
        */
       resetBrowser: function() {
         this.set('__gizmoList', Polymer.HaxStore.instance.gizmoList);
+        this.$.filter.$$('#ironlist').fire('iron-resize');
+        this.$.filter.$$('#ironlist').filtered = this.__gizmoList;
+        this.$.inputfilter.value = '';
+        this.$.filtertype.value = 'title';
         this.$.filter.value = '';
         this.$.filter.like = '';
       },

@@ -61,7 +61,7 @@
           <media-image></media-image>
         </hax-autoloader>
         <hax-export-dialog></hax-export-dialog>
-        <hax-manager id="manager">
+        <hax-manager>
           <hax-source
             details='{
             "title":"Media",
@@ -144,7 +144,7 @@
               "description": "description",
               "image": "pictures.sizes.1.link"}'></hax-source>
         </hax-manager>
-        <hax-body id="body" context-offset-left="-164">
+        <hax-body context-offset-left="-164">
           <h1>Click edit in the top left</h1>
           <p>Welcome to HAX. An entirely different way to author, edit and create content. HAX solves the problem your content contributors always complain about - getting things on the internet. It's 2017, and yet much of the internet is still constrained to WYSIWYG editors started in 2001. They are better then nothing; but we can build so much more then that now! HAX stands for Headless Authoring eXperience. Because authoring experience makes and breaks any platform!</p>
           <h2>Goals of HAX</h2>
@@ -162,88 +162,61 @@
 
         </hax-body>
         <!-- potential wiring to make this work -->
-        <hax-panel id="panel" show-advanced>
-          <span slot="post">
-            <lrnsys-collapselist-item>
-            <span slot="label"><div class="label">Future</div></span>
-            <span slot="content">
+        <hax-panel>
+          <lrnsys-collapselist-item>
+          <span slot="label"><div class="label">Future</div></span>
+          <span slot="content">
+            <hax-panel-item
+              icon="touch-app"
+              icon-class="blue-text"
+              label="Interactive video"
+              event-name="h5p-interactive-video"
+              voice-command="insert interactive video"></hax-panel-item>
+            <hax-panel-item
+              icon="hardware:videogame-asset"
+              icon-class="red-text"
+              label="Self-check"
+              event-name="h5p-multiple-choice"
+              voice-command="insert self check"></hax-panel-item>
+            <hax-panel-item
+              icon="timeline"
+              icon-class="yellow-text text-darken-4"
+              label="Timeline"
+              event-name="timeline"
+              voice-command="insert timeline"></hax-panel-item>
+            <hax-panel-item
+              icon="maps:place"
+              icon-class="green-text"
+              label="Map"
+              event-name="map"
+              voice-command="insert map"></hax-panel-item>
+            <hax-panel-item
+              icon="social:share"
+              icon-class="pink-text"
+              label="JMOL"
+              event-name="jmol"
+              voice-command="insert molecule"></hax-panel-item>
+            <hax-panel-item
+              icon="social:poll"
+              icon-class="orange-text"
+              label="Poll"
+              event-name="poll"
+              voice-command="insert poll"></hax-panel-item>
               <hax-panel-item
-                icon="touch-app"
-                icon-class="blue-text"
-                label="Interactive video"
-                event-name="h5p-interactive-video"
-                voice-command="insert interactive video"></hax-panel-item>
-              <hax-panel-item
-                icon="hardware:videogame-asset"
-                icon-class="red-text"
-                label="Self-check"
-                event-name="h5p-multiple-choice"
-                voice-command="insert self check"></hax-panel-item>
-              <hax-panel-item
-                icon="timeline"
-                icon-class="yellow-text text-darken-4"
-                label="Timeline"
-                event-name="timeline"
-                voice-command="insert timeline"></hax-panel-item>
-              <hax-panel-item
-                icon="maps:place"
-                icon-class="green-text"
-                label="Map"
-                event-name="map"
-                voice-command="insert map"></hax-panel-item>
-              <hax-panel-item
-                icon="social:share"
-                icon-class="pink-text"
-                label="JMOL"
-                event-name="jmol"
-                voice-command="insert molecule"></hax-panel-item>
-              <hax-panel-item
-                icon="social:poll"
-                icon-class="orange-text"
-                label="Poll"
-                event-name="poll"
-                voice-command="insert poll"></hax-panel-item>
-                <hax-panel-item
-                icon="assignment"
-                icon-class="yellow-text text-darken-2"
-                label="Assignment"
-                event-name="assignment"
-                voice-command="insert assignment"></hax-panel-item>
-              <hax-panel-item
-                icon="assessment"
-                icon-class="purple-text text-darken-2"
-                label="Quiz"
-                event-name="quiz"
-                voice-command="insert quiz"></hax-panel-item>
-            </span>
+              icon="assignment"
+              icon-class="yellow-text text-darken-2"
+              label="Assignment"
+              event-name="assignment"
+              voice-command="insert assignment"></hax-panel-item>
+            <hax-panel-item
+              icon="assessment"
+              icon-class="purple-text text-darken-2"
+              label="Quiz"
+              event-name="quiz"
+              voice-command="insert quiz"></hax-panel-item>
+          </span>
           </lrnsys-collapselist-item>
-        </span>
         </hax-panel>
-        <script>
-          var p = document.querySelector('#panel');
-          var man = document.querySelector('#manager');
-          var b = document.querySelector('#body');
-          // illustrate the import/export button
-          p.addEventListener('hax-item-selected', function(e) {
-            console.log(e.detail);
-            if (e.detail.eventName === 'hax-manager-open') {
-              man.resetManager();
-              man.toggleDialog();
-            }
-          });
-          // settings button selected from hax-ce-context bar
-          // which means we should skip to the settings page after
-          // we set the thing selected as the active element to work
-          // on in the manager
-          b.addEventListener('hax-context-item-selected', function(e) {
-            if (e.detail.eventName == 'hax-manager-configure') {
-              man.activeElement = man.nodeToHaxElement(b.activeNode);
-              man.editExistingNode = true;
-              man.selectStep('configure');
-              man.toggleDialog();
-            }
-          });
-        </script>
       </template>
     </div>
   </body>

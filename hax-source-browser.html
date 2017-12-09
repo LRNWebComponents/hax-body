@@ -1,11 +1,9 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-list/iron-list.html">
-<link rel="import" href="../iron-pages/iron-pages.html">
 <link rel="import" href="../paper-input/paper-input.html">
-<link rel="import" href="../paper-listbox/paper-listbox.html">
-<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../paper-item/paper-item.html">
 <link rel="import" href="../grafitto-filter/grafitto-filter.html">
+<link rel="import" href="../dropdown-select/dropdown-select.html">
+<link rel="import" href="../iron-pages/iron-pages.html">
 <link rel="import" href="hax-source-browser-item.html">
 
 <!--
@@ -29,21 +27,21 @@ Browse a list of sources. This provides a listing of our gizmos that we've integ
         margin: 1em;
       }
     </style>
-    <paper-input label="Sources" id="input"></paper-input>
-    <paper-dropdown-menu label="Type">
-      <paper-listbox slot="dropdown-content" selected="1">
-        <paper-item>Media</paper-item>
-        <paper-item>Video</paper-item>
-        <paper-item>Content</paper-item>
-      </paper-listbox>
-    </paper-dropdown-menu>
-    <grafitto-filter id="filter" items=[[__sourceList]] like="{{search}}" where="title" as="sources">
+    <app-toolbar>
+      <dropdown-select id="filtertype" label="Filter sources by" value="title">
+        <paper-item value="title">Title</paper-item>
+        <paper-item value="status">Tag</paper-item>
+        <paper-item value="description">Description</paper-item>
+      </dropdown-select>
+      <paper-input label="Filter" id="inputfilter" aria-controls="filter" value="" always-float-label></paper-input>
+    </app-toolbar>
+    <grafitto-filter id="filter" items="[[__sourceList]]" like=""  where="title" as="filtered">
       <template>
-        <iron-list id="ironlist" items=[[sources]] as="source" grid>
+        <iron-list id="ironlist" items="[[filtered]]" as="source" grid>
           <template>
             <div class="source-container">
             <hax-source-browser-item
-              index="[[source.index]]"
+              index="[[index]]"
               title="[[source.title]]"
               icon="[[source.icon]]"
               image="[[source.tag]]"
@@ -60,8 +58,7 @@ Browse a list of sources. This provides a listing of our gizmos that we've integ
     </grafitto-filter>
     <iron-pages
       id="activesources"
-      selected="{{activeSource}}"
-      fallback-selection="my-media">
+      selected="{{activeSource}}">
         <slot></slot>
     </iron-pages>
   </template>
@@ -77,23 +74,35 @@ Browse a list of sources. This provides a listing of our gizmos that we've integ
         search: {
           type: String,
         },
+        /**
+         * active source for displaying from iron-pages
+         */
+        activeSource: {
+          type: Number,
+        },
       },
       /**
        * Attached
        */
       attached: function() {
         this.resetBrowser();
-        this.$.filter.addEventListener('change', function(e){
-          this.$.filter.like = e.target.value;
+        this.$$('#inputfilter').addEventListener('change', (e) => {
+          this.$$('#filter').like = e.target.value;
         });
-        // handle value change
-        this.$.input.addEventListener("value-changed", (from, to) => {
-          this.$.filter.value = '';
-          this.$.filter.like = from.detail.value;
+        this.$$('#filtertype').addEventListener('change', (e) => {
+          this.$$('#inputfilter').value = '';
+          this.$$('#filter').where = e.detail.value;
+          this.$$('#filter').like = '';
         });
-        this.$.filter.$$('#ironlist').fire('iron-resize');
-
+        document.body.addEventListener('hax-source-selected', this._sourceSelected.bind(this));
         document.body.addEventListener('hax-store-property-updated', this._haxStorePropertyUpdated.bind(this));
+      },
+      /**hax-source-selected
+       * Source has been selected.
+       */
+      _sourceSelected: function(e) {
+        // item bubbled up
+        this.set('activeSource', e.detail);
       },
       /**
        * Store updated, sync.
@@ -108,6 +117,10 @@ Browse a list of sources. This provides a listing of our gizmos that we've integ
        */
       resetBrowser: function() {
         this.set('__sourceList', Polymer.HaxStore.instance.sourceList);
+        this.$.filter.$$('#ironlist').fire('iron-resize');
+        this.$.filter.$$('#ironlist').filtered = this.__sourceList;
+        this.$.inputfilter.value = '';
+        this.$.filtertype.value = 'title';
         this.$.filter.value = '';
         this.$.filter.like = '';
       },
