@@ -91,7 +91,9 @@ Browse a list of gizmos. This provides a listing of custom elements for people t
        * Reset this browser.
        */
       resetBrowser: function() {
-         this.set('__gizmoList', Polymer.HaxStore.instance.gizmoList);
+        this.set('__gizmoList', Polymer.HaxStore.instance.gizmoList);
+        this.$.filter.value = '';
+        this.$.filter.like = '';
       },
     });
   </script>

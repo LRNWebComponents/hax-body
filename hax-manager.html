@@ -241,6 +241,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         activePage: {
           type: String,
           value: 0,
+          observer: '_activePageChanged',
         },
         /**
          * Active element
@@ -265,6 +266,19 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         // fire an event that this is the manager
         this.fire('hax-register-manager', this);
         document.body.addEventListener('hax-store-property-updated', this._haxStorePropertyUpdated.bind(this));
+      },
+      /**
+       * Notice page changed.
+       */
+      _activePageChanged: function(newValue, oldValue) {
+        if (typeof newValue !== typeof undefined) {
+          if (newValue === 1) {
+            this.$.sourcebrowser.resetBrowser();
+          }
+          else if (newValue === 2) {
+            this.$.gizmobrowser.resetBrowser();
+          }
+        }
       },
       /**
        * Store updated, sync.
@@ -292,7 +306,12 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         if (typeof oldValue !== typeof undefined) {
           this.$.preview.advancedForm = false;
           this.$.step.disabled = false;
-          this.selectStep('configure');
+          if (typeof newValue.tag === typeof undefined) {
+            this.resetManager();
+          }
+          else {
+            this.selectStep('configure');
+          }
         }
       },
       /**
@@ -383,7 +402,8 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
       resetManager: function() {
         this.sourceList = Polymer.HaxStore.instance.sourceList;
         this.editExistingNode = false;
-        this.activeStep = false;
+        this.$.url.value = '';
+        this.selectStep('select');
         this.activePage = 0;
         Polymer.HaxStore.write('activeHaxElement', {}, this);
       },
@@ -417,6 +437,8 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
        */
       toggleDialog: function() {
         this.$.dialog.toggle();
+        this.$.url.focus();
+        this.$.url.select();
       },
       /**
        * Set step to configure or insert

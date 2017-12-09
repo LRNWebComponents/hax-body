@@ -107,7 +107,9 @@ Browse a list of sources. This provides a listing of our gizmos that we've integ
        * Reset this browser.
        */
       resetBrowser: function() {
-         this.set('__sourceList', Polymer.HaxStore.instance.sourceList);
+        this.set('__sourceList', Polymer.HaxStore.instance.sourceList);
+        this.$.filter.value = '';
+        this.$.filter.like = '';
       },
     });
   </script>
