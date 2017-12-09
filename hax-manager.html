@@ -361,7 +361,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         // we have no clue what this is.. let's try and guess..
         let type = Polymer.HaxStore.guessGizmoType(values);
         let haxElement = Polymer.HaxStore.guessGizmo(type, values);
-        if (typeof gizmo.tag !== typeof undefined) {
+        if (typeof haxElement.tag !== typeof undefined) {
           Polymer.HaxStore.write('activeHaxElement', haxElement, this);
         }
         else {
