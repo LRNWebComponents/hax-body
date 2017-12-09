@@ -35,7 +35,7 @@
     "wikipedia-query": "LRNWebComponents/wikipedia-query#^1.1.0",
     "iron-image": "PolymerElements/iron-image#^2.1.2",
     "lrn-table": "LRNWebComponents/lrn-table#^0.4.0",
-    "lrnsys-pdf": "LRNWebComponents/lrnsys-pdf#^0.1.0"
+    "lrnsys-pdf": "LRNWebComponents/lrnsys-pdf#^0.2.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
