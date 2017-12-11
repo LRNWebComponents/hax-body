@@ -165,7 +165,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
           fallback-selection="select"
           role="main">
           <div data-value="select">
-            <paper-tabs class="pages-tabs" selected="{{activePage}}" autoselect>
+            <paper-tabs id="pagetabs" class="pages-tabs" selected="{{activePage}}" autoselect>
               <paper-tab><iron-icon icon="image:add-to-photos"></iron-icon>Add Something</paper-tab>
               <paper-tab hidden$="[[!sourceList.length]]">
                 <iron-icon icon="search"></iron-icon>Find Something</paper-tab>
@@ -377,6 +377,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
        */
       toggleDialog: function() {
         this.$.dialog.toggle();
+        this.$$('#pagetabs').focus();
         //this.$.url.focus();
         //this.$.url.select();
       },
