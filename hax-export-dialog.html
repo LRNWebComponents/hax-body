@@ -110,7 +110,7 @@ Export dialog with all export options and settings provided.
        * Download file.
        */
       download: function(e) {
-        const data = Polymer.HaxStore.instance.haxBody.haxToContent();
+        const data = this.contentToFile();
         this.downloadFromData(data, 'html', 'hax-file');
       },
       /**
@@ -125,8 +125,43 @@ Export dialog with all export options and settings provided.
        * Toggle ourselves.
        */
       toggleDialog: function() {
-        this.$.textarea.innerHTML = Polymer.HaxStore.instance.haxBody.haxToContent();
+        this.$.textarea.innerHTML = this.contentToFile();
         this.$.dialog.toggle();
+      },
+      /**
+       * Output entire thing as a file.
+       */
+      contentToFile: function() {
+        let elementList = Polymer.HaxStore.instance.elementList;
+        // @todo obviously not sustainable
+        let url = 'https://lrnwebcomponents.github.io/hax-body/components';
+        let content = `
+        <!doctype html>
+        <html lang="en">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+            <title>hax-body demo</title>
+          <script src="${url}/webcomponentsjs/webcomponents-lite.js"><\/script>
+          <style>
+          body {
+            padding: 2em;
+          }
+          </style>
+          <script>
+          /* this script must run before Polymer is imported */
+          window.Polymer = {
+            dom: 'shady',
+            lazyRegister: true
+          };
+        <\/script>`;
+        for (var index in elementList) {
+          content += `<link rel="import" href="${url}/${index}/${index}.html" />` + "\n";
+        }
+        content += '</head><body>';
+        content += Polymer.HaxStore.instance.haxBody.haxToContent();
+        content += '</body></html>';
+        return content;
       },
       /**
        * close
