@@ -89,7 +89,7 @@
     <iron-list grid id="itemlist" items="[[media]]" as="item">
       <template>
         <paper-button data-gizmo-type$="[[item.gizmoType]]" data-value$="[[item.url]]" data-id$="[[item.id]]" on-tap="_itemSelected" class="item-wrapper">
-          <paper-card image="[[item.image]]">
+          <paper-card data-gizmo-type$="[[item.gizmoType]]" data-value$="[[item.url]]" data-id$="[[item.id]]" image="[[item.image]]">
             <div class="card-content" style="height:5em;overflow:auto;">
               <p>[[item.title]]</p>
               <p hidden>[[item.description]]</p>
