@@ -98,10 +98,11 @@ Browse a list of gizmos. This provides a listing of custom elements for people t
       resetBrowser: function() {
         this.set('__gizmoList', Polymer.HaxStore.instance.gizmoList);
         this.$.filter.$$('#ironlist').fire('iron-resize');
-        this.$.filter.$$('#ironlist').filtered = this.__gizmoList;
         this.$.inputfilter.value = '';
         this.$.filtertype.value = 'title';
         this.$.filter.value = '';
+        this.$.filter.filter();
+        this.$.filter.where = 'title';
         this.$.filter.like = '';
       },
     });

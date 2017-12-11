@@ -118,10 +118,11 @@ Browse a list of sources. This provides a listing of our gizmos that we've integ
       resetBrowser: function() {
         this.set('__sourceList', Polymer.HaxStore.instance.sourceList);
         this.$.filter.$$('#ironlist').fire('iron-resize');
-        this.$.filter.$$('#ironlist').filtered = this.__sourceList;
         this.$.inputfilter.value = '';
         this.$.filtertype.value = 'title';
         this.$.filter.value = '';
+        this.$.filter.filter();
+        this.$.filter.where = 'title';
         this.$.filter.like = '';
       },
     });
