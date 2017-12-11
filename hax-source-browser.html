@@ -86,7 +86,7 @@ Browse a list of sources. This provides a listing of our gizmos that we've integ
        */
       attached: function() {
         this.resetBrowser();
-        this.$$('#inputfilter').addEventListener('change', (e) => {
+        this.$$('#inputfilter').addEventListener('value-changed', (e) => {
           this.$$('#filter').like = e.target.value;
         });
         this.$$('#filtertype').addEventListener('change', (e) => {
