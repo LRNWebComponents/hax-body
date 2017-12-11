@@ -279,8 +279,21 @@ An element that can generate a form
           let props = node.getHaxProperties();
           // loop through the properties for the form
           for (var value in props.settings[this.formKey]) {
+            // @todo also support slot binding
+            console.log(props.settings[this.formKey][value]);
             if (props.settings[this.formKey].hasOwnProperty(value) && typeof props.settings[this.formKey][value].property !== typeof undefined && typeof this.value[props.settings[this.formKey][value].property] !== typeof undefined) {
-              node.setAttribute(props.settings[this.formKey][value].property, this.value[props.settings[this.formKey][value].property]);
+              // support weirdness in camel vs non-camelcase setting
+              let attributeName = this.__camelToDash(props.settings[this.formKey][value].property);
+              // special supporting for boolean because html is weird :p
+              if (this.value[props.settings[this.formKey][value].property] === true) {
+                node.setAttribute(attributeName, props.settings[this.formKey][value].property);
+              }
+              else if (this.value[props.settings[this.formKey][value].property] === false) {
+                node.removeAttribute(attributeName);
+              }
+              else {
+                node.setAttribute(attributeName, this.value[props.settings[this.formKey][value].property]);
+              }
             }
             else {
               // @todo add support for disabling based on not having advanced
@@ -289,6 +302,12 @@ An element that can generate a form
           }
         }
       },
+      /**
+       * Helper to convert camel case to dash; important when setting attributes.
+       */
+      __camelToDash : function(str) {
+        return str.replace(/\W+/g, '-').replace(/([a-z\d])([A-Z])/g, '$1-$2');
+     }
     });
   </script>
 </dom-module>
