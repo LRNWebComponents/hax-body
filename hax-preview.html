@@ -279,8 +279,7 @@ An element that can generate a form
           let props = node.getHaxProperties();
           // loop through the properties for the form
           for (var value in props.settings[this.formKey]) {
-            // @todo also support slot binding
-            console.log(props.settings[this.formKey][value]);
+            // support property binding
             if (props.settings[this.formKey].hasOwnProperty(value) && typeof props.settings[this.formKey][value].property !== typeof undefined && typeof this.value[props.settings[this.formKey][value].property] !== typeof undefined) {
               // support weirdness in camel vs non-camelcase setting
               let attributeName = this.__camelToDash(props.settings[this.formKey][value].property);
@@ -294,6 +293,18 @@ An element that can generate a form
               else {
                 node.setAttribute(attributeName, this.value[props.settings[this.formKey][value].property]);
               }
+            }
+            else if (typeof props.settings[this.formKey][value].slot !== typeof undefined) {
+              // this is slot binding though right now it'll just keep adding
+              var tmpel = document.createElement('span');
+              tmpel.slot = props.settings[this.formKey][value].slot;
+              tmpel.innerHTML = this.value[props.settings[this.formKey][value].property];
+              // @todo need to update existing instead of aggressive wipe
+              //while (node.firstChild !== null) {
+                //node.removeChild(node.firstChild);
+              //}
+              // inject the slotted content
+              node.appendChild(tmpel);
             }
             else {
               // @todo add support for disabling based on not having advanced
