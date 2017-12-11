@@ -70,22 +70,24 @@ as the events being bubbled up include HTML nodes to inject into something
         margin-left: 100px;
       }
     </style>
-    <paper-icon-button data-opened$="[[editMode]]" on-tap="_clickButton" icon="power-settings-new" id="button"></paper-icon-button>
-    <paper-tooltip
-      for="button"
-      position="right"
-      offset="10"
-      animation-delay="0">
-      [[__tipText]]
-    </paper-tooltip>
-    <paper-icon-button hidden$="[[!showHTMLExport]]" data-opened$="[[editMode]]" on-tap="_htmlExport" icon="code" id="htmlexport"></paper-icon-button>
-    <paper-tooltip
-      for="htmlexport"
-      position="right"
-      offset="10"
-      animation-delay="0">
-      Export
-    </paper-tooltip>
+    <div hidden$="[[hidePanelOps]]">
+      <paper-icon-button data-opened$="[[editMode]]" on-tap="_clickButton" icon="power-settings-new" id="button"></paper-icon-button>
+      <paper-tooltip
+        for="button"
+        position="right"
+        offset="10"
+        animation-delay="0">
+        [[__tipText]]
+      </paper-tooltip>
+      <paper-icon-button hidden$="[[!showHTMLExport]]" data-opened$="[[editMode]]" on-tap="_htmlExport" icon="code" id="htmlexport"></paper-icon-button>
+      <paper-tooltip
+        for="htmlexport"
+        position="right"
+        offset="10"
+        animation-delay="0">
+        Export
+      </paper-tooltip>
+    </div>
     <app-drawer id="drawer" opened="{{editMode}}" disable-swipe persistent transition-duration="300">
       <div style="height: 100%; overflow: auto;">
         <lrnsys-collapselist-item opened>
@@ -161,6 +163,13 @@ as the events being bubbled up include HTML nodes to inject into something
         showHTMLExport: {
           type: Boolean,
           value: true,
+        },
+        /**
+         * Showing button area at all.
+         */
+        hidePanelOps: {
+          type: Boolean,
+          value: false,
         },
       },
       /**

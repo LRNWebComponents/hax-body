@@ -164,7 +164,11 @@
          * the same functions if that would be desired at some point.
          */
         _haxStoreRegisterManager: function(e) {
-          if (e.detail) {
+          if (e.detail && typeof this.haxManager === typeof undefined) {
+            // move this object to the body level so it doesn't
+            // run into stack order context issues
+            // @todo this would move it up but it's blowing up the DOM...
+            //document.body.appendChild(e.detail);
             this.haxManager = e.detail;
           }
         },
