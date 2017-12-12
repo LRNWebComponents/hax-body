@@ -64,6 +64,18 @@ An element that can generate a form
           display: block !important;
         };
       }
+      @media screen and (max-width: 550px) {
+        .step-toggle-wrapper {
+          padding: .2em;
+          font-size: 1em;
+        }
+        .hide-on-mobile {
+          opacity: 0;
+          visibility: hidden;
+          position: absolute;
+          left: -999em;
+        }
+      }
     </style>
     <vaadin-split-layout class="panel-wrapper">
       <!-- critique panel -->
@@ -73,7 +85,7 @@ An element that can generate a form
       <!-- critique panel -->
       <div class="vaadin-split-layout-panel">
         <div class="step-toggle-wrapper">
-          <div>Configure</div><paper-toggle-button id="step" checked="{{advancedForm}}" disabled="[[!haspreviewNode]]"></paper-toggle-button><div>Advanced</div>
+          <div class="hide-on-mobile">Configure</div><paper-toggle-button id="step" checked="{{advancedForm}}" disabled="[[!haspreviewNode]]"></paper-toggle-button><div class="hide-on-mobile">Advanced</div>
         </div>
         <paper-card class="form-wrapper">
           <eco-json-schema-object id="form" schema="[[schema]]" value="{{value}}"></eco-json-schema-object>

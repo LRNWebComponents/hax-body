@@ -42,10 +42,10 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
       }
       #dialog {
         position: fixed;
-        top: 8%;
-        right: 8%;
-        bottom: 8%;
-        left: 8%;
+        top: 1%;
+        right: 1%;
+        bottom: 1%;
+        left: 1%;
         overflow: auto;
       }
       #dialogcontent {
@@ -150,13 +150,48 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         font-size: .8em;
         color:grey;
       }
+      @media screen and (max-width: 550px) {
+        .hide-on-mobile {
+          opacity: 0;
+          visibility: hidden;
+          position: absolute;
+          left: -999em;
+        }
+        .page-area.hax-manager {
+          padding: .4em;
+        }
+        #newassetconfigure {
+          bottom: 0;
+          position: absolute;
+          width: 100%;
+          margin: 0;
+          padding: 1em;
+          background-color: #EEEEEE;
+        }
+        #insert {
+          bottom: 0;
+          position: absolute;
+          width: 50%;
+          margin: 0;
+          padding: 1em;
+          background-color: #AAFFAA;
+        }
+        #cancel {
+          bottom: 0;
+          right: 0;
+          position: absolute;
+          width: 50%;
+          margin: 0;
+          padding: 1em;
+          background-color: #FFDDDD;
+        }
+      }
     </style>
     <paper-dialog id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
       <div id="dialogheader" class="indigo white-text">
         <h2>[[managerTitle]]</h2>
         <div class="step-toggle-wrapper">
-          <div>Select</div><paper-toggle-button id="step" checked="{{activeStep}}" disabled></paper-toggle-button>
-          <div>Configure</div>
+          <paper-toggle-button id="step" checked="{{activeStep}}" disabled></paper-toggle-button>
         </div>
       </div>
       <div class="dialog-contents" id="dialogcontent">
@@ -166,11 +201,11 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
           role="main">
           <div data-value="select">
             <paper-tabs id="pagetabs" class="pages-tabs" selected="{{activePage}}" autoselect>
-              <paper-tab><iron-icon icon="image:add-to-photos"></iron-icon>Add Something</paper-tab>
+              <paper-tab><iron-icon icon="image:add-to-photos"></iron-icon><span class="hide-on-mobile">Add Something</span></paper-tab>
               <paper-tab hidden$="[[!sourceList.length]]">
-                <iron-icon icon="search"></iron-icon>Find Something</paper-tab>
+                <iron-icon icon="search"></iron-icon><span class="hide-on-mobile">Find Something</span></paper-tab>
               <paper-tab hidden$="[[!staxList.length]]">
-                <iron-icon icon="view-quilt"></iron-icon>Make Gizmo</paper-tab>
+                <iron-icon icon="view-quilt"></iron-icon><span class="hide-on-mobile">Make Gizmo</span></paper-tab>
             </paper-tabs>
             <iron-pages
               id="activepage"
