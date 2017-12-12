@@ -13,7 +13,7 @@
     "paper-menu-button": "PolymerElements/paper-menu-button#^2.0.0",
     "video-player": "LRNWebComponents/video-player#^1.5.1",
     "pie-menu": "LRNWebComponents/pie-menu",
-    "media-image": "LRNWebComponents/media-image#^0.0.7",
+    "media-image": "LRNWebComponents/media-image#^0.0.8",
     "md-extra-icons": "LRNWebComponents/md-extra-icons#^0.0.4",
     "paper-input": "PolymerElements/paper-input#^2.0.4",
     "paper-swatch-picker": "PolymerElements/paper-swatch-picker#^2.0.1",
@@ -39,7 +39,8 @@
     "materializecss-styles": "LRNWebComponents/materializecss-styles#^1.1.0",
     "pdf-element": "LRNWebComponents/pdf-element#^1.2.0",
     "paper-toast": "PolymerElements/paper-toast#^2.0.0",
-    "mtz-file-download-behavior": "MaritzSTL/mtz-file-download-behavior#^0.3.0"
+    "mtz-file-download-behavior": "MaritzSTL/mtz-file-download-behavior#^0.3.0",
+    "a11y-gif-player": "LRNWebComponents/a11y-gif-player#^0.0.1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
