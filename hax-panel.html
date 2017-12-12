@@ -228,7 +228,10 @@ as the events being bubbled up include HTML nodes to inject into something
             detail.properties = {
               'src': prompt('Image URL:'),
             };
-            this.fire('hax-insert-content', detail);
+            // only fire if we got something
+            if (detail.properties.src != null && detail.properties.src != '') {
+              this.fire('hax-insert-content', detail);
+            }
           break;
           case 'iframe':
             detail.tag = 'iframe';
@@ -236,7 +239,10 @@ as the events being bubbled up include HTML nodes to inject into something
             detail.properties = {
               'src': prompt('iframe URL:'),
             };
-            this.fire('hax-insert-content', detail);
+            // only fire if we got something
+            if (detail.properties.src != null && detail.properties.src != '') {
+              this.fire('hax-insert-content', detail);
+            }
           break;
           case 'blockquote':
             detail.tag = 'blockquote';
