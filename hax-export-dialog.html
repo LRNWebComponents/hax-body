@@ -6,6 +6,7 @@
 <link rel="import" href="../iron-pages/iron-pages.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="../paper-dialog/paper-dialog.html">
+<!-- <link rel="import" href="../paper-dialog-scrollable/paper-dialog-scrollable.html"> -->
 <link rel="import" href="../mtz-file-download-behavior/mtz-file-download-behavior.html">
 <link rel="import" href="../neon-animation/web-animations.html">
 <link rel="import" href="../neon-animation/neon-animations.html">
@@ -37,12 +38,8 @@ Export dialog with all export options and settings provided.
         overflow: auto;
       }
       #dialogcontent {
-        height: 100%;
         padding:0;
         margin:0;
-      }
-      #sourcebrowser {
-        height: 100vh;
       }
       #dialogheader {
         margin: 0;
@@ -64,18 +61,19 @@ Export dialog with all export options and settings provided.
         font-size: .8em;
         color:grey;
       }
+      .buttons {
+        color: black;
+      }
     </style>
-    <paper-dialog id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
-      <div id="dialogheader" class="indigo white-text">
-        <h2>[[exportTitle]]</h2>
-      </div>
-      <div class="dialog-contents" id="dialogcontent">
+    <paper-dialog id="dialog" entry-animation="slide-from-bottom-animation" exit-animation="slide-down-animation" with-backdrop>
+      <h2 id="dialogheader" class="indigo white-text">[[exportTitle]]</h2>
+      <paper-dialog-scrollable class="dialog-contents" id="dialogcontent">
         <textarea id="textarea" rows="20" style="width:100%;"></textarea>
-        <div class="preview-buttons">
-          <paper-button id="download" confirm raised>Download</paper-button>
-          <paper-button id="copy" confirm raised>Copy</paper-button>
-          <paper-button id="close" raised>Close</paper-button>
-        </div>
+      </paper-dialog-scrollable>
+      <div class="buttons">
+        <paper-button id="download" confirm raised>Download</paper-button>
+        <paper-button id="copy" raised>Copy</paper-button>
+        <paper-button id="close" raised dialog-dismiss>Close</paper-button>
       </div>
     </paper-dialog>
   </template>
@@ -85,7 +83,6 @@ Export dialog with all export options and settings provided.
 
       is: 'hax-export-dialog',
       listeners: {
-        'close.tap': 'close',
         'download.tap': 'download',
         'copy.tap': 'selectBody',
       },
@@ -163,12 +160,6 @@ Export dialog with all export options and settings provided.
         content += '</body></html>';
         return content;
       },
-      /**
-       * close
-       */
-      close: function() {
-        this.$.dialog.toggle();
-      }
     });
   </script>
 </dom-module>

@@ -295,7 +295,7 @@ An element that can generate a form
             // support property binding
             if (props.settings[this.formKey].hasOwnProperty(value) && typeof props.settings[this.formKey][value].property !== typeof undefined && typeof this.value[props.settings[this.formKey][value].property] !== typeof undefined) {
               // support weirdness in camel vs non-camelcase setting
-              let attributeName = this.__camelToDash(props.settings[this.formKey][value].property);
+              let attributeName = Polymer.HaxStore.camelToDash(props.settings[this.formKey][value].property);
               // special supporting for boolean because html is weird :p
               if (this.value[props.settings[this.formKey][value].property] === true) {
                 node.setAttribute(attributeName, props.settings[this.formKey][value].property);
@@ -326,12 +326,6 @@ An element that can generate a form
           }
         }
       },
-      /**
-       * Helper to convert camel case to dash; important when setting attributes.
-       */
-      __camelToDash : function(str) {
-        return str.replace(/\W+/g, '-').replace(/([a-z\d])([A-Z])/g, '$1-$2');
-     }
     });
   </script>
 </dom-module>

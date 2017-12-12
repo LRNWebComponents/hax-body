@@ -40,7 +40,8 @@
     "pdf-element": "LRNWebComponents/pdf-element#^1.2.0",
     "paper-toast": "PolymerElements/paper-toast#^2.0.0",
     "mtz-file-download-behavior": "MaritzSTL/mtz-file-download-behavior#^0.3.0",
-    "a11y-gif-player": "LRNWebComponents/a11y-gif-player#^0.0.1"
+    "a11y-gif-player": "LRNWebComponents/a11y-gif-player#^0.0.2",
+    "paper-dialog-scrollable": "PolymerElements/paper-dialog-scrollable#^2.1.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

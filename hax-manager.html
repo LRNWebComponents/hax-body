@@ -7,6 +7,7 @@
 <link rel="import" href="../iron-pages/iron-pages.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="../paper-dialog/paper-dialog.html">
+<!-- <link rel="import" href="../paper-dialog-scrollable/paper-dialog-scrollable.html"> -->
 <link rel="import" href="../vaadin-upload/vaadin-upload.html">
 <link rel="import" href="../neon-animation/web-animations.html">
 <link rel="import" href="../neon-animation/neon-animations.html">
@@ -49,12 +50,8 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         overflow: auto;
       }
       #dialogcontent {
-        height: 100%;
         padding:0;
         margin:0;
-      }
-      #sourcebrowser {
-        height: 100vh;
       }
       .preview-buttons {
         position: sticky;
@@ -190,14 +187,14 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         }
       }
     </style>
-    <paper-dialog id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
+    <paper-dialog id="dialog" entry-animation="slide-from-bottom-animation" exit-animation="slide-down-animation" with-backdrop>
       <div id="dialogheader" class="indigo white-text">
         <h2>[[managerTitle]]</h2>
         <div class="step-toggle-wrapper">
           <paper-toggle-button id="step" checked="{{activeStep}}" disabled></paper-toggle-button>
         </div>
       </div>
-      <div class="dialog-contents" id="dialogcontent">
+      <paper-dialog-scrollable class="dialog-contents" id="dialogcontent">
         <iron-pages
           selected="{{activeStep}}"
           fallback-selection="select"
@@ -242,7 +239,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
             </div>
           </div>
         </iron-pages>
-      </div>
+      </paper-dialog-scrollable>
     </paper-dialog>
   </template>
 
