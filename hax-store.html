@@ -148,7 +148,8 @@
         _injectToast: function() {
           var toast = document.createElement('paper-toast');
           toast.id = "haxtoast";
-          toast.duration = 5;
+          toast.duration = 3;
+          toast.classList.add("fit-bottom");
           document.body.appendChild(toast);
           this.haxToast = toast;
         },
@@ -410,6 +411,14 @@
         };
       };
 
+      /**
+       * Wipe out the slot of an element.
+       */
+       Polymer.HaxStore.wipeSlot = (element) => {
+        while (element.firstChild !== null) {
+          element.removeChild(element.firstChild);
+        }
+       };
       /**
        * Global toast
        */

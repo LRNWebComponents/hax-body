@@ -264,9 +264,7 @@ An element that can generate a form
         if (typeof newValue !== typeof undefined && Object.keys(newValue).length > 0) {
           // wipe the preview area and assocaited node
           let preview = this.$.preview;
-          while (preview.firstChild !== null) {
-            preview.removeChild(preview.firstChild);
-          }
+          Polymer.HaxStore.wipeSlot(preview);
           this.set('previewNode', {});
           // if we have something, generate the new element inside it
           if (newValue != null && newValue.length != 0) {

@@ -72,6 +72,7 @@ Export dialog with all export options and settings provided.
       </paper-dialog-scrollable>
       <div class="buttons">
         <paper-button id="download" confirm raised>Download</paper-button>
+        <paper-button id="import" raised>Import</paper-button>
         <paper-button id="copy" raised>Copy</paper-button>
         <paper-button id="close" raised dialog-dismiss>Close</paper-button>
       </div>
@@ -84,6 +85,7 @@ Export dialog with all export options and settings provided.
       is: 'hax-export-dialog',
       listeners: {
         'download.tap': 'download',
+        'import.tap': 'import',
         'copy.tap': 'selectBody',
       },
       behaviors: [mtz.FileDownloadBehavior],
@@ -109,6 +111,14 @@ Export dialog with all export options and settings provided.
       download: function(e) {
         const data = this.contentToFile();
         this.downloadFromData(data, 'html', 'hax-file');
+      },
+      /**
+       * Download file.
+       */
+      import: function(e) {
+        Polymer.HaxStore.toast('Future functionality');
+        // @todo import content from the innerHTML
+        //Polymer.HaxStore.wipeSlot(Polymer.HaxStore.instance.haxBody.$.);
       },
       /**
        * selectBody
