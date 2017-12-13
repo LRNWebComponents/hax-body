@@ -12,6 +12,15 @@
         lazyRegister: true
       };
     </script>
+    <!-- required for just about any app using HAX though them all being separate allows developers to replace or not use any one of the pieces and just implement the capabilities that the element is providing as far as elements and binding. -->
+    <link rel="import" href="../../polymer/polymer.html">
+    <link rel="import" href="../hax-store.html">
+    <link rel="import" href="../hax-body.html">
+    <link rel="import" href="../hax-autoloader.html">
+    <link rel="import" href="../hax-manager.html">
+    <link rel="import" href="../hax-source.html">
+    <link rel="import" href="../hax-panel.html">
+    <link rel="import" href="../hax-export-dialog.html">
     <!-- Adding Favicon -->
     <link rel="apple-touch-icon" sizes="57x57" href="assets/favicon/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="assets/favicon/apple-icon-60x60.png">
@@ -31,19 +40,7 @@
     <meta name="msapplication-TileImage" content="assets/favicon/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
 
-    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-    <!-- required for just about any app using HAX though them all being separate allows developers to replace or not use any one of the pieces and just implement the capabilities that the element is providing as far as elements and binding. -->
-    <link rel="import" href="../../polymer/polymer.html">
-    <link rel="import" href="../hax-store.html">
-    <link rel="import" href="../hax-body.html">
-    <link rel="import" href="../hax-autoloader.html">
-    <link rel="import" href="../hax-manager.html">
-    <link rel="import" href="../hax-source.html">
-    <link rel="import" href="../hax-panel.html">
-    <link rel="import" href="../hax-export-dialog.html">
-
-    <style is="custom-style" include="demo-pages-shared-styles">
+    <style>
       .vertical-section-container {
         max-width: 60em;
         margin-left: 10em;
@@ -78,8 +75,11 @@
           <div>
             <ul>
               <li><a href="https://github.com/LRNWebComponents/hax-body" target="_blank">HAX github project</a></li>
-              <li><a href="https://www.elmsln.org/" target="_blank">ELMS: Learning Network</a></li>
-              <li><a href="https://www.twitter.com/elmsln" target="_blank">ELMS:LN twitter</a></li>
+              <li><a href="https://docs.google.com/presentation/d/1EcdcsY80HhXiiZOL1t1xPNo_6VPy1HoWRknwFziVdJ8/edit#slide=id.p" target="_blank">HAX slide presentation</a></li>
+              <li><a href="https://www.youtube.com/watch?v=eGV1XWzUko8" target="_blank">HAX developer deep dive (video)</a></li>
+              <li><a href="https://www.elmsln.org/" target="_blank">ELMS: Learning Network (why HAX exists)</a></li>
+              <li><a href="https://steam.psu.edu" target="_blank">Penn State STEAM Engine (collaborative Penn State dev / design group that envisioned HAX)</a></li>
+              <li><a href="https://www.twitter.com/elmsln" target="_blank">ELMS:LN twitter (keep up w/ our projects!)</a></li>
             </ul>
           </div>
           <p>Welcome to HAX. An entirely different way to author, edit and create content. HAX solves the problem your content contributors always complain about - getting things on the internet. It's 2017, and yet much of the internet is still constrained to WYSIWYG editors started in 2001. They are better then nothing; but we can build so much more then that now! HAX stands for Headless Authoring eXperience. Because authoring experience makes and breaks any platform!</p>
@@ -188,7 +188,7 @@
           <a11y-gif-player></a11y-gif-player>
           <aframe-player></aframe-player>
         </hax-autoloader>
-                <hax-manager>
+        <hax-manager>
           <hax-source
             details='{
             "title":"Media",
