@@ -41,7 +41,8 @@
     "paper-toast": "PolymerElements/paper-toast#^2.0.0",
     "mtz-file-download-behavior": "MaritzSTL/mtz-file-download-behavior#^0.3.0",
     "a11y-gif-player": "LRNWebComponents/a11y-gif-player#^0.0.2",
-    "paper-dialog-scrollable": "PolymerElements/paper-dialog-scrollable#^2.1.0"
+    "paper-dialog-scrollable": "PolymerElements/paper-dialog-scrollable#^2.1.0",
+    "aframe-player": "LRNWebComponents/aframe-player#^0.0.1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
@@ -51,6 +52,10 @@
     "paper-toast": "PolymerElements/paper-toast#^2.0.0"
   },
   "resolutions": {
-    "webcomponentsjs": "^0.7.0"
+    "webcomponentsjs": "^0.7.0",
+    "neon-animation": "1 - 2",
+    "materializecss-styles": "^1.1.0",
+    "paper-spinner": "^2.0.0",
+    "paper-tooltip": "^2.0.0"
   }
 }
