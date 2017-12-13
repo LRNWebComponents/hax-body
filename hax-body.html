@@ -412,13 +412,15 @@ A LRN element that will change the world.
           // insert at active insert point if we have one
           if (this.activeNode !== null) {
             Polymer.dom(this).insertBefore(newNode, this.activeNode.nextElementSibling);
-            Polymer.HaxStore.write('activeNode', newNode, this);
           }
           else {
             // send this into the root, which should filter it back down into the slot
             Polymer.dom(this).appendChild(newNode);
-            Polymer.HaxStore.write('activeNode', newNode, this);
           }
+          // wait so that the DOM can have the node to then attach to
+          setTimeout( () => {
+            Polymer.HaxStore.write('activeNode', newNode, this);
+          }, 100);
           return true;
         }
         return false;
@@ -576,7 +578,7 @@ A LRN element that will change the world.
         this._positionContextMenu(this.$.platecontextmenu, node, -46, -5);
         setTimeout( () => {
   	      this.__activeContextType.scrollIntoView({behavior: "smooth", inline: "nearest"});
-  	    }, 200);
+  	    }, 100);
       },
       /**
        * Move grid plate around

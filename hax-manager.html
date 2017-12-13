@@ -54,7 +54,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         margin:0;
       }
       .preview-buttons {
-        position: sticky;
+        position: absolute;
         z-index: 2;
         bottom: 0;
         left: 0;
@@ -148,7 +148,8 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         color:grey;
       }
       #preview {
-        height: 92vh;
+        height: 88vh;
+        max-height: 92%;
       }
       @media screen and (max-width: 550px) {
         .hide-on-mobile {
@@ -156,6 +157,9 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
           visibility: hidden;
           position: absolute;
           left: -999em;
+        }
+        .preview-buttons {
+          position: sticky;
         }
         .page-area.hax-manager {
           padding: .4em;
