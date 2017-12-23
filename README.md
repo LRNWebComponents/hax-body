@@ -27,6 +27,7 @@ An application that uses HAX is made up of several custom elements working toget
 These elements all live at the "app level" that you will create in order to utilize these tags. They are separate so that you can swap them out or fork individual ones as you desire.
 
 ## Systems that integrate with HAX
+- ELMS:LN - https://github.com/elmsln/elmsln
 - Drupal (6 and 7) - https://www.drupal.org/project/hax
 - Backdrop - https://backdropcms.org/project/hax
 - GravCMS - https://github.com/elmsln/grav-plugin-hax
