@@ -24,6 +24,9 @@
       :host {
         display: block;
       };
+      #itemlist {
+        overflow-y: unset !important;
+      }
       paper-button.item-wrapper {
         margin: 0;
         padding: 0;
@@ -225,7 +228,7 @@
       /**
        * Ready.
        */
-      attached: function() {
+      ready: function() {
         // This also allows stores to be added dynamically
         // and anywhere in the DOM, even though within hax-manager
         // makes the most sense since that's where it is presented
