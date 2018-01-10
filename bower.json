@@ -52,7 +52,8 @@
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
     "web-component-tester": "^4.0.0",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
-    "paper-toast": "PolymerElements/paper-toast#^2.0.0"
+    "paper-toast": "PolymerElements/paper-toast#^2.0.0",
+    "paper-audio-player": "LRNWebComponents/paper-audio-player#1.1.1-lrn"
   },
   "resolutions": {
     "webcomponentsjs": "^0.7.0",
