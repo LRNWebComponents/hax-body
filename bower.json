@@ -44,7 +44,8 @@
     "a11y-gif-player": "LRNWebComponents/a11y-gif-player#^0.0.2",
     "paper-dialog-scrollable": "PolymerElements/paper-dialog-scrollable#^2.1.0",
     "aframe-player": "LRNWebComponents/aframe-player#^0.0.1",
-    "lrndesign-chart": "LRNWebComponents/lrndesign-chart"
+    "lrndesign-chart": "LRNWebComponents/lrndesign-chart",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

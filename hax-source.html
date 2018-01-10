@@ -99,7 +99,7 @@
     </style>
 
     <template is="dom-if" if="[[search]]">
-      <hax-source-search label="[[details.title]]" query="{{query}}"></hax-source-search>
+      <hax-source-search id="search" label="[[details.title]]" query="{{query}}"></hax-source-search>
     </template>
 
     <iron-ajax
@@ -141,11 +141,18 @@
       is: 'hax-source',
       properties: {
         /**
-         * Immediatley performa a request.
+         * Immediatley perform a request.
          */
         auto: {
           type: Boolean,
           value: false
+        },
+        /**
+         * loading
+         */
+        loading: {
+          type: Boolean,
+          value: false,
         },
         /**
          * Enable the search functionality.
@@ -252,7 +259,8 @@
         media: {
           type: Array,
           value: [],
-        }
+          observer: '_mediaChanged',
+        },
       },
       observers: ['_setBasicAuth(user, pass)'],
       /**
@@ -326,7 +334,7 @@
         }
       },
       /**
-       * Callback for when media has been updated via the end pointv
+       * Callback for when media has been updated via the end point
        */
       _mediaListChanged: function(newValue, oldValue) {
         if (typeof newValue != {} && typeof oldValue !== typeof undefined) {
@@ -359,21 +367,18 @@
             // this will trigger an aggressive repaint of the cards
             this.set('media', []);
             this.set('media', media);
-            // trigger a repaint
-            this._resizeList();
           }
         }
       },
       /**
-       * Helper to force iron list to paint all of the items
+       * Callback for when media has been processed for display
        */
-      _resizeList: function () {
-        (setTimeout(() => {
-          const ironList = document.querySelector('iron-list');
-          if (ironList) {
-            ironList.fire('iron-resize');
-          }
-        }, 500))
+      _mediaChanged: function(newValue, oldValue) {
+        if (typeof oldValue !== typeof undefined) {
+          (setTimeout(() => {
+            this.$.itemlist.fire('iron-resize');
+          }, 200))
+        }
       },
       /**
        * Handle media item selected.
