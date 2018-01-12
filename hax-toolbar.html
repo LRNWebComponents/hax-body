@@ -1,0 +1,49 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="hax-toolbar">
+  <template>
+    <style>
+      :host {
+        display: flex;
+        border-radius: 5%;
+      }
+      paper-icon-button {
+        background-color: #3e3e3e;
+        display: inline-block;
+        color: #c5c5c5;
+      }
+      paper-icon-button:first-of-type {
+        border-top-left-radius: 50%;
+        border-bottom-left-radius: 50%;
+        width: 50px;
+        padding-left: 10px;
+      }
+      paper-icon-button:last-of-type {
+        border-top-right-radius: 50%;
+        border-bottom-right-radius: 50%;
+        width: 50px;
+        padding-right: 10px;
+      }
+      #close {
+        background: black;
+      }
+    </style>
+
+    <paper-icon-button id="close" hidden$="[[!hasClose]]" icon="close"></paper-icon-button>
+    <paper-icon-button hidden$="[[!hasClose]]" icon="close"></paper-icon-button>
+    <paper-icon-button hidden$="[[!hasClose]]" icon="close"></paper-icon-button>
+    <paper-icon-button hidden$="[[!hasClose]]" icon="close"></paper-icon-button>
+    
+  </template>
+  <script>
+    Polymer({
+      is: 'hax-toolbar',
+      properties: {
+        hasClose: {
+          type: Boolean,
+          value: false
+        }
+      }
+    });
+  </script>
+</dom-module>
