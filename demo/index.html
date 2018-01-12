@@ -14,6 +14,7 @@
     </script>
     <!-- required for just about any app using HAX though them all being separate allows developers to replace or not use any one of the pieces and just implement the capabilities that the element is providing as far as elements and binding. -->
     <link rel="import" href="../../polymer/polymer.html">
+    <link rel="import" href="../../iron-icons/places-icons.html">
     <link rel="import" href="../hax-store.html">
     <link rel="import" href="../hax-body.html">
     <link rel="import" href="../hax-autoloader.html">
@@ -218,6 +219,30 @@
               "title": "title",
               "description": "body",
               "image": "field_image.url"}'></hax-source>
+          <hax-source
+            search
+            details='{
+            "title":"NASA media",
+            "icon":"places:all-inclusive",
+            "color":"blue",
+            "author": "NASA",
+            "teaser": "Space images and video",
+            "description": "All the amazing shots of the worlds beyond our own for all to use.",
+            "status": "available"
+            }'
+            request-end-point="https://images-api.nasa.gov/search"
+            request-params='{
+            "q":""}'
+            query-param="q"
+            response-map='{
+              "root": "collection.items",
+              "gizmoType": "image",
+              "url": "",
+              "id": "links.0.href",
+              "title": "data.0.title",
+              "description": "data.0.description",
+              "image": "links.0.href",
+              "customGizmoType": "data.0.media_type"}'></hax-source>
           <hax-source
             search
             details='{

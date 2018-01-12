@@ -340,9 +340,9 @@
         if (typeof newValue != {} && typeof oldValue !== typeof undefined) {
           let media = [];
           let map = this.responseMap;
-          if (typeof newValue[map.root] !== typeof undefined) {
+          if (typeof this._resolveObjectPath(map.root, newValue) !== typeof undefined) {
             // look for the root element to draw our data from
-            let data = newValue[map.root];
+            let data = this._resolveObjectPath(map.root, newValue);
             // step through and translate response data into a form we can easily
             // understand when stamping out our cards above.
             for (i = 0; i < data.length; i++) {
