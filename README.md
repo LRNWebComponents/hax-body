@@ -15,6 +15,18 @@
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/LRNWebComponents/hax-body)
 
 # HAX
+Headless Authoring eXperience or HAX for short, is a new way of authoring content that works across platforms. Written in webcomponents, HAX allows users to effectively write HTML by touching the interface directly. Think WYSIWYG if it was built with modern and future proof tools and libraries instead of based on the work of the early 2000s.
+
+HAX can be integrated into any solution as it's depending on a headless backend in order to integrate. It also has the ability to allow end users to use and insert complex custom elements, presenting an input form based on JSONSchema that's emmitted from the custom element upon registration. HAX is for stitching together your universe of content and media solutions into a remote control for your authors.
+
+There's lots of documentation in this file and examples of integrations and you can see lots of video based tutorials in this playlist: https://www.youtube.com/watch?v=kLrKMhz8-JY&list=PLJQupiji7J5eTqv8JFiW8SZpSeKouZACH
+
+## Notable video examples / tutorials for building
+- Integrating HAX with NASA media search - https://www.youtube.com/watch?v=Sza6mmt-D0U&index=2&list=PLJQupiji7J5eTqv8JFiW8SZpSeKouZACH
+- Integrating HAX with Kaltura search - https://www.youtube.com/watch?v=kLrKMhz8-JY&list=PLJQupiji7J5eTqv8JFiW8SZpSeKouZACH
+- Wiring an `audio-player` webcomponent up to HAX - https://www.youtube.com/watch?v=ZQ7JGvlevQM&list=PLJQupiji7J5eTqv8JFiW8SZpSeKouZACH&index=3
+- Wiring HAX into an existing element (much more detailed) - https://www.youtube.com/watch?v=d2CFA-pKzaY&index=4&list=PLJQupiji7J5eTqv8JFiW8SZpSeKouZACH
+- Developer deep dive - https://www.youtube.com/watch?v=eGV1XWzUko8&list=PLJQupiji7J5eTqv8JFiW8SZpSeKouZACH&index=10
 An application that uses HAX is made up of several custom elements working together. Some of the primary elements to make this happen are:
 ```
 <hax-body>
@@ -30,8 +42,12 @@ These elements all live at the "app level" that you will create in order to util
 ## Systems that integrate with HAX
 - ELMS:LN - https://github.com/elmsln/elmsln
 - Drupal (6 and 7) - https://www.drupal.org/project/hax
+  + Drupal 7 via Champion distro - https://www.youtube.com/watch?v=ifIg7FiXYCc&index=8&list=PLJQupiji7J5eTqv8JFiW8SZpSeKouZACH
+  + Drupal 6 - https://www.youtube.com/watch?v=ojlF3YxqXTo&list=PLJQupiji7J5eTqv8JFiW8SZpSeKouZACH&index=6
 - Backdrop - https://backdropcms.org/project/hax
+  + Video of install / integration - https://www.youtube.com/watch?v=yCOOnA7VWPo&index=7&list=PLJQupiji7J5eTqv8JFiW8SZpSeKouZACH
 - GravCMS - https://github.com/elmsln/grav-plugin-hax
+  + Integration and showcase - https://www.youtube.com/watch?v=Z2chE4DuJf8&list=PLJQupiji7J5eTqv8JFiW8SZpSeKouZACH&index=5
 - Your system! (see next step)
 
 ### What do I need to integrate with hax?
