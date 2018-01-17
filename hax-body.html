@@ -43,10 +43,6 @@ A LRN element that will change the world.
         /* border: 2px dotted #EEEEEE; */
       }
       :host #bodycontainer ::slotted(.hax-context-menu) {
-        padding: 0;
-        margin: 0;
-        position: absolute;
-        visibility: hidden;
         opacity: 0;
         transition: visibility .4s ease, opacity .4s ease;
         z-index: 3;
@@ -59,6 +55,9 @@ A LRN element that will change the world.
         opacity: 1;
         /* border: 1px solid black; */
         display: block;
+      }
+      :host[edit-mode] #bodycontainer ::slotted(hax-plate-context) {
+        position: absolute;
       }
       :host[edit-mode] #bodycontainer ::slotted(*) {
         transition: background-color .3s, padding .3s, margin .3s, box-shadow .3s, -webkit-box-shadow .3s;

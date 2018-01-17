@@ -25,7 +25,7 @@
         height: 40px;
         @apply --hax-toolbar-item-container;
       }
-      :host[primary] paper-button {
+      :host[default] paper-button {
         background: black;
       }
     </style>
@@ -64,7 +64,7 @@
           type: String,
           value: 'top'
         },
-        primary: {
+        default: {
           type: Boolean,
           value: false,
           reflectToAttribute: true
