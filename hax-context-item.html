@@ -12,7 +12,7 @@
 <link rel="import" href="../iron-icons/maps-icons.html">
 <link rel="import" href="../materializecss-styles/colors.html">
 <link rel="import" href="../neon-animation/web-animations.html">
-
+<link rel="import" href="hax-toolbar-item.html">
 <!--
 `hax-context-item`
 A single button in the hax context menu for consistency.
@@ -59,13 +59,7 @@ A single button in the hax context menu for consistency.
         transform: rotateY(180deg);
       }
     </style>
-    <paper-icon-button id="button" icon="[[icon]]" hidden$="[[!icon]]" class$="[[iconClass]]" on-tap="_fireEvent"></paper-icon-button>
-    <paper-tooltip
-      for="button"
-      position="[[direction]]"
-      offset="10">
-      [[label]]
-    </paper-tooltip>
+    <hax-toolbar-item id="button" icon="[[icon]]" hidden$="[[!icon]]" class$="[[iconClass]]" on-tap="_fireEvent" tooltip="[[label]]" tooltip-direction="[[direction]]"></hax-toolbar-item>
   </template>
 
   <script>

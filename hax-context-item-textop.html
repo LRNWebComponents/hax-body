@@ -13,6 +13,7 @@
 <link rel="import" href="../iron-icons/maps-icons.html">
 <link rel="import" href="../materializecss-styles/colors.html">
 <link rel="import" href="../neon-animation/web-animations.html">
+<link rel="import" href="hax-toolbar-item.html">
 
 <!--
 `hax-context-item-textop`
@@ -35,24 +36,6 @@ A single button in the hax context menus for consistency. This one uses the mous
       :host[wide] {
         width: 50%;
       }
-      paper-icon-button {
-        color: rgba(0,0,0,0.66);
-        margin: 0;
-        text-transform: none;
-        background-color: #ffffff;
-        min-width: 40px;
-        display: flex;
-        padding: 0;
-        border-radius: 0;
-      }
-      paper-icon-button ::shadow iron-icon {
-        padding: 8px;
-        margin: 0;
-        box-sizing: border-box;
-      }
-      paper-icon-button:hover {
-        background-color: var(--paper-grey-300, grey);
-      }
       :host[wide] paper-button {
         width: unset;
       }
@@ -62,13 +45,7 @@ A single button in the hax context menus for consistency. This one uses the mous
     </style>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="enter"
                     on-keys-pressed="_fireEvent"></iron-a11y-keys>
-    <paper-icon-button id="button" icon="[[icon]]" hidden$="[[!icon]]" class$="[[iconClass]]" on-mousedown="_fireEvent"></paper-icon-button>
-    <paper-tooltip
-      for="button"
-      position="[[direction]]"
-      offset="10">
-      [[label]]
-    </paper-tooltip>
+    <hax-toolbar-item id="button" icon="[[icon]]" hidden$="[[!icon]]" tooltip-direction="[[direction]]" class$="[[iconClass]]" on-mousedown="_fireEvent"></paper-icon-button>
   </template>
 
   <script>

@@ -25,7 +25,7 @@
         height: 40px;
         @apply --hax-toolbar-item-container;
       }
-      :host[primary] {
+      :host[primary] paper-button {
         background: black;
       }
     </style>
@@ -36,6 +36,7 @@
           for$="[[this]]"
           position="bottom"
           offset="14"
+          direction="[[tooltip-direction]]"
           animation-delay="1000">
           [[tooltip]]
         </paper-tooltip>
@@ -58,6 +59,10 @@
         tooltip: {
           type: String,
           value: ''
+        },
+        tooltipDirection: {
+          type: String,
+          value: 'top'
         },
         primary: {
           type: Boolean,
