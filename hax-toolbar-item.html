@@ -1,0 +1,70 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-tooltip/paper-tooltip.html">
+
+<dom-module id="hax-toolbar-item">
+  <template>
+    <style>
+      :host {
+        display: flex;
+      }
+      #label {
+        padding-left: 5px;
+      }
+      paper-button {
+        display: flex;
+        align-items: center;
+        background-color: #3e3e3e;
+        color: #c5c5c5;
+        min-width: 0;
+        margin: 0;
+        text-transform: uppercase;
+        padding: .5em;
+        border-radius: 0;
+        font-size: .8em;
+        height: 40px;
+        @apply --hax-toolbar-item-container;
+      }
+      :host[primary] {
+        background: black;
+      }
+    </style>
+
+    <paper-button id="container">
+      <iron-icon id="button" icon="[[icon]]"></iron-icon> <span id="label" hidden$="[[!label]]">[[label]]</span>
+        <paper-tooltip
+          for$="[[this]]"
+          position="bottom"
+          offset="14"
+          animation-delay="1000">
+          [[tooltip]]
+        </paper-tooltip>
+    </paper-button>
+    
+    
+  </template>
+  <script>
+    Polymer({
+      is: 'hax-toolbar-item',
+      properties: {
+        icon: {
+          type: String,
+          value: ''
+        },
+        label: {
+          type: String,
+          value: ''
+        },
+        tooltip: {
+          type: String,
+          value: ''
+        },
+        primary: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true
+        }
+      }
+    });
+  </script>
+</dom-module>

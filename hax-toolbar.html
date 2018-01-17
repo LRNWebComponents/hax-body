@@ -1,4 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="hax-toolbar-item.html">
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic"> 
 
 <dom-module id="hax-toolbar">
   <template>
@@ -6,43 +8,30 @@
       :host {
         display: flex;
         border-radius: 5%;
+        font-family: "Roboto", sans-serif;
       }
-      paper-icon-button {
-        background-color: #3e3e3e;
-        display: inline-block;
-        color: #c5c5c5;
+      :host ::slotted(*) {
+        font-family: "Roboto", sans-serif;
       }
-      paper-icon-button:first-of-type {
+      :host ::slotted(*:first-of-type #container) {
         border-top-left-radius: 50%;
         border-bottom-left-radius: 50%;
-        width: 50px;
-        padding-left: 10px;
+        padding-left: 15px;
       }
-      paper-icon-button:last-of-type {
+      :host ::slotted(*:last-of-type #container) {
         border-top-right-radius: 50%;
         border-bottom-right-radius: 50%;
-        width: 50px;
-        padding-right: 10px;
-      }
-      #close {
-        background: black;
+        padding-right: 15px;
       }
     </style>
 
-    <paper-icon-button id="close" hidden$="[[!hasClose]]" icon="close"></paper-icon-button>
-    <paper-icon-button hidden$="[[!hasClose]]" icon="close"></paper-icon-button>
-    <paper-icon-button hidden$="[[!hasClose]]" icon="close"></paper-icon-button>
-    <paper-icon-button hidden$="[[!hasClose]]" icon="close"></paper-icon-button>
-    
+    <slot></slot>
+
   </template>
   <script>
     Polymer({
       is: 'hax-toolbar',
       properties: {
-        hasClose: {
-          type: Boolean,
-          value: false
-        }
       }
     });
   </script>
