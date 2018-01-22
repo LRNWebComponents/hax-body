@@ -1,0 +1,40 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="hax-toolbar-item.html">
+<link rel="import" href="hax-toolbar-menu.html">
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic"> 
+
+<dom-module id="hax-toolbar">
+  <template>
+    <style>
+      :host {
+        display: flex;
+        border-radius: 5%;
+        font-family: "Roboto", sans-serif;
+        justify-content: center;
+      }
+      :host ::slotted(*) {
+        font-family: "Roboto", sans-serif;
+      }
+      :host ::slotted(*:first-child #container) {
+        border-top-left-radius: 50%;
+        border-bottom-left-radius: 50%;
+        padding-left: 15px;
+      }
+      :host ::slotted(*:last-child #container) {
+        border-top-right-radius: 50%;
+        border-bottom-right-radius: 50%;
+        padding-right: 15px;
+      }
+    </style>
+
+    <slot></slot>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'hax-toolbar',
+      properties: {
+      }
+    });
+  </script>
+</dom-module>

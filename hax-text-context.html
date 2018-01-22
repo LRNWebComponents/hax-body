@@ -12,6 +12,8 @@
 <link rel="import" href="hax-context-item-menu.html">
 <link rel="import" href="hax-context-item.html">
 <link rel="import" href="hax-context-item-textop.html">
+<link rel="import" href="hax-toolbar.html">
+<link rel="import" href="hax-toolbar-item.html">
 <!--
 `hax-text-context`
 A context menu that provides common text based authoring options.
@@ -28,34 +30,15 @@ A context menu that provides common text based authoring options.
       :host {
         display: block;
       }
-      app-toolbar {
-        background-color: white;
-        padding: 0;
-        height: 40px;
-      }
-      hax-context-item {
-        margin: 0;
-        width: 40px;
-        height: 40px;
-      }
-      hax-context-item-textop {
-        margin: 0;
-        width: 40px;
-        height: 40px;
-      }
-      .close-cap {
-        margin: 0;
-        padding: 0;
-        border-right: 1px solid black;
-      }
     </style>
-    <app-toolbar>
+    <hax-toolbar>
       <hax-context-item
         icon="close"
         label="Close menu"
         event-name="close-menu"
         class="close-cap"
-        direction="left"></hax-context-item>
+        direction="left"
+        default></hax-context-item>
       <hax-context-item-menu
         selected-value="{{selectedValue}}"
         id="formatsize"
@@ -78,7 +61,6 @@ A context menu that provides common text based authoring options.
         icon="editor:format-italic"
         label="Italic"
         event-name="text-italic"></hax-context-item-textop>
-
       <hax-context-item-menu
         selected-value="{{justifyValue}}"
         id="justify"
@@ -137,7 +119,7 @@ A context menu that provides common text based authoring options.
         icon="editor:format-clear"
         label="Remove format"
         event-name="text-remove-format"></hax-context-item-textop>
-    </app-toolbar>
+    </hax-toolbar>
   </template>
 
   <script>

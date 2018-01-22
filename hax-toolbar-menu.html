@@ -1,0 +1,46 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+
+<dom-module id="hax-toolbar-menu">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      paper-menu-button {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <paper-menu-button>
+      <hax-toolbar-item id="button" slot="dropdown-trigger" icon="[[icon]]" hidden$="[[!icon]]" slot="dropdown-trigger" class$="[[iconClass]]" tooltip="[[tooltip]]"></hax-toolbar-item>
+      <paper-listbox slot="dropdown-content" selected="{{selected}}">
+        <slot></slot>
+      </paper-listbox>
+    </paper-menu-button>
+  </template>
+  <script>
+    Polymer({
+      is: 'hax-toolbar-menu',
+      properties: {
+        tooltip: {
+          type: String,
+          value: ''
+        },
+        tooltipDirection: {
+          type: String,
+          value: ''
+        },
+        selected: {
+          type: String,
+          value: '',
+          notify: true
+        }
+      }
+    });
+  </script>
+</dom-module>
