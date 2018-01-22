@@ -25,12 +25,15 @@
         height: 40px;
         @apply --hax-toolbar-item-container;
       }
+      paper-button:active {
+        background: blue;
+      }
       :host[default] paper-button {
         background: black;
       }
     </style>
 
-    <paper-button id="container">
+    <paper-button id="container" tabindex="1">
       <iron-icon id="button" icon="[[icon]]"></iron-icon> <span id="label" hidden$="[[!label]]">[[label]]</span>
         <paper-tooltip
           for$="[[this]]"

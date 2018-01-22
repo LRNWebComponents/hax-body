@@ -68,16 +68,31 @@
     </style>
   </head>
   <body>
+
+    <div class="vertical-section-container">
+      <h2>HAX Toolbar</h2>
+      <template is="dom-bind">
+        <hax-toolbar>
+          <hax-toolbar-item class="special" icon="folder-open" tooltip="Open media"></hax-toolbar-item>
+          <hax-toolbar-menu icon="folder-open" tooltip="Open media">
+              <paper-item value="p">Normal text</paper-item>
+              <paper-item value="h2">Title</paper-item>
+              <paper-item value="h3">Content heading</paper-item>
+              <paper-item value="h4">Subheading</paper-item>
+              <paper-item value="h5">Deeper subheading</paper-item>
+              <paper-item value="blockquote">Quote</paper-item>
+              <paper-item value="code">Code</paper-item>
+          </hax-toolbar-menu>
+          <hax-toolbar-item icon="editor:format-bold" tooltip="Bold element"></hax-toolbar-item>
+          <hax-toolbar-item icon="editor:format-italic" tooltip="Italic"></hax-toolbar-item>
+        </hax-toolbar>
+      </template>
+    </div>
     <div class="vertical-section-container">
       <template is="dom-bind">
         <hax-store></hax-store>
         <hax-body context-offset-left="-164">
 
-          <!-- <hax-toolbar has-close>
-            <hax-toolbar-item icon="folder-open" tooltip="Open media"></hax-toolbar-item>
-            <hax-toolbar-item icon="editor:format-bold" tooltip="Bold element"></hax-toolbar-item>
-            <hax-toolbar-item icon="editor:format-italic" tooltip="Italic"></hax-toolbar-item>
-          </hax-toolbar> -->
 
           <h1>Click edit in the top left</h1>
           <p>Project links:</p>
