@@ -25,9 +25,11 @@ required for populating input.
     <style>
       :host {
         display: block;
+        color: #c5c5c5;
       }
       app-toolbar {
-        background-color: white;
+        background-color: #3e3e3e;
+        color: #c5c5c5;
         padding: 0;
         height: 40px;
       }
@@ -39,9 +41,20 @@ required for populating input.
       #elementoptions {
         height: inherit;
       }
+      #input {
+        color: #c5c5c5;
+      }
+      paper-checkbox {
+        --paper-checkbox-label-color: #c5c5c5;
+      }
+      .input-mixer-label {
+        padding-left: 4px;
+      }
       paper-textarea,
       paper-input {
+        color: #c5c5c5;
         --paper-input-container: {
+          color: #c5c5c5;
           margin: 0 0 8px 0;
           padding: 2px;
           min-width: 250px;
@@ -50,7 +63,7 @@ required for populating input.
     </style>
     <app-toolbar>
       <template is="dom-if" if="[[__inputselect]]">
-        <span>[[label]]</span>
+        <span class="input-mixer-label">[[label]]</span>
         <hax-context-item-menu
           selected="{{value}}"
           icon="[[icon]]"

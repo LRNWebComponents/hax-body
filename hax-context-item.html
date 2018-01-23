@@ -10,7 +10,6 @@
 <link rel="import" href="../iron-icons/av-icons.html">
 <link rel="import" href="../iron-icons/image-icons.html">
 <link rel="import" href="../iron-icons/maps-icons.html">
-<link rel="import" href="../materializecss-styles/colors.html">
 <link rel="import" href="../neon-animation/web-animations.html">
 <link rel="import" href="hax-toolbar-item.html">
 <!--
@@ -27,7 +26,7 @@ A single button in the hax context menu for consistency.
 
 <dom-module id="hax-context-item">
   <template>
-    <style include="materializecss-styles-colors">
+    <style>
       :host {
         display: inline-flex;
       }
@@ -59,7 +58,7 @@ A single button in the hax context menu for consistency.
         transform: rotateY(180deg);
       }
     </style>
-    <hax-toolbar-item id="button" icon="[[icon]]" hidden$="[[!icon]]" class$="[[iconClass]]" on-tap="_fireEvent" tooltip="[[label]]" tooltip-direction="[[direction]]" default="[[default]]"></hax-toolbar-item>
+    <hax-toolbar-item light="[[light]]" id="button" icon="[[icon]]" hidden$="[[!icon]]" icon-class="[[iconClass]]" on-tap="_fireEvent" tooltip="[[label]]" tooltip-direction="[[direction]]" default="[[default]]"></hax-toolbar-item>
   </template>
 
   <script>
@@ -68,6 +67,13 @@ A single button in the hax context menu for consistency.
       is: 'hax-context-item',
 
       properties: {
+        /**
+         * Light theme for toolbar item.
+         */
+        light: {
+          type: Boolean,
+          value: false,
+        },
         /**
          * Modifier that makes the button wider
          */
@@ -96,7 +102,7 @@ A single button in the hax context menu for consistency.
          */
         iconClass: {
           type: String,
-          value: "black-text",
+          value: "",
           reflectToAttribute: true,
         },
         /**

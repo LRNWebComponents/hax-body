@@ -9,6 +9,7 @@
 <link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="hax-context-item-menu.html">
 <link rel="import" href="hax-context-item.html">
+<link rel="import" href="hax-toolbar.html">
 
 <!--
 `hax-iframe-context`
@@ -25,24 +26,23 @@ A context menu that provides common iframe based authoring options.
     <style>
       :host {
         display: block;
+        height: 40px;
       }
-      app-toolbar {
-        background-color: white;
+      hax-toolbar {
         padding: 0;
+        height: 40px;
+      }
+      paper-slider {
+        background-color: #3e3e3e;
+        color: #c5c5c5;
         height: 40px;
       }
       hax-context-item {
         margin: 0;
-        width: 40px;
         height: 40px;
       }
-      .close-cap {
-        margin: 0;
-        padding: 0;
-        border-right: 1px solid black;
-      }
     </style>
-    <app-toolbar>
+    <hax-toolbar>
       <hax-context-item
         icon="close"
         label="Close menu"
@@ -75,7 +75,7 @@ A context menu that provides common iframe based authoring options.
         icon="editor:insert-link"
         label="Link"
         event-name="iframe-link"></hax-context-item>
-    </app-toolbar>
+    </hax-toolbar>
   </template>
 
   <script>

@@ -1,10 +1,11 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../paper-tooltip/paper-tooltip.html">
+<link rel="import" href="../materializecss-styles/colors.html">
 
 <dom-module id="hax-toolbar-item">
   <template>
-    <style>
+    <style include="materializecss-styles-colors">
       :host {
         display: flex;
       }
@@ -26,52 +27,69 @@
         @apply --hax-toolbar-item-container;
       }
       paper-button:active {
-        background: blue;
+        background: #3e3e3e;
       }
       :host[default] paper-button {
         background: black;
       }
+      :host[light] paper-button{
+        background-color: #c5c5c5;
+        color: #3e3e3e;
+      }
+      :host[light] paper-button:active {
+        background: #c5c5c5;
+      }
     </style>
 
-    <paper-button id="container" tabindex="1">
+    <paper-button id="container" tabindex="1" class$="[[iconClass]]">
       <iron-icon id="button" icon="[[icon]]"></iron-icon> <span id="label" hidden$="[[!label]]">[[label]]</span>
         <paper-tooltip
           for$="[[this]]"
-          position="bottom"
           offset="14"
-          direction="[[tooltip-direction]]"
-          animation-delay="1000">
+          position="[[tooltipDirection]]"
+          animation-delay="200">
           [[tooltip]]
         </paper-tooltip>
     </paper-button>
-    
-    
   </template>
   <script>
     Polymer({
       is: 'hax-toolbar-item',
       properties: {
+        light: {
+          type: Boolean,
+          reflectToAttribute: true,
+          value: false,
+        },
         icon: {
           type: String,
-          value: ''
+          value: '',
         },
         label: {
           type: String,
-          value: ''
+          value: '',
         },
         tooltip: {
           type: String,
-          value: ''
+          value: '',
         },
         tooltipDirection: {
           type: String,
-          value: 'top'
+          value: 'top',
         },
         default: {
           type: Boolean,
           value: false,
-          reflectToAttribute: true
-        }
+          reflectToAttribute: true,
+        },
+        /**
+         * Icon for the button.
+         */
+        iconClass: {
+          type: String,
+          value: "",
+          reflectToAttribute: true,
+        },
       }
     });
   </script>

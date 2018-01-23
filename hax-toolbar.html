@@ -1,7 +1,8 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="hax-toolbar-item.html">
 <link rel="import" href="hax-toolbar-menu.html">
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic"> 
+<link rel="import" href="hax-context-item.html">
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic">
 
 <dom-module id="hax-toolbar">
   <template>
@@ -25,10 +26,25 @@
         border-bottom-right-radius: 50%;
         padding-right: 15px;
       }
+      .ops-spacer {
+        margin: 0 20px;
+        height: 40px;
+      }
     </style>
 
     <slot></slot>
-
+    <hax-context-item
+      icon="content-copy"
+      icon-class="green-text text-lighten-2"
+      label="Duplcate"
+      event-name="grid-plate-duplicate"
+      direction="top"></hax-context-item>
+    <hax-context-item
+      icon="delete"
+      icon-class="red-text text-darken-2"
+      label="Delete"
+      event-name="grid-plate-delete"
+      direction="top"></hax-context-item>
   </template>
   <script>
     Polymer({
