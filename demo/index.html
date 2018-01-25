@@ -246,6 +246,31 @@
           <hax-source
             search
             details='{
+            "title":"Unsplash",
+            "icon":"image:collections",
+            "color":"grey",
+            "author": "Unsplash",
+            "teaser": "Crowd sourced, open photos",
+            "description": "A massive library of open photos that just requiring citing who made it.",
+            "status": "available"
+            }'
+            request-end-point="https://api.unsplash.com/search/photos"
+            request-params='{
+            "query":"",
+            "client_id":"0e1fa3a203724415c10c03581e8db8a43e8bc8906ad934e0f321d28be16281ff",
+            "page":"1"}'
+            query-param="query"
+            response-map='{
+              "root": "results",
+              "gizmoType": "image",
+              "url": "",
+              "id": "urls.regular",
+              "title": "data.0.title",
+              "description": "description",
+              "image": "urls.thumb"}'></hax-source>
+          <hax-source
+            search
+            details='{
             "title":"Youtube",
             "icon":"av:play-arrow",
             "color":"red",
