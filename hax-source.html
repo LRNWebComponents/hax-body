@@ -340,34 +340,39 @@
         if (typeof newValue != {} && typeof oldValue !== typeof undefined) {
           let media = [];
           let map = this.responseMap;
+          let data = [];
+          // look for the root element to draw our data from
           if (typeof this._resolveObjectPath(map.root, newValue) !== typeof undefined) {
-            // look for the root element to draw our data from
-            let data = this._resolveObjectPath(map.root, newValue);
-            // step through and translate response data into a form we can easily
-            // understand when stamping out our cards above.
-            for (i = 0; i < data.length; i++) {
-              media[i] = {
-                'id' : this._resolveObjectPath(map.id, data[i]),
-                'url' : map.url + this._resolveObjectPath(map.id, data[i]),
-                'title': this._resolveObjectPath(map.title, data[i]),
-                'description': this._resolveObjectPath(map.description, data[i]),
-                'image' : this._resolveObjectPath(map.image, data[i]),
-                'gizmoType' : map.gizmoType,
-              };
-              // gizmo type is also supported in the mapping element itself
-              // Think an asset management backend as opposed to a specific
-              // type of asset like video. If the item coming across can
-              // effectively check what kind of gizmo is required for it
-              // to work then we need to support that asset declaring the
-              // gizmo type needed
-              if (typeof map.customGizmoType !== typeof undefined) {
-                media[i].gizmoType = this._resolveObjectPath(map.customGizmoType, data[i]);
-              }
-            }
-            // this will trigger an aggressive repaint of the cards
-            this.set('media', []);
-            this.set('media', media);
+            data = this._resolveObjectPath(map.root, newValue);
           }
+          else {
+            data = newValue;
+          }
+          // step through and translate response data into a form we can easily
+          // understand when stamping out our cards above.
+          for (i = 0; i < data.length; i++) {
+            media[i] = {
+              'id' : this._resolveObjectPath(map.id, data[i]),
+              'url' : map.url + this._resolveObjectPath(map.id, data[i]),
+              'title': this._resolveObjectPath(map.title, data[i]),
+              'description': this._resolveObjectPath(map.description, data[i]),
+              'image' : this._resolveObjectPath(map.image, data[i]),
+              'gizmoType' : map.gizmoType,
+            };
+            // gizmo type is also supported in the mapping element itself
+            // Think an asset management backend as opposed to a specific
+            // type of asset like video. If the item coming across can
+            // effectively check what kind of gizmo is required for it
+            // to work then we need to support that asset declaring the
+            // gizmo type needed
+            if (typeof map.customGizmoType !== typeof undefined) {
+              media[i].gizmoType = this._resolveObjectPath(map.customGizmoType, data[i]);
+            }
+          }
+          // this will trigger an aggressive repaint of the cards
+          this.set('media', []);
+          console.log(media);
+          this.set('media', media);
         }
       },
       /**

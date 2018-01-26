@@ -246,6 +246,32 @@
           <hax-source
             search
             details='{
+            "title":"CC Mixter",
+            "icon":"av:library-music",
+            "color":"orange",
+            "author": "CC Mixter",
+            "teaser": "Creative commons audio",
+            "description": "User submitted audio files and music.",
+            "status": "available"
+            }'
+            request-end-point="http://ccmixter.org/api/query"
+            request-params='{
+            "tags":"",
+            "format":"json",
+            "sort":"name",
+            "limit":"20"}'
+            query-param="tags"
+            response-map='{
+              "root": "",
+              "gizmoType": "audio",
+              "url": "",
+              "id": "files.0.download_url",
+              "title": "upload_name",
+              "description": "upload_description_plain",
+              "image": "license_logo_url"}'></hax-source>
+          <hax-source
+            search
+            details='{
             "title":"Unsplash",
             "icon":"image:collections",
             "color":"grey",
