@@ -272,6 +272,55 @@
           <hax-source
             search
             details='{
+            "title":"Pixabay images",
+            "icon":"places:all-inclusive",
+            "color":"pink",
+            "author": "Pixabay",
+            "teaser": "Open image search",
+            "description": "Pixabay open image community",
+            "status": "available"
+            }'
+            request-end-point="https://pixabay.com/api"
+            request-params='{
+            "key":"7839766-f49bb4174cd49cb587944a5f7",
+            "q":"",
+            "image_type":"photo"}'
+            query-param="q"
+            response-map='{
+              "root": "hits",
+              "gizmoType": "image",
+              "url": "",
+              "id": "webformatURL",
+              "title": "tags",
+              "description": "tags",
+              "image": "previewURL"}'></hax-source>
+          <hax-source
+            search
+            details='{
+            "title":"Pixabay Video",
+            "icon":"places:all-inclusive",
+            "color":"orange",
+            "author": "Pixabay",
+            "teaser": "Open video search",
+            "description": "Pixabay open video community",
+            "status": "available"
+            }'
+            request-end-point="https://pixabay.com/api/videos"
+            request-params='{
+            "key":"7839766-f49bb4174cd49cb587944a5f7",
+            "q":""}'
+            query-param="q"
+            response-map='{
+              "root": "hits",
+              "gizmoType": "video",
+              "url": "",
+              "id": "videos.large.url",
+              "title": "tags",
+              "description": "tags",
+              "image": "userImageURL"}'></hax-source>
+          <hax-source
+            search
+            details='{
             "title":"Unsplash",
             "icon":"image:collections",
             "color":"grey",
