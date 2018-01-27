@@ -246,6 +246,35 @@
           <hax-source
             search
             details='{
+            "title":"Giphy",
+            "icon":"gif",
+            "color":"green",
+            "author": "Giphy",
+            "teaser": "Crowd sourced memes",
+            "description": "Popular memes and gifs that float around social media from the internet itself.",
+            "status": "available"
+            }'
+            request-end-point="https://api.giphy.com/v1/gifs/search"
+            request-params='{
+              "api_key": "mr3blNkTT0HeTvtyPPT4TIftqUSgyHoO",
+              "q": "",
+              "limit": "10",
+              "offset": "0",
+              "rating": "G",
+              "lang": "en"
+            }'
+            query-param="q"
+            response-map='{
+              "root": "data",
+              "gizmoType": "image",
+              "url": "",
+              "id": "images.original.url",
+              "title": "title",
+              "description": "slug",
+              "image": "images.fixed_width.url"}'></hax-source>
+          <hax-source
+            search
+            details='{
             "title":"CC Mixter",
             "icon":"av:library-music",
             "color":"orange",
