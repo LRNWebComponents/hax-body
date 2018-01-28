@@ -333,7 +333,10 @@
        */
       Polymer.HaxStore.guessGizmoType = (guess) => {
         if (typeof guess.url !== typeof undefined) {
-          if (guess.url.indexOf('vimeo.com') != -1 || guess.url.indexOf('youtube.com') != -1 || guess.url.indexOf('youtube-nocookie.com') != -1 || guess.url.indexOf('youtu.be') != -1) {
+          // @todo use the same guess engine built into the media sources matcher
+          // this might actually all make sense to send through those behaviors
+          // because they'll show up in other place potentially
+          if (guess.url.indexOf('sketchfab.com') != -1 || guess.url.indexOf('vimeo.com') != -1 || guess.url.indexOf('youtube.com') != -1 || guess.url.indexOf('youtube-nocookie.com') != -1 || guess.url.indexOf('youtu.be') != -1) {
             return 'video';
           }
           else if (guess.url.indexOf('soundcloud.com') != -1) {
