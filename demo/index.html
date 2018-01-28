@@ -301,6 +301,31 @@
           <hax-source
             search
             details='{
+            "title":"Sketchfab",
+            "icon":"3d-rotation",
+            "color":"orange",
+            "author": "Sketchfab",
+            "teaser": "3D model community",
+            "description": "User community of 3D files and Augmented reality",
+            "status": "available"
+            }'
+            request-end-point="https://api.sketchfab.com/v3/search"
+            request-params='{
+            "type":"models",
+            "q":"",
+            "processing_status":"succeeded"}'
+            query-param="q"
+            response-map='{
+              "root": "results",
+              "gizmoType": "video",
+              "url": "",
+              "id": "embedUrl",
+              "title": "name",
+              "description": "description",
+              "image": "thumbnails.images.0.url"}'></hax-source>
+          <hax-source
+            search
+            details='{
             "title":"Pixabay images",
             "icon":"places:all-inclusive",
             "color":"pink",

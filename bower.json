@@ -12,7 +12,7 @@
     "neon-animation": "PolymerElements/neon-animation#^2.0.2",
     "paper-menu-button": "PolymerElements/paper-menu-button#^2.0.0",
     "paper-icon-button": "PolymerElements/paper-icon-button#^2.0.1",
-    "video-player": "LRNWebComponents/video-player#^1.6.0",
+    "video-player": "LRNWebComponents/video-player#^1.7.1",
     "pie-menu": "LRNWebComponents/pie-menu",
     "media-image": "LRNWebComponents/media-image#^0.0.9",
     "md-extra-icons": "LRNWebComponents/md-extra-icons#^0.0.4",
