@@ -383,6 +383,34 @@
           <hax-source
             search
             details='{
+            "title":"Dailymotion",
+            "icon":"av:play-circle-filled",
+            "color":"lightblue",
+            "author": "Dailymotion",
+            "teaser": "Crowd video platform",
+            "description": "Crowdsourced video platform.",
+            "status": "available"
+            }'
+            request-end-point="https://api.dailymotion.com/videos"
+            request-params='{
+            "fields":"description,embed_url,thumbnail_240_url,title",
+            "no_live":"1",
+            "search":"",
+            "sort":"relevance",
+            "page":"1",
+            "limit":"20"}'
+            query-param="search"
+            response-map='{
+              "root": "list",
+              "gizmoType": "video",
+              "url": "",
+              "id": "embed_url",
+              "title": "title",
+              "description": "description",
+              "image": "thumbnail_240_url"}'></hax-source>
+          <hax-source
+            search
+            details='{
             "title":"Pixabay images",
             "icon":"image:collections",
             "color":"pink",

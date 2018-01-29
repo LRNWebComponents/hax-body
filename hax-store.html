@@ -1,5 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../paper-toast/paper-toast.html">
+<link rel="import" href="../media-behaviors/media-behaviors.html">
+
 <!--
 `hax-store`
  The storage area for all valid custom elements to drop into HAX. This element lives at the top level and lazy-loads all the possible elements that could be added to the document. It also helps with building the hax-panel options as well as brokering what tags register as valid when doing sanitization requests.
@@ -34,7 +36,9 @@
 
       Polymer.HaxStore = Polymer({
         is: 'hax-store',
-
+        behaviors: [
+          MediaBehaviors.Video,
+        ],
         properties: {
           /**
            * Hax manager element.
@@ -333,13 +337,7 @@
        */
       Polymer.HaxStore.guessGizmoType = (guess) => {
         if (typeof guess.url !== typeof undefined) {
-          // @todo use the same guess engine built into the media sources matcher
-          // this might actually all make sense to send through those behaviors
-          // because they'll show up in other place potentially
-          if (guess.url.indexOf('sketchfab.com') != -1 || guess.url.indexOf('vimeo.com') != -1 || guess.url.indexOf('youtube.com') != -1 || guess.url.indexOf('youtube-nocookie.com') != -1 || guess.url.indexOf('youtu.be') != -1) {
-            return 'video';
-          }
-          else if (guess.url.indexOf('soundcloud.com') != -1) {
+          if (guess.url.indexOf('soundcloud.com') != -1) {
             return 'audio';
           }
           else if (guess.url.indexOf('.jpg') != -1 || guess.url.indexOf('.jpeg') != -1 || guess.url.indexOf('.gif') != -1) {
@@ -353,6 +351,10 @@
           }
           else if (guess.url.indexOf('.csv') != -1) {
             return 'csv';
+          }
+          // if it's external we can't assume what it actually is
+          else if (Polymer.HaxStore.instance.getVideoType(guess.url) != 'external') {
+            return 'video';
           }
           else {
             return 'data';
