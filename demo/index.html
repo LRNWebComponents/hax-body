@@ -19,7 +19,7 @@
     <link rel="import" href="../hax-body.html">
     <link rel="import" href="../hax-autoloader.html">
     <link rel="import" href="../hax-manager.html">
-    <link rel="import" href="../hax-source.html">
+    <link rel="import" href="../hax-app.html">
     <link rel="import" href="../hax-panel.html">
     <link rel="import" href="../hax-export-dialog.html">
     <!-- Adding Favicon -->
@@ -69,7 +69,7 @@
   <body>
     <div class="vertical-section-container">
       <template is="dom-bind">
-        <hax-store></hax-store>
+        <hax-store app-store='{"url":"appstore.json"}'></hax-store>
         <hax-body context-offset-left="-164">
           <h1>Click edit in the top left</h1>
           <p>Project links:</p>

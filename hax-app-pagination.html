@@ -3,7 +3,7 @@
 <link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
 
-<dom-module id="hax-source-pagination">
+<dom-module id="hax-app-pagination">
   <template>
     <style>
       :host {
@@ -26,7 +26,7 @@
   </template>
   <script>
     Polymer({
-      is: 'hax-source-pagination',
+      is: 'hax-app-pagination',
       properties: {
         /**
          * Total number of results
@@ -97,7 +97,6 @@
                 let page = target.getAttribute('data-page');
                 this.fire('change-page', { page: Number(page) });
                 break;
-              
               case 'first-page':
                 this.fire('change-page', { page:  Number(this.start) });
                 break;
