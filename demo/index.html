@@ -326,6 +326,32 @@
           <hax-source
             search
             details='{
+            "title":"Wikipedia",
+            "icon":"account-balance",
+            "color":"grey",
+            "author": "Wikimedia",
+            "teaser": "Crowd sourced knowledge",
+            "description": "Encyclopedia of the world",
+            "status": "available"
+            }'
+            request-end-point="https://en.wikipedia.org/w/api.php"
+            request-params='{
+            "action":"query",
+            "list":"search",
+            "format":"json",
+            "srsearch":""}'
+            query-param="srsearch"
+            response-map='{
+              "root": "query.search",
+              "gizmoType": "content",
+              "url": "",
+              "id": "pageid",
+              "title": "title",
+              "description": "snippet",
+              "image": ""}'></hax-source>
+          <hax-source
+            search
+            details='{
             "title":"Pixabay images",
             "icon":"places:all-inclusive",
             "color":"pink",
