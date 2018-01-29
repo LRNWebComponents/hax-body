@@ -352,8 +352,39 @@
           <hax-source
             search
             details='{
+            "title":"Flickr",
+            "icon":"image:collections",
+            "color":"pink",
+            "author": "Yahoo",
+            "teaser": "Flickr photos",
+            "description": "The original photo sharing platform on the web.",
+            "status": "available"
+            }'
+            request-end-point="https://api.flickr.com/services/rest"
+            request-params='{
+            "api_key":"69d465b90be1dcee2b80df683656e804",
+            "method":"flickr.photos.search",
+            "text":"",
+            "safe_search":"1",
+            "per_page":"20",
+            "page":"1",
+            "format":"json",
+            "nojsoncallback":"1",
+            "extras":"license,description,url_l,url_s"}'
+            query-param="text"
+            response-map='{
+              "root": "photos.photo",
+              "gizmoType": "image",
+              "url": "",
+              "id": "url_l",
+              "title": "title",
+              "description": "description",
+              "image": "url_s"}'></hax-source>
+          <hax-source
+            search
+            details='{
             "title":"Pixabay images",
-            "icon":"places:all-inclusive",
+            "icon":"image:collections",
             "color":"pink",
             "author": "Pixabay",
             "teaser": "Open image search",
