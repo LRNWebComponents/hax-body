@@ -14,13 +14,13 @@
 -->
 
 
-<dom-module id="hax-app-browser-result">
+<dom-module id="hax-app-search-result">
   <template>
     <style>
       :host {
         display: block;
       };
-      paper-button.preview-wrapper {
+      paper-button.button-wrapper {
         margin: 0;
         padding: 0;
       }
@@ -28,6 +28,7 @@
         padding: 0;
         margin: .5em;
         width: 15em;
+        height: 15em;
         font-size: .8em;
         --paper-card-header: {
           max-height: 10em;
@@ -47,11 +48,11 @@
       }
     </style>
 
-    <paper-button data-gizmo-type$="[[preview.gizmoType]]" data-value$="[[preview.url]]" data-id$="[[preview.id]]" on-tap="_itemSelected" class="preview-wrapper">
-      <paper-card data-gizmo-type$="[[preview.gizmoType]]" data-value$="[[preview.url]]" data-id$="[[preview.id]]" image="[[preview.image]]">
+    <paper-button on-tap="_itemSelected" class="button-wrapper">
+      <paper-card image="[[resultData.image]]">
         <div class="card-content" style="height:5em;overflow:auto;">
-          <p>[[preview.title]]</p>
-          <slot></slot>
+          <p>[[resultData.title]]</p>
+          <p>[[resultData.details]]</p>
         </div>
       </paper-card>
     </paper-button>
@@ -65,9 +66,27 @@
         /**
          * Preview object from hax-app originally.
          */
-        preview: {
+        resultData: {
           type: Object,
         },
+      },
+      /**
+       * Handle media item selected.
+       */
+      _itemSelected: function(e) {
+        var map = this.resultData.map;
+        var gizmoType = this.resultData.type;
+        // sanity check as well as guessing based on type if we absolutely have to
+        if ((gizmoType === null || gizmoType === '') && typeof map.source !== typeof undefined) {
+          gizmoType = Polymer.HaxStore.guessGizmoType(map.source);
+        }
+        let haxElement = Polymer.HaxStore.guessGizmo(gizmoType, map);
+        if (typeof haxElement.tag !== typeof undefined) {
+          Polymer.HaxStore.write('activeHaxElement', haxElement, this);
+        }
+        else {
+          Polymer.HaxStore.toast("Sorry, I don't know how to handle that link yet.");
+        }
       },
     });
   </script>

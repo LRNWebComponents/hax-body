@@ -415,7 +415,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
        */
       newAssetConfigure: function() {
         let values = {
-          url: this.$.url.value
+          source: this.$.url.value
         };
         // we have no clue what this is.. let's try and guess..
         let type = Polymer.HaxStore.guessGizmoType(values);

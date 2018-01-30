@@ -1,5 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-item/paper-item.html">
 <link rel="import" href="../eco-json-schema-form/eco-json-schema-wizard.html">
 <!--
 `hax-app-search-inputs`
@@ -21,13 +22,16 @@
       }
     </style>
     <h3>Search [[label]]</h3>
-    <eco-json-schema-form schema="{{schema}}" values="{{values}}"></eco-json-schema-form>
+    <eco-json-schema-object id="form" schema="[[schema]]" value="{{values}}"></eco-json-schema-object>
   </template>
 
   <script>
     Polymer({
 
       is: 'hax-app-search-inputs',
+      observers: [
+        '_valueChanged(values.*)'
+      ],
       properties: {
         /**
          * Title.
@@ -48,6 +52,12 @@
         schema: {
           type: Object,
         },
+      },
+      /**
+       * Search input was added.
+       */
+      _valueChanged: function(change) {
+        this.fire('hax-app-search-values-changed', change.base);
       },
     });
   </script>

@@ -5,8 +5,9 @@
 <link rel="import" href="../iron-list/iron-list.html">
 <link rel="import" href="../iron-ajax/iron-ajax.html">
 <link rel="import" href="../elmsln-loading/elmsln-loading.html">
-<link rel="import" href="hax-app-pagination.html">
+<!--<link rel="import" href="hax-app-pagination.html">-->
 <link rel="import" href="hax-app-search-inputs.html">
+<link rel="import" href="hax-app-search-result.html">
 
 <!--
 `hax-app-search`
@@ -86,13 +87,29 @@
         margin: 0;
       }
       #itemlist {
-        overflow-y: unset !important;
+        min-height: 150px;
+        height: 50vh;
+        border: 1px solid #222222;
       }
-
+      hax-app-search-inputs {
+        min-height: 150px;
+        background-color: #EEEEEE;
+        color: #222222;
+        border-top: 1px solid #222222;
+        border-left: 1px solid #222222;
+        border-right: 1px solid #222222;
+      }
       hax-app-pagination {
+        min-height: 64px;
+        font-size: .8em;
         display: flex;
         justify-content: flex-end;
         justify-content: center;
+        background-color: #EEEEEE;
+        color: #222222;
+        border-bottom: 1px solid #222222;
+        border-left: 1px solid #222222;
+        border-right: 1px solid #222222;
       }
     </style>
 
@@ -104,7 +121,7 @@
       handle-as="json"
       headers="[[headers]]"
       params='[[requestParams]]'
-      last-response="{{mediaList}}"
+      last-response="{{requestData}}"
       hidden
       loading="{{loading}}"></iron-ajax>
 
@@ -114,13 +131,12 @@
       <h3 class="loading-text">Loading content..</h3>
     </div>
     <hax-app-search-inputs label="[[label]]" schema="{{searchSchema}}" values="{{searchValues}}"></hax-app-search-inputs>
-    <iron-list grid id="itemlist" items="[[media]]" as="preview">
+    <hax-app-pagination id="pagerbottom" request-data="[[requestData]]" pagination="[[pagination]]"></hax-app-pagination>
+    <iron-list grid id="itemlist" items="[[media]]" as="resultData">
       <template>
-        <hax-app-search-result preview="[[preview]]"></hax-app-search-result>
+        <hax-app-search-result result-data="[[resultData]]"></hax-app-search-result>
       </template>
     </iron-list>
-
-    <hax-app-pagination id="pagerbottom" pagination="[[pagination]]"></hax-app-pagination>
   </template>
 
   <script>
@@ -156,7 +172,20 @@
         searchValues: {
           type: Object,
           value: {},
-          observer: '_searchValuesChanged',
+        },
+        /**
+         * Custom headers for data binding from the App feed.
+         */
+        headers: {
+          type: Object,
+          value: {},
+        },
+        /**
+         * Custom method for requesting data (almost always will be GET)
+         */
+        method: {
+          type: String,
+          value: 'GET',
         },
         /**
          * loading
@@ -166,12 +195,12 @@
           value: false,
         },
         /**
-         * Media object populated at the end
+         * Media request data updated
          */
-        mediaList: {
+        requestData: {
           type: Object,
           value: {},
-          observer: '_mediaListChanged',
+          observer: '_requestDataChanged',
         },
         /**
          * Media object, normalized.
@@ -185,12 +214,11 @@
       /**
        * Search input was added.
        */
-      _searchValuesChanged: function(newValue, oldValue) {
-        if (typeof newValue !== typeof undefined) {
-          console.log('time to update the input for the request');
+      _searchValuesEvent: function(e) {
+        if (typeof e.detail !== typeof undefined) {
           var requestParams = this.requestParams;
-          for (var property in newValue) {
-            requestParams[property] = newValue[property];
+          for (var property in e.detail) {
+            requestParams[property] = e.detail[property];
           }
           this.set('requestParams', {});
           this.set('requestParams', requestParams);
@@ -203,10 +231,10 @@
         if (typeof newValue !== typeof undefined) {
           let app = newValue;
           var requestParams = {};
-          console.log(app);
           this.label = app.details.title;
           // disasble auto for a moment while we switch inputs
           this.auto = false;
+          this.set('media', []);
           // see if we have any global settings for connections like api keys
           if (typeof app.connection.data !== typeof undefined) {
             requestParams = app.connection.data;
@@ -214,6 +242,11 @@
           // see if the browse endpoint has local overrides
           if (typeof app.connection.operations.browse.data !== typeof undefined) {
             requestParams = Object.assign(requestParams, app.connection.operations.browse.data);
+          }
+          this.set('method', app.connection.operations.browse.method);
+          this.set('headers', {});
+          if (typeof app.connection.headers !== typeof undefined) {
+            this.set('headers', app.connection.headers);
           }
           // ensure we overwrite completely
           this.set('requestParams', {});
@@ -229,11 +262,14 @@
             requestEndPoint += app.connection.operations.browse.endPoint;
           }
           this.set('requestEndPoint', requestEndPoint);
-
           // ensure correct wipe of the search area assuming it has a search
           this.set('searchSchema', {});
+          var searchSchema = {
+            "properties": {}
+          };
           if (typeof app.connection.operations.browse.search !== typeof undefined) {
-            this.set('searchSchema', app.connection.operations.browse.search);
+            searchSchema.properties = app.connection.operations.browse.search;
+            this.set('searchSchema', searchSchema);
           }
           this.resultMap = app.connection.operations.browse.resultMap;
           // map pagination if it has it (it better..)
@@ -255,6 +291,8 @@
        */
       attached: function() {
         document.body.addEventListener('hax-store-property-updated', this._haxStorePropertyUpdated.bind(this));
+        document.body.addEventListener('hax-app-search-values-changed', this._searchValuesEvent.bind(this));
+
       },
       /**
        * Store updated, sync.
@@ -267,7 +305,7 @@
       /**
        * Callback for when media has been updated via the end point
        */
-      _mediaListChanged: function(newValue, oldValue) {
+      _requestDataChanged: function(newValue, oldValue) {
         if (typeof newValue != {} && typeof oldValue !== typeof undefined) {
           let media = [];
           let map = this.resultMap;
@@ -277,32 +315,50 @@
             data = this._resolveObjectPath(map.items, newValue);
           }
           else {
-            data = newValue;
-          }
-          // step through and translate response data into a form we can easily
-          // understand when stamping out our cards above.
-          for (i = 0; i < data.length; i++) {
-            media[i] = {
-              'id' : this._resolveObjectPath(map.preview.id, data[i]),
-              'title': this._resolveObjectPath(map.preview.title, data[i]),
-              'description': this._resolveObjectPath(map.preview.description, data[i]),
-              'image' : this._resolveObjectPath(map.preview.image, data[i]),
-              'type' : map.defaultGizmoType,
-            };
-            // gizmo type is also supported in the mapping element itself
-            // Think an asset management backend as opposed to a specific
-            // type of asset like video. If the item coming across can
-            // effectively check what kind of gizmo is required for it
-            // to work then we need to support that asset declaring the
-            // gizmo type needed
-            if (typeof map.gizmo.type !== typeof undefined) {
-              media[i].type = this._resolveObjectPath(map.gizmo.type, data[i]);
+            if (newValue != null) {
+              data = newValue;
             }
           }
-          // this will trigger an aggressive repaint of the cards
-          this.set('media', []);
-          console.log(media);
-          this.set('media', media);
+          if (data != null) {
+            // step through and translate response data into a form we can easily
+            // understand when stamping out our cards above.
+            for (i = 0; i < data.length; i++) {
+              media[i] = {
+                'id' : this._resolveObjectPath(map.preview.id, data[i]),
+                'title': this._resolveObjectPath(map.preview.title, data[i]),
+                'details': this._resolveObjectPath(map.preview.details, data[i]),
+                'image': this._resolveObjectPath(map.preview.image, data[i]),
+                'type': map.defaultGizmoType,
+                'map': {},
+              };
+              for(var prop in map.gizmo){
+                // check for a _url_source modifier... stupid youtube and others.
+                if (prop === '_url_source') {
+                  let _id = this._resolveObjectPath(map.gizmo.id, data[i]);
+                  media[i].map.source = map.gizmo._url_source.replace('<%= id %>', _id);
+                }
+                else {
+                  media[i].map[prop] = this._resolveObjectPath(map.gizmo[prop], data[i]);
+                }
+              }
+              // another sanity check, if we don't have a url but have a source bind that too
+              if (typeof media[i].map.url === typeof undefined && typeof media[i].map.source !== typeof undefined) {
+                media[i].map.url = media[i].map.source;
+              }
+              // gizmo type is also supported in the mapping element itself
+              // Think an asset management backend as opposed to a specific
+              // type of asset like video. If the item coming across can
+              // effectively check what kind of gizmo is required for it
+              // to work then we need to support that asset declaring the
+              // gizmo type needed
+              if (typeof map.gizmo.type !== typeof undefined) {
+                media[i].type = this._resolveObjectPath(map.gizmo.type, data[i]);
+              }
+            }
+            // this will trigger an aggressive repaint of the cards
+            this.set('media', []);
+            this.set('media', media);
+          }
         }
       },
       /**
@@ -313,35 +369,6 @@
           (setTimeout(() => {
             this.$.itemlist.fire('iron-resize');
           }, 200))
-        }
-      },
-      /**
-       * Handle media item selected.
-       */
-      _itemSelected: function(e) {
-        // user clicked something, normalize this
-        var normalizedEvent = Polymer.dom(e);
-        var local = normalizedEvent.localTarget;
-        var detail = {};
-        // url is the data-value on here
-        let url = local.getAttribute('data-value');
-        let gizmoType = local.getAttribute('data-gizmo-type');
-        // sanity check
-        if (url !== null && url !== '') {
-          // @todo add support for other things from the source
-          let props = {
-            url: url
-          };
-          if (gizmoType === null || gizmoType === '') {
-            gizmoType = Polymer.HaxStore.guessGizmoType(url);
-          }
-          let haxElement = Polymer.HaxStore.guessGizmo(gizmoType, props);
-          if (typeof haxElement.tag !== typeof undefined) {
-            Polymer.HaxStore.write('activeHaxElement', haxElement, this);
-          }
-          else {
-            Polymer.HaxStore.toast("Sorry, I don't know how to handle that link yet.");
-          }
         }
       },
       /**

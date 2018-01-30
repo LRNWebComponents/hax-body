@@ -395,24 +395,24 @@
        * Guess the type of Gizmo when given some information about what we have.
        */
       Polymer.HaxStore.guessGizmoType = (guess) => {
-        if (typeof guess.url !== typeof undefined) {
-          if (guess.url.indexOf('soundcloud.com') != -1) {
+        if (typeof guess.source !== typeof undefined) {
+          if (guess.source.indexOf('.mp3') != -1) {
             return 'audio';
           }
-          else if (guess.url.indexOf('.jpg') != -1 || guess.url.indexOf('.jpeg') != -1 || guess.url.indexOf('.gif') != -1) {
+          else if (guess.source.indexOf('.jpg') != -1 || guess.source.indexOf('.jpeg') != -1 || guess.source.indexOf('.gif') != -1) {
             return 'image';
           }
-          else if (guess.url.indexOf('.pdf') != -1) {
+          else if (guess.source.indexOf('.pdf') != -1) {
             return 'pdf';
           }
-          else if (guess.url.indexOf('.svg') != -1) {
+          else if (guess.source.indexOf('.svg') != -1) {
             return 'svg';
           }
-          else if (guess.url.indexOf('.csv') != -1) {
+          else if (guess.source.indexOf('.csv') != -1) {
             return 'csv';
           }
           // if it's external we can't assume what it actually is
-          else if (Polymer.HaxStore.instance.getVideoType(guess.url) != 'external') {
+          else if (Polymer.HaxStore.instance.getVideoType(guess.source) != 'external') {
             return 'video';
           }
           else {
@@ -425,27 +425,35 @@
        */
       Polymer.HaxStore.guessGizmo = (guess, values) => {
         if (typeof guess !== typeof undefined) {
-          let root = Polymer.HaxStore.instance;
+          var store = Polymer.HaxStore.instance;
           // verify type
-          if (root.validGizmoTypes.includes(guess)) {
+          if (store.validGizmoTypes.includes(guess)) {
             // now we can look through them
             // look for a match
-            for (var gizmoposition in root.gizmoList) {
-              let gizmo = root.gizmoList[gizmoposition];
+            for (var gizmoposition in store.gizmoList) {
+              var gizmo = store.gizmoList[gizmoposition];
+              var props = {};
+              var match;
               for (var i = 0; i < gizmo.handles.length; i++) {
+                // reset match per potential handler though most things
+                // will only have 1 handler but still..
+                match = false;
                 // WHAT!??!?!?!?!
                 if (guess === gizmo.handles[i].type) {
                   for (var property in gizmo.handles[i]) {
                     // ignore type.. but again.. WHAT?!?!?!
                     if (property !== 'type') {
                       // check the values that came across to see if there's a match
+                      // of any kind, we only need one but can then bind to multiple
                       if (typeof values[property] !== typeof undefined) {
-                        let props = {};
+                        match = true;
                         props[gizmo.handles[i][property]] = values[property];
-                        // omg... we just found a match on a property from who knows where!
-                        return Polymer.HaxStore.haxElementPrototype(gizmo.tag, props, '');
                       }
                     }
+                  }
+                  // omg... we just found a match on a property from who knows where!
+                  if (match) {
+                    return Polymer.HaxStore.haxElementPrototype(gizmo.tag, props, '');
                   }
                 }
               }

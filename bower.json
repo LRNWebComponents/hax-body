@@ -12,9 +12,9 @@
     "neon-animation": "PolymerElements/neon-animation#^2.0.2",
     "paper-menu-button": "PolymerElements/paper-menu-button#^2.0.0",
     "paper-icon-button": "PolymerElements/paper-icon-button#^2.0.1",
-    "video-player": "LRNWebComponents/video-player#^1.7.2",
+    "video-player": "LRNWebComponents/video-player#^1.7.3",
     "pie-menu": "LRNWebComponents/pie-menu",
-    "media-image": "LRNWebComponents/media-image#^0.0.9",
+    "media-image": "LRNWebComponents/media-image#^0.0.10",
     "md-extra-icons": "LRNWebComponents/md-extra-icons#^0.0.4",
     "paper-input": "PolymerElements/paper-input#^2.0.4",
     "paper-swatch-picker": "PolymerElements/paper-swatch-picker#^2.0.1",
@@ -25,7 +25,7 @@
     "paper-toggle-button": "PolymerElements/paper-toggle-button#^2.0.0",
     "vaadin-split-layout": "vaadin/vaadin-split-layout#^1.1.0",
     "elmsln-loading": "LRNWebComponents/elmsln-loading#^1.0.0",
-    "eco-json-schema-form": "LRNWebComponents/eco-json-schema-form#1.0.0-lrn5",
+    "eco-json-schema-form": "LRNWebComponents/eco-json-schema-form#1.0.0-lrn6",
     "iron-list": "PolymerElements/iron-list#^2.0.12",
     "paper-card": "PolymerElements/paper-card#^2.0.0",
     "paper-tabs": "PolymerElements/paper-tabs#^2.0.0",
@@ -35,8 +35,8 @@
     "schema-behaviors": "LRNWebComponents/schema-behaviors#^0.1.0",
     "wikipedia-query": "LRNWebComponents/wikipedia-query#^1.2.0",
     "iron-image": "PolymerElements/iron-image#^2.1.2",
-    "lrn-table": "LRNWebComponents/lrn-table#^0.4.0",
-    "dropdown-select": "LRNWebComponents/dropdown-select",
+    "lrn-table": "LRNWebComponents/lrn-table#^0.5.1",
+    "dropdown-select": "LRNWebComponents/dropdown-select#^1.0.0",
     "materializecss-styles": "LRNWebComponents/materializecss-styles#^1.1.0",
     "pdf-element": "LRNWebcomponents/pdf-element#^1.3.0",
     "paper-toast": "PolymerElements/paper-toast#^2.0.0",
@@ -54,13 +54,14 @@
     "web-component-tester": "^4.0.0",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
     "paper-toast": "PolymerElements/paper-toast#^2.0.0",
-    "paper-audio-player": "LRNWebComponents/paper-audio-player#1.1.1-lrn"
+    "paper-audio-player": "LRNWebComponents/paper-audio-player#1.1.1-lrn1"
   },
   "resolutions": {
     "webcomponentsjs": "^0.7.0",
     "neon-animation": "1 - 2",
     "materializecss-styles": "^1.1.0",
     "paper-spinner": "^2.0.0",
-    "paper-tooltip": "^2.0.0"
+    "paper-tooltip": "^2.0.0",
+    "polymer": "^1.2.4"
   }
 }
