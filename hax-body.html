@@ -601,7 +601,9 @@ A LRN element that will change the world.
             this.haxDuplicateNode(this.activeNode);
           break;
           case 'grid-plate-delete':
-            this.haxDeleteNode(this.activeNode);
+            if (window.confirm('Are you sure you want to delete this element?')) {
+              this.haxDeleteNode(this.activeNode);
+            }
           break;
           case 'grid-plate-up':
             this.haxMoveGridPlate('up', this.activeNode);

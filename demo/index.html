@@ -15,6 +15,7 @@
     <!-- required for just about any app using HAX though them all being separate allows developers to replace or not use any one of the pieces and just implement the capabilities that the element is providing as far as elements and binding. -->
     <link rel="import" href="../../polymer/polymer.html">
     <link rel="import" href="../../iron-icons/places-icons.html">
+    <link rel="import" href="../../github-corner/github-corner.html">
     <link rel="import" href="../hax-store.html">
     <link rel="import" href="../hax-body.html">
     <link rel="import" href="../hax-autoloader.html">
@@ -68,59 +69,55 @@
     </style>
   </head>
   <body>
+    <github-corner fill="#FF0000" target="_blank" href="https://github.com/LRNWebComponents/hax-body"></github-corner>
     <div class="vertical-section-container">
       <template is="dom-bind">
         <hax-store app-store='{"url":"appstore.json"}'></hax-store>
         <hax-app-picker></hax-app-picker>
         <hax-body context-offset-left="-164">
-          <h1>Click edit in the top left</h1>
-          <p>Project links:</p>
-          <div>
+          <h1>What is HAX? Allow the Earth to convince you.</h1>
+<magazine-cover class="x-scope magazine-cover-0 x-scope magazine-cover-0 x-scope magazine-cover-0" header="Endless possibilities" image="https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e000676/GSFC_20171208_Archive_e000676~thumb.jpg" subheader="Click the power button to start started" text="Welcome to HAX. An entirely different way to author, edit and create content. HAX solves the problem your content contributors always complain about - getting things on the internet. It's 2017, and yet much of the internet is still constrained to WYSIWYG editors started in 2001. They are better then nothing; but we can build so much more then that now! HAX stands for Headless Authoring eXperience. Because authoring experience makes and breaks any platform!" action="Click the power button in the top left to start!" icon="launch" link="#">
+</magazine-cover>
+<h2>Still need more convincing? This is Jonah Hill's reaction the first time he used HAX.</h2>
+<a11y-gif-player resource="#8dbb2524-dc47-5726-00c7" prefix="oer:http://oerschema.org/ schema:http://schema.org/ dc:http://purl.org/dc/terms/ foaf:http://xmlns.com/foaf/0.1/ cc:http://creativecommons.org/ns# bib:http://bib.schema.org " src="https://media3.giphy.com/media/5GoVLqeAOo6PK/giphy.gif" src-without-animation="https://media3.giphy.com/media/5GoVLqeAOo6PK/480w_s.jpg" alt="Happy Jonah hill because he just discovered Web components." width="100%" height="100%" target="[object HTMLDivElement]" style="margin: 0px auto; display: block; width: 50%;">
+</a11y-gif-player>
+<video-player source="https://www.youtube.com/watch?v=eGV1XWzUko8" resource="#8a8a00a9-c9c8-b045-6b71" prefix="oer:http://oerschema.org/ schema:http://schema.org/ dc:http://purl.org/dc/terms/ foaf:http://xmlns.com/foaf/0.1/ cc:http://creativecommons.org/ns# bib:http://bib.schema.org " responsive="" video-style="style1" class="x-scope video-player-0 x-scope video-player-0 x-scope video-player-0" text-color-class="black-text" text-color="#000000" style="width: 50%; float: right;">
+</video-player>
+<h2>Really? That wasn't enough. Hmm... How about a youtube video to help AND LINKS</h2>
+<div>
             <ul>
               <li><a href="https://github.com/LRNWebComponents/hax-body" target="_blank">HAX github project</a></li>
-              <li><a href="https://docs.google.com/presentation/d/1EcdcsY80HhXiiZOL1t1xPNo_6VPy1HoWRknwFziVdJ8/edit#slide=id.p" target="_blank">HAX slide presentation</a></li>
-              <li><a href="https://www.youtube.com/watch?v=eGV1XWzUko8" target="_blank">HAX developer deep dive (video)</a></li>
-              <li><a href="https://drupal.psu.edu/blog/post/webcomponent-all-things-all-places-increase-d8-adoption" target="_blank">Tutorial videos on integration into Drupal 6, Drupal 7, BackdropCMS and GravCMS</a></li>
+              <li><a href="https://docs.google.com/presentation/d/1EcdcsY80HhXiiZOL1t1xPNo_6VPy1HoWRknwFziVdJ8/edit#slide=id.p" target="_blank">HAX slide presentation</a></li><li><a href="https://www.youtube.com/playlist?list=PLJQupiji7J5eTqv8JFiW8SZpSeKouZACH">HAX Playlist</a></li>
+              <li><a href="https://drupal.psu.edu/blog/post/webcomponent-all-things-all-places-increase-d8-adoption" target="_blank">Tutorial videos on integration into Drupal 6, Drupal 7, BackdropCMS and GravCMS</a></li></ul>Additional info on who and why this exists<br><ul>
               <li><a href="https://www.elmsln.org/" target="_blank">ELMS: Learning Network (why HAX exists)</a></li>
               <li><a href="https://steam.psu.edu" target="_blank">Penn State STEAM Engine (collaborative Penn State dev / design group that envisioned HAX)</a></li>
               <li><a href="https://www.twitter.com/elmsln" target="_blank">ELMS:LN twitter (keep up w/ our projects!)</a></li>
             </ul>
           </div>
-          <p>Welcome to HAX. An entirely different way to author, edit and create content. HAX solves the problem your content contributors always complain about - getting things on the internet. It's 2017, and yet much of the internet is still constrained to WYSIWYG editors started in 2001. They are better then nothing; but we can build so much more then that now! HAX stands for Headless Authoring eXperience. Because authoring experience makes and breaks any platform!</p>
-          <h2>Goals of HAX</h2>
-          <div>
+<h2>Goals of HAX</h2>
+<div>
             <ul>
-              <li>Create a second to none content authoring experience (AX) that works in any platform</li>
-              <li>Make content that is accessible, mobile friendly, engaging, and schematized by default.</li>
-              <li>Create a second to none developer experience (DX) to extend HAX by simply extending the web as a platform via webcomponents</li>
-              <li>Further the mission of education through openly available toolsets</li>
-              <li>Create integrations with CMSs and static site generators that will have us power them</li>
+              <li>Create a second to none content authoring experience (AX) that works anywhere</li>
+              <li>Make content that is accessible, mobile friendly, engaging, and schematized <b>by default</b></li>
+              <li>Create a second to none developer experience (DX) to extend HAX by simply extending the web as a platform via web components</li>
+              <li>Create integrations with CMSs, a desktop app and static site generators<br></li><li>Support multiple structures of APIs to provide media to feed HAX (and content authors)</li><li>Leave no trace it existed and work with any previously created HTML (within reason).<br></li><li>Transform education through openly available and open source tools that create a freer society</li>
             </ul>
           </div>
-          <h3>Technical bit</h3>
-          <p>HAX is built on a browser standard called Webcomponents. Its utilizing Polymer 1.x.x to do much of the heavy lifting. In the future we may move to Polymer 3 or StencilJS or pure webcomponents. This was produced by a very small team so there's only so many hours in a day.</p>
-          <h3>A video diving into why this is so insane</h3>
-          <video-player source="https://www.youtube.com/watch?v=eGV1XWzUko8" resource="#9bca8e1e-8b7b-5c41-0248" prefix="oer:http://oerschema.org/ schema:http://schema.org/ dc:http://purl.org/dc/terms/ foaf:http://xmlns.com/foaf/0.1/ cc:http://creativecommons.org/ns# bib:http://bib.schema.org " responsive="" video-style="style1" class="x-scope video-player-0">
-          </video-player>
-          <h3>Some sample things to import</h3>
-          <p>Here are some files to point to for use in the demo.</p>
-          <code><pre>
-            3d
+<p>HAX is built on a browser standard called Webcomponents. Its utilizing Polymer 1.x.x to do much of the heavy lifting. In the future we may move to Polymer 2 or 3 or StencilJS or pure web components. HAX "Gizmos" are able to interface with anything so long as it provides the right events and properties (single of each). We make this even faster if you use polymer and anything that currently exists can be wired to work with HAX.</p>
+<h3>Some sample things to import if you need more</h3>
+<code><pre>            3d
             https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF/Duck.gltf
 
             csv
             https://lrnwebcomponents.github.io/lrn-table/components/lrn-table/demo/demo.csv
 
             jpg
-            http://btopro.com/user/images/avatar.jpg
             https://www.elmsln.org/sites/redesign/files/styles/square-profile-portrait/public/img_1773-1-sq_720_1.jpg
 
             gif
             https://lrnwebcomponents.github.io/awesome-explosion/components/awesome-explosion/assets/explode.gif
 
-            Videos
-            https://www.youtube.com/watch?v=eGV1XWzUko8
-            https://vimeo.com/144218562
+            Video file
             http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4
           </pre></code>
         </hax-body>
