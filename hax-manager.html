@@ -428,7 +428,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
           }
           else {
             // hand off to hax-app-picker to deal with the rest of this
-            Polymer.HaxStore.haxAppPicker.presentOptions(haxElements, type);
+            Polymer.HaxStore.instance.haxAppPicker.presentOptions(haxElements, type);
           }
         }
         else {
