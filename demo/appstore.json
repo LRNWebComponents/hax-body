@@ -283,7 +283,7 @@
         "protocol": "http",
         "url": "data-media.elmsln.local",
         "headers": {
-          "Authorization": "Basic ODM4NjA1NTM2NTQxNGYzMjllMDU2ZDI3MjFsa22222djFjYjpmZGNhYTgxMjYzMDlldad222YWRiNzA4NjhjZjkzMGM3"
+          "Authorization": "Basic U0VSVklDRV9TVFVGRjpTRVJWSUNFX1NUVUZG"
         },
         "operations": {
           "browse": {
@@ -299,7 +299,7 @@
               }
             },
             "search": {
-              "query": {
+              "title": {
                 "title": "Search",
                 "type": "string"
               }
