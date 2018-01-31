@@ -124,14 +124,12 @@
       last-response="{{requestData}}"
       hidden
       loading="{{loading}}"></iron-ajax>
-
-
+    <hax-app-search-inputs label="[[label]]" schema="{{searchSchema}}" values="{{searchValues}}"></hax-app-search-inputs>
+    <hax-app-pagination id="pagerbottom" request-data="[[requestData]]" pagination="[[pagination]]"></hax-app-pagination>
     <div id="loading" class="loading" hidden$="[[!loading]]">
       <elmsln-loading color="blue-text text-darken-4" size="large"></elmsln-loading>
       <h3 class="loading-text">Loading content..</h3>
     </div>
-    <hax-app-search-inputs label="[[label]]" schema="{{searchSchema}}" values="{{searchValues}}"></hax-app-search-inputs>
-    <hax-app-pagination id="pagerbottom" request-data="[[requestData]]" pagination="[[pagination]]"></hax-app-pagination>
     <iron-list grid id="itemlist" items="[[media]]" as="resultData">
       <template>
         <hax-app-search-result result-data="[[resultData]]"></hax-app-search-result>

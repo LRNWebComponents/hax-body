@@ -450,8 +450,10 @@
               },
               "gizmo": {
                 "source": "images.original.url",
+                "source2": "images.480w_still.url",
                 "id": "id",
                 "title": "title",
+                "alt": "title",
                 "caption": "user.display_name",
                 "citation": "user.display_name"
               }

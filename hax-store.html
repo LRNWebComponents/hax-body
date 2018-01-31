@@ -55,6 +55,12 @@
             observer: '_loadAppStoreData',
           },
           /**
+           * Hax app picker element.
+           */
+          haxAppPicker: {
+            type: Object,
+          },
+          /**
            * Hax manager element.
            */
           haxManager: {
@@ -199,17 +205,19 @@
           document.body.addEventListener('hax-register-panel', this._haxStoreRegisterPanel.bind(this));
           document.body.addEventListener('hax-register-app', this._haxStoreRegisterApp.bind(this));
           document.body.addEventListener('hax-register-export', this._haxStoreRegisterExport.bind(this));
+          document.body.addEventListener('hax-register-app-picker', this._haxStoreRegisterAppPicker.bind(this));
           // notice content insert and help it along to the body
           document.body.addEventListener('hax-insert-content', this._haxStoreInsertContent.bind(this));
         },
         /**
-         * inject a toast element to manage our messages
+         * Inject a toast element to manage our messages
          */
         _injectToast: function() {
           var toast = document.createElement('paper-toast');
           toast.id = "haxtoast";
-          toast.duration = 3;
-          toast.classList.add("fit-bottom");
+          toast.duration = 5;
+          // move this object to the body level so it doesn't
+          // run into stack order context issues
           document.body.appendChild(toast);
           this.haxToast = toast;
         },
@@ -220,9 +228,17 @@
          */
         _haxStoreRegisterManager: function(e) {
           if (e.detail && typeof this.haxManager === typeof undefined) {
-            // move this object to the body level so it doesn't
-            // run into stack order context issues
             this.haxManager = e.detail;
+          }
+        },
+        /**
+         * Set the appPicker node so we can interface with it.
+         * This helps with picking between multiple options when we need the user
+         * to decide between a sub-set of options
+         */
+        _haxStoreRegisterAppPicker: function(e) {
+          if (e.detail && typeof this.haxAppPicker === typeof undefined) {
+            this.haxAppPicker = e.detail;
           }
         },
         /**
@@ -424,6 +440,7 @@
        * Try and guess the Gizmo based on what we were just handed
        */
       Polymer.HaxStore.guessGizmo = (guess, values) => {
+        var matches = [];
         if (typeof guess !== typeof undefined) {
           var store = Polymer.HaxStore.instance;
           // verify type
@@ -453,24 +470,25 @@
                   }
                   // omg... we just found a match on a property from who knows where!
                   if (match) {
-                    return Polymer.HaxStore.haxElementPrototype(gizmo.tag, props, '');
+                    matches.push(Polymer.HaxStore.haxElementPrototype(gizmo, props, ''));
                   }
                 }
               }
             }
           }
         }
-        return {};
+        return matches;
       };
 
       /**
        * Generate Hax Element prototype.
        */
-      Polymer.HaxStore.haxElementPrototype = (tag, properties, content) => {
+      Polymer.HaxStore.haxElementPrototype = (gizmo, properties, content) => {
         return {
-          'tag': tag,
+          'tag': gizmo.tag,
           'properties': properties,
           'content': content,
+          'gizmo': gizmo,
         };
       };
 

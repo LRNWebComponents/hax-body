@@ -12,9 +12,9 @@
 <link rel="import" href="../neon-animation/neon-animations.html">
 <link rel="import" href="../materializecss-styles/materializecss-styles.html">
 <link rel="import" href="hax-preview.html">
+<link rel="import" href="hax-app-picker.html">
 <link rel="import" href="hax-app-browser.html">
 <link rel="import" href="hax-gizmo-browser.html">
-
 
 <!--
 `hax-manager`
@@ -216,6 +216,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         </div>
       </div>
       <div class="dialog-contents" id="dialogcontent">
+        <hax-app-picker></hax-app-picker>
         <iron-pages
           selected="{{activeStep}}"
           fallback-selection="select"
@@ -418,10 +419,19 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
           source: this.$.url.value
         };
         // we have no clue what this is.. let's try and guess..
-        let type = Polymer.HaxStore.guessGizmoType(values);
-        let haxElement = Polymer.HaxStore.guessGizmo(type, values);
-        if (typeof haxElement.tag !== typeof undefined) {
-          Polymer.HaxStore.write('activeHaxElement', haxElement, this);
+        var type = Polymer.HaxStore.guessGizmoType(values);
+        let haxElements = Polymer.HaxStore.guessGizmo(type, values);
+        // see if we got anything
+        if (haxElements.length > 0) {
+          if (haxElements.length === 1) {
+            if (typeof haxElements[0].tag !== typeof undefined) {
+              Polymer.HaxStore.write('activeHaxElement', haxElements[0], this);
+            }
+          }
+          else {
+            // hand off to hax-app-picker to deal with the rest of this
+            Polymer.HaxStore.haxAppPicker.presentOptions(haxElements, type);
+          }
         }
         else {
           Polymer.HaxStore.toast("Sorry, I don't know how to handle that link yet.");
