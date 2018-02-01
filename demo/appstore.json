@@ -3,6 +3,70 @@
   "apps": [
     {
       "details": {
+        "title": "Sketchfab",
+        "icon": "icons:3d-rotation",
+        "color": "purple",
+        "author": "Sketchfab",
+        "description": "3D sharing community.",
+        "status": "available",
+        "rating": "0",
+        "tags": ["3D", "creative commons", "crowdsourced"]
+      },
+      "connection": {
+        "protocol": "https",
+        "url": "api.sketchfab.com",
+        "data": {
+          "type": "models"
+        },
+        "operations": {
+          "browse": {
+            "method": "GET",
+            "endPoint": "v3/search",
+            "pagination": {
+              "style": "page",
+              "props": {
+                "per_page": "photos.perpage",
+                "total_pages": "photos.pages",
+                "page": "photos.page"
+              }
+            },
+            "search": {
+              "q": {
+                "title": "Search",
+                "type": "string"
+              },
+              "license": {
+                "title": "License type",
+                "type": "string",
+                "value": "",
+                "component": {
+                  "name": "dropdown-select",
+                  "valueProperty": "value",
+                  "slot": "<paper-item value=''>Any</paper-item><paper-item value='by'>Attribution</paper-item><paper-item value='by-sa'>Attribution ShareAlike</paper-item><paper-item value='by-nd'>Attribution NoDerivatives</paper-item><paper-item value='by-nc'>Attribution-NonCommercial</paper-item><paper-item value='by-nc-sa'>Attribution NonCommercial ShareAlike</paper-item><paper-item value='by-nc-nd'>Attribution NonCommercial NoDerivatives</paper-item><paper-item value='cc0'>Public Domain Dedication (CC0)</paper-item>"
+                }
+              }
+            },
+            "resultMap": {
+              "defaultGizmoType": "video",
+              "items": "results",
+              "preview": {
+                "title": "name",
+                "details": "description._content",
+                "image": "thumbnails.images.2.url",
+                "id": "uid"
+              },
+              "gizmo": {
+                "title": "name",
+                "source": "embedUrl",
+                "alt": "description"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "details": {
         "title": "Flickr",
         "icon": "image:collections",
         "color": "pink",
