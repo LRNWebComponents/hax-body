@@ -48,7 +48,9 @@
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.1",
     "media-behaviors": "LRNWebComponents/media-behaviors#^1.1.1",
     "lrndesign-blockquote": "LRNWebComponents/lrndesign-blockquote#^1.1.1",
-    "magazine-cover": "LRNWebComponents/magazine-cover#^1.1.1"
+    "magazine-cover": "LRNWebComponents/magazine-cover#^1.1.1",
+    "wave-player": "LRNWebcomponents/wave-player#^0.1.0",
+    "meme-maker": "btopro/meme-maker#1.0.0-lrn1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
