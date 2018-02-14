@@ -415,7 +415,7 @@
           if (guess.source.indexOf('.mp3') != -1) {
             return 'audio';
           }
-          else if (guess.source.indexOf('.jpg') != -1 || guess.source.indexOf('.jpeg') != -1 || guess.source.indexOf('.gif') != -1) {
+          else if (guess.source.indexOf('.png') != -1 || guess.source.indexOf('.jpg') != -1 || guess.source.indexOf('.jpeg') != -1 || guess.source.indexOf('.gif') != -1) {
             return 'image';
           }
           else if (guess.source.indexOf('.pdf') != -1) {
@@ -478,6 +478,22 @@
           }
         }
         return matches;
+      };
+
+      /**
+       * Filter app store apps to those that accept this file source.
+       */
+      Polymer.HaxStore.getHaxAppStoreTargets = (type) => {
+        let targets = Polymer.HaxStore.instance.appList.filter(app => {
+          if (typeof app.connection.operations.add !== typeof undefined) {
+            let add = app.connection.operations.add;
+            if (typeof add.acceptsGizmoTypes !== typeof undefined && add.acceptsGizmoTypes.includes(type)) {
+              return true;
+            }
+          }
+          return false;
+        });
+        return targets;
       };
 
       /**
