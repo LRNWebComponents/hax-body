@@ -71,7 +71,7 @@ as the events being bubbled up include HTML nodes to inject into something
       }
     </style>
     <div hidden$="[[hidePanelOps]]">
-      <paper-icon-button data-opened$="[[editMode]]" on-tap="_clickButton" icon="power-settings-new" id="button"></paper-icon-button>
+      <paper-icon-button data-opened$="[[editMode]]" on-tap="_clickButton" icon="create" id="button"></paper-icon-button>
       <paper-tooltip
         for="button"
         position="right"
@@ -279,9 +279,11 @@ as the events being bubbled up include HTML nodes to inject into something
       _editModeChanged: function(newValue, oldValue) {
         if (typeof newValue !== typeof undefined && newValue) {
           this.__tipText = 'save';
+          this.$.button.icon = 'save';
         }
         else {
           this.__tipText = 'edit';
+          this.$.button.icon = 'create';
         }
       },
       /**
