@@ -8,21 +8,18 @@
 <link rel="import" href="../neon-animation/animations/scale-up-animation.html">
 <link rel="import" href="../neon-animation/animations/scale-down-animation.html">
 <link rel="import" href="../materializecss-styles/materializecss-styles.html">
-
 <!--
  `hax-app-picker`
- An app registered with HAX. This provides all the information needed for HAX
- to understand how to talk to this backend as well as represent it in listings.
- It also expresses how to take that data and wire it up to gizmos making it able to
- utilize multiple display methods.
+ A picker for selecting an item from a list of apps / hax gizmos which require
+ a decision to be made. This is used when multiple things match either on upload
+ in the add operation of the app or in the gizmo selection to render through,
+ such as having multiple ways of presenting an image.
 
 @demo demo/index.html
 
 @microcopy - the mental model for this element
  - data - this is the app data model for an element which expresses itself to hax
-
 -->
-
 
 <dom-module id="hax-app-picker">
   <template>
@@ -35,7 +32,7 @@
         @apply --hax-app-picker-dialog;
         background-color: var(--hax-app-picker-dialog-background-color, white);
       }
-      #title, .hax-element-button > div {
+      #title, .element-button > div {
         color: var(--hax-app-picker-dialog-text-color, black);
       }
       #title {
@@ -64,13 +61,13 @@
           max-height: 60vh;
         }
       }
-      .hax-element-button {
+      .element-button {
         display: inline-block;
         width: 72px;
         margin: 8px 4px;
         text-align: center;
       }
-      .hax-element-button > div {
+      .element-button > div {
         @apply --paper-font-caption;
         margin-top: 8px;
         color: black;
@@ -105,10 +102,10 @@
     <paper-dialog id="dialog" entry-animation="scale-up-animation" exit-animation="scale-down-animation" modal>
       <h2 id="title">[[title]]</h2>
       <paper-dialog-scrollable id="buttonlist">
-      <template is="dom-repeat" items="[[haxElements]]" as="element">
-        <div class="hax-element-button" on-tap="_appSelected" data-selected$="[[index]]" title="[[element.gizmo.title]]">
-          <paper-icon-button on-tap="_appSelected" data-selected$="[[index]]" class$="icon [[element.gizmo.color]]" icon="[[element.gizmo.icon]]"></paper-icon-button>
-          <div>[[element.gizmo.title]]</div>
+      <template is="dom-repeat" items="[[selectionList]]" as="element">
+        <div class="element-button" on-tap="_selected" data-selected$="[[index]]" title="[[element.title]]">
+          <paper-icon-button on-tap="_selected" data-selected$="[[index]]" class$="icon [[element.color]]" icon="[[element.icon]]"></paper-icon-button>
+          <div>[[element.title]]</div>
         </div>
       </template>
       </paper-dialog-scrollable>
@@ -121,9 +118,16 @@
       is: 'hax-app-picker',
       properties: {
         /**
-         * hax elements to select between
+         * raw element set
          */
-        haxElements: {
+        _elements: {
+          type: Array,
+          value: [],
+        },
+        /**
+         * Refactored list for selection purposes
+         */
+        selectionList: {
           type: Array,
           value: [],
         },
@@ -133,6 +137,13 @@
         title: {
           type: String,
           value: "Pick an options",
+        },
+        /**
+         * Allow multiple uses
+         */
+        pickerType: {
+          type: String,
+          value: "gizmo",
         },
       },
       /**
@@ -144,24 +155,60 @@
       /**
        * Present options to the user with a modal and selection method that
        * shifts itself to be above everything (stack order)
-       * @param  [array] haxElements  a list of haxElements for presenting to the user
+       * @param  [array] elements  a list of elements for presenting to the user
        * to select between.
        */
-      presentOptions: function(haxElements, type) {
+      presentOptions: function(elements, type, title = 'Select an option', pickerType = 'gizmo') {
         // wipe existing
-        this.set('haxElements', []);
-        this.set('haxElements', haxElements);
-        this.title = 'Pick how to present the ' + type;
+        this.title = title;
+        this.pickerType = pickerType;
+        this._elements = elements;
+        var tmp = [];
+        switch (pickerType) {
+          // hax gizmo selector
+          case 'gizmo':
+            for (var i in elements) {
+              tmp[i] = {
+                "icon" : elements[i].gizmo.icon,
+                "title" : elements[i].gizmo.title,
+                "color" : elements[i].gizmo.color
+              }
+            }
+          break;
+          // app selector
+          case 'app':
+            for (var i in elements) {
+              tmp[i] = {
+                "icon" : elements[i].details.icon,
+                "title" : elements[i].details.title,
+                "color" : elements[i].details.color,
+              }
+            }
+          break;
+          // we don't know what to do with this
+          default:
+            tmp = elements;
+          break;
+        }
+        this.set('selectionList', []);
+        this.set('selectionList', tmp);
         this.$.dialog.open();
       },
       /**
        * Handle the user selecting an app.
        */
-      _appSelected: function(e) {
+      _selected: function(e) {
         var normalizedEvent = Polymer.dom(event);
         let key = normalizedEvent.localTarget.getAttribute('data-selected');
-        if (typeof this.haxElements[key] !== typeof undefined) {
-          Polymer.HaxStore.write('activeHaxElement', this.haxElements[key], this);
+        if (typeof this._elements[key] !== typeof undefined) {
+          // haxElement is a unique case
+          if (this.pickerType == 'gizmo') {
+            Polymer.HaxStore.write('activeHaxElement', this._elements[key], this);
+          }
+          else {
+            // bubble this up
+            this.fire('hax-app-picker-selection', this._elements[key]);
+          }
         }
         this.$.dialog.close();
       },
