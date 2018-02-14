@@ -237,7 +237,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
                 <div class="url-description">A full URL with http:// referencing a link that already exists on the web.</div>
                 </div>
                 <div class="add-upload-area">
-                  <vaadin-upload target$="{{uploadPath}}" method="POST" form-data-name="file-upload"></vaadin-upload>
+                  <vaadin-upload form-data-name="file-upload" id="fileupload"></vaadin-upload>
                 </div>
                 <paper-button id="newassetconfigure" confirm raised>Configure item</paper-button>
               </div>
@@ -271,6 +271,8 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         'cancel.tap': 'cancel',
         'newassetconfigure.tap': 'newAssetConfigure',
         'insert.tap': 'insertHaxElement',
+        'fileupload.upload-before': '_fileAboutToUpload',
+        'fileupload.upload-response': '_fileUploadResponse',
       },
       properties: {
         /**
@@ -316,7 +318,17 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
           type: Array,
           value: [],
         },
+        /**
+         * Helper so we can upload after prompting where to go.
+         */
+        __allowUpload: {
+          type: Boolean,
+          value: false,
+        },
       },
+      /**
+       * Ready life cycle.
+       */
       ready: function() {
         document.body.appendChild(this);
       },
@@ -327,6 +339,97 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         // fire an event that this is the manager
         this.fire('hax-register-manager', this);
         document.body.addEventListener('hax-store-property-updated', this._haxStorePropertyUpdated.bind(this));
+        document.body.addEventListener('hax-app-picker-selection', this._haxAppPickerSelection.bind(this));
+      },
+      /**
+       * Respond to uploading a file
+       */
+      _fileAboutToUpload: function(e) {
+        if (!this.__allowUpload) {
+          // cancel the event so we can jump in
+          e.preventDefault();
+          e.stopPropagation();
+          // look for a match as to what gizmo types it supports
+          let values = {
+            source: e.detail.file.name,
+            type: e.detail.file.type
+          };
+          // we have no clue what this is.. let's try and guess..
+          var type = Polymer.HaxStore.guessGizmoType(values);
+          // find targets that support this type
+          let targets = Polymer.HaxStore.getHaxAppStoreTargets(type);
+          // make sure we have targets
+          if (targets.length != 0) {
+            Polymer.HaxStore.instance.haxAppPicker.presentOptions(targets, type, 'Where would you like to upload this ' + type + '?', 'app');
+          }
+          else {
+            // @todo there isn't anything that supports this
+            console.log('we can\'t support that yet');
+          }
+        }
+        else {
+          this.__allowUpload = false;
+        }
+      },
+      /**
+       * Event for an app being selected from a picker
+       * This happens when multiple upload targets support the given type
+       */
+      _haxAppPickerSelection: function(e) {
+        // details for where to upload the file
+        let connection = e.detail.connection;
+        this.__appUsed = e.detail;
+        this.$.fileupload.method = connection.operations.add.method;
+        let requestEndPoint = connection.protocol + '://' + connection.url;
+        // ensure we build a url correctly
+        if (requestEndPoint.substr(requestEndPoint.length - 1) != '/') {
+          requestEndPoint += '/';
+        }
+        // support local end point modification
+        if (typeof connection.operations.add.endPoint !== typeof undefined) {
+          requestEndPoint += connection.operations.add.endPoint;
+        }
+        this.$.fileupload.headers = connection.headers;
+        this.$.fileupload.target = requestEndPoint;
+        // invoke file uploading...
+        this.__allowUpload = true;
+        this.$.fileupload.uploadFiles();
+      },
+      /**
+       * Respond to successful file upload, now inject url into url field and
+       * do a gizmo guess from there!
+       */
+      _fileUploadResponse: function(e) {
+        // convert response to object
+        let response = JSON.parse(e.detail.xhr.response);
+        // access the app that did the upload
+        let map = this.__appUsed.connection.operations.add.resultMap;
+        let data = {};
+        let item = {};
+        // look for the items element to draw our data from at its root
+        if (typeof this._resolveObjectPath(map.item, response) !== typeof undefined) {
+          data = this._resolveObjectPath(map.item, response);
+        }
+        item.type = map.defaultGizmoType;
+        // pull in prop matches
+        for(var prop in map.gizmo){
+          item[prop] = this._resolveObjectPath(map.gizmo[prop], data);
+        }
+        // another sanity check, if we don't have a url but have a source bind that too
+        if (typeof item.url === typeof undefined && typeof item.source !== typeof undefined) {
+          item.url = item.source;
+        }
+        // gizmo type is also supported in the mapping element itself
+        // Think an asset management backend as opposed to a specific
+        // type of asset like video. If the item coming across can
+        // effectively check what kind of gizmo is required for it
+        // to work then we need to support that asset declaring the
+        // gizmo type needed
+        if (typeof map.gizmo.type !== typeof undefined) {
+          item.type = this._resolveObjectPath(map.gizmo.type, data);
+        }
+        this.$.url.value = item.url;
+        this.newAssetConfigure();
       },
       /**
        * Notice page changed.
@@ -395,9 +498,13 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
        */
       resetManager: function() {
         this.appList = Polymer.HaxStore.instance.appList;
+        this.__allowUpload = false;
         this.editExistingNode = false;
         this.$.url.value = '';
         this.$.step.disabled = true;
+        this.$.fileupload.headers = '';
+        this.$.fileupload.method = '';
+        this.$.fileupload.target = '';
         this.selectStep('select');
         this.activePage = 0;
       },
@@ -428,7 +535,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
           }
           else {
             // hand off to hax-app-picker to deal with the rest of this
-            Polymer.HaxStore.instance.haxAppPicker.presentOptions(haxElements, type);
+            Polymer.HaxStore.instance.haxAppPicker.presentOptions(haxElements, type, 'Pick how to present the ' + type, 'gizmo');
           }
         }
         else {
@@ -455,6 +562,16 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
           this.activeStep = false;
         }
       },
+      /**
+       * Helper to take a multi-dimensional object and convert
+       * it's reference into the real value. This allows for variable input defined
+       * in a string to actually hit the deeper part of an object structure.
+       */
+      _resolveObjectPath: function(path, obj) {
+        return path.split('.').reduce(function(prev, curr) {
+            return prev ? prev[curr] : null
+        }, obj || self);
+      }
     });
   </script>
 </dom-module>
