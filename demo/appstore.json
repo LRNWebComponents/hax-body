@@ -773,7 +773,7 @@
         "protocol": "http",
         "url": "data-media.elmsln.local",
         "headers": {
-          "Authorization": "Basic U0VSVklDRV9TVFVGRjpTRVJWSUNFX1NUVUZG"
+          "Authorization": "Basic U0VSVklDRV9URVNUOlNFUlZJQ0VfVEVTVA=="
         },
         "operations": {
           "browse": {
@@ -795,6 +795,7 @@
               }
             },
             "data": {
+              "type": "elmsmedia_image",
               "deep-load-refs":"file"
             },
             "resultMap": {
@@ -810,10 +811,28 @@
                 "source": "field_image.url",
                 "id": "uuid",
                 "title": "title",
-                "caption": "body",
-                "description": "body",
-                "citation": "field_citation.value",
-                "type": "type"
+                "caption": "body.value",
+                "description": "body.value",
+                "citation": "field_citation.value"
+              }
+            }
+          },
+          "add": {
+            "method": "POST",
+            "endPoint": "apps/lrnapp-media-upload/data?token=A4oj5zoBpudJIuu1NLcYoducwHWwvUynPaWNn7gcEm0",
+            "acceptsGizmoTypes": [
+              "image",
+              "video",
+              "audio",
+              "pdf",
+              "svg"
+            ],
+            "resultMap": {
+              "item": "data.file",
+              "defaultGizmoType": "image",
+              "gizmo": {
+                "source": "url",
+                "id": "uuid"
               }
             }
           }
