@@ -54,6 +54,9 @@ These elements all live at the "app level" that you will create in order to util
   + Integration and showcase - https://www.youtube.com/watch?v=Z2chE4DuJf8&list=PLJQupiji7J5eTqv8JFiW8SZpSeKouZACH&index=5
 - Your system! (see next step)
 
+### Polymer tutorials
+https://www.youtube.com/watch?v=QGOPsqVjGjU - learn polymer from the people making this
+
 ### What do I need to integrate with hax?
 HAX is designed to integrate with any system by being about authoring HTML that any end user could have hit "view source" and done themselves. It manipulates the DOM in a targetted area and then bubbles up what the change was without all the HAX cruft attached. If you want to get more integrations listed above, here's what the system needs:
 - HTML blob storage - It has to store data as a block of HTML. If it has a CKEditor or TinyMCE input method currently then it probably does this already.
