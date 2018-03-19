@@ -64,9 +64,13 @@ Export dialog with all export options and settings provided.
       .buttons {
         color: black;
       }
+      #dialogheader {
+        color: #e5e5e5;
+        background: #2e2e2e;
+      }
     </style>
     <paper-dialog id="dialog" entry-animation="slide-from-bottom-animation" exit-animation="slide-down-animation" with-backdrop>
-      <h2 id="dialogheader" class="indigo white-text">[[exportTitle]]</h2>
+      <h2 id="dialogheader">[[exportTitle]]</h2>
       <paper-dialog-scrollable class="dialog-contents" id="dialogcontent">
         <textarea id="textarea" rows="20" style="width:100%;"></textarea>
       </paper-dialog-scrollable>

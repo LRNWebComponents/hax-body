@@ -35,9 +35,9 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
     <style include="materializecss-styles">
       :host {
         display: block;
-        --hax-manager-steps-color: #ffb300;
-        --hax-manager-tab-color: #0d47a1;
-        --hax-manager-ink-color: #FFFFFF;
+        --hax-manager-steps-color: #e5e5e5;
+        --hax-manager-tab-color: #e5e5e5;
+        --hax-manager-ink-color: #2e2e2e;
       }
       #dialog {
         position: fixed;
@@ -492,6 +492,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         this.resetManager();
         // close window
         this.toggleDialog();
+        document.body.style.overflow = null;
       },
       /**
        * Reset things on the display to their defaults.
@@ -515,6 +516,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         // reset and close dialog
         this.resetManager();
         this.toggleDialog();
+        document.body.style.overflow = null;
       },
       /**
        * Configure asset after upload or URL passed in.
@@ -548,6 +550,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
       toggleDialog: function() {
         this.$.dialog.toggle();
         this.$$('#pagetabs').focus();
+        document.body.style.overflow = 'hidden';
         //this.$.url.focus();
         //this.$.url.select();
       },

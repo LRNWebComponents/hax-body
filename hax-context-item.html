@@ -58,7 +58,7 @@ A single button in the hax context menu for consistency.
         transform: rotateY(180deg);
       }
     </style>
-    <hax-toolbar-item light="[[light]]" id="button" icon="[[icon]]" hidden$="[[!icon]]" icon-class="[[iconClass]]" on-tap="_fireEvent" tooltip="[[label]]" tooltip-direction="[[direction]]" default="[[default]]"></hax-toolbar-item>
+    <hax-toolbar-item light="[[light]]" mini="[[mini]]" id="button" icon="[[icon]]" hidden$="[[!icon]]" icon-class="[[iconClass]]" on-tap="_fireEvent" tooltip="[[label]]" tooltip-direction="[[direction]]" default="[[default]]"></hax-toolbar-item>
   </template>
 
   <script>
@@ -71,6 +71,13 @@ A single button in the hax context menu for consistency.
          * Light theme for toolbar item.
          */
         light: {
+          type: Boolean,
+          value: false,
+        },
+        /**
+         * Mini theme for making things small and round.
+         */
+        mini: {
           type: Boolean,
           value: false,
         },

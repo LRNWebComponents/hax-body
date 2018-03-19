@@ -260,11 +260,11 @@ as the events being bubbled up include HTML nodes to inject into something
        */
       _editModeChanged: function(newValue, oldValue) {
         if (typeof newValue !== typeof undefined && newValue) {
-          this.__tipText = 'save';
+          this.__tipText = 'Save';
           this.$.button.icon = 'save';
         }
         else {
-          this.__tipText = 'edit';
+          this.__tipText = 'Edit';
           this.$.button.icon = 'create';
         }
       },
