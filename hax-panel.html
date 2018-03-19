@@ -46,47 +46,29 @@ as the events being bubbled up include HTML nodes to inject into something
         z-index: 2;
         margin-left: 0;
         transition: margin .3s;
-        background-color: #EEEEEE;
-        height: 38px;
-        width: 38px;
-        border: 1px solid #DDDDDD;
+        height: 40px;
+        width: 40px;
       }
       #button[data-opened] {
         margin-left: 100px;
       }
       #htmlexport {
         position: fixed;
-        top: 38px;
+        top: 40px;
         left: 0;
         z-index: 2;
         margin-left: 0;
         transition: margin .3s;
-        background-color: #EEEEEE;
-        height: 38px;
-        width: 38px;
-        border: 1px solid #DDDDDD;
+        height: 40px;
+        width: 40px;
       }
       #htmlexport[data-opened] {
         margin-left: 100px;
       }
     </style>
     <div hidden$="[[hidePanelOps]]">
-      <paper-icon-button data-opened$="[[editMode]]" on-tap="_clickButton" icon="create" id="button"></paper-icon-button>
-      <paper-tooltip
-        for="button"
-        position="right"
-        offset="10"
-        animation-delay="0">
-        [[__tipText]]
-      </paper-tooltip>
-      <paper-icon-button hidden$="[[hideExportButton]]" data-opened$="[[editMode]]" on-tap="_htmlExport" icon="code" id="htmlexport"></paper-icon-button>
-      <paper-tooltip
-        for="htmlexport"
-        position="right"
-        offset="10"
-        animation-delay="0">
-        Export
-      </paper-tooltip>
+      <hax-toolbar-item data-opened$="[[editMode]]" on-tap="_clickButton" icon="power-settings-new" id="button" tooltip="[[__tipText]]" tooltip-direction="right"></hax-toolbar-item>
+      <hax-toolbar-item hidden$="[[hideExportButton]]" data-opened$="[[editMode]]" on-tap="_htmlExport" icon="code" id="htmlexport" tooltip="Export" tooltip-direction="right"></hax-toolbar-item>
     </div>
     <app-drawer id="drawer" opened="{{editMode}}" disable-swipe persistent transition-duration="300">
       <div style="height: 100%; overflow: auto;">

@@ -13,6 +13,7 @@
 <link rel="import" href="../iron-icons/maps-icons.html">
 <link rel="import" href="../materializecss-styles/colors.html">
 <link rel="import" href="../neon-animation/web-animations.html">
+<link rel="import" href="hax-toolbar-menu.html">
 
 <!--
 `hax-context-item-menu`
@@ -32,8 +33,9 @@ An icon / button that has support for multiple options via drop down.
       :host {
         display: inline-flex;
       }
+
       paper-menu-button {
-        color: rgba(0,0,0,0.66);
+        color: rgba(0, 0, 0, 0.66);
         margin: 0;
         padding: 0;
         text-transform: none;
@@ -41,19 +43,23 @@ An icon / button that has support for multiple options via drop down.
         display: flex;
         min-width: 24px;
       }
+
       :host[wide] paper-menu-button {
         width: unset;
       }
+
       paper-menu-button .label {
         font-size: 12px;
         margin-top: 4px;
       }
+
       paper-menu-button .button-inner {
         padding-top: 8px;
         text-align: center;
       }
+
       paper-icon-button {
-        color: rgba(0,0,0,0.66);
+        color: rgba(0, 0, 0, 0.66);
         margin: 0;
         text-transform: none;
         background-color: #ffffff;
@@ -62,34 +68,28 @@ An icon / button that has support for multiple options via drop down.
         padding: 0;
         border-radius: 0;
       }
+
       paper-icon-button ::shadow iron-icon {
         padding: 8px;
         margin: 0;
         box-sizing: border-box;
       }
+
       paper-icon-button:hover {
         background-color: var(--paper-grey-300, grey);
       }
+
       .flip-icon {
         transform: rotateY(180deg);
       }
+
       paper-tooltip {
         pointer-events: none;
       }
     </style>
-    <paper-menu-button id="menubutton">
-      <paper-icon-button id="button" icon="[[icon]]" hidden$="[[!icon]]" slot="dropdown-trigger" class$="[[iconClass]]"></paper-icon-button>
-      <paper-listbox id="listbox" slot="dropdown-content" selected="{{selected}}">
-        <slot id="items"></slot>
-      </paper-listbox>
-    </paper-menu-button>
-
-    <paper-tooltip
-      for="button"
-      position="[[direction]]"
-      offset="10">
-      [[label]]
-    </paper-tooltip>
+    <hax-toolbar-menu icon="[[icon]]" tooltip="[[label]]" tooltip-direction="[[direction]]" selected="{{selected}}">
+      <slot id="items"></slot>
+    </hax-toolbar-menu>
   </template>
 
   <script>
@@ -179,19 +179,19 @@ An icon / button that has support for multiple options via drop down.
       /**
        * Ensure menu is visible / default'ed.
        */
-      _menubuttonTap: function(e) {
+      _menubuttonTap: function (e) {
         this.$.listbox.style.display = 'inherit';
       },
       /**
        * Ensure menu is hidden.
        */
-      hideMenu: function() {
+      hideMenu: function () {
         this.$.listbox.style.display = 'none';
       },
       /**
        * Notice the selected value has changed.
        */
-      _selectedValueUpdated: function(newValue, oldValue) {
+      _selectedValueUpdated: function (newValue, oldValue) {
         if (typeof newValue !== typeof null && typeof oldValue !== typeof undefined) {
           let children = Polymer.dom(this.$.items).getDistributedNodes();
           var item = new Object();
@@ -213,7 +213,7 @@ An icon / button that has support for multiple options via drop down.
       /**
        * Notice the selected value has changed.
        */
-      _selectedUpdated: function(newValue, oldValue) {
+      _selectedUpdated: function (newValue, oldValue) {
         if (typeof newValue !== typeof null && typeof oldValue !== typeof undefined && typeof oldValue !== typeof null) {
           let children = Polymer.dom(this.$.items).getDistributedNodes();
           var item = new Object();
@@ -238,7 +238,7 @@ An icon / button that has support for multiple options via drop down.
             // avoids an annoying UX error where the menu stays open for
             // no reason.
             this.hideMenu();
-            this.fire('hax-context-item-selected', {target: item, eventName: item.attributes.value.value});
+            this.fire('hax-context-item-selected', { target: item, eventName: item.attributes.value.value });
           }
           // we only block 1 time if it's available
           if (this._blockEvent) {
