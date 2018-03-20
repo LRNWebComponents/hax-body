@@ -41,6 +41,21 @@ A context menu that provides common image based authoring options.
         margin: 0;
         height: 40px;
       }
+      .hax-arrowclip {
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        clip: rect(10px 20px 20px 0);
+        margin-left: -10px;
+      }
+      .hax-arrowclip .hax-arrow {
+        display: block;
+        width: 20px;
+        height: 20px;
+        background-color: #262625;
+        -webkit-transform: rotate(45deg) scale(.5);
+        transform: rotate(45deg) scale(.5);
+      }
     </style>
     <hax-toolbar>
       <hax-context-item
@@ -79,18 +94,8 @@ A context menu that provides common image based authoring options.
         icon="accessibility"
         label="Alt information"
         event-name="image-alt"></hax-context-item>
-      <!-- <hax-context-item-menu
-        selected-value="{{selectedValue}}"
-        id="formatsize"
-        icon="image:panorama"
-        label="Styles"
-        event-name="image-tag">
-        <paper-item value="image-style1">Style 1</paper-item>
-        <paper-item value="image-style2">Style 2</paper-item>
-        <paper-item value="image-style3">Style 3</paper-item>
-        <paper-item value="image-style4">Style 4</paper-item>
-      </hax-context-item-menu> -->
     </hax-toolbar>
+    <div class="hax-arrowclip"><span class="hax-arrow"></span></div>
   </template>
 
   <script>

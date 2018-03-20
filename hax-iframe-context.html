@@ -41,6 +41,21 @@ A context menu that provides common iframe based authoring options.
         margin: 0;
         height: 40px;
       }
+      .hax-arrowclip {
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        clip: rect(10px 20px 20px 0);
+        margin-left: -10px;
+      }
+      .hax-arrowclip .hax-arrow {
+        display: block;
+        width: 20px;
+        height: 20px;
+        background-color: #262625;
+        -webkit-transform: rotate(45deg) scale(.5);
+        transform: rotate(45deg) scale(.5);
+      }
     </style>
     <hax-toolbar>
       <hax-context-item
@@ -76,6 +91,7 @@ A context menu that provides common iframe based authoring options.
         label="Link"
         event-name="iframe-link"></hax-context-item>
     </hax-toolbar>
+    <div class="hax-arrowclip"><span class="hax-arrow"></span></div>
   </template>
 
   <script>

@@ -47,6 +47,21 @@ required for populating input.
       #elementoptions {
         height: inherit;
       }
+      .hax-arrowclip {
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        clip: rect(10px 20px 20px 0);
+        margin-left: -10px;
+      }
+      .hax-arrowclip .hax-arrow {
+        display: block;
+        width: 20px;
+        height: 20px;
+        background-color: #262625;
+        -webkit-transform: rotate(45deg) scale(.5);
+        transform: rotate(45deg) scale(.5);
+      }
     </style>
     <hax-toolbar>
       <hax-context-item
@@ -89,6 +104,7 @@ required for populating input.
         label="Settings"
         event-name="hax-manager-configure" hidden$="[[!__hasSettingsForm]]"></hax-context-item>
     </hax-toolbar>
+    <div class="hax-arrowclip"><span class="hax-arrow"></span></div>
   </template>
 
   <script>

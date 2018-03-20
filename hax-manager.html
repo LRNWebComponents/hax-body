@@ -269,6 +269,8 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
       is: 'hax-manager',
       listeners: {
         'cancel.tap': 'cancel',
+        'dialog.iron-overlay-canceled': 'close',
+        'dialog.iron-overlay-closed': 'close',
         'newassetconfigure.tap': 'newAssetConfigure',
         'insert.tap': 'insertHaxElement',
         'fileupload.upload-before': '_fileAboutToUpload',
@@ -498,6 +500,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
        * Reset things on the display to their defaults.
        */
       resetManager: function() {
+        document.body.style.overflow = null;
         this.appList = Polymer.HaxStore.instance.appList;
         this.__allowUpload = false;
         this.editExistingNode = false;
@@ -510,12 +513,20 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         this.activePage = 0;
       },
       /**
-       * Cancel and close.
+       * Cancel interaction with the modal
        */
       cancel: function(e) {
         // reset and close dialog
         this.resetManager();
         this.toggleDialog();
+        document.body.style.overflow = null;
+      },
+      /**
+       * Respond to the modal closing
+       */
+      close: function(e) {
+        // reset and close dialog
+        this.resetManager();
         document.body.style.overflow = null;
       },
       /**
