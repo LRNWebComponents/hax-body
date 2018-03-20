@@ -27,41 +27,37 @@ A single button in the hax panel for consistency.
     <style include="materializecss-styles-colors">
       :host {
         display: inline-flex;
-        margin: .25em 0;
-        border-radius: 3px;
-      }
-      :host[wide] {
-        width: 50%;
       }
       paper-button {
         color: rgba(0,0,0,0.66);
         margin: 0;
         text-transform: none;
-        background-color: #ffffff;
-        height: 5em;
+        background-color: #2e2e2e !important;
+        color: #eeeeee;
+        height: 4em;
         width: 4em;
         display: flex;
-      }
-      :host[wide] paper-button {
-        width: unset;
+        padding: 0;
+        margin: 0;
       }
       paper-button .label {
-        font-size: .75em;
-        margin-top: .25em;
+        font-size: .8em;
+        margin: 0;
+        max-height: 1em;
       }
       paper-button .button-inner {
-        padding-top: .5em;
+        padding: 0;
         text-align: center;
       }
       paper-button iron-icon {
-        height: 3em;
-        width: 2.5em;
+        height: 2em;
+        width: 1.5em;
       }
       .flip-icon {
         transform: rotateY(180deg);
       }
     </style>
-    <paper-button on-tap="_fireEvent" data-voicecommand$="[[voiceCommand]]">
+    <paper-button disabled="[[disabled]]" on-tap="_fireEvent" data-voicecommand$="[[voiceCommand]]">
       <div class="button-inner">
         <iron-icon icon="[[icon]]" class$="[[iconClass]]"></iron-icon>
         <div class="label">[[label]]</div>
@@ -76,18 +72,17 @@ A single button in the hax panel for consistency.
 
       properties: {
         /**
-         * Modifier that makes the button wider
-         */
-        wide: {
-          type: Boolean,
-          value: false,
-          reflectToAttribute: true,
-        },
-        /**
          * Voice command to append for things that support data-voicecommand.
          */
         voiceCommand: {
           type: String,
+        },
+        /**
+         * Support for disabled state buttons
+         */
+        disabled: {
+          type: Boolean,
+          value: false,
         },
         /**
          * Icon for the button.
@@ -102,7 +97,7 @@ A single button in the hax panel for consistency.
          */
         iconClass: {
           type: String,
-          value: "black-text",
+          value: "white-text",
           reflectToAttribute: true,
         },
         /**

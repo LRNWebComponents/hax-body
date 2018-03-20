@@ -207,7 +207,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         }
       }
     </style>
-    <paper-dialog id="dialog" entry-animation="slide-from-bottom-animation" exit-animation="slide-down-animation" with-backdrop>
+    <paper-dialog id="dialog" entry-animation="slide-from-top-animation" exit-animation="slide-up-animation" with-backdrop>
       <div id="dialogheader" class="grey darken-3 grey-text text-lighten-3">
         <h2>[[managerTitle]]</h2>
         <div class="step-toggle-wrapper">
@@ -525,9 +525,11 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
        * Respond to the modal closing
        */
       close: function(e) {
-        // reset and close dialog
-        this.resetManager();
-        document.body.style.overflow = null;
+        if (e.target === this) {
+          // reset and close dialog
+          this.resetManager();
+          document.body.style.overflow = null;
+        }
       },
       /**
        * Configure asset after upload or URL passed in.

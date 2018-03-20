@@ -3,10 +3,6 @@
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../paper-swatch-picker/paper-swatch-picker.html">
-<link rel="import" href="../paper-slider/paper-slider.html">
-<link rel="import" href="../paper-tooltip/paper-tooltip.html">
-<link rel="import" href="../paper-item/paper-item.html">
-<link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="hax-context-item-menu.html">
 <link rel="import" href="hax-context-item.html">
 <link rel="import" href="hax-toolbar.html">
@@ -34,68 +30,11 @@ required for populating input.
         margin: 0;
         height: 40px;
       }
-      paper-slider {
-        background-color: #3e3e3e;
-        color: #c5c5c5;
-        height: 40px;
-      }
-      .close-cap {
-        margin: 0;
-        padding: 0;
-        border-right: 1px solid black;
-      }
       #elementoptions {
         height: inherit;
       }
-      .hax-arrowclip {
-        position: absolute;
-        bottom: -10px;
-        left: 50%;
-        clip: rect(10px 20px 20px 0);
-        margin-left: -10px;
-      }
-      .hax-arrowclip .hax-arrow {
-        display: block;
-        width: 20px;
-        height: 20px;
-        background-color: #262625;
-        -webkit-transform: rotate(45deg) scale(.5);
-        transform: rotate(45deg) scale(.5);
-      }
     </style>
-    <hax-toolbar>
-      <hax-context-item
-        icon="close"
-        label="Close menu"
-        event-name="close-menu"
-        class="close-cap"
-        direction="left"></hax-context-item>
-      <template is="dom-if" if="[[haxProperties.canPosition]]">
-        <hax-context-item-menu
-          selected-value="{{justifyValue}}"
-          id="justify"
-          icon="[[justifyIcon]]"
-          label="Alignment">
-          <paper-item value="hax-align-left">
-            <iron-icon icon="editor:format-align-left"></iron-icon>
-          </paper-item>
-          <paper-item value="hax-align-center">
-            <iron-icon icon="editor:format-align-center"></iron-icon>
-          </paper-item>
-          <paper-item value="hax-align-right">
-            <iron-icon icon="editor:format-align-right"></iron-icon>
-          </paper-item>
-        </hax-context-item-menu>
-      </template>
-      <template is="dom-if" if="[[haxProperties.canScale]]">
-        <paper-slider id="slider" pin min="25" step="25" max="100" value="{{ceSize}}"></paper-slider>
-        <paper-tooltip
-          for="slider"
-          position="top"
-          offset="10">
-          Resize
-        </paper-tooltip>
-      </template>
+    <hax-toolbar hax-properties="[[haxProperties]]" size="{{ceSize}}">
       <span id="elementoptions">
         <slot></slot>
       </span>
@@ -104,16 +43,12 @@ required for populating input.
         label="Settings"
         event-name="hax-manager-configure" hidden$="[[!__hasSettingsForm]]"></hax-context-item>
     </hax-toolbar>
-    <div class="hax-arrowclip"><span class="hax-arrow"></span></div>
   </template>
 
   <script>
     Polymer({
 
       is: 'hax-ce-context',
-      listeners: {
-        'hax-context-item-selected': '_haxContextOperation',
-      },
       properties: {
         /**
          * ce size.
@@ -122,21 +57,6 @@ required for populating input.
           type: Number,
           value: 50,
           observer: '_ceSizeChanged',
-        },
-        /**
-         * Justify icon to reflect state.
-         */
-        justifyIcon: {
-          type: String,
-          value: 'editor:format-align-left',
-        },
-        /**
-         * Selected value to match ce direction currently.
-         */
-        justifyValue: {
-          type: String,
-          value: 'hax-align-left',
-          notify: true,
         },
         /**
          * Selected value to match ce direction currently.
@@ -210,29 +130,6 @@ required for populating input.
             }
             slot.appendChild(item);
           }
-        }
-      },
-      /**
-       * Respond to simple modifications.
-       */
-      _haxContextOperation: function(e) {
-        let detail = e.detail;
-        // support a simple insert event to bubble up or everything else
-        switch(detail.eventName) {
-          case 'hax-align-left':
-            this.justifyIcon = detail.target.children[0].attributes[0].value;
-          break;
-          case 'hax-align-center':
-            this.justifyIcon = detail.target.children[0].attributes[0].value;
-          break;
-          case 'hax-align-right':
-            this.justifyIcon = detail.target.children[0].attributes[0].value;
-          break;
-          case 'close-menu':
-            if (this.$$('#justify')) {
-              this.$$('#justify').hideMenu();
-            }
-          break;
         }
       },
     });

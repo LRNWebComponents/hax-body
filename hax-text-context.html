@@ -1,12 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../md-extra-icons/md-extra-icons.html">
 <link rel="import" href="../app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="../paper-input/paper-textarea.html">
-<link rel="import" href="../paper-input/paper-input.html">
-<link rel="import" href="../paper-checkbox/paper-checkbox.html">
-<link rel="import" href="../paper-swatch-picker/paper-swatch-picker.html">
-<link rel="import" href="../paper-slider/paper-slider.html">
-<link rel="import" href="../paper-tooltip/paper-tooltip.html">
 <link rel="import" href="../paper-item/paper-item.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="hax-context-item-menu.html">
@@ -30,30 +24,8 @@ A context menu that provides common text based authoring options.
       :host {
         display: block;
       }
-      .hax-arrowclip {
-        position: absolute;
-        bottom: -10px;
-        left: 50%;
-        clip: rect(10px 20px 20px 0);
-        margin-left: -10px;
-      }
-      .hax-arrowclip .hax-arrow {
-        display: block;
-        width: 20px;
-        height: 20px;
-        background-color: #262625;
-        -webkit-transform: rotate(45deg) scale(.5);
-        transform: rotate(45deg) scale(.5);
-      }
     </style>
     <hax-toolbar>
-      <hax-context-item
-        icon="close"
-        label="Close menu"
-        event-name="close-menu"
-        class="close-cap"
-        direction="left"
-        default></hax-context-item>
       <hax-context-item-menu
         selected-value="{{selectedValue}}"
         id="formatsize"
@@ -81,6 +53,7 @@ A context menu that provides common text based authoring options.
         id="justify"
         icon="[[justifyIcon]]"
         label="Alignment">
+        <paper-item value="" hidden></paper-item>
         <paper-item value="text-align-left">
           <iron-icon icon="editor:format-align-left"></iron-icon>
         </paper-item>
@@ -88,7 +61,6 @@ A context menu that provides common text based authoring options.
           <iron-icon icon="editor:format-align-right"></iron-icon>
         </paper-item>
       </hax-context-item-menu>
-
       <hax-context-item-textop
         icon="editor:format-list-numbered"
         label="Numbered list"
@@ -135,7 +107,6 @@ A context menu that provides common text based authoring options.
         label="Remove format"
         event-name="text-remove-format"></hax-context-item-textop>
     </hax-toolbar>
-    <div class="hax-arrowclip"><span class="hax-arrow"></span></div>
   </template>
 
   <script>
@@ -206,7 +177,6 @@ A context menu that provides common text based authoring options.
        * Respond to simple modifications.
        */
       _haxContextOperation: function(e) {
-        console.log(e);
         let detail = e.detail;
         // support a simple insert event to bubble up or everything else
         switch(detail.eventName) {
@@ -252,8 +222,8 @@ A context menu that provides common text based authoring options.
             this.justifyIcon = detail.target.children[0].attributes[0].value;
           break;
           case 'close-menu':
-            this.$.justify.hideMenu();
-            this.$.formatsize.hideMenu();
+            this.$.justify.$.menu.hideMenu();
+            this.$.formatsize.$.menu.hideMenu();
           break;
           /**
            * Our bad actors in polyfill.
