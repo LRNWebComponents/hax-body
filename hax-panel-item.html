@@ -27,6 +27,10 @@ A single button in the hax panel for consistency.
     <style include="materializecss-styles-colors">
       :host {
         display: inline-flex;
+        margin: 0;
+        padding: 0;
+        height: 4em;
+        --hax-panel-hover: #34e79a;
       }
       paper-button {
         color: rgba(0,0,0,0.66);
@@ -34,11 +38,10 @@ A single button in the hax panel for consistency.
         text-transform: none;
         background-color: #2e2e2e !important;
         color: #eeeeee;
-        height: 4em;
-        width: 4em;
         display: flex;
         padding: 0;
-        margin: 0;
+        border-radius: 0;
+        border: none;
       }
       paper-button .label {
         font-size: .8em;
@@ -52,6 +55,16 @@ A single button in the hax panel for consistency.
       paper-button iron-icon {
         height: 2em;
         width: 1.5em;
+      }
+      :host:hover,
+      :host:focus {
+        outline-color:var(--hax-panel-hover);
+        outline-offset: 2px;
+        outline-style: solid;
+        outline-width: 2px;
+      }
+      :host:hover paper-button .label {
+        color: var(--hax-panel-hover);
       }
       .flip-icon {
         transform: rotateY(180deg);

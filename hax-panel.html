@@ -23,7 +23,6 @@ as the events being bubbled up include HTML nodes to inject into something
     <style>
       :host {
         display: block;
-        background-color: #2e2e2e;
       }
       app-drawer {
         height: 4em;
@@ -34,15 +33,20 @@ as the events being bubbled up include HTML nodes to inject into something
         z-index: 1;
         visibility: hidden;
         opacity: 0;
-        background-color: #2e2e2e;
+        display: flex;
         --app-drawer-width: 100%;
         --app-drawer-content-container: {
           height:unset;
-          background-color: unset;
+          width: unset !important;
+          background-color: #2e2e2e;
           padding: unset;
           touch-action: auto;
           transition: all .3s ease;
         }
+      }
+      :host[align="right"] app-drawer {
+        right: 0;
+        left: unset;
       }
       :host[edit-mode] app-drawer {
         visibility: visible;
@@ -50,20 +54,9 @@ as the events being bubbled up include HTML nodes to inject into something
         right: 0;
         left: 0;
         top: 0;
-        background-color: #2e2e2e;
       }
       :host[edit-mode] app-drawer:hover {
         opacity: 1;
-      }
-      hax-panel-item:hover,
-      hax-panel-item:focus {
-        -webkit-box-shadow: 0 0 0 3px #34e79a;
-        box-shadow: 0 0 0 3px #34e79a;
-      }
-      :host ::slotted(hax-panel-item:hover),
-      :host ::slotted(hax-panel-item:focus) {
-        -webkit-box-shadow: 0 0 0 3px #34e79a;
-        box-shadow: 0 0 0 3px #34e79a;
       }
       #button {
         position: fixed;
@@ -72,6 +65,10 @@ as the events being bubbled up include HTML nodes to inject into something
         z-index: 2;
         margin-left: 0;
         transition: all .3s;
+      }
+      :host[align="right"] #button {
+        right: 0;
+        left: unset;
       }
     </style>
     <div hidden$="[[hidePanelOps]]">
@@ -84,15 +81,14 @@ as the events being bubbled up include HTML nodes to inject into something
       label="[[__tipText]]"
       tooltip-direction="right"></hax-panel-item>
     </div>
-    <app-drawer id="drawer" opened="{{editMode}}" disable-swipe persistent transition-duration="300">
+    <app-drawer id="drawer" opened="{{editMode}}" disable-swipe persistent transition-duration="300" align="[[align]]">
       <hax-panel-item
-      on-tap="_clickButton"
-      icon="power-settings-new"
-      label="[[__tipText]]"
-      event-name="save"
-      voice-command="save content">
-      </hax-panel-item>
-            <hax-panel-item
+        on-tap="_clickButton"
+        icon="power-settings-new"
+        label="[[__tipText]]"
+        event-name="save"
+        voice-command="save content"></hax-panel-item>
+      <hax-panel-item
         icon="device:graphic-eq"
         icon-class="amber-text text-darken-1"
         label="Rich media"
@@ -157,6 +153,14 @@ as the events being bubbled up include HTML nodes to inject into something
         'hax-item-selected': '_processItemEvent',
       },
       properties: {
+        /**
+         * Display to the right corner instead of the left (default)
+         */
+        align: {
+          type: String,
+          reflectToAttribute: true,
+          value: 'left',
+        },
         /**
          * State of the panel
          */
