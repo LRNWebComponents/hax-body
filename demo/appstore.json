@@ -869,10 +869,6 @@
               "q": {
                 "title": "Search",
                 "type": "string"
-              },
-              "stuff": {
-                "title": "Money",
-                "type": "string"
               }
             },
             "resultMap": {

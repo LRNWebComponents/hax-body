@@ -30,10 +30,12 @@ A context menu that provides common image based authoring options.
     </style>
     <hax-toolbar hax-properties="[[haxProperties]]" size="{{imageSize}}">
       <hax-context-item
+        slot="primary"
         icon="editor:insert-link"
         label="Source"
         event-name="image-src"></hax-context-item>
       <hax-context-item
+        slot="primary"
         icon="accessibility"
         label="Alt information"
         event-name="image-alt"></hax-context-item>

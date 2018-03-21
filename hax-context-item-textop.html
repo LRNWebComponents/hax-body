@@ -33,18 +33,15 @@ A single button in the hax context menus for consistency. This one uses the mous
       :host {
         display: inline-flex;
       }
-      :host[wide] {
-        width: 50%;
-      }
-      :host[wide] paper-button {
-        width: unset;
-      }
-      .flip-icon {
-        transform: rotateY(180deg);
+      :host[menu] {
+        display: flex;
+        width: 100%;
       }
     </style>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="enter" on-keys-pressed="_fireEvent"></iron-a11y-keys>
-    <hax-toolbar-item id="button" icon="[[icon]]" hidden$="[[!icon]]" tooltip-direction="[[direction]]" tooltip="[[label]]" class$="[[iconClass]]" on-mousedown="_fireEvent" icon-class="[[iconClass]]" mini="[[mini]]" light="[[light]]"></paper-icon-button>
+    <hax-toolbar-item id="button" icon="[[icon]]" hidden$="[[!icon]]" tooltip-direction="[[direction]]" tooltip="[[label]]" class$="[[iconClass]]" on-mousedown="_fireEvent" icon-class="[[iconClass]]" mini="[[mini]]" menu="[[menu]]" light="[[light]]">
+      <slot></slot>
+    </hax-toolbar-item>
   </template>
 
   <script>
@@ -74,12 +71,11 @@ A single button in the hax context menus for consistency. This one uses the mous
           value: false,
         },
         /**
-         * Modifier that makes the button wider
+         * Style to be presented in a menu
          */
-        wide: {
+        menu: {
           type: Boolean,
           value: false,
-          reflectToAttribute: true,
         },
         /**
          * Direction for the tooltip

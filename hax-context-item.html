@@ -30,8 +30,14 @@ A single button in the hax context menu for consistency.
       :host {
         display: inline-flex;
       }
+      :host[menu] {
+        display: flex;
+        width: 100%;
+      }
     </style>
-    <hax-toolbar-item disabled="[[disabled]]" light="[[light]]" mini="[[mini]]" id="button" icon="[[icon]]" hidden$="[[!icon]]" icon-class="[[iconClass]]" on-tap="_fireEvent" tooltip="[[label]]" tooltip-direction="[[direction]]" default="[[default]]"></hax-toolbar-item>
+    <hax-toolbar-item disabled="[[disabled]]" light="[[light]]" mini="[[mini]]" id="button" icon="[[icon]]" hidden$="[[!icon]]" icon-class="[[iconClass]]" on-tap="_fireEvent" tooltip="[[label]]" tooltip-direction="[[direction]]" default="[[default]]" menu="[[menu]]">
+      <slot></slot>
+    </hax-toolbar-item>
   </template>
 
   <script>
@@ -63,12 +69,11 @@ A single button in the hax context menu for consistency.
           value: false,
         },
         /**
-         * Modifier that makes the button wider
+         * Style to be presented in a menu
          */
-        wide: {
+        menu: {
           type: Boolean,
           value: false,
-          reflectToAttribute: true,
         },
         /**
          * Direction for the tooltip
