@@ -25,11 +25,12 @@ as the events being bubbled up include HTML nodes to inject into something
         display: block;
       }
       app-drawer {
+        z-index: 10000000;
         height: 4em;
         left: 0;
         top: 0;
         touch-action: auto;
-        transition: all .3s ease;
+        transition: all 1s ease;
         z-index: 1;
         visibility: hidden;
         opacity: 0;
@@ -41,7 +42,6 @@ as the events being bubbled up include HTML nodes to inject into something
           background-color: #2e2e2e;
           padding: unset;
           touch-action: auto;
-          transition: all .3s ease;
         }
       }
       :host[align="right"] app-drawer {
@@ -50,7 +50,7 @@ as the events being bubbled up include HTML nodes to inject into something
       }
       :host[edit-mode] app-drawer {
         visibility: visible;
-        opacity: .8;
+        opacity: .9;
         right: 0;
         left: 0;
         top: 0;
@@ -122,6 +122,7 @@ as the events being bubbled up include HTML nodes to inject into something
         label="Divider"
         event-name="divider"
         voice-command="insert divider"></hax-panel-item>
+      <slot></slot>
       <hax-panel-item
         disabled
         icon="view-quilt"
@@ -136,7 +137,6 @@ as the events being bubbled up include HTML nodes to inject into something
         label="Layout stack"
         event-name="layout"
         voice-command="insert stack"></hax-panel-item>
-      <slot></slot>
       <hax-panel-item
         hidden$="[[hideExportButton]]"
         data-opened$="[[editMode]]"

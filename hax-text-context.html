@@ -2,6 +2,7 @@
 <link rel="import" href="../md-extra-icons/md-extra-icons.html">
 <link rel="import" href="../app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../materializecss-styles/colors.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="hax-context-item-menu.html">
 <link rel="import" href="hax-context-item.html">
@@ -20,9 +21,13 @@ A context menu that provides common text based authoring options.
 
 <dom-module id="hax-text-context">
   <template>
-    <style>
+    <style include="materializecss-styles-colors">
       :host {
         display: block;
+      }
+      paper-item:hover {
+        background-color: #d3d3d3;
+        cursor: pointer;
       }
     </style>
     <hax-toolbar>
@@ -30,7 +35,7 @@ A context menu that provides common text based authoring options.
         selected-value="{{selectedValue}}"
         id="formatsize"
         icon="text-format"
-        label="Text style"
+        label="Format"
         event-name="text-tag">
         <paper-item value="p">Normal text</paper-item>
         <paper-item value="h2">Title</paper-item>

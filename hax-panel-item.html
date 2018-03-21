@@ -56,15 +56,18 @@ A single button in the hax panel for consistency.
         height: 2em;
         width: 1.5em;
       }
-      :host:hover,
-      :host:focus {
+      paper-button:hover,
+      paper-button:focus {
         outline-color:var(--hax-panel-hover);
-        outline-offset: 2px;
+        outline-offset: 0px;
         outline-style: solid;
         outline-width: 2px;
       }
-      :host:hover paper-button .label {
+      paper-button:hover .label {
         color: var(--hax-panel-hover);
+      }
+      paper-button[disabled] {
+        opacity: .5;
       }
       .flip-icon {
         transform: rotateY(180deg);

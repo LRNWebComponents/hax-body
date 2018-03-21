@@ -43,9 +43,8 @@ A single button in the hax context menus for consistency. This one uses the mous
         transform: rotateY(180deg);
       }
     </style>
-    <iron-a11y-keys id="a11y" target="[[target]]" keys="enter"
-                    on-keys-pressed="_fireEvent"></iron-a11y-keys>
-    <hax-toolbar-item id="button" icon="[[icon]]" hidden$="[[!icon]]" tooltip-direction="[[direction]]" class$="[[iconClass]]" on-mousedown="_fireEvent"></paper-icon-button>
+    <iron-a11y-keys id="a11y" target="[[target]]" keys="enter" on-keys-pressed="_fireEvent"></iron-a11y-keys>
+    <hax-toolbar-item id="button" icon="[[icon]]" hidden$="[[!icon]]" tooltip-direction="[[direction]]" tooltip="[[label]]" class$="[[iconClass]]" on-mousedown="_fireEvent" icon-class="[[iconClass]]" mini="[[mini]]" light="[[light]]"></paper-icon-button>
   </template>
 
   <script>
@@ -59,6 +58,20 @@ A single button in the hax context menus for consistency. This one uses the mous
          */
         target: {
           type: Object
+        },
+        /**
+         * Light theme for toolbar item.
+         */
+        light: {
+          type: Boolean,
+          value: false,
+        },
+        /**
+         * Mini theme for making things small and round.
+         */
+        mini: {
+          type: Boolean,
+          value: false,
         },
         /**
          * Modifier that makes the button wider
@@ -88,7 +101,7 @@ A single button in the hax context menus for consistency. This one uses the mous
          */
         iconClass: {
           type: String,
-          value: "black-text",
+          value: "",
           reflectToAttribute: true,
         },
         /**

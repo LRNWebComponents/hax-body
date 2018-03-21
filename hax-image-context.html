@@ -28,7 +28,7 @@ A context menu that provides common image based authoring options.
         display: block;
       }
     </style>
-    <hax-toolbar size="{{imageSize}}">
+    <hax-toolbar hax-properties="[[haxProperties]]" size="{{imageSize}}">
       <hax-context-item
         icon="editor:insert-link"
         label="Source"
@@ -52,6 +52,17 @@ A context menu that provides common image based authoring options.
           type: Number,
           value: 50,
           observer: '_imageSizeChanged',
+        },
+        /**
+         * So we can get it to add our bars we need
+         */
+        haxProperties: {
+          type: Object,
+          value: {
+            'canScale': true,
+            'canPosition': true,
+            'canEditSource': true,
+          },
         },
       },
       /**

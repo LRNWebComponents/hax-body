@@ -499,7 +499,7 @@ A LRN element that will change the world.
             this._positionContextMenu(this.__activeContextType, node, null, -50);
           break;
         }
-        this._positionContextMenu(this.$.platecontextmenu, node, -128, 0);
+        this._positionContextMenu(this.$.platecontextmenu, node, -96, -16);
         setTimeout( () => {
   	      this.__activeContextType.scrollIntoView({behavior: "smooth", inline: "nearest"});
   	    }, 100);
@@ -619,8 +619,8 @@ A LRN element that will change the world.
             this.haxMoveGridPlate('up', this.activeNode);
           break;
           case 'hax-manager-open':
-            Polymer.HaxStore.instance.haxManager.resetManager();
             Polymer.HaxStore.write('activeHaxElement', {}, this);
+            Polymer.HaxStore.instance.haxManager.resetManager(parseInt(detail.value));
             Polymer.HaxStore.instance.haxManager.toggleDialog();
           break;
           case 'grid-plate-down':
@@ -917,7 +917,7 @@ A LRN element that will change the world.
         // the grid plate context menu to show up
         if (typeof newValue !== typeof undefined && newValue !== null && this.activeNode === newValue) {
           // position the operations / in context element
-          this._positionContextMenu(this.$.platecontextmenu, newValue, -128, 0);
+          this._positionContextMenu(this.$.platecontextmenu, newValue, -96, -16);
         }
       },
       /**

@@ -29,6 +29,10 @@
         transition: .1s all;
         @apply --hax-toolbar-item-container;
       }
+      paper-button:hover {
+        background-color: var(--hax-item-color);
+        color: var(--hax-item-background);
+      }
       paper-button:active {
         background: var(--hax-item-color);
         color: var(--hax-item-background);
@@ -39,6 +43,10 @@
       :host[light] paper-button {
         background-color: var(--hax-item-color);
         color: var(--hax-item-background);
+      }
+      :host[light] paper-button:hover {
+        background-color: var(--hax-item-background);
+        color: var(--hax-item-color);
       }
       :host[light] paper-button:active {
         background: var(--hax-item-background);
@@ -53,9 +61,12 @@
         width: 2em;
         height: 2em;
       }
+      .flip-icon {
+        transform: rotateY(180deg);
+      }
     </style>
 
-    <paper-button id="container" tabindex="1">
+    <paper-button disabled="[[disabled]]" id="container" tabindex="1">
       <iron-icon id="button" icon="[[icon]]" class$="[[iconClass]]"></iron-icon> <span id="label" hidden$="[[!label]]">[[label]]</span>
     </paper-button>
     <paper-tooltip
@@ -70,28 +81,54 @@
     Polymer({
       is: 'hax-toolbar-item',
       properties: {
+        /**
+         * disabled state
+         */
+        disabled: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true,
+        },
+        /**
+         * Inverted display mode
+         */
         light: {
           type: Boolean,
           reflectToAttribute: true,
           value: false,
         },
+        /**
+         * Present smaller the normal but consistent
+         */
         mini: {
           type: Boolean,
           reflectToAttribute: true,
           value: false,
         },
+        /**
+         * Icon to represent this button, required.
+         */
         icon: {
           type: String,
           value: '',
         },
+        /**
+         * Text applied to the button
+         */
         label: {
           type: String,
           value: '',
         },
+        /**
+         * Hover tip text
+         */
         tooltip: {
           type: String,
           value: '',
         },
+        /**
+         * Direction that the tooltip should flow
+         */
         tooltipDirection: {
           type: String,
           value: 'top',

@@ -45,12 +45,12 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         right: 0;
         bottom: 0;
         left: 0;
-        overflow:hidden;
+        margin: 4.2em;
+        overflow: auto;
       }
       #dialogcontent {
-        margin-top: 46px;
-        padding: 8px 0;
-        height: calc(100vh - 86px);
+        margin-top: 0;
+        padding: 0;
         overflow: scroll;
       }
       .preview-buttons {
@@ -116,7 +116,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
       #dialogheader {
         margin: 0;
         padding: 1.2em;
-        position: absolute;
+        position: sticky;
         top: 0;
         left: 0;
         right: 0;
@@ -130,7 +130,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
       }
       #dialogheader h2 {
         margin: 0;
-        font-size: 1.8em
+        font-size: 1.8em;
       }
       paper-tab iron-icon  {
         padding-right: 1em;
@@ -499,7 +499,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
       /**
        * Reset things on the display to their defaults.
        */
-      resetManager: function() {
+      resetManager: function(activePage = 0) {
         document.body.style.overflow = null;
         this.appList = Polymer.HaxStore.instance.appList;
         this.__allowUpload = false;
@@ -510,7 +510,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         this.$.fileupload.method = '';
         this.$.fileupload.target = '';
         this.selectStep('select');
-        this.activePage = 0;
+        this.activePage = activePage;
       },
       /**
        * Cancel interaction with the modal
@@ -528,8 +528,8 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         if (e.target === this) {
           // reset and close dialog
           this.resetManager();
-          document.body.style.overflow = null;
         }
+        document.body.style.overflow = null;
       },
       /**
        * Configure asset after upload or URL passed in.
