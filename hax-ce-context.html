@@ -30,15 +30,11 @@ required for populating input.
         margin: 0;
         height: 40px;
       }
-      #elementoptions {
-        height: inherit;
-      }
     </style>
     <hax-toolbar hax-properties="[[haxProperties]]" size="{{ceSize}}">
-      <span id="elementoptions">
-        <slot></slot>
-      </span>
+      <slot></slot>
       <hax-context-item
+        slot="primary"
         icon="settings"
         label="Settings"
         event-name="hax-manager-configure" hidden$="[[!__hasSettingsForm]]"></hax-context-item>
@@ -55,7 +51,7 @@ required for populating input.
          */
         ceSize: {
           type: Number,
-          value: 50,
+          value: 100,
           observer: '_ceSizeChanged',
         },
         /**
@@ -89,7 +85,7 @@ required for populating input.
       _haxPropertiesChanged: function(newValue, oldValue) {
         if (typeof oldValue !== typeof undefined && typeof newValue.settings !== typeof undefined) {
           // clear current slot for the tag
-          let slot = Polymer.dom(this.$.elementoptions);
+          let slot = Polymer.dom(this);
           while (slot.firstChild !== null) {
             slot.removeChild(slot.firstChild);
           }

@@ -48,7 +48,7 @@ A LRN element that will change the world.
         position: relative;
         visibility: hidden;
         opacity: 0;
-        transition: visibility .6s ease, opacity .6s ease;
+        transition: all .6s ease;
         z-index: 3;
       }
       :host #bodycontainer ::slotted(#platecontextmenu) {
@@ -475,13 +475,13 @@ A LRN element that will change the world.
           // HTML primatives need manually defined and built out
           case 'IMG':
             this.__activeContextType = this.$.imagecontextmenu;
-            this._positionContextMenu(this.__activeContextType, node, null, -50);
+            this._positionContextMenu(this.__activeContextType, node, 0, -50);
           break;
           case 'IFRAME':
           case 'VIDEO':
           case 'AUDIO':
             this.__activeContextType = this.$.iframecontextmenu;
-            this._positionContextMenu(this.__activeContextType, node, null, -50);
+            this._positionContextMenu(this.__activeContextType, node, 0, -50);
           break;
           default:
             // check and see if we have a haxproperties function in place
@@ -496,7 +496,7 @@ A LRN element that will change the world.
             else {
               this.__activeContextType = this.$.textcontextmenu;
             }
-            this._positionContextMenu(this.__activeContextType, node, null, -50);
+            this._positionContextMenu(this.__activeContextType, node, 0, -50);
           break;
         }
         this._positionContextMenu(this.$.platecontextmenu, node, -96, -16);
@@ -938,7 +938,9 @@ A LRN element that will change the world.
         if (xoffset != null) {
           menu.style["margin-left"] = (xoffset + offset ) + 'px';
         }
-        menu.style["margin-top"] = yoffset + 'px';
+        if (yoffset != null) {
+          menu.style["margin-top"] = yoffset + 'px';
+        }
       },
       /**
        * Simple hide / reset of whatever menu it's handed.

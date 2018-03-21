@@ -56,6 +56,16 @@ A context menu that provides common text based authoring options.
         icon="editor:format-italic"
         label="Italic"
         event-name="text-italic"></hax-context-item-textop>
+      <hax-context-item-textop
+        slot="primary"
+        icon="editor:insert-link"
+        label="Link"
+        event-name="text-link"></hax-context-item-textop>
+      <hax-context-item-textop
+        slot="primary"
+        icon="mdextra:unlink"
+        label="Unlink"
+        event-name="text-unlink"></hax-context-item-textop>
       <hax-context-item-menu
         slot="primary"
         selected-value="{{justifyValue}}"
@@ -94,16 +104,6 @@ A context menu that provides common text based authoring options.
         label="Outdent"
         event-name="text-outdent"
         hidden$="[[!polyfillSafe]]"></hax-context-item-textop>
-      <hax-context-item-textop
-        slot="primary"
-        icon="editor:insert-link"
-        label="Link"
-        event-name="text-link"></hax-context-item-textop>
-      <hax-context-item-textop
-        slot="primary"
-        icon="mdextra:unlink"
-        label="Unlink"
-        event-name="text-unlink"></hax-context-item-textop>
       <hax-context-item-textop
         slot="primary"
         icon="editor:format-clear"

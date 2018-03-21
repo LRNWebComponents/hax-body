@@ -25,13 +25,12 @@ required for populating input.
     <style>
       :host {
         display: block;
-        color: #c5c5c5;
+        color: #FFFFFF;
       }
       app-toolbar {
         background-color: #3e3e3e;
-        color: #c5c5c5;
-        padding: 0;
-        height: 40px;
+        color: white;
+        padding: 0 0 0 1em;
       }
       hax-context-item {
         margin: 0;
@@ -42,23 +41,32 @@ required for populating input.
         height: inherit;
       }
       #input {
-        color: #c5c5c5;
+        color: #FFFFFF;
       }
       paper-checkbox {
-        --paper-checkbox-label-color: #c5c5c5;
+        --paper-checkbox-label-color: #FFFFFF;
       }
       .input-mixer-label {
         padding-left: 4px;
       }
       paper-textarea,
       paper-input {
-        color: #c5c5c5;
+        --paper-input-container-color: #BBBBFF;
+        --paper-input-container-focus-color: #FFFFFF;
+        --paper-input-container-invalid-color: #FFAAAA;
+        --paper-input-container-input-color: #FFFFFF;
         --paper-input-container: {
-          color: #c5c5c5;
-          margin: 0 0 8px 0;
-          padding: 2px;
-          min-width: 250px;
-        };
+          margin: 0;
+          padding: 0;
+          min-width: 20em;
+          line-height: 1em;
+          font-size: 1em;
+          margin-top: -8px;
+          margin-bottom: 8px;
+        }
+      }
+      .input-method {
+        color: #FFFFFF;
       }
     </style>
     <app-toolbar>
@@ -71,6 +79,7 @@ required for populating input.
           <slot></slot>
         </hax-context-item-menu>
       </template>
+      <span class="input-method">
       <template is="dom-if" if="[[__inputtextarea]]">
         <paper-textarea id="input" label="[[label]]" value="{{value}}" auto-validate pattern="[[validation]]" required="[[required]]"></paper-textarea>
       </template>
@@ -87,6 +96,7 @@ required for populating input.
         <span>[[label]]</span>
         <paper-swatch-picker id="input" color="{{value}}"></paper-swatch-picker>
       </template>
+      </span>
       <paper-tooltip
         for="input"
         position="top"

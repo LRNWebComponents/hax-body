@@ -21,17 +21,26 @@ A context menu that provides common grid plate based authoring options.
         display: block;
         width: 4em;
       }
+      :host:hover {
+        opacity: 1;
+      }
       hax-context-item {
         display: block;
         margin: .4em 0;
         width: 2em;
       }
-      .area1, .area2 {
+      .area {
         width: 2em;
         float: left;
+        opacity: .3;
+        visibility: visible;
+        transition: .8s all ease;
+      }
+      .area:hover {
+        opacity: 1;
       }
     </style>
-    <div class="area1">
+    <div class="area">
       <hax-context-item
         light
         mini
@@ -57,7 +66,7 @@ A context menu that provides common grid plate based authoring options.
         value="2"
         direction="left"></hax-context-item>
     </div>
-    <div class="area2">
+    <div class="area">
       <hax-context-item
         light
         mini

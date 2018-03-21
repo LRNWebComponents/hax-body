@@ -16,9 +16,15 @@
         display: flex;
         font-family: "Roboto", sans-serif;
         justify-content: flex-start;
+        opacity: .9;
+        visibility: visible;
+        transition: .6s all ease;
       }
       :host ::slotted(*) {
         font-family: "Roboto", sans-serif;
+      }
+      :host:hover {
+        opacity: 1;
       }
       .hax-arrowclip {
         position: absolute;
@@ -117,7 +123,7 @@
          */
         size: {
           type: Number,
-          value: 50,
+          value: 100,
           notify: true,
         },
         /**

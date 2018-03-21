@@ -25,22 +25,23 @@ as the events being bubbled up include HTML nodes to inject into something
         display: block;
       }
       app-drawer {
-        z-index: 10000000;
+        z-index: 10001;
         height: 4em;
         left: 0;
         top: 0;
         touch-action: auto;
-        transition: all 1s ease;
-        z-index: 1;
         visibility: hidden;
         opacity: 0;
         display: flex;
         --app-drawer-width: 100%;
         --app-drawer-content-container: {
           height:unset;
-          width: unset !important;
+          width: 100%;
+          left: 0;
+          right: 0;
           background-color: #2e2e2e;
           padding: unset;
+          display: flex;
           touch-action: auto;
         }
       }
@@ -50,7 +51,7 @@ as the events being bubbled up include HTML nodes to inject into something
       }
       :host[edit-mode] app-drawer {
         visibility: visible;
-        opacity: .9;
+        opacity: .95;
         right: 0;
         left: 0;
         top: 0;
@@ -62,9 +63,20 @@ as the events being bubbled up include HTML nodes to inject into something
         position: fixed;
         top: 0;
         left: 0;
-        z-index: 2;
+        visibility: visible;
+        z-index: 10000;
         margin-left: 0;
-        transition: all .3s;
+        transition: all 0;
+        opacity: .9;
+        border-radius: 50%;
+      }
+      :host[edit-mode] #button {
+        visibility: hidden;
+        opacity: 0;
+        transition: all .8s ease;
+      }
+      #button:hover {
+        opacity: 1;
       }
       :host[align="right"] #button {
         right: 0;
@@ -73,18 +85,17 @@ as the events being bubbled up include HTML nodes to inject into something
     </style>
     <div hidden$="[[hidePanelOps]]">
       <hax-panel-item
-      hidden$="[[editMode]]"
       data-opened$="[[editMode]]"
       on-tap="_clickButton"
       icon="power-settings-new"
       id="button"
-      label="[[__tipText]]"
-      tooltip-direction="right"></hax-panel-item>
+      edged="[[align]]"
+      label="[[__tipText]]"></hax-panel-item>
     </div>
-    <app-drawer id="drawer" opened="{{editMode}}" disable-swipe persistent transition-duration="300" align="[[align]]">
+    <app-drawer id="drawer" opened="{{editMode}}" disable-swipe persistent transition-duration="800" align="[[align]]">
       <hax-panel-item
         on-tap="_clickButton"
-        icon="power-settings-new"
+        icon="save"
         label="[[__tipText]]"
         event-name="save"
         voice-command="save content"></hax-panel-item>
