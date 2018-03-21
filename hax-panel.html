@@ -25,7 +25,7 @@ as the events being bubbled up include HTML nodes to inject into something
         display: block;
       }
       app-drawer {
-        z-index: 10001;
+        z-index: 100001;
         height: 64px;
         left: 0;
         top: 0;
@@ -94,6 +94,7 @@ as the events being bubbled up include HTML nodes to inject into something
     </div>
     <app-drawer id="drawer" opened="{{editMode}}" disable-swipe persistent transition-duration="800" align="[[align]]">
       <hax-panel-item
+        hidden$="[[hidePanelOps]]"
         on-tap="_clickButton"
         icon="save"
         label="[[__tipText]]"
