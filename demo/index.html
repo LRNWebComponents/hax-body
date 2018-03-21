@@ -47,25 +47,7 @@
     <style>
       .vertical-section-container {
         max-width: 60em;
-        margin-left: 10em;
-      }
-      hax-panel {
-        font-size: .8rem;
-      }
-      hax-panel {
-      --app-drawer-content-container: {
-          background-color: #fafafa;
-          padding: 0;
-          border-right: 1px solid #c8c8c8;
-          border-bottom: 1px solid #c8c8c8;
-          width: 100px !important;
-          box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.4);
-          height: 100vh;
-          position: fixed;
-        }
-      }
-      lrnsys-collapselist-item .label {
-        text-align: center;
+        margin: 5em 10em;
       }
     </style>
   </head>
@@ -74,7 +56,6 @@
     <div class="vertical-section-container">
       <template is="dom-bind">
         <hax-store app-store='{"url":"appstore.json"}'></hax-store>
-        <hax-app-picker></hax-app-picker>
         <hax-body context-offset-left="-164" style="padding-top:2em;">
           <h1>What is HAX? Allow the Earth to convince you.</h1>
           <magazine-cover class="x-scope magazine-cover-0 x-scope magazine-cover-0 x-scope magazine-cover-0 x-scope magazine-cover-0" header="Endless possibilities" image="https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e000676/GSFC_20171208_Archive_e000676~thumb.jpg" subheader="Click the power button to get started" text="Welcome to HAX. An entirely different way to author, edit and create content. HAX solves the problem your content contributors always complain about - getting things on the internet. It's 2017, and yet much of the internet is still constrained to WYSIWYG editors started in 2001. They are better then nothing; but we can build so much more then that now! HAX stands for Headless Authoring eXperience. Because authoring experience makes and breaks any platform!" action="Click the power button in the top left to start!" icon="launch" link="#">
@@ -123,77 +104,67 @@
             http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4
           </pre></code>
         </hax-body>
-        <hax-export-dialog></hax-export-dialog>
-        <hax-panel>
-          <lrnsys-collapselist-item>
-          <span slot="label"><div class="label">Future</div></span>
-          <span slot="content">
-            <hax-panel-item
-              icon="touch-app"
-              icon-class="blue-text"
-              label="Interactive video"
-              event-name="h5p-interactive-video"
-              voice-command="insert interactive video"></hax-panel-item>
-            <hax-panel-item
-              icon="hardware:videogame-asset"
-              icon-class="red-text"
-              label="Self-check"
-              event-name="h5p-multiple-choice"
-              voice-command="insert self check"></hax-panel-item>
-            <hax-panel-item
-              icon="timeline"
-              icon-class="yellow-text text-darken-4"
-              label="Timeline"
-              event-name="timeline"
-              voice-command="insert timeline"></hax-panel-item>
-            <hax-panel-item
-              icon="maps:place"
-              icon-class="green-text"
-              label="Map"
-              event-name="map"
-              voice-command="insert map"></hax-panel-item>
-            <hax-panel-item
-              icon="social:share"
-              icon-class="pink-text"
-              label="JMOL"
-              event-name="jmol"
-              voice-command="insert molecule"></hax-panel-item>
-            <hax-panel-item
-              icon="social:poll"
-              icon-class="orange-text"
-              label="Poll"
-              event-name="poll"
-              voice-command="insert poll"></hax-panel-item>
-              <hax-panel-item
-              icon="assignment"
-              icon-class="yellow-text text-darken-2"
-              label="Assignment"
-              event-name="assignment"
-              voice-command="insert assignment"></hax-panel-item>
-            <hax-panel-item
-              icon="assessment"
-              icon-class="purple-text text-darken-2"
-              label="Quiz"
-              event-name="quiz"
-              voice-command="insert quiz"></hax-panel-item>
-          </span>
-          </lrnsys-collapselist-item>
-        </hax-panel>
         <hax-autoloader hidden>
+          <magazine-cover></magazine-cover>
           <video-player></video-player>
-          <wave-player></wave-player>
-          <wikipedia-query></wikipedia-query>
-          <pdf-element></pdf-element>
           <lrn-table></lrn-table>
           <media-image></media-image>
-          <meme-maker></meme-maker>
           <lrndesign-blockquote></lrndesign-blockquote>
+          <meme-maker></meme-maker>
           <a11y-gif-player></a11y-gif-player>
-          <aframe-player></aframe-player>
           <paper-audio-player></paper-audio-player>
-          <magazine-cover></magazine-cover>
+          <wikipedia-query></wikipedia-query>
+          <wave-player></wave-player>
+          <pdf-element></pdf-element>
+          <aframe-player></aframe-player>
         </hax-autoloader>
+        <hax-panel align="left">
+          <hax-panel-item
+            disabled
+            icon="hardware:videogame-asset"
+            icon-class="red-text"
+            label="Self-check"
+            event-name="h5p-multiple-choice"
+            voice-command="insert self check"></hax-panel-item>
+          <hax-panel-item
+            disabled
+            icon="timeline"
+            icon-class="yellow-text text-darken-4"
+            label="Timeline"
+            event-name="timeline"
+            voice-command="insert timeline"></hax-panel-item>
+          <hax-panel-item
+            disabled
+            icon="maps:place"
+            icon-class="green-text"
+            label="Map"
+            event-name="map"
+            voice-command="insert map"></hax-panel-item>
+          <hax-panel-item
+            disabled
+            icon="social:poll"
+            icon-class="orange-text"
+            label="Poll"
+            event-name="poll"
+            voice-command="insert poll"></hax-panel-item>
+          <hax-panel-item
+            disabled
+            icon="assignment"
+            icon-class="yellow-text text-darken-2"
+            label="Assignment"
+            event-name="assignment"
+            voice-command="insert assignment"></hax-panel-item>
+          <hax-panel-item
+            disabled
+            icon="assessment"
+            icon-class="purple-text text-darken-2"
+            label="Quiz"
+            event-name="quiz"
+            voice-command="insert quiz"></hax-panel-item>
+        </hax-panel>
         <hax-manager></hax-manager>
+        <hax-export-dialog></hax-export-dialog>
+        <hax-app-picker></hax-app-picker>
       </template>
     </div>
   </body>

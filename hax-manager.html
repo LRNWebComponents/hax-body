@@ -35,9 +35,9 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
     <style include="materializecss-styles">
       :host {
         display: block;
-        --hax-manager-steps-color: #ffb300;
-        --hax-manager-tab-color: #0d47a1;
-        --hax-manager-ink-color: #FFFFFF;
+        --hax-manager-steps-color: #e5e5e5;
+        --hax-manager-tab-color: #e5e5e5;
+        --hax-manager-ink-color: #2e2e2e;
       }
       #dialog {
         position: fixed;
@@ -45,12 +45,12 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         right: 0;
         bottom: 0;
         left: 0;
-        overflow:hidden;
+        margin: 4.2em;
+        overflow: auto;
       }
       #dialogcontent {
-        margin-top: 46px;
-        padding: 8px 0;
-        height: calc(100vh - 86px);
+        margin-top: 0;
+        padding: 0;
         overflow: scroll;
       }
       .preview-buttons {
@@ -116,7 +116,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
       #dialogheader {
         margin: 0;
         padding: 1.2em;
-        position: absolute;
+        position: sticky;
         top: 0;
         left: 0;
         right: 0;
@@ -130,7 +130,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
       }
       #dialogheader h2 {
         margin: 0;
-        font-size: 1.8em
+        font-size: 1.8em;
       }
       paper-tab iron-icon  {
         padding-right: 1em;
@@ -207,7 +207,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         }
       }
     </style>
-    <paper-dialog id="dialog" entry-animation="slide-from-bottom-animation" exit-animation="slide-down-animation" with-backdrop>
+    <paper-dialog id="dialog" entry-animation="slide-from-top-animation" exit-animation="slide-up-animation" with-backdrop>
       <div id="dialogheader" class="grey darken-3 grey-text text-lighten-3">
         <h2>[[managerTitle]]</h2>
         <div class="step-toggle-wrapper">
@@ -269,6 +269,8 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
       is: 'hax-manager',
       listeners: {
         'cancel.tap': 'cancel',
+        'dialog.iron-overlay-canceled': 'close',
+        'dialog.iron-overlay-closed': 'close',
         'newassetconfigure.tap': 'newAssetConfigure',
         'insert.tap': 'insertHaxElement',
         'fileupload.upload-before': '_fileAboutToUpload',
@@ -492,11 +494,13 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         this.resetManager();
         // close window
         this.toggleDialog();
+        document.body.style.overflow = null;
       },
       /**
        * Reset things on the display to their defaults.
        */
-      resetManager: function() {
+      resetManager: function(activePage = 0) {
+        document.body.style.overflow = null;
         this.appList = Polymer.HaxStore.instance.appList;
         this.__allowUpload = false;
         this.editExistingNode = false;
@@ -506,15 +510,26 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         this.$.fileupload.method = '';
         this.$.fileupload.target = '';
         this.selectStep('select');
-        this.activePage = 0;
+        this.activePage = activePage;
       },
       /**
-       * Cancel and close.
+       * Cancel interaction with the modal
        */
       cancel: function(e) {
         // reset and close dialog
         this.resetManager();
         this.toggleDialog();
+        document.body.style.overflow = null;
+      },
+      /**
+       * Respond to the modal closing
+       */
+      close: function(e) {
+        if (e.target === this) {
+          // reset and close dialog
+          this.resetManager();
+        }
+        document.body.style.overflow = null;
       },
       /**
        * Configure asset after upload or URL passed in.
@@ -548,6 +563,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
       toggleDialog: function() {
         this.$.dialog.toggle();
         this.$$('#pagetabs').focus();
+        document.body.style.overflow = 'hidden';
         //this.$.url.focus();
         //this.$.url.select();
       },

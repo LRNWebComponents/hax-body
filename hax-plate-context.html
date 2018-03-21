@@ -19,32 +19,68 @@ A context menu that provides common grid plate based authoring options.
     <style>
       :host {
         display: block;
-        background-color: white;
-        width: 40px;
+        width: 4em;
       }
-      hax-context-item-menu,
       hax-context-item {
         display: block;
-        margin: 0;
-        width: 40px;
-        height: 40px;
+        margin: .4em 0;
+        width: 2em;
       }
-      hax-context-item ::shadow paper-icon-button {
-        height: 40px;
+      .area1, .area2 {
+        width: 2em;
+        float: left;
       }
     </style>
-    <hax-context-item
-      light
-      icon="arrow-upward"
-      label="Move up"
-      event-name="grid-plate-up"
-      direction="left"></hax-context-item>
-    <hax-context-item
-      light
-      icon="arrow-downward"
-      label="Move down"
-      event-name="grid-plate-down"
-      direction="left"></hax-context-item>
+    <div class="area1">
+      <hax-context-item
+        light
+        mini
+        icon="image:add-to-photos"
+        label="Add"
+        event-name="hax-manager-open"
+        value="0"
+        direction="left"></hax-context-item>
+      <hax-context-item
+        light
+        mini
+        icon="search"
+        label="Find"
+        event-name="hax-manager-open"
+        value="1"
+        direction="left"></hax-context-item>
+      <hax-context-item
+        light
+        mini
+        icon="view-quilt"
+        label="Make"
+        event-name="hax-manager-open"
+        value="2"
+        direction="left"></hax-context-item>
+    </div>
+    <div class="area2">
+      <hax-context-item
+        light
+        mini
+        icon="arrow-upward"
+        label="Move up"
+        event-name="grid-plate-up"
+        direction="left"></hax-context-item>
+      <hax-context-item
+        light
+        mini
+        disabled
+        icon="editor:drag-handle"
+        label="Drag"
+        event-name="hax-make-draggable"
+        direction="right"></hax-context-item>
+      <hax-context-item
+        light
+        mini
+        icon="arrow-downward"
+        label="Move down"
+        event-name="grid-plate-down"
+        direction="left"></hax-context-item>
+    </div>
   </template>
 
   <script>

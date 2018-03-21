@@ -8,6 +8,8 @@
     <style include="materializecss-styles-colors">
       :host {
         display: flex;
+        --hax-item-color: #e5e5e5;
+        --hax-item-background: #2e2e2e;
       }
       #label {
         padding-left: 5px;
@@ -15,8 +17,8 @@
       paper-button {
         display: flex;
         align-items: center;
-        background-color: #3e3e3e;
-        color: #c5c5c5;
+        background-color: var(--hax-item-background);
+        color: var(--hax-item-color);
         min-width: 0;
         margin: 0;
         text-transform: uppercase;
@@ -24,55 +26,109 @@
         border-radius: 0;
         font-size: .8em;
         height: 40px;
+        transition: .1s all;
         @apply --hax-toolbar-item-container;
       }
+      paper-button:hover {
+        background-color: var(--hax-item-color);
+        color: var(--hax-item-background);
+      }
       paper-button:active {
-        background: #3e3e3e;
+        background: var(--hax-item-color);
+        color: var(--hax-item-background);
       }
       :host[default] paper-button {
         background: black;
       }
-      :host[light] paper-button{
-        background-color: #c5c5c5;
-        color: #3e3e3e;
+      :host[light] paper-button {
+        background-color: var(--hax-item-color);
+        color: var(--hax-item-background);
+      }
+      :host[light] paper-button:hover {
+        background-color: var(--hax-item-background);
+        color: var(--hax-item-color);
       }
       :host[light] paper-button:active {
-        background: #c5c5c5;
+        background: var(--hax-item-background);
+        color: var(--hax-item-color);
+      }
+      :host[mini] iron-icon {
+        width: 1em;
+        height: 1em;
+      }
+      :host[mini] paper-button {
+        border-radius: 50%;
+        width: 2em;
+        height: 2em;
+      }
+      .flip-icon {
+        transform: rotateY(180deg);
       }
     </style>
 
-    <paper-button id="container" tabindex="1" class$="[[iconClass]]">
-      <iron-icon id="button" icon="[[icon]]"></iron-icon> <span id="label" hidden$="[[!label]]">[[label]]</span>
-        <paper-tooltip
-          for$="[[this]]"
-          offset="14"
-          position="[[tooltipDirection]]"
-          animation-delay="200">
-          [[tooltip]]
-        </paper-tooltip>
+    <paper-button disabled="[[disabled]]" id="container" tabindex="1">
+      <iron-icon id="button" icon="[[icon]]" class$="[[iconClass]]"></iron-icon> <span id="label" hidden$="[[!label]]">[[label]]</span>
     </paper-button>
+    <paper-tooltip
+      for$="[[this]]"
+      offset="14"
+      position="[[tooltipDirection]]"
+      animation-delay="200">
+      [[tooltip]]
+    </paper-tooltip>
   </template>
   <script>
     Polymer({
       is: 'hax-toolbar-item',
       properties: {
+        /**
+         * disabled state
+         */
+        disabled: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true,
+        },
+        /**
+         * Inverted display mode
+         */
         light: {
           type: Boolean,
           reflectToAttribute: true,
           value: false,
         },
+        /**
+         * Present smaller the normal but consistent
+         */
+        mini: {
+          type: Boolean,
+          reflectToAttribute: true,
+          value: false,
+        },
+        /**
+         * Icon to represent this button, required.
+         */
         icon: {
           type: String,
           value: '',
         },
+        /**
+         * Text applied to the button
+         */
         label: {
           type: String,
           value: '',
         },
+        /**
+         * Hover tip text
+         */
         tooltip: {
           type: String,
           value: '',
         },
+        /**
+         * Direction that the tooltip should flow
+         */
         tooltipDirection: {
           type: String,
           value: 'top',
