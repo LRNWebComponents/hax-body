@@ -10,6 +10,7 @@
         display: flex;
         --hax-item-color: #e5e5e5;
         --hax-item-background: #2e2e2e;
+        box-sizing: border-box;
       }
       :host[menu] {
         width: 100%;
@@ -43,9 +44,9 @@
         min-width: 0;
         margin: 0;
         text-transform: none;
-        padding: .5em;
+        padding: 8px;
         border-radius: 0;
-        font-size: .8em;
+        font-size: 12px;
         height: 40px;
         transition: .1s all;
         @apply --hax-toolbar-item-container;
@@ -74,13 +75,14 @@
         color: var(--hax-item-color);
       }
       :host[mini] iron-icon {
-        width: 1em;
-        height: 1em;
+        width: 16px;
+        height: 16px;
       }
       :host[mini] paper-button {
         border-radius: 50%;
-        width: 2em;
-        height: 2em;
+        width: 18px;
+        height: 18px;
+        padding: 2px;
       }
       :host[menu] paper-button {
         padding: 0px 16px;

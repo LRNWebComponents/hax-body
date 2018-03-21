@@ -19,6 +19,8 @@
         opacity: .9;
         visibility: visible;
         transition: .6s all ease;
+        box-sizing: border-box;
+        height: 40px;
       }
       :host ::slotted(*) {
         font-family: "Roboto", sans-serif;
@@ -28,20 +30,20 @@
       }
       .hax-arrowclip {
         position: absolute;
-        bottom: -8px;
-        left: 3.1em;
+        bottom: -10px;
+        left: 48px;
         clip: rect(10px 20px 20px 0);
       }
       .hax-arrowclip .hax-arrow {
         display: block;
         width: 20px;
         height: 20px;
-        background-color: #262625;
+        background-color: #2e2e2e;
         -webkit-transform: rotate(45deg) scale(.5);
         transform: rotate(45deg) scale(.5);
       }
       .close-cap {
-        margin: .5em;
+        margin: 10px;
         padding: 0;
       }
       paper-item:hover {

@@ -31,8 +31,8 @@ A LRN element that will change the world.
     <style>
       :host {
         display: block;
-        min-height: 2em;
-        min-width: 2em;
+        min-height: 32px;
+        min-width: 32px;
       }
       vaadin-context-menu {
         --vaadin-context-menu-overlay: {
@@ -79,7 +79,7 @@ A LRN element that will change the world.
         top: 0;
         left: 0;
         bottom: 0;
-        width: 2em;
+        width: 32px;
         transition: .6s all ease;
       }
       :host[edit-mode] #bodycontainer ::slotted(*[data-editable]):hover::before {
@@ -90,7 +90,7 @@ A LRN element that will change the world.
         top: 0;
         left: 0;
         bottom: 0;
-        width: 2em;
+        width: 32px;
         transition: .6s all ease;
       }
       :host[edit-mode] #bodycontainer ::slotted(*.hax-active[data-editable]) {
@@ -106,28 +106,28 @@ A LRN element that will change the world.
         top: 0;
         left: 0;
         bottom: 0;
-        width: 2em;
+        width: 32px;
         transition: .6s all ease;
       }
       :host[edit-mode] #bodycontainer ::slotted(code.hax-active[data-editable]) {
         display: block;
       }
       :host[edit-mode] #bodycontainer ::slotted(hr[data-editable]) {
-        height:.2em;
+        height:4px;
         background-color: #EEEEEE;
-        padding-top: .5em;
-        padding-bottom: .5em;
+        padding-top: 8px;
+        padding-bottom: 8px;
       }
       :host[edit-mode] #bodycontainer ::slotted(hr[data-editable])::before {
         color: #222222;
         background-color: #EEEEEE;
-        padding: .1em;
+        padding: 2px;
         z-index: 2;
         content: '<hr/>';
-        font-size: .8em;
+        font-size: 12px;
         position: absolute;
-        margin-left: -2em;
-        margin-top:-.5em;
+        margin-left: -32px;
+        margin-top:-8px;
         font-style: italic;
         pointer-events: none;
       }
@@ -475,13 +475,13 @@ A LRN element that will change the world.
           // HTML primatives need manually defined and built out
           case 'IMG':
             this.__activeContextType = this.$.imagecontextmenu;
-            this._positionContextMenu(this.__activeContextType, node, 0, -50);
+            this._positionContextMenu(this.__activeContextType, node, -16, -40);
           break;
           case 'IFRAME':
           case 'VIDEO':
           case 'AUDIO':
             this.__activeContextType = this.$.iframecontextmenu;
-            this._positionContextMenu(this.__activeContextType, node, 0, -50);
+            this._positionContextMenu(this.__activeContextType, node, -16, -40);
           break;
           default:
             // check and see if we have a haxproperties function in place
@@ -496,10 +496,10 @@ A LRN element that will change the world.
             else {
               this.__activeContextType = this.$.textcontextmenu;
             }
-            this._positionContextMenu(this.__activeContextType, node, 0, -50);
+            this._positionContextMenu(this.__activeContextType, node, -16, -40);
           break;
         }
-        this._positionContextMenu(this.$.platecontextmenu, node, -96, -16);
+        this._positionContextMenu(this.$.platecontextmenu, node, -72, -8);
         setTimeout( () => {
   	      this.__activeContextType.scrollIntoView({behavior: "smooth", inline: "nearest"});
   	    }, 100);
@@ -654,7 +654,7 @@ A LRN element that will change the world.
               //haxInputMixer.value = this.activeNode[detail.target.slotToBind];
             }
             // make input mixer show up
-            this._positionContextMenu(haxInputMixer, this.$.cecontextmenu, 0, -90);
+            this._positionContextMenu(haxInputMixer, this.$.cecontextmenu, 34, -104);
           break;
           // image/iframe based operations
           case 'hax-align-left':
@@ -917,7 +917,7 @@ A LRN element that will change the world.
         // the grid plate context menu to show up
         if (typeof newValue !== typeof undefined && newValue !== null && this.activeNode === newValue) {
           // position the operations / in context element
-          this._positionContextMenu(this.$.platecontextmenu, newValue, -96, -16);
+          this._positionContextMenu(this.$.platecontextmenu, newValue, -72, -8);
         }
       },
       /**
