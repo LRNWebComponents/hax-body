@@ -2,6 +2,7 @@
 <link rel="import" href="../eco-json-schema-form/eco-json-schema-wizard.html">
 <link rel="import" href="../paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="../paper-card/paper-card.html">
+<link rel="import" href="../paper-input/paper-textarea.html">
 <link rel="import" href="../vaadin-split-layout/vaadin-split-layout.html">
 <!--
 `hax-preview`
@@ -211,7 +212,6 @@ An element that can generate a form
           if (typeof this.previewNode.getHaxJSONSchema === "function") {
             let element = this.element;
             let schema = this.previewNode.getHaxJSONSchema(newValue);
-            console.log(schema);
             for (var property in element.properties) {
               if (element.properties.hasOwnProperty(property)) {
                 if (typeof schema.properties[property] !== typeof undefined) {
@@ -307,17 +307,31 @@ An element that can generate a form
                 node.setAttribute(attributeName, this.value[props.settings[this.formKey][value].property]);
               }
             }
+            else if (props.settings[this.formKey].hasOwnProperty(value) && typeof props.settings[this.formKey][value].attribute !== typeof undefined && typeof this.value[props.settings[this.formKey][value].attribute] !== typeof undefined) {
+              let attributeName = Polymer.HaxStore.camelToDash(props.settings[this.formKey][value].attribute);
+              // special supporting for boolean because html is weird :p
+              if (this.value[props.settings[this.formKey][value].attribute] === true) {
+                node.setAttribute(attributeName, props.settings[this.formKey][value].attribute);
+              }
+              else if (this.value[props.settings[this.formKey][value].attribute] === false) {
+                node.removeAttribute(attributeName);
+              }
+              else {
+                node.setAttribute(attributeName, this.value[props.settings[this.formKey][value].attribute]);
+              }
+            }
             else if (typeof props.settings[this.formKey][value].slot !== typeof undefined) {
               // this is slot binding though right now it'll just keep adding
               var tmpel = document.createElement('span');
-              tmpel.slot = props.settings[this.formKey][value].slot;
-              tmpel.innerHTML = this.value[props.settings[this.formKey][value].property];
-              // @todo need to update existing instead of aggressive wipe
-              //while (node.firstChild !== null) {
-                //node.removeChild(node.firstChild);
-              //}
+              // support unnamed slots
+              if (props.settings[this.formKey][value].slot !== '') {
+                tmpel.slot = props.settings[this.formKey][value].slot;
+              }
+              tmpel.innerHTML = this.value[props.settings[this.formKey][value].slot];
+              // wipe just the slot in question
+              Polymer.HaxStore.wipeSlot(node, props.settings[this.formKey][value].slot);
               // inject the slotted content
-              node.appendChild(tmpel);
+              Polymer.dom(node).appendChild(tmpel);
             }
             else {
               // @todo add support for disabling based on not having advanced

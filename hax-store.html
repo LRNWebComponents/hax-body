@@ -204,10 +204,11 @@
           document.body.addEventListener('hax-register-body', this._haxStoreRegisterBody.bind(this));
           document.body.addEventListener('hax-register-panel', this._haxStoreRegisterPanel.bind(this));
           document.body.addEventListener('hax-register-app', this._haxStoreRegisterApp.bind(this));
-          document.body.addEventListener('hax-register-export', this._haxStoreRegisterExport.bind(this));
           document.body.addEventListener('hax-register-app-picker', this._haxStoreRegisterAppPicker.bind(this));
           // notice content insert and help it along to the body
           document.body.addEventListener('hax-insert-content', this._haxStoreInsertContent.bind(this));
+          document.body.addEventListener('hax-register-preferences', this._haxStoreRegisterPreferences.bind(this));
+          document.body.addEventListener('hax-register-export', this._haxStoreRegisterExport.bind(this));
         },
         /**
          * Inject a toast element to manage our messages
@@ -280,11 +281,19 @@
           }
         },
         /**
-         * Set the haxExport so we know what to insert into.
+         * Set the haxExport so we know who to call for exporting
          */
         _haxStoreRegisterExport: function(e) {
           if (e.detail) {
             this.haxExport = e.detail;
+          }
+        },
+        /**
+         * Set the haxPreferences so we know what has global preferences
+         */
+        _haxStoreRegisterPreferences: function(e) {
+          if (e.detail) {
+            this.haxPreferences = e.detail;
           }
         },
         /**
@@ -363,6 +372,8 @@
             props.style = styles;
           }
         }
+        props.class = node.attributes.class.nodeValue.replace('hax-active', '');
+        props.id = node.id;
         for (var property in node.properties) {
           // make sure we only set things that have a value
           if (node.properties.hasOwnProperty(property) && typeof node[property] !== undefined && node[property] != null && node[property] != '') {
@@ -511,9 +522,12 @@
       /**
        * Wipe out the slot of an element.
        */
-       Polymer.HaxStore.wipeSlot = (element) => {
-        while (element.firstChild !== null) {
-          element.removeChild(element.firstChild);
+       Polymer.HaxStore.wipeSlot = (element, slot = '') => {
+        for (var i in Polymer.dom(element).childNodes) {
+          // test for element nodes to be safe
+          if (typeof Polymer.dom(element).childNodes[i] !== typeof undefined && Polymer.dom(element).childNodes[i].nodeType === 1 && Polymer.dom(element).childNodes[i].slot === slot) {
+            Polymer.dom(element).removeChild(Polymer.dom(element).childNodes[i]);
+          }
         }
        };
       /**

@@ -3,6 +3,7 @@
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="hax-panel-item.html">
+<link rel="import" href="hax-preferences-dialog.html">
 
 <!--
 `hax-panel`
@@ -151,11 +152,15 @@ as the events being bubbled up include HTML nodes to inject into something
         voice-command="insert stack"></hax-panel-item>
       <hax-panel-item
         hidden$="[[hideExportButton]]"
-        data-opened$="[[editMode]]"
-        on-tap="_htmlExport"
+        on-tap="_htmlExportDialog"
         icon="code"
         label="Export"></hax-panel-item>
+      <hax-panel-item
+        on-tap="_preferencesDialog"
+        icon="settings"
+        label="Preferences"></hax-panel-item>
     </app-drawer>
+    <hax-preferences-dialog></hax-preferences-dialog>
   </template>
   <script>
     Polymer({
@@ -307,9 +312,14 @@ as the events being bubbled up include HTML nodes to inject into something
       /**
        * HTML Export trigger.
        */
-      _htmlExport: function(e) {
-        //simple toggle
+      _htmlExportDialog: function(e) {
         Polymer.HaxStore.instance.haxExport.toggleDialog();
+      },
+      /**
+       * Preferences trigger.
+       */
+      _preferencesDialog: function(e) {
+        Polymer.HaxStore.instance.haxPreferences.toggleDialog();
       },
       /**
        * Toggle the panel.
