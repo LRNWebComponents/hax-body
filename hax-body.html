@@ -1,10 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../vaadin-context-menu/vaadin-context-menu.html">
 <link rel="import" href="../paper-menu/paper-menu.html">
 <link rel="import" href="../paper-item/paper-item.html">
-<link rel="import" href="../pie-menu/pie-menu.html">
-<link rel="import" href="../vaadin-context-menu/vaadin-context-menu.html">
-
 <link rel="import" href="hax-text-context.html">
 <link rel="import" href="hax-image-context.html">
 <link rel="import" href="hax-iframe-context.html">
@@ -33,11 +29,6 @@ A LRN element that will change the world.
         display: block;
         min-height: 32px;
         min-width: 32px;
-      }
-      vaadin-context-menu {
-        --vaadin-context-menu-overlay: {
-          box-shadow: none;
-        }
       }
       :host[edit-mode] {
         /* border: 2px dotted #EEEEEE; */
@@ -154,20 +145,9 @@ A LRN element that will change the world.
       }
     </style>
 
-    <vaadin-context-menu selector=".has-pie-menu">
-      <template>
-        <pie-menu
-          id="pie"
-          center-label="Move" center-icon="open-with"
-          top-label="Up" top-icon="arrow-upward"
-          left-label="Left" left-icon="arrow-back"
-          bottom-label="Bottom" bottom-icon="arrow-downward"
-          right-label="Right" right-icon="arrow-forward"></pie-menu>
-      </template>
     <div id="bodycontainer" class="ignore-activation">
       <slot id="body"></slot>
     </div>
-    </vaadin-context-menu>
     <div id="contextcontainer">
       <hax-text-context id="textcontextmenu" class="hax-context-menu ignore-activation"></hax-text-context>
       <hax-image-context id="imagecontextmenu" class="hax-context-menu ignore-activation"></hax-image-context>
