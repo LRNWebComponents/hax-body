@@ -81,13 +81,16 @@ Export dialog with all export options and settings provided.
     Polymer({
 
       is: 'hax-preferences-dialog',
+      observers: [
+        '_preferencesChanged(preferences.*)'
+      ],
       properties: {
         /**
          * Title when open.
          */
         title: {
           type: String,
-          value: 'Preferences',
+          value: 'Preferences (alpha)',
         },
         /**
          * Schema that has all of inputs / manages state
@@ -100,12 +103,12 @@ Export dialog with all export options and settings provided.
             "type": "object",
             "properties": {
               "voice": {
-                "title": "Listen for voice commands?",
+                "title": "Voice commands",
                 "type": "boolean",
                 "value": false,
               },
-              "outline": {
-                "title": "Outline all areas, always",
+              "haxRayMode": {
+                "title": "X-Ray vision",
                 "type": "boolean",
                 "value": false,
               },
@@ -118,7 +121,6 @@ Export dialog with all export options and settings provided.
         preferences: {
           type: Object,
           value: {},
-          observer: '_preferencesChanged',
         },
       },
       /**
@@ -140,10 +142,8 @@ Export dialog with all export options and settings provided.
       /**
        * Notice preferences have changed.
        */
-      _preferencesChanged: function(newValue, oldValue) {
-        if (typeof newValue != typeof undefined) {
-
-        }
+      _preferencesChanged: function() {
+        Polymer.HaxStore.write('globalPreferences', this.preferences, this);
       },
       /**
        * Toggle ourselves.

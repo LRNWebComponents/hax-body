@@ -99,6 +99,18 @@
             type: Object,
           },
           /**
+           * Hax export dialog element.
+           */
+          haxExport: {
+            type: Object,
+          },
+          /**
+           * Hax preferences dialog element.
+           */
+          haxPreferences: {
+            type: Object,
+          },
+          /**
            * Active HAX Element if we have one we are working on.
            */
           activeHaxElement: {
@@ -138,6 +150,14 @@
           appList: {
             type: Array,
             value: [],
+          },
+          /**
+           * Global preferences that HAX can write to and
+           * other elements can use to go off of.
+           */
+          globalPreferences: {
+            type: Object,
+            value: {},
           },
           /**
            * Globally active app, used for brokering communications
@@ -372,8 +392,14 @@
             props.style = styles;
           }
         }
-        props.class = node.attributes.class.nodeValue.replace('hax-active', '');
-        props.id = node.id;
+        // test if a class exists, not everything scopes
+        if (typeof node.attributes.class !== typeof undefined) {
+          props.class = node.attributes.class.nodeValue.replace('hax-active', '');
+        }
+        // test ID just to be safe
+        if (typeof node.id !== typeof undefined) {
+          props.id = node.id;
+        }
         for (var property in node.properties) {
           // make sure we only set things that have a value
           if (node.properties.hasOwnProperty(property) && typeof node[property] !== undefined && node[property] != null && node[property] != '') {

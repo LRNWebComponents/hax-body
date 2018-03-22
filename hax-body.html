@@ -143,6 +143,25 @@ A LRN element that will change the world.
       #contextcontainer {
         display: none;
       }
+      :host[edit-mode][hax-ray-mode] #bodycontainer ::slotted(*[data-editable]) {
+        outline: 2px dashed #d3d3d3;
+        outline-offset: 4px;
+      }
+      :host[edit-mode][hax-ray-mode] #bodycontainer ::slotted(*[data-editable])::before {
+        content: attr(data-hax-ray) " " attr(resource) " " attr(prefix);
+        font-size: 16px;
+        font-style: italic;
+        left: unset;
+        right: unset;
+        top: unset;
+        background-color: #d3d3d3;
+        color: #000000;
+        bottom: unset;
+        width: auto;
+        padding: 8px;
+        margin: 0;
+        z-index: 1;
+      }
     </style>
 
     <div id="bodycontainer" class="ignore-activation">
@@ -177,6 +196,22 @@ A LRN element that will change the world.
           value: false,
           reflectToAttribute: true,
           observer: '_editModeChanged',
+        },
+        /**
+         * Access to the global properties object.
+         */
+        globalPreferences: {
+          type: Object,
+          value: {},
+          observer: '_globalPreferencesUpdated',
+        },
+        /**
+         * Bust out the HAX Ray mode
+         */
+        haxRayMode: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true,
         },
         /**
          * A reference to the active node in the slot.
@@ -222,6 +257,7 @@ A LRN element that will change the world.
                 // this does the real targetting
                 node.setAttribute('data-editable', this.editMode);
                 node.setAttribute('data-draggable', this.editMode);
+                node.setAttribute('data-hax-ray', this.tagName);
                 this.fire('hax-body-tag-added', {node: node});
               }
             });
@@ -245,11 +281,19 @@ A LRN element that will change the world.
         this.fire('hax-register-body', this);
         document.body.addEventListener('hax-store-property-updated', this._haxStorePropertyUpdated.bind(this));
       },
+      _globalPreferencesUpdated: function(newValue, oldValue) {
+        if (typeof newValue !== typeof undefined && newValue != null) {
+          this.haxRayMode = newValue.haxRayMode;
+        }
+      },
       /**
        * Store updated, sync.
        */
       _haxStorePropertyUpdated: function(e) {
         if (e.detail && typeof e.detail.value !== typeof undefined && e.detail.property) {
+          if (typeof e.detail.value === 'object') {
+            this.set(e.detail.property, null);
+          }
           this.set(e.detail.property, e.detail.value);
         }
       },
@@ -329,6 +373,7 @@ A LRN element that will change the world.
           if (this._haxElementTest(children[i])) {
             children[i].setAttribute('data-editable', false);
             children[i].setAttribute('data-draggable', false);
+            children[i].removeAttribute('data-hax-ray');
             // see if this is a custom element
             if (this._HTMLPrimativeTest(children[i])) {
               children[i].contentEditable = false;
@@ -343,15 +388,17 @@ A LRN element that will change the world.
             }
           }
         }
-        // remove the contenteditable property
+        // remove the contenteditable attribute
         content = content.replace(/\scontenteditable=\"false\"/g, '');
+        // remove the draggable attribute
+        content = content.replace(/\sdraggable=\"false\"/g, '');
         // remove the data-editable attribute
         content = content.replace(/\sdata-editable=\"true\"/g, '');
         // remove the data-editable attribute
         content = content.replace(/\sdata-editable=\"false\"/g, '');
-        // remove the data-editable attribute
+        // remove the data-draggable attribute
         content = content.replace(/\sdata-draggable=\"true\"/g, '');
-        // remove the data-editable attribute
+        // remove the data-draggable attribute
         content = content.replace(/\sdata-draggable=\"false\"/g, '');
         // remove HAX specific classes / scoping classes
         let parentTag = this.parentNode.tagName.toLowerCase();
@@ -362,8 +409,26 @@ A LRN element that will change the world.
         string = 'style-scope ' + parentTag;
         re = new RegExp(string, "g");
         content = content.replace(re, '');
+        // remove the last common one unpacked
+        string = 'x-scope ' + parentTag + '-0';
+        re = new RegExp(string, "g");
+        content = content.replace(re, '');
+        // now all tags we have defined as valid
+        let tags = Polymer.HaxStore.instance.validTagList;
+        for (var i in tags) {
+          string = 'style-scope ' + tags[i];
+          re = new RegExp(string, "g");
+          content = content.replace(re, '');
+          string = 'x-scope ' + tags[i] + '-0 ';
+          re = new RegExp(string, "g");
+          content = content.replace(re, '');
+          string = 'x-scope ' + tags[i] + '-0';
+          re = new RegExp(string, "g");
+          content = content.replace(re, '');
+        }
         // remove empty class structures
         content = content.replace(/\sclass=\"\"/g, '');
+        content = content.replace(/\sclass=\"\s\"/g, '');
         // re-apply contenteditable if needed
         this._applyContentEditable(this.editMode);
         // set active again
@@ -824,6 +889,7 @@ A LRN element that will change the world.
           if (this._haxElementTest(children[i])) {
             children[i].setAttribute('data-editable', status);
             children[i].setAttribute('data-draggable', status);
+            children[i].setAttribute('data-hax-ray', children[i].tagName);
           }
         }
       },
