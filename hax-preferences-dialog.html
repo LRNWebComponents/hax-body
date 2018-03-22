@@ -36,6 +36,8 @@ Export dialog with all export options and settings provided.
         left: 0;
         margin: 68px;
         overflow: auto;
+        border-bottom-left-radius: 16px;
+        border-bottom-right-radius: 16px;
       }
       #dialogcontent {
         padding:16px;
@@ -45,8 +47,6 @@ Export dialog with all export options and settings provided.
         margin: 0;
         padding: 16px;
         height: 32px;
-        color: #e5e5e5;
-        background: #2e2e2e;
       }
       #dialogheader h2 {
         margin: 0;
@@ -68,7 +68,7 @@ Export dialog with all export options and settings provided.
       }
     </style>
     <paper-dialog id="dialog" entry-animation="slide-from-top-animation" exit-animation="slide-up-animation" with-backdrop>
-      <div id="dialogheader" class="grey darken-3 white-text">
+      <div id="dialogheader" class="grey darken-3 grey-text text-lighten-3">
         <h2>[[title]]</h2>
       </div>
       <div class="dialog-contents" id="dialogcontent">
@@ -142,8 +142,7 @@ Export dialog with all export options and settings provided.
        */
       _preferencesChanged: function(newValue, oldValue) {
         if (typeof newValue != typeof undefined) {
-          console.log('preferences changed');
-          console.log(newValue);
+
         }
       },
       /**
