@@ -480,10 +480,10 @@ A LRN element that will change the world.
       haxDuplicateNode: function(node) {
         // move the context menu before duplicating!!!!
         this.hideContextMenus();
-        var nodeClone = node.cloneNode(true);
+        var nodeClone = Polymer.dom(node).cloneNode(true);
         // shouldn't be possible but might as well check
         if (this.activeNode !== null) {
-          Polymer.dom(this).insertBefore(nodeClone, this.activeNode.nextElementSibling);
+          Polymer.dom(this).insertBefore(nodeClone, Polymer.dom(this.activeNode).nextSibling);
           this.async(function() {
             Polymer.HaxStore.write('activeNode', nodeClone, this);
           });
