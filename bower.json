@@ -25,7 +25,7 @@
     "eco-json-schema-form": "LRNWebComponents/eco-json-schema-form#1.0.0-lrn6",
     "iron-list": "PolymerElements/iron-list#^2.0.12",
     "paper-card": "PolymerElements/paper-card#^2.0.0",
-    "paper-tabs": "PolymerElements/paper-tabs#^2.0.0",
+    "paper-tabs": "PolymerElements/paper-tabs#^2.1.0",
     "juicy-html": "Juicy/juicy-html#^2.0.2",
     "iron-a11y-keys": "PolymerElements/iron-a11y-keys#^2.0.0",
     "grafitto-filter": "grafitto/grafitto-filter#^0.0.3",
