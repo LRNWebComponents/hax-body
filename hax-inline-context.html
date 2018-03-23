@@ -114,12 +114,19 @@ A context menu that provides common text based authoring options.
             // simple smart lock to ensure event flooding doesn't happen
             if (typeof window.__selectionLock === typeof undefined || !window.__selectionLock) {
               setTimeout( () => {
-                let selection = window.getSelection();
-                let range = selection.getRangeAt(0);
-                let offset = range.startOffset - range.endOffset;
-                // account for backwards selection method by the user
-                if (offset < 0) {
-                  offset = offset * -1;
+                var selection = window.getSelection();
+                var offset = 0;
+                var range;
+                try {
+                  range = selection.getRangeAt(0);
+                  offset = range.startOffset - range.endOffset;
+                  // account for backwards selection method by the user
+                  if (offset < 0) {
+                    offset = offset * -1;
+                  }
+                }
+                catch(e) {
+
                 }
                 // if we have no offset (caret is positioned but no selection) then
                 // do nothing and hide the menu

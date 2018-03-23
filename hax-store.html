@@ -210,6 +210,8 @@
          */
         attached: function() {
           this._injectToast();
+          // register built in primitive definitions
+          this._buildPrimitiveDefinitions();
         },
         /**
          * Created life-cycle to ensure a single global store.
@@ -231,6 +233,90 @@
           document.body.addEventListener('hax-insert-content', this._haxStoreInsertContent.bind(this));
           document.body.addEventListener('hax-register-preferences', this._haxStoreRegisterPreferences.bind(this));
           document.body.addEventListener('hax-register-export', this._haxStoreRegisterExport.bind(this));
+        },
+        /**
+         * Build HAX property definitions for primitives that we support.
+         */
+        _buildPrimitiveDefinitions: function() {
+          let iframe = {
+            'canScale': true,
+            'canPosition': true,
+            'canEditSource': true,
+            'gizmo': {
+              'title': 'iframe',
+              'description': 'A basic iframe',
+              'icon': 'icons:fullscreen',
+              'color': 'grey',
+              'groups': ['Content'],
+              'handles': [
+                {
+                  'type': 'link',
+                  'source': 'src'
+                },
+                {
+                  'type': 'video',
+                  'source': 'src'
+                },
+              ],
+              'meta': {
+                'author': 'W3C'
+              }
+            },
+            'settings': {
+              'quick': [
+                {
+                  'attribute': 'src',
+                  'title': 'Source',
+                  'description': 'The URL for this video.',
+                  'inputMethod': 'textfield',
+                  'icon': 'link',
+                  'required': true,
+                  'validationType': 'url',
+                },
+              ],
+              'configure': [
+                {
+                  'attribute': 'src',
+                  'title': 'Source',
+                  'description': 'The URL for this video.',
+                  'inputMethod': 'textfield',
+                  'icon': 'link',
+                  'required': true,
+                  'validationType': 'url',
+                },
+                {
+                  'property': 'responsive',
+                  'title': 'Responsive',
+                  'description': 'The video automatically fills the available area.',
+                  'inputMethod': 'boolean',
+                  'icon': 'image:photo-size-select-small',
+                },
+              ],
+              'advanced': []
+            }
+          };
+          this.setHaxProperties(iframe, 'iframe');
+          let p = {
+            'canScale': true,
+            'canPosition': true,
+            'canEditSource': true,
+            'settings': {
+              'quick': [
+              ],
+              'configure': [
+                {
+                  'slot': '',
+                  'title': 'Content',
+                  'description': 'Content of the paragraph',
+                  'inputMethod': 'textfield',
+                  'icon': 'editor:short-text',
+                  'required': true,
+                },
+              ],
+              'advanced': []
+            }
+          };
+          this.setHaxProperties(p, 'p');
         },
         /**
          * Inject a toast element to manage our messages
@@ -342,6 +428,7 @@
          */
         _haxStoreRegisterProperties: function(e) {
           if (e.detail && e.detail.properties && e.detail.tag) {
+            console.log(e.detail);
             // only register tag if we don't know about it already
             if (typeof this.elementList[e.detail.tag] === typeof undefined) {
               // look for a gizmo; it's not required, technically.
