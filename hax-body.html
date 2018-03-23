@@ -257,7 +257,7 @@ A LRN element that will change the world.
                 // this does the real targetting
                 node.setAttribute('data-editable', this.editMode);
                 node.setAttribute('data-draggable', this.editMode);
-                node.setAttribute('data-hax-ray', this.tagName);
+                node.setAttribute('data-hax-ray', node.tagName);
                 this.fire('hax-body-tag-added', {node: node});
               }
             });

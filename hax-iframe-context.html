@@ -20,11 +20,17 @@ A context menu that provides common iframe based authoring options.
       }
     </style>
     <hax-toolbar hax-properties="[[haxProperties]]" size="{{iframeSize}}">
+      <slot></slot>
       <hax-context-item
         slot="primary"
         icon="editor:insert-link"
         label="Link"
         event-name="iframe-link"></hax-context-item>
+      <hax-context-item
+        slot="primary"
+        icon="settings"
+        label="Settings"
+        event-name="hax-manager-configure"></hax-context-item>
     </hax-toolbar>
   </template>
 
@@ -50,6 +56,38 @@ A context menu that provides common iframe based authoring options.
             'canScale': true,
             'canPosition': true,
             'canEditSource': true,
+            'settings': {
+              'quick': [
+                {
+                  'attribute': 'src',
+                  'title': 'Source',
+                  'description': 'The URL for this video.',
+                  'inputMethod': 'textfield',
+                  'icon': 'link',
+                  'required': true,
+                  'validationType': 'url',
+                },
+              ],
+              'configure': [
+                {
+                  'attribute': 'src',
+                  'title': 'Source',
+                  'description': 'The URL for this video.',
+                  'inputMethod': 'textfield',
+                  'icon': 'link',
+                  'required': true,
+                  'validationType': 'url',
+                },
+                {
+                  'property': 'responsive',
+                  'title': 'Responsive',
+                  'description': 'The video automatically fills the available area.',
+                  'inputMethod': 'boolean',
+                  'icon': 'image:photo-size-select-small',
+                },
+              ],
+              'advanced': []
+            }
           },
         },
       },

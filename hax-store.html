@@ -396,13 +396,17 @@
         if (typeof node.attributes.class !== typeof undefined) {
           props.class = node.attributes.class.nodeValue.replace('hax-active', '');
         }
-        // test ID just to be safe
-        if (typeof node.id !== typeof undefined) {
-          props.id = node.id;
+        // run through attributes, though non-reflected props won't be here
+        for (var attribute in node.attributes) {
+          // make sure we only set things that have a value
+          if (node.attributes[attribute].name != 'class' && node.attributes[attribute].name != 'style' && node.attributes.hasOwnProperty(attribute) && typeof node.attributes[attribute].value !== undefined && node.attributes[attribute].value != null && node.attributes[attribute].value != '') {
+            props[node.attributes[attribute].name] = node.attributes[attribute].value;
+          }
         }
+        // run through properties, we always defer to property values
         for (var property in node.properties) {
           // make sure we only set things that have a value
-          if (node.properties.hasOwnProperty(property) && typeof node[property] !== undefined && node[property] != null && node[property] != '') {
+          if (property != 'class' && property != 'style' && node.properties.hasOwnProperty(property) && typeof node[property] !== undefined && node[property] != null && node[property] != '') {
             props[property] = node[property];
           }
         }
