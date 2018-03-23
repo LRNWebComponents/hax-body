@@ -523,6 +523,9 @@ A LRN element that will change the world.
           case 'VIDEO':
           case 'AUDIO':
             this.__activeContextType = this.$.iframecontextmenu;
+            let props = this.$.iframecontextmenu.haxProperties;
+            props.element = this.activeNode;
+            console.log(props);
             this._positionContextMenu(this.__activeContextType, node, -16, -40);
           break;
           default:
@@ -536,6 +539,10 @@ A LRN element that will change the world.
               this.__activeContextType.setHaxProperties(props);
             }
             else {
+              // @todo test if this is a custom element, then if it is
+              // try and guess what the properties are based on what's
+              // currently been set. it's by no means perfect but it'll
+              // be a really good start
               this.__activeContextType = this.$.textcontextmenu;
             }
             this._positionContextMenu(this.__activeContextType, node, -16, -40);

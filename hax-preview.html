@@ -208,10 +208,11 @@ An element that can generate a form
       _formKeyChanged: function(newValue, oldValue) {
         // ensure this doesn't run the 1st pass
         if (typeof oldValue !== typeof undefined && newValue != oldValue) {
+          var schema = {};
           // see if we can get schema off of this.
           if (typeof this.previewNode.getHaxJSONSchema === "function") {
             let element = this.element;
-            let schema = this.previewNode.getHaxJSONSchema(newValue);
+            schema = this.previewNode.getHaxJSONSchema(newValue);
             for (var property in element.properties) {
               if (element.properties.hasOwnProperty(property)) {
                 if (typeof schema.properties[property] !== typeof undefined) {
@@ -225,9 +226,28 @@ An element that can generate a form
                 this.set('value.' + property, element.properties[property]);
               }
             }
-            this.set('schema', {});
-            this.set('schema', schema);
           }
+          // fallback, let's try our best
+          else {
+            let element = this.element;
+            schema = Polymer.HaxStore.instance.getHaxJSONSchema(newValue);
+            console.log(schema);
+            for (var property in element.properties) {
+              if (element.properties.hasOwnProperty(property)) {
+                if (typeof schema.properties[property] !== typeof undefined) {
+                  schema.properties[property].value = element.properties[property];
+                  // support custom element input
+                  if (typeof schema.properties[property].component !== typeof undefined) {
+                    schema.properties[property].component.properties.value = element.properties[property];
+                  }
+                }
+                this.previewNode.setAttribute(property, element.properties[property]);
+                this.set('value.' + property, element.properties[property]);
+              }
+            }
+          }
+          this.set('schema', {});
+          this.set('schema', schema);
         }
       },
       /**
@@ -273,6 +293,7 @@ An element that can generate a form
             frag.innerHTML = newValue.content;
             // clone the fragment which will force an escalation to full node
             var newNode = frag.cloneNode(true);
+            console.log(newNode);
             // send this into the root, which should filter it back down into the slot
             preview.appendChild(newNode);
             // need to let append propagate, it probably takes like no time

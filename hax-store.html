@@ -1,6 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../paper-toast/paper-toast.html">
 <link rel="import" href="../media-behaviors/media-behaviors.html">
+<link rel="import" href="../hax-body-behaviors/hax-body-behaviors.html">
 <link rel="import" href="../iron-ajax/iron-ajax.html">
 <link rel="import" href="hax-app.html">
 
@@ -45,6 +46,7 @@
         is: 'hax-store',
         behaviors: [
           MediaBehaviors.Video,
+          HAXBehaviors.PropertiesBehaviors,
         ],
         properties: {
           /**

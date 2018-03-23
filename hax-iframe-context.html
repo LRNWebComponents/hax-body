@@ -99,6 +99,20 @@ A context menu that provides common iframe based authoring options.
           this.fire('hax-context-item-selected', {eventName: 'hax-size-change', value: newValue});
         }
       },
+      /**
+       * Set haxProperties.
+       */
+      setHaxProperties: function(props) {
+        // be aggressive w/ reset
+        this.set('haxProperties', {});
+        this.set('haxProperties', props);
+      },
+      /**
+       * Get haxProperties.
+       */
+      getHaxProperties: function() {
+        return this.haxProperties;
+      },
     });
   </script>
 </dom-module>
