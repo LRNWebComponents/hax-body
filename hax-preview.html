@@ -78,6 +78,20 @@ An element that can generate a form
           left: -9999px;
         }
       }
+
+      paper-tabs {
+        --paper-tabs-selection-bar-color: #34e79a;
+        --paper-tabs: {
+          background: #f8f8f8;
+        }
+      }
+
+      paper-tab {
+        --paper-tab-ink: #34e79a;
+        --paper-tab: {
+          font-size: .8em;
+        }
+      }
     </style>
     <vaadin-split-layout class="panel-wrapper">
       <!-- critique panel -->
@@ -86,8 +100,16 @@ An element that can generate a form
       </div>
       <!-- critique panel -->
       <div class="vaadin-split-layout-panel">
+
+        <!-- editor mode -->
+        <template is="dom-if" if="[[haspreviewNode]]">
+          <paper-tabs selected="configure" attr-for-selected="data-mode" on-selected-changed="_editorModeChanged">
+            <paper-tab data-mode="configure">Configure</paper-tab>
+            <paper-tab data-mode="advanced">Advanced</paper-tab>
+          </paper-tabs>
+        </template>
+        
         <div class="step-toggle-wrapper">
-          <div class="hide-on-mobile">Configure</div><paper-toggle-button id="step" checked="{{advancedForm}}" disabled="[[!haspreviewNode]]"></paper-toggle-button><div class="hide-on-mobile">Advanced</div>
         </div>
         <paper-card class="form-wrapper">
           <eco-json-schema-object id="form" schema="[[schema]]" value="{{value}}"></eco-json-schema-object>
@@ -358,6 +380,22 @@ An element that can generate a form
               // @todo add support for disabling based on not having advanced
               // form
             }
+          }
+        }
+      },
+
+      /**
+       * Editor mode changed handler
+       */
+      _editorModeChanged: function (e, detail) {
+        const mode = detail.value;
+        if (mode) {
+          // if it's the advanced setting then toggle the advancedForm setting
+          if (mode === 'advanced') {
+            this.advancedForm = true;
+          }
+          else {
+            this.advancedForm = false;
           }
         }
       },
