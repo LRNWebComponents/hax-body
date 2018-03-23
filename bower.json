@@ -27,7 +27,7 @@
     "paper-card": "PolymerElements/paper-card#^2.0.0",
     "paper-tabs": "PolymerElements/paper-tabs#^2.1.0",
     "juicy-html": "Juicy/juicy-html#^2.0.2",
-    "iron-a11y-keys": "PolymerElements/iron-a11y-keys#^2.0.0",
+    "iron-a11y-keys": "PolymerElements/iron-a11y-keys#^2.1.1",
     "grafitto-filter": "grafitto/grafitto-filter#^0.0.3",
     "schema-behaviors": "LRNWebComponents/schema-behaviors#^0.1.0",
     "wikipedia-query": "LRNWebComponents/wikipedia-query#^1.2.0",
