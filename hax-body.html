@@ -2,6 +2,7 @@
 <link rel="import" href="../paper-menu/paper-menu.html">
 <link rel="import" href="../paper-item/paper-item.html">
 <link rel="import" href="hax-text-context.html">
+<link rel="import" href="hax-inline-context.html">
 <link rel="import" href="hax-image-context.html">
 <link rel="import" href="hax-iframe-context.html">
 <link rel="import" href="hax-ce-context.html">
@@ -168,6 +169,8 @@ A LRN element that will change the world.
       <slot id="body"></slot>
     </div>
     <div id="contextcontainer">
+      <span id="inlinetracker" style="pointer-events: none; visibility: none; opacity: 0; width:0;height:0;" class="ignore-activation" draggable="false" contenteditable="false"></span>
+      <hax-inline-context id="inlinecontextmenu" class="hax-context-menu ignore-activation"></hax-inline-context>
       <hax-text-context id="textcontextmenu" class="hax-context-menu ignore-activation"></hax-text-context>
       <hax-image-context id="imagecontextmenu" class="hax-context-menu ignore-activation"></hax-image-context>
       <hax-iframe-context id="iframecontextmenu" class="hax-context-menu ignore-activation"></hax-iframe-context>
@@ -364,6 +367,8 @@ A LRN element that will change the world.
       haxToContent: function() {
         // remove from the body area so we can generate a legit html structure
         this.hideContextMenus();
+        // special hide just for the inline tracker for the caret
+        this._hideContextMenu(this.$.inlinetracker);
         var __active = this.activeNode;
         // null this to drop hax based classes
         Polymer.HaxStore.write('activeNode', null, this);
@@ -500,12 +505,14 @@ A LRN element that will change the world.
        * Hide all context menus.
        */
       hideContextMenus: function() {
+        // primary context menus
         this._hideContextMenu(this.$.textcontextmenu);
         this._hideContextMenu(this.$.imagecontextmenu);
         this._hideContextMenu(this.$.iframecontextmenu);
-
-        this._hideContextMenu(this.$.platecontextmenu);
         this._hideContextMenu(this.$.cecontextmenu);
+        // secondary menus and clean up areas
+        this._hideContextMenu(this.$.inlinecontextmenu);
+        this._hideContextMenu(this.$.platecontextmenu);
         this._hideContextMenu(this.$.haxinputmixer);
       },
       /**
@@ -544,6 +551,7 @@ A LRN element that will change the world.
               // currently been set. it's by no means perfect but it'll
               // be a really good start
               this.__activeContextType = this.$.textcontextmenu;
+              this._positionContextMenu(this.$.inlinecontextmenu, node, 0, -48);
             }
             this._positionContextMenu(this.__activeContextType, node, -16, -40);
           break;

@@ -226,7 +226,7 @@ as the events being bubbled up include HTML nodes to inject into something
         switch(detail.eventName) {
           case 'text':
             detail.tag = 'p';
-            detail.content = 'New paragraph of text';
+            detail.content = ' ';
             this.fire('hax-insert-content', detail);
           break;
           case 'divider':
