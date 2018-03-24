@@ -198,7 +198,7 @@
        * Handle the user selecting an app.
        */
       _selected: function(e) {
-        var normalizedEvent = Polymer.dom(event);
+        var normalizedEvent = Polymer.dom(e);
         let key = normalizedEvent.localTarget.getAttribute('data-selected');
         if (typeof this._elements[key] !== typeof undefined) {
           // haxElement is a unique case
