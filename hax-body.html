@@ -1,6 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../paper-menu/paper-menu.html">
 <link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="hax-text-context.html">
 <link rel="import" href="hax-inline-context.html">
 <link rel="import" href="hax-image-context.html">
@@ -178,6 +179,7 @@ A LRN element that will change the world.
       <hax-plate-context id="platecontextmenu" class="hax-context-menu ignore-activation"></hax-plate-context>
       <hax-input-mixer id="haxinputmixer" class="hax-context-menu ignore-activation"></hax-input-mixer>
     </div>
+    <iron-a11y-keys target="[[activeNode]]" keys="enter" on-keys-pressed="_enterKeyPressed"></iron-a11y-keys>
   </template>
 
   <script>
@@ -1007,6 +1009,21 @@ A LRN element that will change the world.
         menu.classList.remove('hax-context-visible');
         Polymer.dom(this.$.contextcontainer).appendChild(menu);
       },
+      /**
+       * When the user hits enter look to see if we are in a p
+       * tag and create a new block
+       */
+      _enterKeyPressed: function (e) {
+        const activeNodeTagName = this.activeNode.tagName;
+        if (activeNodeTagName === 'P') {
+          console.log('insert content');
+          this.fire('hax-insert-content', {
+            tag: 'p',
+            content: ' ',
+            focus: true,
+          });
+        }
+      }
     });
   </script>
 </dom-module>
