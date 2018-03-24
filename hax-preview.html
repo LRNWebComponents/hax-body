@@ -282,6 +282,20 @@ An element that can generate a form
                 this.set('value.' + property, element.properties[property]);
               }
             }
+            // need to specifically walk through slots if there is anything
+            // that says it has to come from a slot
+            for (var prop in props.settings[this.formKey]) {
+              if (typeof props.settings[this.formKey][prop].slot !== typeof undefined) {
+                // walk through the slots looking for the value of it
+                for (var i in Polymer.dom(newValue).getEffectiveChildNodes()) {
+                  // test for element nodes to be safe
+                  if (typeof Polymer.dom(newValue).getEffectiveChildNodes()[i] !== typeof undefined && Polymer.dom(newValue).getEffectiveChildNodes()[i].nodeType === 1 && Polymer.dom(newValue).getEffectiveChildNodes()[i].slot === props.settings[this.formKey][prop].slot) {
+                    schema.properties[props.settings[this.formKey][prop].slot].value = Polymer.dom(newValue).getEffectiveChildNodes()[i].innerHTML;
+                    this.set('value.' + props.settings[this.formKey][prop].slot, Polymer.dom(newValue).getEffectiveChildNodes()[i].innerHTML);
+                  }
+                }
+              }
+            }
             this.set('schema', {});
             this.set('schema', schema);
           }
