@@ -110,6 +110,7 @@
       label="Delete"
       event-name="grid-plate-delete"></hax-context-item>
     <hax-context-item-menu
+      hidden$="[[hideMore]]"
       icon="more-vert"
       label="More"
       id="moremenu"
@@ -134,6 +135,13 @@
         haxProperties: {
           type: Object,
           value: {},
+        },
+        /**
+         * Hide the more menu.
+         */
+        hideMore: {
+          type: Boolean,
+          value: false,
         },
         /**
          * size of the slider if it exists.

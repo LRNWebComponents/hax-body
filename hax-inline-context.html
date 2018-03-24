@@ -40,7 +40,53 @@ A context menu that provides common text based authoring options.
       }
 
     </style>
-    <hax-toolbar id="toolbar" inline>
+    <hax-toolbar id="toolbar" inline hide-more="[[isSafari()]]">
+      <template is="dom-if" if="[[!isSafari()]]">
+        <hax-context-item
+        slot="primary"
+        icon="editor:format-bold"
+        label="Bold"
+        event-name="text-bold"></hax-context-item>
+      <hax-context-item
+        slot="primary"
+        icon="editor:format-italic"
+        label="Italic"
+        event-name="text-italic"></hax-context-item>
+      <hax-context-item
+        slot="primary"
+        icon="editor:insert-link"
+        label="Link"
+        event-name="text-link"></hax-context-item>
+      <hax-context-item
+        slot="primary"
+        icon="mdextra:unlink"
+        label="Unlink"
+        event-name="text-unlink"></hax-context-item>
+      <hax-context-item
+        slot="primary"
+        icon="editor:format-clear"
+        label="Remove format"
+        event-name="text-remove-format"></hax-context-item>
+      <hax-context-item
+        menu
+        slot="more"
+        label=""
+        icon="mdextra:subscript"
+        event-name="text-subscript">Subscript</hax-context-item>
+      <hax-context-item
+        menu
+        slot="more"
+        label=""
+        icon="mdextra:superscript"
+        event-name="text-superscript">Superscript</hax-context-item>
+      <hax-context-item
+        menu
+        slot="more"
+        icon="editor:format-strikethrough"
+        label=""
+        event-name="text-strikethrough">Cross out</hax-context-item-textop>
+      </template>
+      <template is="dom-if" if="[[isSafari()]]">
       <hax-context-item-textop
         slot="primary"
         icon="editor:format-bold"
@@ -67,23 +113,21 @@ A context menu that provides common text based authoring options.
         label="Remove format"
         event-name="text-remove-format"></hax-context-item-textop>
       <hax-context-item-textop
-        menu
-        slot="more"
-        label=""
+        slot="primary"
+        label="Subscript"
         icon="mdextra:subscript"
-        event-name="text-subscript">Subscript</hax-context-item-textop>
+        event-name="text-subscript"></hax-context-item-textop>
       <hax-context-item-textop
-        menu
-        slot="more"
-        label=""
+        slot="primary"
+        label="Superscript"
         icon="mdextra:superscript"
-        event-name="text-superscript">Superscript</hax-context-item-textop>
+        event-name="text-superscript"></hax-context-item-textop>
       <hax-context-item-textop
-        menu
-        slot="more"
+        slot="primary"
         icon="editor:format-strikethrough"
-        label=""
-        event-name="text-strikethrough">Cross out</hax-context-item-textop>
+        label="Cross out"
+        event-name="text-strikethrough"></hax-context-item-textop>
+      </template>
     </hax-toolbar>
   </template>
 
@@ -216,6 +260,23 @@ A context menu that provides common text based authoring options.
           break;
         }
       },
+      /**
+       * Test for safari, if it is don't place things in the menu
+       */
+      isSafari: function(typevalue) {
+        let ua = navigator.userAgent.toLowerCase();
+        // test to find safari to account for it's handling
+        // of what's been selected. This isn't great UX but
+        // there's literally nothing we can do for Safari
+        // because of https://github.com/LRNWebComponents/hax-body/issues/38
+        if (ua.indexOf('safari') != -1) {
+          if (ua.indexOf('chrome') > -1) {
+          } else {
+            return true;
+          }
+        }
+        return false;
+      }
     });
   </script>
 </dom-module>
