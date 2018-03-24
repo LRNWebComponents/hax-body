@@ -29,6 +29,7 @@ A context menu that provides common image based authoring options.
       }
     </style>
     <hax-toolbar hax-properties="[[haxProperties]]" size="{{imageSize}}">
+      <slot></slot>
       <hax-context-item
         slot="primary"
         icon="editor:insert-link"
@@ -39,6 +40,11 @@ A context menu that provides common image based authoring options.
         icon="accessibility"
         label="Alt information"
         event-name="image-alt"></hax-context-item>
+      <hax-context-item
+        slot="primary"
+        icon="settings"
+        label="Settings"
+        event-name="hax-manager-configure"></hax-context-item>
     </hax-toolbar>
   </template>
 
@@ -63,7 +69,7 @@ A context menu that provides common image based authoring options.
           value: {
             'canScale': true,
             'canPosition': true,
-            'canEditSource': true,
+            'canEditSource': false,
           },
         },
       },

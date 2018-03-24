@@ -103,12 +103,11 @@ An element that can generate a form
 
         <!-- editor mode -->
         <template is="dom-if" if="[[haspreviewNode]]">
-          <paper-tabs selected="configure" attr-for-selected="data-mode" on-selected-changed="_editorModeChanged">
+          <paper-tabs id="modetabs" selected="{{modeTab}}" attr-for-selected="data-mode" on-selected-changed="_editorModeChanged">
             <paper-tab data-mode="configure">Configure</paper-tab>
             <paper-tab data-mode="advanced">Advanced</paper-tab>
           </paper-tabs>
         </template>
-        
         <div class="step-toggle-wrapper">
         </div>
         <paper-card class="form-wrapper">
@@ -131,6 +130,13 @@ An element that can generate a form
           type: Object,
           notify: true,
           value: {},
+        },
+        /**
+         * State of mode tabs.
+         */
+        modeTab: {
+          type: String,
+          value: 'configure',
         },
         /**
          * The element to work against expressing the structure of the DOM element
@@ -204,10 +210,8 @@ An element that can generate a form
        */
       _computedEditSource: function(newValue, oldValue) {
         if (typeof newValue !== typeof undefined) {
-          let node = this.previewNode;
-          if (typeof node.getHaxProperties === "function") {
-            let props = node.getHaxProperties();
-            return props.canEditSource;
+          if (typeof this.previewNode.tagName !== typeof undefined && Polymer.HaxStore.instance.elementList[this.previewNode.tagName.toLowerCase()]) {
+            return Polymer.HaxStore.instance.elementList[this.previewNode.tagName.toLowerCase()].canEditSource;
           }
         }
         return true;
@@ -229,31 +233,13 @@ An element that can generate a form
        */
       _formKeyChanged: function(newValue, oldValue) {
         // ensure this doesn't run the 1st pass
-        if (typeof oldValue !== typeof undefined && newValue != oldValue) {
+        if (typeof oldValue !== typeof undefined) {
           var schema = {};
           // see if we can get schema off of this.
-          if (typeof this.previewNode.getHaxJSONSchema === "function") {
+          if (typeof this.previewNode.tagName !== typeof undefined && typeof Polymer.HaxStore.instance.elementList[this.previewNode.tagName.toLowerCase()] !== typeof undefined) {
             let element = this.element;
-            schema = this.previewNode.getHaxJSONSchema(newValue);
-            for (var property in element.properties) {
-              if (element.properties.hasOwnProperty(property)) {
-                if (typeof schema.properties[property] !== typeof undefined) {
-                  schema.properties[property].value = element.properties[property];
-                  // support custom element input
-                  if (typeof schema.properties[property].component !== typeof undefined) {
-                    schema.properties[property].component.properties.value = element.properties[property];
-                  }
-                }
-                this.previewNode.setAttribute(property, element.properties[property]);
-                this.set('value.' + property, element.properties[property]);
-              }
-            }
-          }
-          // fallback, let's try our best
-          else {
-            let element = this.element;
-            schema = Polymer.HaxStore.instance.getHaxJSONSchema(newValue);
-            console.log(schema);
+            let props = Polymer.HaxStore.instance.elementList[this.previewNode.tagName.toLowerCase()];
+            schema = Polymer.HaxStore.instance.getHaxJSONSchema(newValue, props);
             for (var property in element.properties) {
               if (element.properties.hasOwnProperty(property)) {
                 if (typeof schema.properties[property] !== typeof undefined) {
@@ -273,15 +259,16 @@ An element that can generate a form
         }
       },
       /**
-       * When the preview node is updated, pull schema off it.
+       * When the preview node is updated, pull schema associated with it
        */
       _previewNodeChanged: function(newValue, oldValue) {
         // ensure this doesn't run the 1st pass
         if (typeof oldValue !== typeof undefined && newValue != oldValue) {
           // see if we can get schema off of this.
-          if (typeof newValue.getHaxJSONSchema === "function") {
+          if (typeof newValue.tagName !== typeof undefined && typeof Polymer.HaxStore.instance.elementList[newValue.tagName.toLowerCase()] !== typeof undefined) {
             let element = this.element;
-            let schema = newValue.getHaxJSONSchema(this.formKey);
+            let props = Polymer.HaxStore.instance.elementList[this.previewNode.tagName.toLowerCase()];
+            let schema = Polymer.HaxStore.instance.getHaxJSONSchema(this.formKey, props);
             for (var property in element.properties) {
               if (element.properties.hasOwnProperty(property)) {
                 if (typeof schema.properties[property] !== typeof undefined) {
@@ -309,13 +296,13 @@ An element that can generate a form
           let preview = this.$.preview;
           Polymer.HaxStore.wipeSlot(preview);
           this.set('previewNode', {});
+          this.modeTab = 'configure';
           // if we have something, generate the new element inside it
           if (newValue != null && newValue.length != 0) {
             var frag = document.createElement(newValue.tag);
             frag.innerHTML = newValue.content;
             // clone the fragment which will force an escalation to full node
             var newNode = frag.cloneNode(true);
-            console.log(newNode);
             // send this into the root, which should filter it back down into the slot
             preview.appendChild(newNode);
             // need to let append propagate, it probably takes like no time
@@ -331,8 +318,8 @@ An element that can generate a form
       _valueChanged: function() {
         let node = this.previewNode;
         // sanity check and then get props and mesh with form value response
-        if (typeof node.getHaxProperties === "function") {
-          let props = node.getHaxProperties();
+        if (typeof node.tagName !== typeof undefined && typeof Polymer.HaxStore.instance.elementList[node.tagName.toLowerCase()] !== typeof undefined) {
+          let props = Polymer.HaxStore.instance.elementList[node.tagName.toLowerCase()];
           // loop through the properties for the form
           for (var value in props.settings[this.formKey]) {
             // support property binding
@@ -378,7 +365,6 @@ An element that can generate a form
             }
             else {
               // @todo add support for disabling based on not having advanced
-              // form
             }
           }
         }

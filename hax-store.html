@@ -265,7 +265,7 @@
             'settings': {
               'quick': [
                 {
-                  'attribute': 'src',
+                  'property': 'src',
                   'title': 'Source',
                   'description': 'The URL for this video.',
                   'inputMethod': 'textfield',
@@ -276,7 +276,7 @@
               ],
               'configure': [
                 {
-                  'attribute': 'src',
+                  'property': 'src',
                   'title': 'Source',
                   'description': 'The URL for this video.',
                   'inputMethod': 'textfield',
@@ -284,18 +284,62 @@
                   'required': true,
                   'validationType': 'url',
                 },
-                {
-                  'property': 'responsive',
-                  'title': 'Responsive',
-                  'description': 'The video automatically fills the available area.',
-                  'inputMethod': 'boolean',
-                  'icon': 'image:photo-size-select-small',
-                },
               ],
               'advanced': []
             }
           };
           this.setHaxProperties(iframe, 'iframe');
+          let img = {
+            'canScale': true,
+            'canPosition': true,
+            'canEditSource': false,
+            'gizmo': {
+              'title': 'Basic image',
+              'description': 'A basic img tag',
+              'icon': 'image:image',
+              'color': 'grey',
+              'groups': ['Image', 'Media'],
+              'handles': [
+                {
+                  'type': 'link',
+                  'source': 'src'
+                },
+                {
+                  'type': 'image',
+                  'source': 'src'
+                },
+              ],
+              'meta': {
+                'author': 'W3C'
+              }
+            },
+            'settings': {
+              'quick': [
+                {
+                  'property': 'src',
+                  'title': 'Source',
+                  'description': 'The URL for this video.',
+                  'inputMethod': 'textfield',
+                  'icon': 'link',
+                  'required': true,
+                  'validationType': 'url',
+                },
+              ],
+              'configure': [
+                {
+                  'property': 'src',
+                  'title': 'Source',
+                  'description': 'The URL for this video.',
+                  'inputMethod': 'textfield',
+                  'icon': 'link',
+                  'required': true,
+                  'validationType': 'url',
+                },
+              ],
+              'advanced': []
+            }
+          };
+          this.setHaxProperties(img, 'img');
           let p = {
             'canScale': true,
             'canPosition': true,
@@ -428,7 +472,6 @@
          */
         _haxStoreRegisterProperties: function(e) {
           if (e.detail && e.detail.properties && e.detail.tag) {
-            console.log(e.detail);
             // only register tag if we don't know about it already
             if (typeof this.elementList[e.detail.tag] === typeof undefined) {
               // look for a gizmo; it's not required, technically.
