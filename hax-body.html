@@ -249,6 +249,7 @@ A LRN element that will change the world.
        * Ready state to tee everything up.
        */
       ready: function() {
+        this.polyfillSafe = Polymer.HaxStore.instance.computePolyfillSafe();
         // mutation observer that ensures state of hax applied correctly
         this._observer = Polymer.dom(this).observeNodes(function(info) {
           // if we've got new nodes, we have to react to that
@@ -951,6 +952,7 @@ A LRN element that will change the world.
         if (this.editMode) {
           const activeNodeTagName = this.activeNode.tagName;
           if (['P','H1','H2','H3','H4','H5','H6'].includes(activeNodeTagName)) {
+            e.preventDefault();
             this.fire('hax-insert-content', {
               tag: 'p',
               content: '',
@@ -963,6 +965,7 @@ A LRN element that will change the world.
        */
       _escKeyPressed: function (e) {
         if (this.editMode) {
+          e.preventDefault();
           const activeNodeTagName = this.activeNode.tagName;
           Polymer.HaxStore.write('activeNode', null, this);
         }
@@ -976,6 +979,7 @@ A LRN element that will change the world.
         if (this.editMode) {
           const activeNodeTextContent = Polymer.dom(this.activeNode).textContent;
           if (activeNodeTextContent === '') {
+            e.preventDefault();
             this.haxDeleteNode(this.activeNode);
           }
         }
@@ -985,19 +989,29 @@ A LRN element that will change the world.
        */
       _tabKeyPressed: function (e) {
         if (this.editMode) {
+          e.preventDefault();
+          e.stopPropagation();
           let focus = false;
           let node = this.activeNode;
-          while (!focus) {
-            // do nothing
-            if (Polymer.dom(node).nextSibling == null) {
-              focus = true;
+          const activeNodeTagName = this.activeNode.tagName;
+          if (['UL','OL'].includes(node.tagName)) {
+            if (this.polyfillSafe) {
+              document.execCommand('indent');
             }
-            else if (Polymer.dom(node).nextSibling.focus === 'function') {
-              Polymer.dom(node).nextSibling.focus();
-              focus = true;
-            }
-            else {
-              node = Polymer.dom(node).nextSibling;
+          }
+          else {
+            while (!focus) {
+              // do nothing
+              if (Polymer.dom(node).nextSibling == null) {
+                focus = true;
+              }
+              else if (Polymer.dom(node).nextSibling.focus === 'function') {
+                Polymer.dom(node).nextSibling.focus();
+                focus = true;
+              }
+              else {
+                node = Polymer.dom(node).nextSibling;
+              }
             }
           }
         }
@@ -1007,16 +1021,25 @@ A LRN element that will change the world.
        */
       _tabBackKeyPressed: function (e) {
         if (this.editMode) {
+          e.preventDefault();
+          e.stopPropagation();
           let focus = false;
           let node = Polymer.dom(this.activeNode).previousSibling;
-          if (node != null) {
-            // step back ignoring hax- prefixed elements
-            while (node != null && !this._haxElementTest(node)) {
-              node = Polymer.dom(node).previousSibling;
+          if (['UL','OL'].includes(node.tagName)) {
+            if (this.polyfillSafe) {
+              document.execCommand('outdent');
             }
           }
-          if (node != null) {
-            node.focus();
+          else {
+            if (node != null) {
+              // step back ignoring hax- prefixed elements
+              while (node != null && !this._haxElementTest(node)) {
+                node = Polymer.dom(node).previousSibling;
+              }
+            }
+            if (node != null) {
+              node.focus();
+            }
           }
         }
       },
