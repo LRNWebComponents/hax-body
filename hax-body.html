@@ -177,6 +177,7 @@ A LRN element that will change the world.
     </div>
     <iron-a11y-keys target="[[activeNode]]" keys="enter" on-keys-pressed="_enterKeyPressed"></iron-a11y-keys>
     <iron-a11y-keys target="[[activeNode]]" keys="esc" on-keys-pressed="_escKeyPressed"></iron-a11y-keys>
+    <iron-a11y-keys target="[[activeNode]]" keys="del backspace" on-keys-pressed="_delKeyPressed"></iron-a11y-keys>
   </template>
 
   <script>
@@ -354,6 +355,8 @@ A LRN element that will change the world.
           // wait so that the DOM can have the node to then attach to
           setTimeout( () => {
             Polymer.HaxStore.write('activeNode', newNode, this);
+            // attempt to focus on the new node, may not always work
+            newNode.focus();
           }, 100);
           return true;
         }
@@ -484,6 +487,7 @@ A LRN element that will change the world.
       haxDuplicateNode: function(node) {
         // move the context menu before duplicating!!!!
         this.hideContextMenus();
+        this._hideContextMenu(this.$.inlinetracker);
         var nodeClone = Polymer.dom(node).cloneNode(true);
         // shouldn't be possible but might as well check
         if (this.activeNode !== null) {
@@ -518,7 +522,7 @@ A LRN element that will change the world.
       positionContextMenus: function(node) {
         let props = Polymer.HaxStore.instance.elementList[node.tagName.toLowerCase()];
         // try and work against anything NOT a P tag
-        if (typeof props !== typeof undefined) {
+        if (typeof props !== typeof undefined && node.tagName !== 'P') {
           this.__activeContextType = this.$.cecontextmenu;
           props.element = this.activeNode;
           this.__activeContextType.setHaxProperties(props);
@@ -599,6 +603,7 @@ A LRN element that will change the world.
       haxDeleteNode: function(node) {
         // move the context menu before duplicating!!!!
         this.hideContextMenus();
+        this._hideContextMenu(this.$.inlinetracker);
         // shift active to a viable replacement
         if (this.activeNode.previousElementSibling !== null) {
           this.activeNode.previousElementSibling.focus();
@@ -609,7 +614,14 @@ A LRN element that will change the world.
         else {
           Polymer.HaxStore.write('activeNode', null, this);
         }
-        return Polymer.dom(this).removeChild(node);
+        // @todo figure out why this is complaining
+        try {
+          return Polymer.dom(this).removeChild(node);
+        }
+        catch(e) {
+          console.log(e);
+          return {};
+        }
       },
       /**
        * Respond to hax operations.
@@ -644,9 +656,19 @@ A LRN element that will change the world.
               this.haxDuplicateNode(this.activeNode);
           break;
           case 'grid-plate-delete':
-            if (window.confirm('Are you sure you want to delete this element?')) {
-              this.haxDeleteNode(this.activeNode);
+            let options = [
+            {
+              'icon': 'thumb-up',
+              'color': 'green',
+              'title': 'Yes',
+            },
+            {
+              'icon': 'thumb-down',
+              'color': 'red',
+              'title': 'No',
             }
+            ];
+            Polymer.HaxStore.instance.haxAppPicker.presentOptions(options, '', 'Are you sure you want to delete this element?', 'delete');
           break;
           case 'grid-plate-up':
             this.haxMoveGridPlate('up', this.activeNode);
@@ -930,12 +952,10 @@ A LRN element that will change the world.
        */
       _enterKeyPressed: function (e) {
         const activeNodeTagName = this.activeNode.tagName;
-        if (activeNodeTagName === 'P') {
-          console.log('insert content');
+        if (['P','H1','H2','H3','H4','H5','H6'].includes(activeNodeTagName)) {
           this.fire('hax-insert-content', {
             tag: 'p',
-            content: ' ',
-            focus: true,
+            content: '',
           });
         }
       },
@@ -945,6 +965,17 @@ A LRN element that will change the world.
       _escKeyPressed: function (e) {
         const activeNodeTagName = this.activeNode.tagName;
         Polymer.HaxStore.write('activeNode', null, this);
+      },
+      /**
+       * When the user hits delete, test if there's any content
+       * left in this container. If thre isn't then delete the
+       * container itself
+       */
+      _delKeyPressed: function (e) {
+        const activeNodeTextContent = Polymer.dom(this.activeNode).textContent;
+        if (activeNodeTextContent === '') {
+          this.haxDeleteNode(this.activeNode);
+        }
       }
     });
   </script>

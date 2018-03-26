@@ -205,6 +205,11 @@
           if (this.pickerType == 'gizmo') {
             Polymer.HaxStore.write('activeHaxElement', this._elements[key], this);
           }
+          else if (this.pickerType == 'delete') {
+            if (this._elements[key]['title'] === 'Yes') {
+              Polymer.HaxStore.instance.activeHaxBody.haxDeleteNode(Polymer.HaxStore.instance.activeHaxBody.activeNode);
+            }
+          }
           else {
             // bubble this up
             this.fire('hax-app-picker-selection', this._elements[key]);
