@@ -380,6 +380,8 @@ A LRN element that will change the world.
         let children = Polymer.dom(this.$.body).getDistributedNodes();
         var content = '';
         for (var i = 0, len = children.length; i < len; i++) {
+          // see if this is a valid element or not, providing
+          // some mild front-end sanitization
           if (this._haxElementTest(children[i])) {
             children[i].setAttribute('data-editable', false);
             children[i].setAttribute('data-draggable', false);
@@ -396,6 +398,15 @@ A LRN element that will change the world.
               // which then will keep unpacking over and over again
               content += this.haxNodeToContent(children[i]);
             }
+          }
+          // keep comments with a special case since they need wrapped
+          else if (children[i].nodeType === 8) {
+            content += '<!-- ' + children[i].textContent + ' -->';
+          }
+          // keep everything NOT an element at this point, this helps
+          // preserve whitespace because we're crazy about accuracy
+          else if (children[i].nodeType !== 1) {
+            content += children[i].textContent;
           }
         }
         // remove the contenteditable attribute
@@ -466,8 +477,6 @@ A LRN element that will change the world.
         if (slotnodes.length > 0) {
           // loop through everything found in the slotted area and put it back in
           for (var j = 0, len2 = slotnodes.length; j < len2; j++) {
-            // @todo this might delete comment tags and other non elements
-            // in the page.
             if (typeof slotnodes[j].tagName !== typeof undefined) {
               // if we're a custom element, keep digging, otherwise a simple
               // self append is fine.
@@ -478,6 +487,19 @@ A LRN element that will change the world.
                 content += '  ' + slotnodes[j].outerHTML + "\n";
               }
             }
+            // keep comments with a special case since they need wrapped
+            else if (slotnodes[j].nodeType === 8) {
+              content += '<!-- ' + slotnodes[j].textContent + ' -->';
+            }
+            // keep everything NOT an element at this point, this helps
+            // preserve whitespace because we're crazy about accuracy
+            else if (slotnodes[j].nodeType !== 1) {
+              content += slotnodes[j].textContent;
+            }
+            else {
+              content += slotnodes[j];
+            }
+
           }
         }
         // close the tag
@@ -746,10 +768,6 @@ A LRN element that will change the world.
             Polymer.HaxStore.instance.haxManager.editExistingNode = true;
             Polymer.HaxStore.instance.haxManager.selectStep('configure');
             Polymer.HaxStore.instance.haxManager.toggleDialog();
-          break;
-          default:
-            // implies an event we haven't trapped for yet
-            console.log(detail);
           break;
         }
       },
