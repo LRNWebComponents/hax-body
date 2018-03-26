@@ -948,20 +948,24 @@ A LRN element that will change the world.
        * tag and create a new block
        */
       _enterKeyPressed: function (e) {
-        const activeNodeTagName = this.activeNode.tagName;
-        if (['P','H1','H2','H3','H4','H5','H6'].includes(activeNodeTagName)) {
-          this.fire('hax-insert-content', {
-            tag: 'p',
-            content: '',
-          });
+        if (this.editMode) {
+          const activeNodeTagName = this.activeNode.tagName;
+          if (['P','H1','H2','H3','H4','H5','H6'].includes(activeNodeTagName)) {
+            this.fire('hax-insert-content', {
+              tag: 'p',
+              content: '',
+            });
+          }
         }
       },
       /**
        * When the user hits escape key, let's deselect what we have now
        */
       _escKeyPressed: function (e) {
-        const activeNodeTagName = this.activeNode.tagName;
-        Polymer.HaxStore.write('activeNode', null, this);
+        if (this.editMode) {
+          const activeNodeTagName = this.activeNode.tagName;
+          Polymer.HaxStore.write('activeNode', null, this);
+        }
       },
       /**
        * When the user hits delete, test if there's any content
@@ -969,28 +973,32 @@ A LRN element that will change the world.
        * container itself
        */
       _delKeyPressed: function (e) {
-        const activeNodeTextContent = Polymer.dom(this.activeNode).textContent;
-        if (activeNodeTextContent === '') {
-          this.haxDeleteNode(this.activeNode);
+        if (this.editMode) {
+          const activeNodeTextContent = Polymer.dom(this.activeNode).textContent;
+          if (activeNodeTextContent === '') {
+            this.haxDeleteNode(this.activeNode);
+          }
         }
       },
       /**
        * Find the next thing to tab forward to.
        */
       _tabKeyPressed: function (e) {
-        let focus = false;
-        let node = this.activeNode;
-        while (!focus) {
-          // do nothing
-          if (Polymer.dom(node).nextSibling == null) {
-            focus = true;
-          }
-          else if (Polymer.dom(node).nextSibling.focus === 'function') {
-            Polymer.dom(node).nextSibling.focus();
-            focus = true;
-          }
-          else {
-            node = Polymer.dom(node).nextSibling;
+        if (this.editMode) {
+          let focus = false;
+          let node = this.activeNode;
+          while (!focus) {
+            // do nothing
+            if (Polymer.dom(node).nextSibling == null) {
+              focus = true;
+            }
+            else if (Polymer.dom(node).nextSibling.focus === 'function') {
+              Polymer.dom(node).nextSibling.focus();
+              focus = true;
+            }
+            else {
+              node = Polymer.dom(node).nextSibling;
+            }
           }
         }
       },
@@ -998,16 +1006,18 @@ A LRN element that will change the world.
        * Move back through things when tab back pressed
        */
       _tabBackKeyPressed: function (e) {
-        let focus = false;
-        let node = Polymer.dom(this.activeNode).previousSibling;
-        if (node != null) {
-          // step back ignoring hax- prefixed elements
-          while (node != null && !this._haxElementTest(node)) {
-            node = Polymer.dom(node).previousSibling;
+        if (this.editMode) {
+          let focus = false;
+          let node = Polymer.dom(this.activeNode).previousSibling;
+          if (node != null) {
+            // step back ignoring hax- prefixed elements
+            while (node != null && !this._haxElementTest(node)) {
+              node = Polymer.dom(node).previousSibling;
+            }
           }
-        }
-        if (node != null) {
-          node.focus();
+          if (node != null) {
+            node.focus();
+          }
         }
       },
     });
