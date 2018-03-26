@@ -178,6 +178,8 @@ A LRN element that will change the world.
     <iron-a11y-keys target="[[activeNode]]" keys="enter" on-keys-pressed="_enterKeyPressed"></iron-a11y-keys>
     <iron-a11y-keys target="[[activeNode]]" keys="esc" on-keys-pressed="_escKeyPressed"></iron-a11y-keys>
     <iron-a11y-keys target="[[activeNode]]" keys="del backspace" on-keys-pressed="_delKeyPressed"></iron-a11y-keys>
+    <iron-a11y-keys target="[[activeNode]]" keys="tab" on-keys-pressed="_tabKeyPressed" stop-keyboard-event-propagation></iron-a11y-keys>
+    <iron-a11y-keys target="[[activeNode]]" keys="shift+tab" on-keys-pressed="_tabBackKeyPressed" stop-keyboard-event-propagation></iron-a11y-keys>
   </template>
 
   <script>
@@ -703,11 +705,6 @@ A LRN element that will change the world.
                 haxInputMixer.value = this.activeNode[detail.target.propertyToBind];
               }
             }
-            else {
-              haxInputMixer.slotToBind = detail.target.slotToBind;
-              // @todo need a way of querying the slot's current value
-              //haxInputMixer.value = this.activeNode[detail.target.slotToBind];
-            }
             // make input mixer show up
             this._positionContextMenu(haxInputMixer, this.$.cecontextmenu, 34, -104);
           break;
@@ -832,7 +829,7 @@ A LRN element that will change the world.
         return false;
       },
       /**
-       * Test if this is a HAX element or not
+       * Test if this is an HTML primative
        */
       _HTMLPrimativeTest: function(node) {
         if (typeof node.tagName !== typeof undefined && node.tagName.indexOf('-') == -1) {
@@ -976,7 +973,43 @@ A LRN element that will change the world.
         if (activeNodeTextContent === '') {
           this.haxDeleteNode(this.activeNode);
         }
-      }
+      },
+      /**
+       * Find the next thing to tab forward to.
+       */
+      _tabKeyPressed: function (e) {
+        let focus = false;
+        let node = this.activeNode;
+        while (!focus) {
+          // do nothing
+          if (Polymer.dom(node).nextSibling == null) {
+            focus = true;
+          }
+          else if (Polymer.dom(node).nextSibling.focus === 'function') {
+            Polymer.dom(node).nextSibling.focus();
+            focus = true;
+          }
+          else {
+            node = Polymer.dom(node).nextSibling;
+          }
+        }
+      },
+      /**
+       * Move back through things when tab back pressed
+       */
+      _tabBackKeyPressed: function (e) {
+        let focus = false;
+        let node = Polymer.dom(this.activeNode).previousSibling;
+        if (node != null) {
+          // step back ignoring hax- prefixed elements
+          while (node != null && !this._haxElementTest(node)) {
+            node = Polymer.dom(node).previousSibling;
+          }
+        }
+        if (node != null) {
+          node.focus();
+        }
+      },
     });
   </script>
 </dom-module>
