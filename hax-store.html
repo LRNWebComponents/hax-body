@@ -132,6 +132,21 @@
             value: false,
           },
           /**
+           * Default settings that can be overridden as needed
+           */
+          defaults: {
+            type: Object,
+            value: {
+              image: {
+                'src': 'stock.jpg',
+                'alt': 'A beachfront deep in the heart of Alaska.',
+              },
+              iframe: {
+                'src': 'https://www.wikipedia.org/',
+              },
+            },
+          },
+          /**
            * Available gizmos.
            */
           gizmoList: {
@@ -375,6 +390,18 @@
             }
           };
           this.setHaxProperties(p, 'p');
+          let hr = {
+            'canScale': true,
+            'canPosition': false,
+            'canEditSource': false,
+            'settings': {
+              'quick': [
+              ],
+              'configure': [],
+              'advanced': []
+            }
+          };
+          this.setHaxProperties(hr, 'hr');
         },
         /**
          * Inject a toast element to manage our messages

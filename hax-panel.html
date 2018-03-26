@@ -226,44 +226,46 @@ as the events being bubbled up include HTML nodes to inject into something
         switch(detail.eventName) {
           case 'text':
             detail.tag = 'p';
-            detail.content = ' ';
+            detail.content = '';
             this.fire('hax-insert-content', detail);
           break;
           case 'divider':
             detail.tag = 'hr';
             detail.content = '';
+            detail.properties = {
+              'style': 'width:100%;',
+            };
             this.fire('hax-insert-content', detail);
           break;
           case 'header':
             detail.tag = 'h2';
-            detail.content = 'Heading';
+            detail.content = 'Header';
             this.fire('hax-insert-content', detail);
           break;
           case 'image':
             detail.tag = 'img';
             detail.content = '';
             detail.properties = {
-              'src': prompt('Image URL:'),
+              'src': this.resolveUrl(Polymer.HaxStore.instance.defaults.image.src),
+              'alt': Polymer.HaxStore.instance.defaults.image.alt,
+              'style': 'width:100%;',
             };
-            // only fire if we got something
-            if (detail.properties.src != null && detail.properties.src != '') {
-              this.fire('hax-insert-content', detail);
-            }
+            this.fire('hax-insert-content', detail);
           break;
           case 'iframe':
             detail.tag = 'iframe';
             detail.content = '';
             detail.properties = {
-              'src': prompt('iframe URL:'),
+              'src': Polymer.HaxStore.instance.defaults.iframe.src,
+              'height': '400px',
+              'width': '100%',
+              'style': 'width:100%;',
             };
-            // only fire if we got something
-            if (detail.properties.src != null && detail.properties.src != '') {
-              this.fire('hax-insert-content', detail);
-            }
+            this.fire('hax-insert-content', detail);
           break;
           case 'blockquote':
             detail.tag = 'blockquote';
-            detail.content = 'Quote';
+            detail.content = '';
             this.fire('hax-insert-content', detail);
           break;
           case 'layout':
