@@ -44,6 +44,10 @@ as the events being bubbled up include HTML nodes to inject into something
           padding: unset;
           display: flex;
           touch-action: auto;
+          overflow-x: auto;
+          overflow-y: hidden;
+          -webkit-overflow-scrolling: touch;
+          white-space: nowrap;
         }
       }
       :host[align="right"] app-drawer {
