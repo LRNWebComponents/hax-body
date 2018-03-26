@@ -4,8 +4,6 @@
 <link rel="import" href="../iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="hax-text-context.html">
 <link rel="import" href="hax-inline-context.html">
-<link rel="import" href="hax-image-context.html">
-<link rel="import" href="hax-iframe-context.html">
 <link rel="import" href="hax-ce-context.html">
 <link rel="import" href="hax-plate-context.html">
 <link rel="import" href="hax-input-mixer.html">
@@ -173,8 +171,6 @@ A LRN element that will change the world.
       <span id="inlinetracker" style="pointer-events: none; visibility: none; opacity: 0; width:0;height:0;" class="ignore-activation" draggable="false" contenteditable="false"></span>
       <hax-inline-context id="inlinecontextmenu" class="hax-context-menu ignore-activation"></hax-inline-context>
       <hax-text-context id="textcontextmenu" class="hax-context-menu ignore-activation"></hax-text-context>
-      <hax-image-context id="imagecontextmenu" class="hax-context-menu ignore-activation"></hax-image-context>
-      <hax-iframe-context id="iframecontextmenu" class="hax-context-menu ignore-activation"></hax-iframe-context>
       <hax-ce-context id="cecontextmenu" class="hax-context-menu ignore-activation"></hax-ce-context>
       <hax-plate-context id="platecontextmenu" class="hax-context-menu ignore-activation"></hax-plate-context>
       <hax-input-mixer id="haxinputmixer" class="hax-context-menu ignore-activation"></hax-input-mixer>
@@ -509,8 +505,6 @@ A LRN element that will change the world.
       hideContextMenus: function() {
         // primary context menus
         this._hideContextMenu(this.$.textcontextmenu);
-        this._hideContextMenu(this.$.imagecontextmenu);
-        this._hideContextMenu(this.$.iframecontextmenu);
         this._hideContextMenu(this.$.cecontextmenu);
         // secondary menus and clean up areas
         this._hideContextMenu(this.$.inlinecontextmenu);
@@ -521,43 +515,22 @@ A LRN element that will change the world.
        * Reposition context menus to match an element.
        */
       positionContextMenus: function(node) {
-        // specialized menu based on the type of contextual menu we need
-        switch (node.tagName) {
-          // HTML primatives need manually defined and built out
-          case 'IMG':
-            this.__activeContextType = this.$.imagecontextmenu;
-            this._positionContextMenu(this.__activeContextType, node, -16, -40);
-          break;
-          case 'IFRAME':
-          case 'VIDEO':
-          case 'AUDIO':
-            this.__activeContextType = this.$.iframecontextmenu;
-            let props = this.$.iframecontextmenu.haxProperties;
-            props.element = this.activeNode;
-            console.log(props);
-            this._positionContextMenu(this.__activeContextType, node, -16, -40);
-          break;
-          default:
-            // check and see if we have a haxproperties function in place
-            // this opens the door for ANY custom-element to use HAX and supply
-            // properties for the three settings areas.
-            if (typeof node.getHaxProperties === "function") {
-              this.__activeContextType = this.$.cecontextmenu;
-              let props = node.getHaxProperties();
-              props.element = this.activeNode;
-              this.__activeContextType.setHaxProperties(props);
-            }
-            else {
-              // @todo test if this is a custom element, then if it is
-              // try and guess what the properties are based on what's
-              // currently been set. it's by no means perfect but it'll
-              // be a really good start
-              this.__activeContextType = this.$.textcontextmenu;
-              this._positionContextMenu(this.$.inlinecontextmenu, node, 0, -48);
-            }
-            this._positionContextMenu(this.__activeContextType, node, -16, -40);
-          break;
+        let props = Polymer.HaxStore.instance.elementList[node.tagName.toLowerCase()];
+        // try and work against anything NOT a P tag
+        if (node.tagName !== 'P') {
+          this.__activeContextType = this.$.cecontextmenu;
+          props.element = this.activeNode;
+          this.__activeContextType.setHaxProperties(props);
         }
+        else {
+          // @todo test if this is a custom element, then if it is
+          // try and guess what the properties are based on what's
+          // currently been set. it's by no means perfect but it'll
+          // be a really good start
+          this.__activeContextType = this.$.textcontextmenu;
+          this._positionContextMenu(this.$.inlinecontextmenu, node, 0, -48);
+        }
+        this._positionContextMenu(this.__activeContextType, node, -16, -40);
         this._positionContextMenu(this.$.platecontextmenu, node, -72, -8);
         setTimeout( () => {
   	      this.__activeContextType.scrollIntoView({behavior: "smooth", inline: "nearest"});
@@ -715,7 +688,7 @@ A LRN element that will change the world.
             // make input mixer show up
             this._positionContextMenu(haxInputMixer, this.$.cecontextmenu, 34, -104);
           break;
-          // image/iframe based operations
+          // directional / proportion operations
           case 'hax-align-left':
             this.activeNode.style.float = null;
             this.activeNode.style.margin = null;
@@ -737,53 +710,6 @@ A LRN element that will change the world.
           case 'hax-size-change':
             this.activeNode.style.width = detail.value + '%';
             this.positionContextMenus(this.activeNode);
-          break;
-          // iframe based operations
-          case 'iframe-link':
-            var url = null;
-            if (this.activeNode.tagName == 'VIDEO-PLAYER') {
-              url = prompt("Link to embed:", this.activeNode.source);
-            }
-            else {
-              url = prompt("Link to embed:", this.activeNode.src);
-            }
-            if (url !== null && url !== '') {
-              // special support for our custom video-player
-              if (this.activeNode.tagName == 'VIDEO-PLAYER') {
-                this.activeNode.source = url;
-              }
-              else {
-                this.activeNode.src = url;
-              }
-              this.positionContextMenus(this.activeNode);
-            }
-          break;
-          // image operations
-          case 'image-src':
-            var url = null;
-            if (this.activeNode.tagName == 'MEDIA-IMAGE') {
-              url = prompt("Image URL:", this.activeNode.source);
-            }
-            else {
-              url = prompt("Image URL:", this.activeNode.src);
-            }
-            if (url !== null && url !== '') {
-              // special support for our custom video-player
-              if (this.activeNode.tagName == 'MEDIA-IMAGE') {
-                this.activeNode.source = url;
-              }
-              else {
-                this.activeNode.src = url;
-              }
-              this.positionContextMenus(this.activeNode);
-            }
-          break;
-          // alt info, convert this in the future
-          case 'image-alt':
-            var alt = prompt("Image alt information:", this.activeNode.alt);
-            if (alt !== null) {
-              this.activeNode.alt = alt;
-            }
           break;
           // settings button selected from hax-ce-context bar
           // which means we should skip to the settings page after
@@ -938,28 +864,16 @@ A LRN element that will change the world.
             this.$.textcontextmenu.justifyValue = 'text-align-left';
           }
           else if (newValue.style.float == 'left') {
-            this.$.iframecontextmenu.justifyIcon = 'editor:format-align-left';
-            this.$.iframecontextmenu.justifyValue = 'hax-align-left';
             this.$.cecontextmenu.justifyIcon = 'editor:format-align-left';
             this.$.cecontextmenu.justifyValue = 'hax-align-left';
-            this.$.imagecontextmenu.justifyIcon = 'editor:format-align-left';
-            this.$.imagecontextmenu.justifyValue = 'hax-align-left';
           }
           else if (newValue.style.float == 'right') {
-            this.$.iframecontextmenu.justifyIcon = 'editor:format-align-right';
-            this.$.iframecontextmenu.justifyValue = 'hax-align-right';
             this.$.cecontextmenu.justifyIcon = 'editor:format-align-right';
             this.$.cecontextmenu.justifyValue = 'hax-align-right';
-            this.$.imagecontextmenu.justifyIcon = 'editor:format-align-right';
-            this.$.imagecontextmenu.justifyValue = 'hax-align-right';
           }
           else if (newValue.style.margin == '0 auto') {
-            this.$.iframecontextmenu.justifyIcon = 'editor:format-align-center';
-            this.$.iframecontextmenu.justifyValue = 'hax-align-center';
             this.$.cecontextmenu.justifyIcon = 'editor:format-align-center';
             this.$.cecontextmenu.justifyValue = 'hax-align-center';
-            this.$.imagecontextmenu.justifyIcon = 'editor:format-align-center';
-            this.$.imagecontextmenu.justifyValue = 'hax-align-center';
           }
         }
         // just hide menus if we don't have an active item
