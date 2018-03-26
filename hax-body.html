@@ -176,6 +176,7 @@ A LRN element that will change the world.
       <hax-input-mixer id="haxinputmixer" class="hax-context-menu ignore-activation"></hax-input-mixer>
     </div>
     <iron-a11y-keys target="[[activeNode]]" keys="enter" on-keys-pressed="_enterKeyPressed"></iron-a11y-keys>
+    <iron-a11y-keys target="[[activeNode]]" keys="esc" on-keys-pressed="_escKeyPressed"></iron-a11y-keys>
   </template>
 
   <script>
@@ -517,7 +518,7 @@ A LRN element that will change the world.
       positionContextMenus: function(node) {
         let props = Polymer.HaxStore.instance.elementList[node.tagName.toLowerCase()];
         // try and work against anything NOT a P tag
-        if (node.tagName !== 'P') {
+        if (typeof props !== typeof undefined) {
           this.__activeContextType = this.$.cecontextmenu;
           props.element = this.activeNode;
           this.__activeContextType.setHaxProperties(props);
@@ -937,6 +938,13 @@ A LRN element that will change the world.
             focus: true,
           });
         }
+      },
+      /**
+       * When the user hits escape key, let's deselect what we have now
+       */
+      _escKeyPressed: function (e) {
+        const activeNodeTagName = this.activeNode.tagName;
+        Polymer.HaxStore.write('activeNode', null, this);
       }
     });
   </script>
