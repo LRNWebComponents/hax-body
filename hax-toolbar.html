@@ -57,6 +57,7 @@
         background-color: #3e3e3e;
         color: #c5c5c5;
         height: 40px;
+        min-width: 100px;
       }
       .duplicate-button {
         border-bottom: 1px solid #d3d3d3;
@@ -135,6 +136,7 @@
         haxProperties: {
           type: Object,
           value: {},
+          observer: '_haxPropertiesChanged',
         },
         /**
          * Hide the more menu.
@@ -174,6 +176,34 @@
           value: '',
           notify: true,
         },
+      },
+      /**
+       * If hax properties changes, let's see what the initial state
+       * of the buttons should be.
+       */
+      _haxPropertiesChanged: function(newValue, oldValue) {
+        // value doesn't matter, just look at what's active
+        if (typeof Polymer.HaxStore.instance.activeNode !== typeof undefined) {
+          if (Polymer.HaxStore.instance.activeNode.style.width != '') {
+            this.size = Polymer.HaxStore.instance.activeNode.style.width.replace('%', '');
+          }
+          else {
+            this.size = 100;
+          }
+
+          if (Polymer.HaxStore.instance.activeNode.style.float == 'right') {
+            this.justifyValue = 'hax-align-right';
+            this.justifyIcon = 'editor:format-align-right';
+          }
+          else if (Polymer.HaxStore.instance.activeNode.style.margin == '0px auto' && Polymer.HaxStore.instance.activeNode.style.display == 'block') {
+            this.justifyValue = 'hax-align-center';
+            this.justifyIcon = 'editor:format-align-center';
+          }
+          else {
+            this.justifyValue = 'hax-align-left';
+            this.justifyIcon = 'editor:format-align-left';
+          }
+        }
       },
       /**
        * Respond to simple modifications.
