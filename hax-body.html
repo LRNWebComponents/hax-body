@@ -106,19 +106,6 @@ A LRN element that will change the world.
         padding-top: 8px;
         padding-bottom: 8px;
       }
-      :host[edit-mode] #bodycontainer ::slotted(hr[data-editable])::before {
-        color: #222222;
-        background-color: #EEEEEE;
-        padding: 2px;
-        z-index: 2;
-        content: '<hr/>';
-        font-size: 12px;
-        position: absolute;
-        margin-left: -32px;
-        margin-top:-8px;
-        font-style: italic;
-        pointer-events: none;
-      }
       /** Fix to support safari as it defaults to none */
       :host[edit-mode] #bodycontainer ::slotted(*[data-editable]) {
         -webkit-user-select: text;
