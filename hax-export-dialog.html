@@ -106,6 +106,12 @@ Export dialog with all export options and settings provided.
         },
       },
       /**
+       * Created life cycle.
+       */
+      created: function() {
+        document.body.appendChild(this);
+      },
+      /**
        * Attached to the DOM, now fire that we exist.
        */
       attached: function() {

@@ -129,6 +129,12 @@ Export dialog with all export options and settings provided.
         },
       },
       /**
+       * Created life cycle.
+       */
+      created: function() {
+        document.body.appendChild(this);
+      },
+      /**
        * Attached to the DOM; now we can fire event to the store that
        * we exist and are the thing being edited.
        */
