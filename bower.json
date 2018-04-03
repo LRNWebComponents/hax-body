@@ -41,7 +41,8 @@
     "media-behaviors": "LRNWebComponents/media-behaviors#^1.1.1",
     "a11y-behaviors": "LRNWebcomponents/a11y-behaviors#^1.0.1",
     "lrnsys-layout": "LRNWebcomponents/lrnsys-layout#^1.4.4",
-    "responsive-grid": "LRNWebComponents/responsive-grid#^0.2.0"
+    "responsive-grid": "LRNWebComponents/responsive-grid#^0.2.0",
+    "place-holder": "LRNWebComponents/place-holder#^1.0.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
