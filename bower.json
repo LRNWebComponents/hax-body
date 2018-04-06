@@ -18,11 +18,11 @@
     "paper-swatch-picker": "PolymerElements/paper-swatch-picker#^2.0.1",
     "paper-slider": "PolymerElements/paper-slider#^2.0.4",
     "paper-checkbox": "PolymerElements/paper-checkbox#^2.0.1",
-    "hax-body-behaviors": "LRNWebComponents/hax-body-behaviors#^1.7.0",
+    "hax-body-behaviors": "LRNWebcomponents/hax-body-behaviors#^1.9.0",
     "paper-toggle-button": "PolymerElements/paper-toggle-button#^2.0.0",
     "vaadin-split-layout": "vaadin/vaadin-split-layout#^1.1.0",
     "elmsln-loading": "LRNWebComponents/elmsln-loading#^1.0.0",
-    "eco-json-schema-form": "LRNWebComponents/eco-json-schema-form#1.0.0-lrn7",
+    "eco-json-schema-form": "LRNWebComponents/eco-json-schema-form#1.0.0-lrn8",
     "iron-list": "PolymerElements/iron-list#^2.0.12",
     "paper-card": "PolymerElements/paper-card#^2.0.0",
     "paper-tabs": "PolymerElements/paper-tabs#^2.1.0",
@@ -43,7 +43,10 @@
     "lrnsys-layout": "LRNWebcomponents/lrnsys-layout#^1.4.4",
     "responsive-grid": "LRNWebComponents/responsive-grid#^0.2.0",
     "place-holder": "LRNWebComponents/place-holder#^1.0.0",
-    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^2.1.0"
+    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^2.1.0",
+    "juicy-ace-editor": "Juicy/juicy-ace-editor#^2.0.5",
+    "code-editor": "LRNWebcomponents/code-editor#^1.0.0",
+    "lrn-vocab": "LRNWebcomponents/lrn-vocab#^1.1.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
