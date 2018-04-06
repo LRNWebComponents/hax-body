@@ -65,7 +65,8 @@
     "a11y-gif-player": "LRNWebComponents/a11y-gif-player#^1.0.1",
     "aframe-player": "LRNWebComponents/aframe-player#^0.0.1",
     "lrndesign-chart": "LRNWebComponents/lrndesign-chart",
-    "video-player": "LRNWebComponents/video-player#^1.8.0"
+    "video-player": "LRNWebComponents/video-player#^1.8.0",
+    "lrn-math": "LRNWebComponents/lrn-math#^1.0.0"
   },
   "resolutions": {
     "webcomponentsjs": "^0.7.24",
