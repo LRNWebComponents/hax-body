@@ -519,7 +519,9 @@
               Polymer.HaxStore.instance.activeHaxBody.$.inlinetracker.insertAdjacentElement('beforebegin', node);
               // removes the selection even if the user lost focus
               // which will appear to wipe the old text and replace it with the new
-              this.activePlaceHolder.extractContents();
+              if (this.activePlaceHolder !== null) {
+                this.activePlaceHolder.extractContents();
+              }
               // set it to nothing
               this.activePlaceHolder = null;
               // hide the inline context menu
