@@ -47,7 +47,8 @@
     "juicy-ace-editor": "Juicy/juicy-ace-editor#^2.0.5",
     "code-editor": "LRNWebcomponents/code-editor#^1.0.0",
     "lrn-vocab": "LRNWebcomponents/lrn-vocab#^1.1.0",
-    "citation-element": "LRNWebcomponents/citation-element#^0.1.0"
+    "citation-element": "LRNWebcomponents/citation-element#^0.1.0",
+    "magazine-cover": "LRNWebcomponents/magazine-cover#^1.1.2"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
