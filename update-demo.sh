@@ -1,6 +1,6 @@
 # git clone the Polymer tools repository somewhere outside of your 
 # element project
-git clone git://github.com/Polymer/tools.git
+git clone git://github.com/LRNWebComponents/tools.git
 
 # Create a temporary directory for publishing your element and cd into it
 mkdir temp && cd temp
