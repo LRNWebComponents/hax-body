@@ -45,7 +45,7 @@
     "place-holder": "LRNWebComponents/place-holder#^1.0.0",
     "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^2.1.0",
     "juicy-ace-editor": "Juicy/juicy-ace-editor#^2.0.5",
-    "code-editor": "LRNWebcomponents/code-editor#^1.0.0",
+    "code-editor": "LRNWebcomponents/code-editor#^1.0.1",
     "lrn-vocab": "LRNWebcomponents/lrn-vocab#^1.1.0",
     "citation-element": "LRNWebcomponents/citation-element#^0.1.0",
     "magazine-cover": "LRNWebcomponents/magazine-cover#^1.1.2"

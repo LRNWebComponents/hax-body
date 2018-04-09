@@ -354,6 +354,8 @@ A LRN element that will change the world.
             Polymer.HaxStore.write('activeNode', newNode, this);
             // attempt to focus on the new node, may not always work
             newNode.focus();
+            // scroll to it
+            newNode.scrollIntoView({behavior: "smooth", inline: "nearest"});
           }, 100);
           return true;
         }
@@ -971,7 +973,11 @@ A LRN element that will change the world.
           Polymer.dom(this).insertBefore(menu, target);
         }
         catch(err) {
-          Polymer.dom(target.parentNode).insertBefore(menu, target);
+          try {
+            Polymer.dom(target.parentNode).insertBefore(menu, target);
+          }
+          catch(err2) {
+          }
         }
         // account for the target using these layout busters
         if (matchStyle) {
