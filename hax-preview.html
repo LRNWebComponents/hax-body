@@ -240,8 +240,8 @@ An element that can generate a form
           if (typeof this.previewNode.tagName !== typeof undefined && typeof Polymer.HaxStore.instance.elementList[this.previewNode.tagName.toLowerCase()] !== typeof undefined) {
             let element = this.element;
             let props = Polymer.HaxStore.instance.elementList[this.previewNode.tagName.toLowerCase()];
-            if (this.previewNode.getHaxJSONSchemaType === 'function') {
-            schema = Polymer.HaxStore.instance.getHaxJSONSchema(newValue, props, this.previewNode);
+            if (typeof this.previewNode.getHaxJSONSchemaType === 'function') {
+              schema = Polymer.HaxStore.instance.getHaxJSONSchema(newValue, props, this.previewNode);
             }
             else {
               schema = Polymer.HaxStore.instance.getHaxJSONSchema(newValue, props);
@@ -290,7 +290,7 @@ An element that can generate a form
             let element = this.element;
             let props = Polymer.HaxStore.instance.elementList[this.previewNode.tagName.toLowerCase()];
             let schema = {};
-            if (newValue.getHaxJSONSchemaType === 'function') {
+            if (typeof newValue.getHaxJSONSchemaType === 'function') {
               schema = Polymer.HaxStore.instance.getHaxJSONSchema(this.formKey, props, newValue);
             }
             else {
