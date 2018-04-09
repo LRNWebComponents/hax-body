@@ -240,7 +240,12 @@ An element that can generate a form
           if (typeof this.previewNode.tagName !== typeof undefined && typeof Polymer.HaxStore.instance.elementList[this.previewNode.tagName.toLowerCase()] !== typeof undefined) {
             let element = this.element;
             let props = Polymer.HaxStore.instance.elementList[this.previewNode.tagName.toLowerCase()];
+            if (this.previewNode.getHaxJSONSchemaType === 'function') {
             schema = Polymer.HaxStore.instance.getHaxJSONSchema(newValue, props, this.previewNode);
+            }
+            else {
+              schema = Polymer.HaxStore.instance.getHaxJSONSchema(newValue, props);
+            }
             for (var property in element.properties) {
               if (element.properties.hasOwnProperty(property)) {
                 if (typeof schema.properties[property] !== typeof undefined) {
@@ -284,7 +289,13 @@ An element that can generate a form
           if (typeof newValue.tagName !== typeof undefined && typeof Polymer.HaxStore.instance.elementList[newValue.tagName.toLowerCase()] !== typeof undefined) {
             let element = this.element;
             let props = Polymer.HaxStore.instance.elementList[this.previewNode.tagName.toLowerCase()];
-            let schema = Polymer.HaxStore.instance.getHaxJSONSchema(this.formKey, props, newValue);
+            let schema = {};
+            if (newValue.getHaxJSONSchemaType === 'function') {
+              schema = Polymer.HaxStore.instance.getHaxJSONSchema(this.formKey, props, newValue);
+            }
+            else {
+              schema = Polymer.HaxStore.instance.getHaxJSONSchema(this.formKey, props);
+            }
             // first, allow element properties to dictate defaults
             for (var property in element.properties) {
               if (element.properties.hasOwnProperty(property)) {
