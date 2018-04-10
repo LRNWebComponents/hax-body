@@ -332,6 +332,8 @@ as the events being bubbled up include HTML nodes to inject into something
             this.fire('hax-insert-content', detail);
           break;
           case 'hax-manager-open':
+            Polymer.HaxStore.instance.haxManager.resetManager();
+            Polymer.HaxStore.write('activeHaxElement', {}, this);
             Polymer.HaxStore.instance.haxManager.toggleDialog();
           break;
           case 'hax-stax-picker-open':
