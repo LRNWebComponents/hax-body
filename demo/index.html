@@ -16,6 +16,8 @@
     <link rel="import" href="../../polymer/polymer.html">
     <link rel="import" href="../../iron-icons/places-icons.html">
     <link rel="import" href="../../github-corner/github-corner.html">
+    <link rel="import" href="../../paper-tabs/paper-tabs.html">
+    <link rel="import" href="../../paper-tabs/paper-tab.html">
     <link rel="import" href="../hax-store.html">
     <link rel="import" href="../hax-body.html">
     <link rel="import" href="../hax-autoloader.html">
@@ -117,8 +119,11 @@
         padding: 0;
         margin: 0;
       }
-      .hax-project-buttons li a {
+      .hax-project-buttons paper-tab a {
         text-decoration: none;
+      }
+      .hax-project-buttons paper-button {
+        text-transform: unset;
       }
       .vertical-section-container {
         max-width: 60em;
@@ -137,15 +142,15 @@
   <body>
     <github-corner fill="#FF0000" target="_blank" href="https://github.com/LRNWebComponents/hax-body"></github-corner>
     <h1 style="text-align: center;">HAX your platform, now.. like right now.</h1>
-    <ul class="hax-project-buttons">
-      <li><a target="_blank" href="https://drupal.org/project/hax" tabindex="-1"><paper-button raised>Drupal</paper-button></a></li>
-      <li><a target="_blank" href="https://backdropcms.org/project/hax" tabindex="-1"><paper-button raised>Backdrop CMS</paper-button></a></li>
-      <li><a target="_blank" href="https://getgrav.org/downloads/plugins" tabindex="-1"><paper-button raised>Grav CMS</paper-button></a></li>
-      <li><a target="_blank" href="https://github.com/LRNWebComponents/hax-desktop-app" tabindex="-1"><paper-button raised>Desktop app</paper-button></a></li>
-      <li><a target="_blank" href="https://github.com/LRNWebComponents/hax-bookmarklet" tabindex="-1"><paper-button raised>Bookmarklet</paper-button></a></li>
-      <li><a target="_blank" href="https://github.com/LRNWebComponents/cms-hax" tabindex="-1"><paper-button raised>HAX for any CMS</paper-button></a></li>
-      <li><a target="_blank" href="https://github.com/LRNWebComponents/wysiwyg-hax" tabindex="-1"><paper-button raised>WYSIWYG style HAX</paper-button></a></li>
-    </ul>
+    <paper-tabs id="pagetabs" class="hax-project-buttons">
+      <paper-tab><a target="_blank" href="https://drupal.org/project/hax" tabindex="-1"><paper-button raised>Drupal</paper-button></a></paper-tab>
+      <paper-tab><a target="_blank" href="https://backdropcms.org/project/hax" tabindex="-1"><paper-button raised>Backdrop CMS</paper-button></a></paper-tab>
+      <paper-tab><a target="_blank" href="https://getgrav.org/downloads/plugins" tabindex="-1"><paper-button raised>Grav CMS</paper-button></a></paper-tab>
+      <paper-tab><a target="_blank" href="https://github.com/LRNWebComponents/hax-desktop-app" tabindex="-1"><paper-button raised>Desktop app</paper-button></a></paper-tab>
+      <paper-tab><a target="_blank" href="https://github.com/LRNWebComponents/hax-bookmarklet" tabindex="-1"><paper-button raised>Bookmarklet</paper-button></a></paper-tab>
+      <paper-tab><a target="_blank" href="https://github.com/LRNWebComponents/cms-hax" tabindex="-1"><paper-button raised>HAX for any CMS</paper-button></a></paper-tab>
+      <paper-tab><a target="_blank" href="https://github.com/LRNWebComponents/wysiwyg-hax" tabindex="-1"><paper-button raised>WYSIWYG style HAX</paper-button></a></paper-tab>
+    </paper-tabs>
     <div class="vertical-section-container">
       <template is="dom-bind">
         <hax-store app-store='{"url":"appstore.json"}'></hax-store>
@@ -169,15 +174,15 @@
           <h2>Really? Still need more. Ok, how about more useful things:</h2>
 
           <ul>
-            <li><a href="https://github.com/LRNWebComponents/hax-body" target="_blank">HAX github project</a>
+            <paper-tab><a href="https://github.com/LRNWebComponents/hax-body" target="_blank">HAX github project</a>
 </li>
 
-            <li><a href="https://docs.google.com/presentation/d/12nj5g8xg3NHlinu-9y_Tp6FnQCq5ygBRd0h9Sl75FsU/edit#slide=id.g32bf808b3d_4_45" target="_blank">HAX presentation on Authoring Experience</a>
+            <paper-tab><a href="https://docs.google.com/presentation/d/12nj5g8xg3NHlinu-9y_Tp6FnQCq5ygBRd0h9Sl75FsU/edit#slide=id.g32bf808b3d_4_45" target="_blank">HAX presentation on Authoring Experience</a>
 </li>
-<li><a href="https://www.youtube.com/playlist?list=PLJQupiji7J5eTqv8JFiW8SZpSeKouZACH">HAX Playlist</a>
+<paper-tab><a href="https://www.youtube.com/playlist?list=PLJQupiji7J5eTqv8JFiW8SZpSeKouZACH">HAX Playlist</a>
 </li>
 
-            <li><a href="https://drupal.psu.edu/blog/post/webcomponent-all-things-all-places-increase-d8-adoption" target="_blank">Tutorial videos on integration into Drupal 6, Drupal 7, BackdropCMS and GravCMS</a>
+            <paper-tab><a href="https://drupal.psu.edu/blog/post/webcomponent-all-things-all-places-increase-d8-adoption" target="_blank">Tutorial videos on integration into Drupal 6, Drupal 7, BackdropCMS and GravCMS</a>
 </li>
 
           </ul>
@@ -185,13 +190,13 @@
           <p>Additional info on who and why this exists</p>
 
           <ul>
-            <li><a href="https://www.elmsln.org/" target="_blank">ELMS: Learning Network (why HAX exists)</a>
+            <paper-tab><a href="https://www.elmsln.org/" target="_blank">ELMS: Learning Network (why HAX exists)</a>
 </li>
 
-            <li><a href="https://steam.psu.edu" target="_blank">Penn State STEAM Engine (collaborative Penn State dev / design group that envisioned HAX)</a>
+            <paper-tab><a href="https://steam.psu.edu" target="_blank">Penn State STEAM Engine (collaborative Penn State dev / design group that envisioned HAX)</a>
 </li>
 
-            <li><a href="https://www.twitter.com/elmsln" target="_blank">ELMS:LN twitter (keep up w/ our projects!)</a>
+            <paper-tab><a href="https://www.twitter.com/elmsln" target="_blank">ELMS:LN twitter (keep up w/ our projects!)</a>
 </li>
 
           </ul>
@@ -214,9 +219,6 @@
 <li>Transform education through openly available and open source tools that create a freer society</li>
 
             </ul>
-
-          <p></p>
-
           <meme-maker imageurl="https://media1.giphy.com/media/3o7TKMOy5zz1nuD71u/giphy.gif" image-url="https://media1.giphy.com/media/3o7TKMOy5zz1nuD71u/giphy.gif" toptext="sun moon GIF by Amy Ciavolino" top-text="Sup, suuuuuun?" alt="sun moon GIF by Amy Ciavolino" bottom-text="Hax, Moon. Hax." style="float:right;width:25%;"></meme-maker>
 
           <!--  AN HTML COMMENT HERE  -->
