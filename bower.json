@@ -49,7 +49,7 @@
     "lrn-vocab": "LRNWebcomponents/lrn-vocab#^1.1.0",
     "citation-element": "LRNWebcomponents/citation-element#^0.1.0",
     "magazine-cover": "LRNWebcomponents/magazine-cover#^1.1.3",
-    "a11y-gif-player": "LRNWebcomponents/a11y-gif-player#^1.0.2",
+    "a11y-gif-player": "LRNWebcomponents/a11y-gif-player#^1.0.3",
     "paper-styles": "PolymerElements/paper-styles#^2.1.0",
     "app-datepicker": "motss/app-datepicker#^2.12.0",
     "lrn-calendar": "LRNWebcomponents/lrn-calendar#^0.1.0"
