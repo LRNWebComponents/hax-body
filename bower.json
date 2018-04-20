@@ -52,7 +52,8 @@
     "a11y-gif-player": "LRNWebcomponents/a11y-gif-player#^1.0.3",
     "paper-styles": "PolymerElements/paper-styles#^2.1.0",
     "app-datepicker": "motss/app-datepicker#^2.12.0",
-    "lrn-calendar": "LRNWebcomponents/lrn-calendar#^0.1.0"
+    "lrn-calendar": "LRNWebcomponents/lrn-calendar#^0.1.0",
+    "person-testimonial": "LRNWebComponents/person-testimonial#^1.0.1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
