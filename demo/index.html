@@ -150,7 +150,7 @@
     <div class="vertical-section-container">
       <template is="dom-bind">
         <hax-store app-store='{"url":"appstore.json"}'></hax-store>
-        <hax-body context-offset-left="-248" style="padding-top:2em;">
+        <hax-body>
           
           <video-player resource="#678eb55d-f558-cf7b-5a39" prefix="oer:http://oerschema.org/ schema:http://schema.org/ dc:http://purl.org/dc/terms/ foaf:http://xmlns.com/foaf/0.1/ cc:http://creativecommons.org/ns# bib:http://bib.schema.org " responsive text-color-class="white-text" text-color="#ffffff" video-style="style1" style="width: 50%; float: right;" source="https://www.youtube.com/watch?v=LrS7dqokTLE" src="https://www.youtube-nocookie.com/embed/LrS7dqokTLE?showinfo=0&controls=1&rel=0" iframed="" width="560" height="315" caption="What is HAX and what can it do for me?" secondary-color="#212121" secondary-color-class="grey darken-4" yt-nocookie yt-controls video-color="ull"></video-player>
           <h2>Goals / Principles of HAX</h2>
@@ -229,34 +229,6 @@ as if we even have a product anyway. We're just trying to fundamentally transfor
           <citation-element></citation-element>
         </hax-autoloader>
         <hax-panel align="left">
-          <hax-panel-item
-            disabled
-            icon="hardware:videogame-asset"
-            icon-class="red-text"
-            label="Self-check"
-            event-name="h5p-multiple-choice"
-            voice-command="insert self check"></hax-panel-item>
-          <hax-panel-item
-            disabled
-            icon="timeline"
-            icon-class="yellow-text text-darken-4"
-            label="Timeline"
-            event-name="timeline"
-            voice-command="insert timeline"></hax-panel-item>
-          <hax-panel-item
-            disabled
-            icon="social:poll"
-            icon-class="orange-text"
-            label="Poll"
-            event-name="poll"
-            voice-command="insert poll"></hax-panel-item>
-          <hax-panel-item
-            disabled
-            icon="assignment"
-            icon-class="yellow-text text-darken-2"
-            label="Assignment"
-            event-name="assignment"
-            voice-command="insert assignment"></hax-panel-item>
         </hax-panel>
         <hax-manager></hax-manager>
         <hax-export-dialog></hax-export-dialog>
