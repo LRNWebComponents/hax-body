@@ -157,7 +157,17 @@ A single button in the hax panel for consistency.
           type: String,
           value: "button",
           reflectToAttribute: true,
-        }
+        },
+        /**
+         * Possible value to send along as well with the event.
+         * Can help with normalized event names / selection of
+         * options.
+         */
+        value: {
+          type: String,
+          value: '',
+          reflectToAttribute: true,
+        },
       },
       /**
        * Fire an event that includes the eventName of what was just pressed.
@@ -165,7 +175,7 @@ A single button in the hax panel for consistency.
       _fireEvent: function(e) {
         var normalizedEvent = Polymer.dom(e);
         var local = normalizedEvent.localTarget;
-        this.fire('hax-item-selected', {target: local, eventName: this.eventName});
+        this.fire('hax-item-selected', {target: local, value: this.value, eventName: this.eventName});
       }
     });
   </script>
