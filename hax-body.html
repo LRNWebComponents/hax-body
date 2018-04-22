@@ -505,8 +505,13 @@ A LRN element that will change the world.
             }
           }
         }
-        // set the opening tag
-        content += '>';
+        // set the opening tag, support self-closing tags
+        if (node.tagName.toLowerCase() === 'hr' || node.tagName.toLowerCase() === 'br' || node.tagName.toLowerCase() === 'img') {
+          content += '/>';
+        }
+        else {
+          content += '>';
+        }
         // account for things that say NOT to save slot values
         let props = Polymer.HaxStore.instance.elementList[node.tagName.toLowerCase()];
         // try and work against anything NOT a P tag
@@ -549,12 +554,16 @@ A LRN element that will change the world.
             }
           }
         }
-        // close the tag, placing a return in output for block elements
+        // don't put return for span since it's an inline tag
         if (node.tagName.toLowerCase() === 'span') {
           content += '</' + node.tagName.toLowerCase() + '>';
         }
+        else if (node.tagName.toLowerCase() === 'hr' || node.tagName.toLowerCase() === 'br' || node.tagName.toLowerCase() === 'img') {
+          // do nothing for self-closing tags they'll resolve themselves
+        }
+        // close the tag, placing a return in output for block elements
         else {
-          content += '</' + node.tagName.toLowerCase() + '>';
+          content += '</' + node.tagName.toLowerCase() + '>' + "\n";
         }
         if (this.globalPreferences.haxDeveloperMode) {
           console.log(content);
