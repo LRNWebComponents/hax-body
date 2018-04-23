@@ -990,6 +990,7 @@
   ],
   "autoloader": [
     "magazine-cover",
+    "task-list",
     "video-player",
     "lrn-table",
     "media-image",
