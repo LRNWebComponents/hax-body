@@ -267,6 +267,9 @@ A LRN element that will change the world.
         this.fire('hax-register-body', this);
         document.body.addEventListener('hax-store-property-updated', this._haxStorePropertyUpdated.bind(this));
       },
+      /**
+       * Global prefs updated, let's visualize stuff from hax-ray
+       */
       _globalPreferencesUpdated: function(newValue, oldValue) {
         if (typeof newValue !== typeof undefined && newValue != null) {
           this.haxRayMode = newValue.haxRayMode;
