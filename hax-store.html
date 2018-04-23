@@ -356,14 +356,14 @@
             // make a fake range of these section of the DOM
             var leftRange = doc.createRange();
             // start it at the beginning of the element and run it to
-            // just before that place holder we are targetting
+            // just before that place holder we are targeting
             leftRange.setStart(parent, parentOffset);
             leftRange.setEndBefore(node);
             // convert this front portion into a document fragment
             var left = leftRange.extractContents();
             // insert this fragment just before the activeNode.
             // This probably looks weird but effectively we copy the
-            // element in these opertaions and then insert the thing
+            // element in these operations and then insert the thing
             // next to itself. The extractContents function generates
             // a node from the part of the previous one as well as
             // deletes what was there from the DOM. This effectively
