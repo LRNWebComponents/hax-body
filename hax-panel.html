@@ -191,6 +191,12 @@ as the events being bubbled up include HTML nodes to inject into something
         on-tap="_htmlExportDialog"
         icon="code"
         label="Export"></hax-panel-item>
+      <hax-panel-item
+        icon="cancel"
+        id="haxcancelbutton"
+        label="Cancel"
+        event-name="cancel"
+        voice-command="cancel hax"></hax-panel-item>
     </app-drawer>
     <hax-preferences-dialog></hax-preferences-dialog>
     <hax-stax-picker></hax-stax-picker>
@@ -288,6 +294,9 @@ as the events being bubbled up include HTML nodes to inject into something
         switch(detail.eventName) {
           case 'open-panel':
             this._clickButton();
+          break;
+          case 'cancel':
+            this.toggle();
           break;
           case 'text':
             detail.tag = 'p';
