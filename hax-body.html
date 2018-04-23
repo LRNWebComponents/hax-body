@@ -165,11 +165,10 @@ A LRN element that will change the world.
       <hax-plate-context id="platecontextmenu" class="hax-context-menu ignore-activation"></hax-plate-context>
       <hax-input-mixer id="haxinputmixer" class="hax-context-menu ignore-activation"></hax-input-mixer>
     </div>
-    <iron-a11y-keys target="[[activeNode]]" keys="enter" on-keys-pressed="_enterKeyPressed"></iron-a11y-keys>
-    <iron-a11y-keys target="[[activeNode]]" keys="esc" on-keys-pressed="_escKeyPressed"></iron-a11y-keys>
+    <iron-a11y-keys target="[[activeNode]]" keys="esc" on-keys-pressed="_escKeyPressed" stop-keyboard-event-propagation></iron-a11y-keys>
     <iron-a11y-keys target="[[activeNode]]" keys="del backspace" on-keys-pressed="_delKeyPressed"></iron-a11y-keys>
-    <iron-a11y-keys target="[[activeNode]]" keys="tab" on-keys-pressed="_tabKeyPressed" stop-keyboard-event-propagation></iron-a11y-keys>
-    <iron-a11y-keys target="[[activeNode]]" keys="shift+tab" on-keys-pressed="_tabBackKeyPressed" stop-keyboard-event-propagation></iron-a11y-keys>
+    <iron-a11y-keys target="[[activeNode]]" keys="shift+tab" on-keys-pressed="_tabBackKeyPressed" stop-keyboard-event-propagation></iron-a11y-keys>    <iron-a11y-keys target="[[activeNode]]" keys="tab" on-keys-pressed="_tabKeyPressed" stop-keyboard-event-propagation></iron-a11y-keys>
+
   </template>
 
   <script>
@@ -635,7 +634,7 @@ A LRN element that will change the world.
           // currently been set. it's by no means perfect but it'll
           // be a really good start
           this.__activeContextType = this.$.textcontextmenu;
-          this._positionContextMenu(this.$.inlinecontextmenu, node, offsetmenu, -44);
+          this._positionContextMenu(this.$.inlinecontextmenu, node, offsetmenu, -54, false);
         }
         this._positionContextMenu(this.__activeContextType, node, offsetmenu, -54);
         this._positionContextMenu(this.$.platecontextmenu, node, offsetplate, -8, false);
@@ -1074,29 +1073,20 @@ A LRN element that will change the world.
         Polymer.dom(this.$.contextcontainer).appendChild(menu);
       },
       /**
-       * When the user hits enter look to see if we are in a p
-       * tag and create a new block
-       */
-      _enterKeyPressed: function (e) {
-        if (this.editMode) {
-          const activeNodeTagName = this.activeNode.tagName;
-          if (['P','H1','H2','H3','H4','H5','H6'].includes(activeNodeTagName)) {
-            e.preventDefault();
-            this.fire('hax-insert-content', {
-              tag: 'p',
-              content: '',
-            });
-          }
-        }
-      },
-      /**
        * When the user hits escape key, let's deselect what we have now
        */
       _escKeyPressed: function (e) {
         if (this.editMode) {
           e.preventDefault();
-          const activeNodeTagName = this.activeNode.tagName;
-          Polymer.HaxStore.write('activeNode', null, this);
+          e.stopPropagation();
+          // support 1st press only closing the inline context menu
+          if (this.$.inlinecontextmenu.opened) {
+            this.$.inlinecontextmenu.opened = false;
+          }
+          else {
+            Polymer.HaxStore.write('activeNode', null, this);
+            document.body.focus();
+          }
         }
       },
       /**
@@ -1109,6 +1099,7 @@ A LRN element that will change the world.
           const activeNodeTextContent = Polymer.dom(this.activeNode).textContent;
           if (activeNodeTextContent === '') {
             e.preventDefault();
+            e.stopPropagation();
             this.haxDeleteNode(this.activeNode);
           }
         }
@@ -1123,7 +1114,7 @@ A LRN element that will change the world.
           let focus = false;
           let node = this.activeNode;
           const activeNodeTagName = this.activeNode.tagName;
-          if (['UL','OL'].includes(node.tagName)) {
+          if (['UL','OL'].includes(activeNodeTagName)) {
             if (this.polyfillSafe) {
               document.execCommand('indent');
             }
@@ -1154,7 +1145,8 @@ A LRN element that will change the world.
           e.stopPropagation();
           let focus = false;
           let node = Polymer.dom(this.activeNode).previousSibling;
-          if (['UL','OL'].includes(node.tagName)) {
+          const activeNodeTagName = this.activeNode.tagName;
+          if (['UL','OL'].includes(activeNodeTagName)) {
             if (this.polyfillSafe) {
               document.execCommand('outdent');
             }
@@ -1167,7 +1159,9 @@ A LRN element that will change the world.
               }
             }
             if (node != null) {
-              node.focus();
+              setTimeout( () => {
+                node.focus();
+              }, 100);
             }
           }
         }

@@ -298,9 +298,98 @@
               return 'Are you sure you want to leave? Your work will not be saved!';
             }
           }
+          // capture events and intercept them globally
+          document.addEventListener('keypress', (event) => {
+            const keyName = event.key;
+            // if we are editing and enter is pressed see if we should
+            // process it or inject a new p tag
+            if (keyName === 'Enter' && Polymer.HaxStore.instance.editMode && Polymer.HaxStore.instance.activeNode !== null) {
+              const activeNodeTagName = Polymer.HaxStore.instance.activeNode.tagName;
+              if (['P','H1','H2','H3','H4','H5','H6'].includes(activeNodeTagName)) {
+                event.preventDefault();
+                // we need to do goofy stuff for p tags since people
+                // will expect to be able to split them mid typing
+                if (activeNodeTagName === 'P') {
+                  // find that damn cursor
+                  var selection = window.getSelection();
+                  let range = selection.getRangeAt(0).cloneRange();
+                  // create a cloned range where it's sitting
+                  range.setStart(selection.focusNode, range.startOffset);
+                  // generate a completely fake element and insert it so we
+                  // track it's position as a "split point"
+                  var frag = document.createRange().createContextualFragment('<hax-split-point></hax-split-point>');
+                  range.insertNode(frag);
+                  // force this to be a constant since activeNode will
+                  // change mid operation but we want limit to remain
+                  // as a pointer to it's position in the DOM
+                  const limit = Polymer.HaxStore.instance.activeNode;
+                  var node = Polymer.dom(Polymer.HaxStore.instance.activeNode).querySelector('hax-split-point');
+                  // run a split node function as modified from stackoverflow
+                  this.__splitNode(node, limit);
+                }
+                else {
+                  Polymer.HaxStore.instance.fire('hax-insert-content', {
+                    tag: 'p',
+                    content: '',
+                  });
+                }
+              }
+            }
+          });
           this._injectToast();
           // register built in primitive definitions
           this._buildPrimitiveDefinitions();
+        },
+        /**
+         * Magic node splitting function
+         */
+        __splitNode: function(node, limit) {
+          // kick off activeNode so that we drop classes / cruft
+          Polymer.HaxStore.write('activeNode', null, this);
+          // allow that to have processed...
+          setTimeout( () => {
+            // find the parent of the item we are splicing
+            var parent = limit.parentNode;
+            // get the index of this selected text way down below
+            var parentOffset = this.__getNodeIndex(parent, limit);
+            var doc = node.ownerDocument;
+            // make a fake range of these section of the DOM
+            var leftRange = doc.createRange();
+            // start it at the beginning of the element and run it to
+            // just before that place holder we are targetting
+            leftRange.setStart(parent, parentOffset);
+            leftRange.setEndBefore(node);
+            // convert this front portion into a document fragment
+            var left = leftRange.extractContents();
+            // insert this fragment just before the activeNode.
+            // This probably looks weird but effectively we copy the
+            // element in these opertaions and then insert the thing
+            // next to itself. The extractContents function generates
+            // a node from the part of the previous one as well as
+            // deletes what was there from the DOM. This effectively
+            // lets us take 1 element and split it into two at the
+            // cursor position as triggered by an Enter press. Insane.
+            Polymer.dom(this.activeHaxBody).insertBefore(left, limit);
+            // remove the place holder
+            node.parentNode.removeChild(node);
+            // set active back to what it was, technically moved down
+            // in the document order because of above
+            Polymer.HaxStore.write('activeNode', limit, this);
+          }, 100);
+        },
+        /**
+         * Get node index within a parent item so we know
+         * how far down the object to look for it's position.
+         * This is a helper with no other meaningful purpose.
+         */
+        __getNodeIndex: function(parent, node) {
+          var index = parent.childNodes.length;
+          while (index--) {
+            if (node === parent.childNodes[index]) {
+              break;
+            }
+          }
+          return index;
         },
         /**
          * Created life-cycle to ensure a single global store.
