@@ -107,7 +107,7 @@ Export dialog with all export options and settings provided.
       listeners: {
         'download.tap': 'download',
         'downloadfull.tap': 'downloadfull',
-        'import.tap': 'import',
+        'import.tap': 'importContent',
         'copy.tap': 'selectBody',
       },
       behaviors: [mtz.FileDownloadBehavior],
@@ -150,25 +150,10 @@ Export dialog with all export options and settings provided.
       /**
        * Download file.
        */
-      import: function(e) {
-        // set the content in the tetarea to that of a fake element
+      importContent: function(e) {
+        // import contents of this text area into the activeHaxBody
         const htmlBody = this.$.textarea.value;
-        const validTags = Polymer.HaxStore.instance.validTagList;
-        var frag = document.createElement('div');
-        frag.innerHTML = htmlBody;
-        // clone the fragment which will force an escalation to full node
-        var newNode = frag;
-        // kill the slot of the active body, all of it
-        Polymer.HaxStore.wipeSlot(Polymer.HaxStore.instance.activeHaxBody, '*');
-        setTimeout( () => {
-          // make the parent of the first div in the document becomes the context node
-          for (var i=0; i<newNode.childNodes.length; i++) {
-            // verify this tag is a valid one
-            if (typeof newNode.childNodes[i].tagName !== typeof undefined && validTags.includes(newNode.childNodes[i].tagName.toLowerCase())) {
-              Polymer.dom(Polymer.HaxStore.instance.activeHaxBody).appendChild(newNode.childNodes[i]);
-            }
-          }
-        }, 250);
+        return Polymer.HaxStore.instance.activeHaxBody.importContent(htmlBody);
       },
       /**
        * selectBody

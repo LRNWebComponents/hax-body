@@ -732,6 +732,32 @@ A LRN element that will change the world.
         }
       },
       /**
+       * Bulk import HTML with option to clear what is currently
+       * in the slot of this tag. This also validates tags
+       * that are being inserted for security based on the
+       * internal whitelist.
+       */
+      importContent: function(html, clear = true) {
+        const validTags = Polymer.HaxStore.instance.validTagList;
+        let fragment = document.createElement('div');
+        fragment.innerHTML = html;
+        const children = fragment.childNodes;
+        // kill the slot of the active body, all of it
+        if (clear) {
+          Polymer.HaxStore.wipeSlot(this, '*');
+        }
+        // pause quickly to ensure wipe goes through successfully
+        setTimeout( () => {
+          // loop over the new nodes
+          for (var i=0; i<children.length; i++) {
+            // verify this tag is a valid one
+            if (typeof children[i].tagName !== typeof undefined && validTags.includes(children[i].tagName.toLowerCase())) {
+              Polymer.dom(this).appendChild(children[i]);
+            }
+          }
+        }, 250);
+      },
+      /**
        * Respond to hax operations.
        */
       _haxContextOperation: function(e) {
