@@ -76,6 +76,12 @@
             type: Object,
           },
           /**
+           * Hax autoloader element.
+           */
+          haxAutoloader: {
+            type: Object,
+          },
+          /**
            * A list of all haxBodies that exist
            */
           haxBodies: {
@@ -251,10 +257,11 @@
           }
         },
         /**
-         * load and attach items from the app store.
+         * Load and attach items from the app store.
          */
         _loadAppStoreData: function(newValue, oldValue) {
           if (typeof newValue !== typeof undefined) {
+            // load apps automatically
             if (typeof newValue.apps !== typeof undefined) {
               var apps = newValue.apps;
               for (var i = 0; i < apps.length; i++) {
@@ -263,12 +270,20 @@
                 document.body.appendChild(app);
               }
             }
+            // load in stax dynamically
             if (typeof newValue.stax !== typeof undefined) {
               var staxs = newValue.stax;
               for (var i = 0; i < staxs.length; i++) {
                 let stax = document.createElement('hax-stax');
                 stax.data = staxs[i];
                 document.body.appendChild(stax);
+              }
+            }
+            // autoload elements
+            if (typeof newValue.autoloader !== typeof undefined) {
+              for (var i = 0; i < newValue.autoloader.length; i++) {
+                let loader = document.createElement(newValue.autoloader[i]);
+                Polymer.dom(this.haxAutoloader).appendChild(loader);
               }
             }
           }
@@ -299,6 +314,7 @@
           // notice hax property definitions coming from anywhere
           document.body.addEventListener('hax-register-properties', this._haxStoreRegisterProperties.bind(this));
           document.body.addEventListener('hax-register-manager', this._haxStoreRegisterManager.bind(this));
+          document.body.addEventListener('hax-register-autoloader', this._haxStoreRegisterAutoloader.bind(this));
           document.body.addEventListener('hax-register-body', this._haxStoreRegisterBody.bind(this));
           document.body.addEventListener('hax-register-panel', this._haxStoreRegisterPanel.bind(this));
           document.body.addEventListener('hax-register-app', this._haxStoreRegisterApp.bind(this));
@@ -484,6 +500,14 @@
         _haxStoreRegisterManager: function(e) {
           if (e.detail && typeof this.haxManager === typeof undefined) {
             this.haxManager = e.detail;
+          }
+        },
+        /**
+         * Register autoloader so we can ship to it from app-store spec
+         */
+        _haxStoreRegisterAutoloader: function(e) {
+          if (e.detail && typeof this.haxAutoloader === typeof undefined) {
+            this.haxAutoloader = e.detail;
           }
         },
         /**

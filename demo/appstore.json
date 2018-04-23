@@ -987,5 +987,26 @@
         }
       ]
     }
+  ],
+  "autoloader": [
+    "magazine-cover",
+    "video-player",
+    "lrn-table",
+    "media-image",
+    "lrndesign-blockquote",
+    "meme-maker",
+    "a11y-gif-player",
+    "paper-audio-player",
+    "wikipedia-query",
+    "wave-player",
+    "pdf-element",
+    "lrn-vocab",
+    "lrn-math",
+    "person-testimonial",
+    "citation-element",
+    "lrn-calendar",
+    "code-editor",
+    "place-holder",
+    "aframe-player"
   ]
 }
