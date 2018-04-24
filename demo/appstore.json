@@ -989,6 +989,7 @@
     }
   ],
   "autoloader": [
+    "hero-banner",
     "magazine-cover",
     "task-list",
     "video-player",
