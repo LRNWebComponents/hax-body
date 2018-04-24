@@ -54,8 +54,9 @@
     "app-datepicker": "motss/app-datepicker#^2.12.0",
     "lrn-calendar": "LRNWebcomponents/lrn-calendar#^0.1.0",
     "person-testimonial": "LRNWebComponents/person-testimonial#^1.0.1",
-    "task-list": "LRNWebComponents/task-list#^0.1.0",
-    "hero-banner": "LRNWebComponents/hero-banner#^1.0.0"
+    "task-list": "LRNWebComponents/task-list#^0.1.1",
+    "hero-banner": "LRNWebComponents/hero-banner#^1.0.0",
+    "oer-schema": "LRNWebComponents/oer-schema#^1.0.2"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

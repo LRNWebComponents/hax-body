@@ -989,6 +989,7 @@
     }
   ],
   "autoloader": [
+    "oer-schema",
     "hero-banner",
     "magazine-cover",
     "task-list",
