@@ -323,6 +323,12 @@ A LRN element that will change the world.
               else if (properties[property] === false) {
                 newNode.removeAttribute(attributeName);
               }
+              else if (properties[property] != null && properties[property].constructor === Array) {
+                newNode.set(attributeName, properties[property]);
+              }
+              else if (properties[property] != null && properties[property].constructor === Object) {
+                newNode.set(attributeName, properties[property]);
+              }
               else {
                 newNode.setAttribute(attributeName, properties[property]);
               }

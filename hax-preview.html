@@ -315,7 +315,15 @@ An element that can generate a form
                     schema.properties[property].component.properties.value = element.properties[property];
                   }
                 }
-                newValue.setAttribute(property, element.properties[property]);
+                if (element.properties[property] != null && element.properties[property].constructor === Array) {
+                  newValue.set(property, element.properties[property]);
+                }
+                else if (element.properties[property] != null && element.properties[property].constructor === Object) {
+                  newValue.set(property, element.properties[property]);
+                }
+                else {
+                  newValue.setAttribute(property, element.properties[property]);
+                }
                 this.set('value.' + property, element.properties[property]);
               }
             }
@@ -402,7 +410,16 @@ An element that can generate a form
                 node.removeAttribute(attributeName);
               }
               else {
-                node.setAttribute(attributeName, this.value[props.settings[this.formKey][value].property]);
+                // account for Array based values
+                if (this.value[props.settings[this.formKey][value].property] != null && this.value[props.settings[this.formKey][value].property].constructor === Array) {
+                  node.set(attributeName, Polymer.HaxStore.toArray(this.value[props.settings[this.formKey][value].property]));
+                }
+                else if (this.value[props.settings[this.formKey][value].property] != null && this.value[props.settings[this.formKey][value].property].constructor === Object) {
+                  node.set(attributeName, this.value[props.settings[this.formKey][value].property]);
+                }
+                else {
+                  node.setAttribute(attributeName, this.value[props.settings[this.formKey][value].property]);
+                }
               }
               this.set('element.properties.' + props.settings[this.formKey][value].property, this.value[props.settings[this.formKey][value].property]);
             }
