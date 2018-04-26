@@ -989,6 +989,7 @@
     }
   ],
   "autoloader": [
+    "multiple-choice",
     "oer-schema",
     "hero-banner",
     "magazine-cover",
