@@ -466,6 +466,8 @@ A LRN element that will change the world.
         // start to rebuild the same tag we got in a generalized way
         content += '<' + node.tagName.toLowerCase();
         // grab all of the original's attributes, and pass them to the replacement
+        // @todo need to check props on output too
+        //let props = node.properties;
         for(var j = 0, l = node.attributes.length; j < l; ++j){
           var nodeName  = node.attributes.item(j).nodeName;
           var value = node.attributes.item(j).value;
@@ -477,7 +479,7 @@ A LRN element that will change the world.
             }
           }
           // encode objects and arrays because they are special
-          if (nodeName != 'style' && (typeof value === typeof Object || typeof value === typeof Array)) {
+          if (nodeName != 'style' && (typeof value === typeof Object || value.constructor === Array)) {
             content += ' ' + nodeName + '="' + JSON.stringify(value).replace(new RegExp('"', 'g'), '&quot;') + '"';
           }
           // only write things that aren't empty
@@ -715,10 +717,10 @@ A LRN element that will change the world.
         this.hideContextMenus();
         this._hideContextMenu(this.$.inlinetracker);
         // shift active to a viable replacement
-        if (this.activeNode.previousElementSibling !== null) {
+        if (this.activeNode != null && this.activeNode.previousElementSibling !== null) {
           this.activeNode.previousElementSibling.focus();
         }
-        else if (this.activeNode.nextElementSibling !== null) {
+        else if (this.activeNode != null && this.activeNode.nextElementSibling !== null) {
           this.activeNode.nextElementSibling.focus();
         }
         else {
