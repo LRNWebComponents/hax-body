@@ -56,7 +56,8 @@
     "person-testimonial": "LRNWebComponents/person-testimonial#^1.0.1",
     "task-list": "LRNWebComponents/task-list#^0.1.1",
     "hero-banner": "LRNWebComponents/hero-banner#^1.0.0",
-    "oer-schema": "LRNWebComponents/oer-schema#^1.0.2"
+    "oer-schema": "LRNWebComponents/oer-schema#^1.0.2",
+    "paper-collapse-item": "Collaborne/paper-collapse-item#^2.3.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
