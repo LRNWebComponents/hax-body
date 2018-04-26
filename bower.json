@@ -18,11 +18,11 @@
     "paper-swatch-picker": "PolymerElements/paper-swatch-picker#^2.0.1",
     "paper-slider": "PolymerElements/paper-slider#^2.0.4",
     "paper-checkbox": "PolymerElements/paper-checkbox#^2.0.1",
-    "hax-body-behaviors": "LRNWebComponents/hax-body-behaviors#^1.11.1",
+    "hax-body-behaviors": "LRNWebComponents/hax-body-behaviors#^1.11.2",
     "paper-toggle-button": "PolymerElements/paper-toggle-button#^2.0.0",
     "vaadin-split-layout": "vaadin/vaadin-split-layout#^1.1.0",
     "elmsln-loading": "LRNWebComponents/elmsln-loading#^1.0.0",
-    "eco-json-schema-form": "LRNWebComponents/eco-json-schema-form#1.0.0-lrn8",
+    "eco-json-schema-form": "LRNWebComponents/eco-json-schema-form#1.0.0-lrn9",
     "iron-list": "PolymerElements/iron-list#^2.0.12",
     "paper-card": "PolymerElements/paper-card#^2.0.0",
     "paper-tabs": "PolymerElements/paper-tabs#^2.1.0",
@@ -78,7 +78,10 @@
     "aframe-player": "LRNWebComponents/aframe-player#^0.0.1",
     "lrndesign-chart": "LRNWebComponents/lrndesign-chart",
     "video-player": "LRNWebComponents/video-player#^1.8.0",
-    "lrn-math": "LRNWebComponents/lrn-math#^1.0.0"
+    "lrn-math": "LRNWebComponents/lrn-math#^1.0.0",
+    "to-do": "LRNWebComponents/to-do#^1.0.1",
+    "simple-timer": "annsonn/simple-timer#^1.0.2",
+    "silly-hax-game": "LRNWebComponents/silly-hax-game"
   },
   "resolutions": {
     "webcomponentsjs": "^0.7.24",
