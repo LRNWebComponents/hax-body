@@ -16,6 +16,7 @@
     <link rel="import" href="../../polymer/polymer.html">
     <link rel="import" href="../../iron-icons/places-icons.html">
     <link rel="import" href="../../github-corner/github-corner.html">
+    <link rel="import" href="../../silly-hax-game/silly-hax-game.html">
     <link rel="import" href="../../paper-tabs/paper-tabs.html">
     <link rel="import" href="../../paper-tabs/paper-tab.html">
     <link rel="import" href="../hax-store.html">
@@ -133,10 +134,24 @@
       .element-invisible-example {
         display: none;
       }
+      silly-hax-game {
+        position: absolute;
+        transform: scale(.8);
+        right: 0;
+        top: 50px;
+        z-index: 100;
+      }
+      silly-hax-game[playing] {
+        position: fixed;
+        top: 0;
+        right: 0;
+        transform: scale(1);
+      }
     </style>
   </head>
   <body>
     <github-corner fill="#FF0000" target="_blank" href="https://github.com/LRNWebComponents/hax-body"></github-corner>
+    <silly-hax-game></silly-hax-game>
     <span style="float:left; margin-left:100px;margin-top:-20px;"><--- (click to get this party started)</span>
     <h1 style="text-align: center;">#haxtheweb today!</h1>
     <paper-tabs id="pagetabs" class="hax-project-buttons">
