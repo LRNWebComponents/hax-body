@@ -22,7 +22,7 @@
     "paper-toggle-button": "PolymerElements/paper-toggle-button#^2.0.0",
     "vaadin-split-layout": "vaadin/vaadin-split-layout#^1.1.0",
     "elmsln-loading": "LRNWebComponents/elmsln-loading#^1.0.0",
-    "eco-json-schema-form": "LRNWebComponents/eco-json-schema-form#1.0.0-lrn9",
+    "eco-json-schema-form": "LRNWebComponents/eco-json-schema-form#v1.0.0-lrn10",
     "iron-list": "PolymerElements/iron-list#^2.0.12",
     "paper-card": "PolymerElements/paper-card#^2.0.0",
     "paper-tabs": "PolymerElements/paper-tabs#^2.1.0",
