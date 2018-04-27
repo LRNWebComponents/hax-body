@@ -769,7 +769,7 @@
        * Helper to convert camel case to dash; important when setting attributes.
        */
       Polymer.HaxStore.camelToDash = (str) => {
-        return str.replace(/\W+/g, '-').replace(/([a-z\d])([A-Z])/g, '$1-$2');
+        return str.replace(/\W+/g, '-').replace(/([a-z\d])([A-Z])/g, '$1-$2').toLowerCase();
       };
       /**
        * Helper to convert dash to camel; important when reading attributes.
