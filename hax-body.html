@@ -508,8 +508,9 @@ A LRN element that will change the world.
           for (var j in node.properties){
             var nodeName = Polymer.HaxStore.camelToDash(j);
             var value = null;
-            if (typeof node.properties[j].value !== typeof undefined) {
-              value = node.properties[j].value;
+            // prefer local value over properties object if possible
+            if (typeof node[j] !== typeof undefined) {
+              value = node[j];
             }
             // encode objects and arrays because they are special
             if (value != null && (typeof value === typeof Object || value.constructor === Array)) {
