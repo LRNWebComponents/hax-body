@@ -183,6 +183,7 @@ as the events being bubbled up include HTML nodes to inject into something
         voice-command="insert divider"></hax-panel-item>
       <slot></slot>
       <hax-panel-item
+        hidden$="[[hidePreferencesButton]]"
         on-tap="_preferencesDialog"
         icon="settings"
         label="Preferences"></hax-panel-item>
@@ -192,6 +193,7 @@ as the events being bubbled up include HTML nodes to inject into something
         icon="code"
         label="Export"></hax-panel-item>
       <hax-panel-item
+        hidden$="[[hidePanelOps]]"
         icon="cancel"
         id="haxcancelbutton"
         label="Cancel"
@@ -229,14 +231,22 @@ as the events being bubbled up include HTML nodes to inject into something
           observer: '_editModeChanged',
         },
         /**
-         * Showing advanced area.
+         * Showing export area.
          */
         hideExportButton: {
           type: Boolean,
           value: false,
         },
         /**
-         * Showing button area at all.
+         * Showing preferences area.
+         */
+        hidePreferencesButton: {
+          type: Boolean,
+          value: false,
+        },
+        /**
+         * Showing button area at all a well as internal
+         * state managing buttons like cancel and save
          */
         hidePanelOps: {
           type: Boolean,
