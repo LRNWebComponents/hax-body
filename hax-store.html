@@ -281,9 +281,20 @@
             }
             // autoload elements
             if (typeof newValue.autoloader !== typeof undefined) {
-              for (var i = 0; i < newValue.autoloader.length; i++) {
-                let loader = document.createElement(newValue.autoloader[i]);
-                Polymer.dom(this.haxAutoloader).appendChild(loader);
+              // edge case, wait till haxAutoloader has been registered
+              if (typeof this.haxAutoloader === typeof undefined) {
+                setTimeout( () => {
+                  for (var i = 0; i < newValue.autoloader.length; i++) {
+                    let loader = document.createElement(newValue.autoloader[i]);
+                    Polymer.dom(this.haxAutoloader).appendChild(loader);
+                  }
+                }, 250);
+              }
+              else {
+                for (var i = 0; i < newValue.autoloader.length; i++) {
+                  let loader = document.createElement(newValue.autoloader[i]);
+                  Polymer.dom(this.haxAutoloader).appendChild(loader);
+                }
               }
             }
           }
