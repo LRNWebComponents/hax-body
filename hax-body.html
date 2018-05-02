@@ -757,12 +757,22 @@ A LRN element that will change the world.
        * Delete the node passed in
        */
       haxDeleteNode: function(node) {
-        // move the context menu before duplicating!!!!
+        // move the context menu before deleting!!!!
         this.hideContextMenus();
         this._hideContextMenu(this.$.inlinetracker);
         // shift active to a viable replacement
         if (this.activeNode != null && this.activeNode.previousElementSibling !== null) {
           this.activeNode.previousElementSibling.focus();
+          // @todo cursor at the END of the element
+          /*setTimeout( () => {
+            if (this.activeNode.tagName === 'P') {
+              // select everything
+              this.activeNode.select();
+              var sel = window.getSelection();
+              let range = selection.getRangeAt(0);
+              range.setStart(this.activeNode, range.endOffset);
+            }
+          }, 250);*/
         }
         else if (this.activeNode != null && this.activeNode.nextElementSibling !== null) {
           this.activeNode.nextElementSibling.focus();
