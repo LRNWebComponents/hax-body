@@ -154,6 +154,13 @@
             value: false,
           },
           /**
+           * skip the exit trap
+           */
+          skipExitTrap: {
+            type: Boolean,
+            value: false,
+          },
+          /**
            * Default settings that can be overridden as needed
            */
           defaults: {
@@ -305,7 +312,7 @@
         attached: function() {
           window.onbeforeunload = function() {
             // ensure we don't leave DURING edit mode
-            if (Polymer.HaxStore.instance.editMode) {
+            if (!Polymer.HaxStore.instance.skipExitTrap && Polymer.HaxStore.instance.editMode) {
               return 'Are you sure you want to leave? Your work will not be saved!';
             }
           }
