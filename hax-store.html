@@ -442,7 +442,7 @@
             'canPosition': true,
             'canEditSource': true,
             'gizmo': {
-              'title': 'iframe',
+              'title': 'Bais iframe',
               'description': 'A basic iframe',
               'icon': 'icons:fullscreen',
               'color': 'grey',
@@ -462,7 +462,7 @@
             'settings': {
               'quick': [
                 {
-                  'property': 'src',
+                  'attribute': 'src',
                   'title': 'Source',
                   'description': 'The URL for this video.',
                   'inputMethod': 'textfield',
@@ -470,16 +470,44 @@
                   'required': true,
                   'validationType': 'url',
                 },
+                {
+                  'attribute': 'height',
+                  'title': 'Height',
+                  'description': 'height in pixels of the item',
+                  'inputMethod': 'textfield',
+                  'icon': 'icons:swap-vert',
+                },
+                {
+                  'attribute': 'width',
+                  'title': 'Width',
+                  'description': 'width in pixels of the item',
+                  'inputMethod': 'textfield',
+                  'icon': 'icons:swap-horiz',
+                },
               ],
               'configure': [
                 {
-                  'property': 'src',
+                  'attribute': 'src',
                   'title': 'Source',
                   'description': 'The URL for this video.',
                   'inputMethod': 'textfield',
                   'icon': 'link',
                   'required': true,
                   'validationType': 'url',
+                },
+                {
+                  'attribute': 'height',
+                  'title': 'Height',
+                  'description': 'height in pixels of the item',
+                  'inputMethod': 'textfield',
+                  'icon': 'icons:swap-vert',
+                },
+                {
+                  'attribute': 'width',
+                  'title': 'Width',
+                  'description': 'width in pixels of the item',
+                  'inputMethod': 'textfield',
+                  'icon': 'icons:swap-horiz',
                 },
               ],
               'advanced': []
@@ -515,7 +543,7 @@
             'settings': {
               'quick': [
                 {
-                  'property': 'src',
+                  'attribute': 'src',
                   'title': 'Source',
                   'description': 'The URL for this video.',
                   'inputMethod': 'textfield',
@@ -524,16 +552,30 @@
                   'validationType': 'url',
                 },
                 {
-                  'property': 'alt',
+                  'attribute': 'alt',
                   'title': 'Alt text',
                   'description': 'Useful for screen readers and improved SEO.',
                   'inputMethod': 'textfield',
                   'icon': 'accessibility',
+                },
+                {
+                  'attribute': 'height',
+                  'title': 'Height',
+                  'description': 'height in pixels of the item',
+                  'inputMethod': 'textfield',
+                  'icon': 'icons:swap-vert',
+                },
+                {
+                  'attribute': 'width',
+                  'title': 'Width',
+                  'description': 'width in pixels of the item',
+                  'inputMethod': 'textfield',
+                  'icon': 'icons:swap-horiz',
                 },
               ],
               'configure': [
                 {
-                  'property': 'src',
+                  'attribute': 'src',
                   'title': 'Source',
                   'description': 'The URL for this video.',
                   'inputMethod': 'textfield',
@@ -542,17 +584,117 @@
                   'validationType': 'url',
                 },
                 {
-                  'property': 'alt',
+                  'attribute': 'alt',
                   'title': 'Alt text',
                   'description': 'Useful for screen readers and improved SEO.',
                   'inputMethod': 'textfield',
                   'icon': 'accessibility',
+                },
+                {
+                  'attribute': 'height',
+                  'title': 'Height',
+                  'description': 'height in pixels of the item',
+                  'inputMethod': 'textfield',
+                  'icon': 'icons:swap-vert',
+                },
+                {
+                  'attribute': 'width',
+                  'title': 'Width',
+                  'description': 'width in pixels of the item',
+                  'inputMethod': 'textfield',
+                  'icon': 'icons:swap-horiz',
                 },
               ],
               'advanced': []
             }
           };
           this.setHaxProperties(img, 'img');
+          let ahref = {
+            'canScale': true,
+            'canPosition': true,
+            'canEditSource': false,
+            'gizmo': {
+              'title': 'Basic link',
+              'description': 'A basic a tag',
+              'icon': 'icons:link',
+              'color': 'grey',
+              'groups': ['Link'],
+              'handles': [
+                {
+                  'type': 'link',
+                  'source': 'href',
+                  'title': 'title',
+                },
+                {
+                  'type': 'inline',
+                  'text': 'innerText',
+                },
+              ],
+              'meta': {
+                'author': 'W3C'
+              }
+            },
+            'settings': {
+              'quick': [
+                {
+                  'attribute': 'href',
+                  'title': 'Link',
+                  'description': 'The URL for this video.',
+                  'inputMethod': 'textfield',
+                  'icon': 'icons:link',
+                  'required': true,
+                  'validationType': 'url',
+                },
+                {
+                  'attribute': 'title',
+                  'title': 'Title text',
+                  'description': 'Useful for screen readers and improved SEO.',
+                  'inputMethod': 'textfield',
+                  'icon': 'icons:accessibility',
+                },
+              ],
+              'configure': [
+                {
+                  'attribute': 'innerText',
+                  'title': 'Text',
+                  'description': 'Text of the link',
+                  'inputMethod': 'textfield',
+                  'required': true,
+                },
+                {
+                  'attribute': 'href',
+                  'title': 'Link',
+                  'description': 'The URL for this video.',
+                  'inputMethod': 'textfield',
+                  'icon': 'icons:link',
+                  'required': true,
+                  'validationType': 'url',
+                },
+                {
+                  'attribute': 'title',
+                  'title': 'Title text',
+                  'description': 'Useful for screen readers and improved SEO.',
+                  'inputMethod': 'textfield',
+                  'icon': 'icons:accessibility',
+                },
+                {
+                  'attribute': 'target',
+                  'title': 'Target',
+                  'description': 'Where to place the link.',
+                  'inputMethod': 'select',
+                  'icon': 'icons:launch',
+                  'options': {
+                    '': 'Same window',
+                    '_blank': 'New window',
+                    '_top': 'Top window',
+                    '_parent': 'Parent window',
+                  }
+                },
+              ],
+              'advanced': []
+            }
+          };
+          this.setHaxProperties(ahref, 'a');
           let p = {
             'canScale': true,
             'canPosition': true,
@@ -822,7 +964,7 @@
         }
         for (var attribute in node.attributes) {
           // make sure we only set things that have a value
-          if (node.attributes[attribute].name != 'class' && node.attributes[attribute].name != 'style' && node.attributes.hasOwnProperty(attribute) && typeof node.attributes[attribute].value !== undefined && node.attributes[attribute].value != null && node.attributes[attribute].value != '' && typeof props[node.attributes[attribute].name] === undefined && typeof props[Polymer.HaxStore.camelToDash(node.attributes[attribute].name)] === undefined) {
+          if (typeof node.attributes[attribute].name !== typeof undefined && node.attributes[attribute].name != 'class' && node.attributes[attribute].name != 'style' && node.attributes.hasOwnProperty(attribute) && typeof node.attributes[attribute].value !== undefined && node.attributes[attribute].value != null && node.attributes[attribute].value != '' && typeof props[node.attributes[attribute].name] === typeof undefined && typeof props[Polymer.HaxStore.camelToDash(node.attributes[attribute].name)] === typeof undefined) {
             props[Polymer.HaxStore.camelToDash(node.attributes[attribute].name)] = node.attributes[attribute].value;
           }
         }
@@ -885,6 +1027,15 @@
               else {
                 content += '  ' + slotnodes[j].outerHTML + "\n";
               }
+            }
+            // keep comments with a special case since they need wrapped
+            else if (slotnodes[j].nodeType === 8) {
+              content += '<!-- ' + slotnodes[j].textContent + ' -->';
+            }
+            // keep everything NOT an element at this point, this helps
+            // preserve whitespace because we're crazy about accuracy
+            else if (slotnodes[j].nodeType !== 1) {
+              content += slotnodes[j].textContent;
             }
           }
         }

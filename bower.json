@@ -16,7 +16,7 @@
     "paper-swatch-picker": "PolymerElements/paper-swatch-picker#^2.0.1",
     "paper-slider": "PolymerElements/paper-slider#^2.0.4",
     "paper-checkbox": "PolymerElements/paper-checkbox#^2.0.1",
-    "hax-body-behaviors": "LRNWebComponents/hax-body-behaviors#^1.11.5",
+    "hax-body-behaviors": "LRNWebComponents/hax-body-behaviors#^1.12.0",
     "paper-toggle-button": "PolymerElements/paper-toggle-button#^2.0.0",
     "vaadin-split-layout": "vaadin/vaadin-split-layout#^1.1.0",
     "elmsln-loading": "LRNWebComponents/elmsln-loading#^1.0.0",

@@ -445,7 +445,13 @@ An element that can generate a form
                 node.removeAttribute(attributeName);
               }
               else {
-                node.setAttribute(attributeName, this.value[props.settings[this.formKey][value].attribute]);
+                // special support for innerText which is an html attribute...sorta
+                if (attributeName === 'inner-text') {
+                  node.innerText = this.value[props.settings[this.formKey][value].attribute];
+                }
+                else {
+                  node.setAttribute(attributeName, this.value[props.settings[this.formKey][value].attribute]);
+                }
               }
               this.set('element.properties.' + props.settings[this.formKey][value].attribute, this.value[props.settings[this.formKey][value].attribute]);
             }
