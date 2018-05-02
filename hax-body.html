@@ -359,7 +359,12 @@ A LRN element that will change the world.
             // attempt to focus on the new node, may not always work
             newNode.focus();
             // scroll to it
-            newNode.scrollIntoView({behavior: "smooth", inline: "nearest"});
+            if (typeof newNode.scrollIntoViewIfNeeded === 'function') {
+              newNode.scrollIntoViewIfNeeded(true);
+            }
+            else {
+              newNode.scrollIntoView({behavior: "smooth", inline: "center"});
+            }
           }, 100);
           return true;
         }
@@ -706,7 +711,12 @@ A LRN element that will change the world.
             }
             this.positionContextMenus(node);
             setTimeout( () => {
-              node.scrollIntoView({behavior: "smooth", inline: "nearest"});
+              if (typeof node.scrollIntoViewIfNeeded === 'function') {
+                node.scrollIntoViewIfNeeded(true);
+              }
+              else {
+                node.scrollIntoView({behavior: "smooth", inline: "center"});
+              }
             }, 150);
           break;
           case 'down':
@@ -715,7 +725,12 @@ A LRN element that will change the world.
               Polymer.dom(this).insertBefore(node.nextElementSibling, node);
               this.positionContextMenus(node);
               setTimeout( () => {
-                node.scrollIntoView({behavior: "smooth", inline: "nearest"});
+                if (typeof node.scrollIntoViewIfNeeded === 'function') {
+                  node.scrollIntoViewIfNeeded(true);
+                }
+                else {
+                  node.scrollIntoView({behavior: "smooth", inline: "center"});
+                }
               }, 150);
             }
           break;
