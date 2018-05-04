@@ -108,21 +108,6 @@
         border: solid #1e88e5 2px;
         background-color:#f5f5f5 !important;
       }
-
-      .hax-project-buttons {
-        width:75%;
-        margin: 0 auto;
-        list-style: none;
-        display: flex;
-        padding: 16px;
-        border-bottom: 1px solid black;
-      }
-      .hax-project-buttons paper-tab a {
-        text-decoration: none;
-      }
-      .hax-project-buttons paper-button {
-        text-transform: unset;
-      }
       .vertical-section-container {
         max-width: 60em;
         margin: auto;
@@ -159,19 +144,11 @@
     <silly-hax-game></silly-hax-game>
     <span style="float:left; margin-left:100px;margin-top:-20px;"><--- (click to get this party started)</span>
     <h1 style="text-align: center;">#haxtheweb today!</h1>
-    <paper-tabs id="pagetabs" class="hax-project-buttons">
-      <paper-tab><a target="_blank" href="https://drupal.org/project/hax" tabindex="-1"><paper-button raised>Drupal</paper-button></a></paper-tab>
-      <paper-tab><a target="_blank" href="https://backdropcms.org/project/hax" tabindex="-1"><paper-button raised>Backdrop</paper-button></a></paper-tab>
-      <paper-tab><a target="_blank" href="https://getgrav.org/downloads/plugins" tabindex="-1"><paper-button raised>Grav</paper-button></a></paper-tab>
-      <paper-tab><a target="_blank" href="https://github.com/LRNWebComponents/hax-desktop-app" tabindex="-1"><paper-button raised>Desktop app</paper-button></a></paper-tab>
-      <paper-tab><a target="_blank" href="https://github.com/LRNWebComponents/hax-bookmarklet" tabindex="-1"><paper-button raised>Bookmarklet</paper-button></a></paper-tab>
-      <paper-tab><a target="_blank" href="https://github.com/LRNWebComponents/cms-hax" tabindex="-1"><paper-button raised>HAX for any CMS</paper-button></a></paper-tab>
-      <paper-tab><a target="_blank" href="https://github.com/LRNWebComponents/wysiwyg-hax" tabindex="-1"><paper-button raised>WYSIWYG style HAX</paper-button></a></paper-tab>
-    </paper-tabs>
     <div class="vertical-section-container">
       <template is="dom-bind">
         <hax-store app-store='{"url":"appstore.json"}'></hax-store>
         <hax-body>
+          <tab-list tabs="[{&quot;link&quot;:&quot;https://drupal.org/project/hax&quot;,&quot;label&quot;:&quot;Drupal&quot;},{&quot;link&quot;:&quot;https://backdropcms.org/project/hax&quot;,&quot;label&quot;:&quot;Backdrop&quot;},{&quot;link&quot;:&quot;https://getgrav.org/downloads/plugins&quot;,&quot;label&quot;:&quot;GravCMS&quot;},{&quot;link&quot;:&quot;https://github.com/LRNWebComponents/hax-desktop-app&quot;,&quot;label&quot;:&quot;Desktop app&quot;},{&quot;link&quot;:&quot;https://github.com/LRNWebComponents/hax-bookmarklet&quot;,&quot;label&quot;:&quot;Bookmarklet&quot;},{&quot;link&quot;:&quot;https://github.com/LRNWebComponents/cms-hax&quot;,&quot;label&quot;:&quot;For any CMS&quot;},{&quot;link&quot;:&quot;https://github.com/LRNWebComponents/app-editor-hax&quot;,&quot;label&quot;:&quot;App integration&quot;},{&quot;link&quot;:&quot;https://github.com/LRNWebComponents/wysiwyg-hax&quot;,&quot;label&quot;:&quot;WYSIWYG replacement&quot;}]">undefined</tab-list>
           <video-player resource="#678eb55d-f558-cf7b-5a39" prefix="oer:http://oerschema.org/ schema:http://schema.org/ dc:http://purl.org/dc/terms/ foaf:http://xmlns.com/foaf/0.1/ cc:http://creativecommons.org/ns# bib:http://bib.schema.org " responsive text-color-class="white-text" text-color="#ffffff" video-style="style1" style="width: 50%; float: right;" source="https://www.youtube.com/watch?v=LrS7dqokTLE" src="https://www.youtube-nocookie.com/embed/LrS7dqokTLE?showinfo=0&controls=1&rel=0" iframed="" width="560" height="315" caption="What is HAX and what can it do for me?" secondary-color="#212121" secondary-color-class="grey darken-4" yt-nocookie yt-controls video-color="ull"></video-player>
           <h2>Goals / Principles of HAX</h2>
           <ul style="width:50%;float:left;margin:0;padding:0;">

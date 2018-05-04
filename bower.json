@@ -80,7 +80,8 @@
     "person-testimonial": "LRNWebComponents/person-testimonial#^1.0.1",
     "hero-banner": "LRNWebComponents/hero-banner#^1.0.0",
     "oer-schema": "LRNWebComponents/oer-schema#^1.0.2",
-    "multiple-choice": "LRNWebComponents/multiple-choice#^0.3.0"
+    "multiple-choice": "LRNWebComponents/multiple-choice#^0.3.0",
+    "tab-list": "LRNWebComponents/tab-list#^0.1.0"
   },
   "resolutions": {
     "webcomponentsjs": "^0.7.24",
