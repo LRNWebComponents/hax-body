@@ -1,3 +1,4 @@
+#!/bin/bash
 # git clone the Polymer tools repository somewhere outside of your
 # element project
 git clone git://github.com/LRNWebComponents/tools.git
