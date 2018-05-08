@@ -257,14 +257,15 @@ An element that can generate a form
                   if (typeof schema.properties[property].component !== typeof undefined) {
                     schema.properties[property].component.properties.value = element.properties[property];
                   }
-                  if (element.properties[property] === true) {
-                    this.previewNode.setAttribute(property, property);
-                  }
-                  else if (element.properties[property] === false) {
-                    this.previewNode.removeAttribute(property);
-                  }
-                  else {
-                    this.previewNode.setAttribute(property, element.properties[property]);
+                  // attempt to set the property in the preview node
+                  if (element.properties[property] != null && !element.properties[property].readOnly) {
+                    // attempt to set it, should be no problem but never know
+                    try {
+                      this.previewNode.set(property, element.properties[property]);
+                    }
+                    catch(e) {
+
+                    }
                   }
                 }
                 this.set('value.' + property, element.properties[property]);
@@ -317,35 +318,26 @@ An element that can generate a form
                     schema.properties[property].component.properties.value = element.properties[property];
                   }
                 }
-                if (element.properties[property] != null && element.properties[property].constructor === Array && !element.properties[property].readOnly) {
+                // ensure this isn't read only
+                if (element.properties[property] != null && !element.properties[property].readOnly) {
+                  // attempt to set it, should be no problem but never know
                   try {
                     newValue.set(property, element.properties[property]);
                   }
                   catch(e) {
 
                   }
-                }
-                else if (element.properties[property] != null && element.properties[property].constructor === Object && !element.properties[property].readOnly) {
-                  try {
-                    newValue.set(property, element.properties[property]);
-                  }
-                  catch(e) {
-
-                  }
-                }
-                else {
-                  newValue.setAttribute(property, element.properties[property]);
                 }
                 this.set('value.' + property, element.properties[property]);
               }
             }
             // then, let the node itself dictate defaults if things are not set
-            for (var property in newValue.properties) {
-              if ((typeof element.properties === typeof undefined || typeof element.properties[property] === typeof undefined || element.properties[property] == '' || element.properties[property] == null) && newValue.properties.hasOwnProperty(property) && typeof schema.properties[property] !== typeof undefined && typeof newValue.properties[property].value !== typeof undefined && newValue.properties[property].value !== null) {
+            for (var property in newValue) {
+              if (newValue.hasOwnProperty(property) && typeof schema.properties[property] !== typeof undefined && typeof newValue[property].value !== typeof undefined && newValue[property].value !== null) {
                 schema.properties[property].value = newValue.properties[property].value;
                 // support custom element input
                 if (typeof schema.properties[property].component !== typeof undefined) {
-                  schema.properties[property].component.properties.value = newValue.properties[property].value;
+                    schema.properties[property].component.properties.value = newValue.properties[property].value;
                 }
                 this.set('value.' + property, newValue.properties[property].value);
               }
@@ -412,25 +404,24 @@ An element that can generate a form
           for (var value in props.settings[this.formKey]) {
             // support property binding
             if (props.settings[this.formKey].hasOwnProperty(value) && typeof props.settings[this.formKey][value].property !== typeof undefined && typeof this.value[props.settings[this.formKey][value].property] !== typeof undefined) {
-              // support weirdness in camel vs non-camelcase setting
-              let attributeName = Polymer.HaxStore.camelToDash(props.settings[this.formKey][value].property);
               // special supporting for boolean because html is weird :p
               if (this.value[props.settings[this.formKey][value].property] === true) {
-                node.setAttribute(attributeName, props.settings[this.formKey][value].property);
+                node[props.settings[this.formKey][value].property] = true;
               }
               else if (this.value[props.settings[this.formKey][value].property] === false) {
-                node.removeAttribute(attributeName);
+                node[props.settings[this.formKey][value].property] = false;
               }
               else {
                 // account for Array based values
                 if (this.value[props.settings[this.formKey][value].property] != null && this.value[props.settings[this.formKey][value].property].constructor === Array) {
-                  node.set(attributeName, Polymer.HaxStore.toArray(this.value[props.settings[this.formKey][value].property]));
+                  node.set(props.settings[this.formKey][value].property, Polymer.HaxStore.toArray(this.value[props.settings[this.formKey][value].property]));
                 }
                 else if (this.value[props.settings[this.formKey][value].property] != null && this.value[props.settings[this.formKey][value].property].constructor === Object) {
-                  node.set(attributeName, this.value[props.settings[this.formKey][value].property]);
+                  node.set(props.settings[this.formKey][value].property, this.value[props.settings[this.formKey][value].property]);
                 }
                 else {
-                  node.setAttribute(attributeName, this.value[props.settings[this.formKey][value].property]);
+                  // string most likely
+                  node.set(props.settings[this.formKey][value].property, this.value[props.settings[this.formKey][value].property]);
                 }
               }
               this.set('element.properties.' + props.settings[this.formKey][value].property, this.value[props.settings[this.formKey][value].property]);
@@ -439,7 +430,7 @@ An element that can generate a form
               let attributeName = Polymer.HaxStore.camelToDash(props.settings[this.formKey][value].attribute);
               // special supporting for boolean because html is weird :p
               if (this.value[props.settings[this.formKey][value].attribute] === true) {
-                node.setAttribute(attributeName, props.settings[this.formKey][value].attribute);
+                node.setAttribute(attributeName, attributeName);
               }
               else if (this.value[props.settings[this.formKey][value].attribute] === false) {
                 node.removeAttribute(attributeName);
@@ -450,14 +441,14 @@ An element that can generate a form
                   node.innerText = this.value[props.settings[this.formKey][value].attribute];
                   node.removeAttribute('innertext');
                 }
-                else {
+                else if (this.value[props.settings[this.formKey][value].attribute] !== null && this.value[props.settings[this.formKey][value].attribute] !== 'null') {
                   node.setAttribute(attributeName, this.value[props.settings[this.formKey][value].attribute]);
                 }
               }
               // have to specially ignore this since it's not really an
               // attribute that we want to keep but HTML4 that brought us
               // this was never meant to be used how developers now do it...
-              if (attributeName !==  'inner-text') {
+              if (attributeName !== 'inner-text' && this.value[props.settings[this.formKey][value].attribute] !== null && this.value[props.settings[this.formKey][value].attribute] !== 'null') {
                 this.set('element.properties.' + props.settings[this.formKey][value].attribute, this.value[props.settings[this.formKey][value].attribute]);
               }
             }
