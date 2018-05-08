@@ -989,6 +989,7 @@
     }
   ],
   "autoloader": [
+    "q-r",
     "self-check",
     "tab-list",
     "multiple-choice",
