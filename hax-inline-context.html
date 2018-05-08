@@ -60,15 +60,17 @@ A context menu that provides common text based authoring options.
         label="Italic"
         event-name="text-italic"></hax-context-item>
       <hax-context-item
-        slot="primary"
+        menu
+        slot="more"
         icon="mdextra:unlink"
-        label="Unlink"
-        event-name="text-unlink"></hax-context-item>
+        label=""
+        event-name="text-unlink">Unlink</hax-context-item>
       <hax-context-item
-        slot="primary"
+        menu
+        slot="more"
         icon="editor:format-clear"
-        label="Remove format"
-        event-name="text-remove-format"></hax-context-item>
+        label=""
+        event-name="text-remove-format">Remove format</hax-context-item>
       <hax-context-item
         menu
         slot="more"
@@ -215,7 +217,7 @@ A context menu that provides common text based authoring options.
           Polymer.HaxStore.instance.activePlaceHolder = null;
         }
         else if (newValue && !oldValue) {
-          Polymer.HaxStore.instance.activeHaxBody.$.inlinecontextmenu.style.left = (Polymer.HaxStore.instance.activeHaxBody.$.inlinetracker.offsetLeft - (Polymer.HaxStore.instance.activeHaxBody.$.inlinecontextmenu.offsetWidth / 3)) + 'px';
+          Polymer.HaxStore.instance.activeHaxBody.$.inlinecontextmenu.style.left = (Polymer.HaxStore.instance.activeHaxBody.$.inlinetracker.offsetLeft - (Polymer.HaxStore.instance.activeHaxBody.$.inlinecontextmenu.offsetWidth / 4)) + 'px';
           Polymer.HaxStore.instance.activeHaxBody.$.inlinecontextmenu.style.top = Polymer.HaxStore.instance.activeHaxBody.$.inlinetracker.offsetTop + 'px';
         }
       },
