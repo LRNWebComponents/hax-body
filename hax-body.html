@@ -135,7 +135,7 @@ A LRN element that will change the world.
       }
       :host[edit-mode][hax-ray-mode] #bodycontainer ::slotted(*[data-editable])::before {
         content: attr(data-hax-ray) " " attr(resource) " " attr(typeof) " " attr(property) " " attr(content);
-        font-size: 16px;
+        font-size: 10px;
         font-style: italic;
         left: unset;
         right: unset;
@@ -147,6 +147,9 @@ A LRN element that will change the world.
         padding: 8px;
         margin: 0;
         z-index: 1;
+        margin: -16px 0 0 0;
+        float: left;
+        line-height: 2;
       }
       /*#inlinetracker {
         border: 1px solid green;
