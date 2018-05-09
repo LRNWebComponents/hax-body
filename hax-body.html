@@ -999,6 +999,8 @@ A LRN element that will change the world.
           // ensure this is valid
           if (this._haxElementTest(node) && node.parentNode != null) {
             // keep looking til we are juuuust below the container
+            // @todo this is where we force a selection on highest level
+            // of the document
             while (node.parentNode.id != 'bodycontainer') {
               node = node.parentNode;
             }

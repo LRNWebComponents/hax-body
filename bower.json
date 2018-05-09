@@ -29,7 +29,7 @@
     "grafitto-filter": "grafitto/grafitto-filter#^0.0.3",
     "schema-behaviors": "LRNWebcomponents/schema-behaviors#^0.2.0",
     "iron-image": "PolymerElements/iron-image#^2.1.2",
-    "dropdown-select": "LRNWebComponents/dropdown-select#^1.0.1",
+    "dropdown-select": "LRNWebComponents/dropdown-select#^1.0.3",
     "materializecss-styles": "LRNWebcomponents/materializecss-styles#^1.2.1",
     "paper-toast": "PolymerElements/paper-toast#^2.1.0",
     "mtz-file-download-behavior": "MaritzSTL/mtz-file-download-behavior#^0.3.0",
