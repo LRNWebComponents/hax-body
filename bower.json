@@ -47,7 +47,7 @@
     "app-datepicker": "motss/app-datepicker#^2.12.0",
     "paper-collapse-item": "Collaborne/paper-collapse-item#^2.3.0",
     "paper-icon-picker": "LRNWebComponents/paper-icon-picker#^1.0.2",
-    "paper-input-flagged": "LRNWebComponents/paper-input-flagged#^1.0.0"
+    "paper-input-flagged": "LRNWebComponents/paper-input-flagged#^1.0.1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
