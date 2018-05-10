@@ -82,7 +82,7 @@
     "oer-schema": "LRNWebComponents/oer-schema#^1.0.5",
     "multiple-choice": "LRNWebComponents/multiple-choice#^1.0.0",
     "tab-list": "LRNWebComponents/tab-list#^0.1.0",
-    "self-check": "LRNWebComponents/self-check#^0.0.2",
+    "self-check": "LRNWebComponents/self-check#^1.0.0",
     "q-r": "LRNWebComponents/q-r#^1.0.3"
   },
   "resolutions": {

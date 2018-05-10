@@ -271,7 +271,12 @@
           }
           else if (this.pickerType == 'delete') {
             if (this._elements[key]['title'] === 'Yes') {
-              Polymer.HaxStore.instance.activeHaxBody.haxDeleteNode(Polymer.HaxStore.instance.activeHaxBody.activeNode);
+              if (Polymer.HaxStore.instance.activeHaxBody.activeNode !== Polymer.HaxStore.instance.activeHaxBody.activeContainerNode) {
+                Polymer.HaxStore.instance.activeHaxBody.haxDeleteNode(Polymer.HaxStore.instance.activeHaxBody.activeNode, Polymer.HaxStore.instance.activeHaxBody.activeContainerNode);
+              }
+              else {
+                Polymer.HaxStore.instance.activeHaxBody.haxDeleteNode(Polymer.HaxStore.instance.activeHaxBody.activeNode);
+              }
             }
           }
           else {

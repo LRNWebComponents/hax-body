@@ -147,6 +147,12 @@
             type: Object,
           },
           /**
+           * Active container Node, 2nd highest parent of activeNode.
+           */
+          activeContainerNode: {
+            type: Object,
+          },
+          /**
            * editMode
            */
           editMode: {
@@ -224,7 +230,7 @@
            */
           validTagList: {
             type: Array,
-            value: ['p', 'div', 'ol', 'ul', 'li', 'a', 'hr', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'code', 'figure', 'img', 'iframe', 'video', 'audio', 'section', 'hax-blox', 'template'],
+            value: ['p', 'div', 'ol', 'ul', 'li', 'a', 'strong', 'kbd', 'em', 'i', 'b', 'hr', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'code', 'figure', 'img', 'iframe', 'video', 'audio', 'section', 'hax-blox', 'template'],
           },
           /**
            * Gizmo types which can be used to bridge apps to gizmos.
@@ -242,6 +248,18 @@
           let tag = node.tagName.toLowerCase();
           if (this.validTagList.includes(tag)) {
             if (['p', 'ol', 'ul', 'li', 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'code', 'figure'].includes(tag)) {
+              return true;
+            }
+          }
+          return false;
+        },
+        /**
+         * test for being a valid grid plate
+         */
+        isGridPlateElement: function(node) {
+          let tag = node.tagName.toLowerCase();
+          if (this.validTagList.includes(tag)) {
+            if (['p', 'ol', 'ul', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'code', 'figure', 'hax-blox'].includes(tag)) {
               return true;
             }
           }
@@ -321,8 +339,8 @@
             const keyName = event.key;
             // if we are editing and enter is pressed see if we should
             // process it or inject a new p tag
-            if (keyName === 'Enter' && Polymer.HaxStore.instance.editMode && Polymer.HaxStore.instance.activeNode !== null) {
-              const activeNodeTagName = Polymer.HaxStore.instance.activeNode.tagName;
+            if (keyName === 'Enter' && Polymer.HaxStore.instance.editMode && Polymer.HaxStore.instance.activeNode !== null && Polymer.HaxStore.instance.activeContainerNode === Polymer.HaxStore.instance.activeNode) {
+              const activeNodeTagName = Polymer.HaxStore.instance.activeContainerNode.tagName;
               if (['P','H1','H2','H3','H4','H5','H6'].includes(activeNodeTagName)) {
                 event.preventDefault();
                 // we need to do goofy stuff for p tags since people
@@ -340,8 +358,8 @@
                   // force this to be a constant since activeNode will
                   // change mid operation but we want limit to remain
                   // as a pointer to it's position in the DOM
-                  const limit = Polymer.HaxStore.instance.activeNode;
-                  var node = Polymer.dom(Polymer.HaxStore.instance.activeNode).querySelector('hax-split-point');
+                  const limit = Polymer.HaxStore.instance.activeContainerNode;
+                  var node = Polymer.dom(Polymer.HaxStore.instance.activeContainerNode).querySelector('hax-split-point');
                   // run a split node function as modified from stackoverflow
                   this.__splitNode(node, limit);
                 }
@@ -610,8 +628,8 @@
           };
           this.setHaxProperties(img, 'img');
           let ahref = {
-            'canScale': true,
-            'canPosition': true,
+            'canScale': false,
+            'canPosition': false,
             'canEditSource': false,
             'gizmo': {
               'title': 'Basic link',
@@ -696,8 +714,8 @@
           };
           this.setHaxProperties(ahref, 'a');
           let p = {
-            'canScale': true,
-            'canPosition': true,
+            'canScale': false,
+            'canPosition': false,
             'canEditSource': true,
             'settings': {
               'quick': [
@@ -791,7 +809,9 @@
             // invoke insert or replacement on body, same function so it's easier to trace
             if (e.detail.replace && e.detail.replacement) {
               let node = Polymer.HaxStore.haxElementToNode(e.detail.tag, e.detail.content, properties);
-              this.activeHaxBody.haxReplaceNode(this.activeNode, node);
+              if (this.activeNode !== this.activeContainerNode) {
+                this.activeHaxBody.haxReplaceNode(this.activeNode, node, this.activeContainerNode);
+              }
             }
             else if (typeof e.detail.__type !== typeof undefined && e.detail.__type === 'inline') {
               let node = Polymer.HaxStore.haxElementToNode(e.detail.tag, e.detail.content, properties);
