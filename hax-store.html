@@ -812,6 +812,9 @@
               if (this.activeNode !== this.activeContainerNode) {
                 this.activeHaxBody.haxReplaceNode(this.activeNode, node, this.activeContainerNode);
               }
+              else {
+                this.activeHaxBody.haxReplaceNode(this.activeNode, node);
+              }
             }
             else if (typeof e.detail.__type !== typeof undefined && e.detail.__type === 'inline') {
               let node = Polymer.HaxStore.haxElementToNode(e.detail.tag, e.detail.content, properties);
