@@ -93,8 +93,9 @@ Export dialog with all export options and settings provided.
       <div class="buttons">
         <paper-button id="download" confirm raised>Download HTML</paper-button>
         <paper-button id="downloadfull" confirm raised>Download file</paper-button>
-        <paper-button id="import" raised>Import</paper-button>
-        <paper-button id="copy" raised>Copy</paper-button>
+        <paper-button id="copy" confirm raised>Copy</paper-button>
+        <paper-button id="import" raised hidden$="[[!globalPreferences.haxDeveloperMode]]">Import</paper-button>
+        <paper-button id="elementexport" raised hidden$="[[!globalPreferences.haxDeveloperMode]]">HAX Element export</paper-button>
         <paper-button id="close" raised dialog-dismiss>Close</paper-button>
       </div>
     </paper-dialog>
@@ -109,6 +110,7 @@ Export dialog with all export options and settings provided.
         'downloadfull.tap': 'downloadfull',
         'import.tap': 'importContent',
         'copy.tap': 'selectBody',
+        'elementexport.tap': 'htmlToHaxElements',
       },
       behaviors: [mtz.FileDownloadBehavior],
       properties: {
@@ -118,6 +120,13 @@ Export dialog with all export options and settings provided.
         exportTitle: {
           type: String,
           value: 'Export',
+        },
+        /**
+         * Access to the global properties object.
+         */
+        globalPreferences: {
+          type: Object,
+          value: {},
         },
       },
       /**
@@ -132,6 +141,18 @@ Export dialog with all export options and settings provided.
       attached: function() {
         // fire an event that this is the manager
         this.fire('hax-register-export', this);
+        document.body.addEventListener('hax-store-property-updated', this._haxStorePropertyUpdated.bind(this));
+      },
+      /**
+       * Store updated, sync.
+       */
+      _haxStorePropertyUpdated: function(e) {
+        if (e.detail && typeof e.detail.value !== typeof undefined && e.detail.property) {
+          if (typeof e.detail.value === 'object') {
+            this.set(e.detail.property, null);
+          }
+          this.set(e.detail.property, e.detail.value);
+        }
       },
       /**
        * Download file.
@@ -158,10 +179,23 @@ Export dialog with all export options and settings provided.
       /**
        * selectBody
        */
-      selectBody: function() {
+      selectBody: function(e) {
         this.$.textarea.focus();
         this.$.textarea.select();
         document.execCommand('copy');
+      },
+      /**
+       * HTML to HAX Elements
+       */
+      htmlToHaxElements: function(e) {
+        let elements = Polymer.HaxStore.htmlToHaxElements(this.$.textarea.value);
+        var str = JSON.stringify(elements, null, 2);
+        let val = this.$.textarea.value;
+        this.$.textarea.value = str;
+        this.$.textarea.focus();
+        this.$.textarea.select();
+        document.execCommand('copy');
+        this.$.textarea.value = val;
       },
       /**
        * Toggle ourselves.

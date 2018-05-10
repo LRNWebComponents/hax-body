@@ -938,11 +938,29 @@
         return str.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
       };
       /**
+       * Convert HTML into HAX Elements
+       */
+      Polymer.HaxStore.htmlToHaxElements = (html) => {
+        let elements = [];
+        const validTags = Polymer.HaxStore.instance.validTagList;
+        let fragment = document.createElement('div');
+        fragment.innerHTML = html;
+        const children = fragment.childNodes;
+        // loop over the new nodes
+        for (var i=0; i<children.length; i++) {
+          // verify this tag is a valid one
+          if (typeof children[i].tagName !== typeof undefined && validTags.includes(children[i].tagName.toLowerCase())) {
+            elements.push(Polymer.HaxStore.nodeToHaxElement(children[i], null));
+          }
+        }
+        return elements;
+      };
+      /**
        * Convert a node to a HAX element. Hax elements ensure
        * a certain level of sanitization by verifying tags and
        * properties / attributes that have values.
        */
-      Polymer.HaxStore.nodeToHaxElement = (node) => {
+      Polymer.HaxStore.nodeToHaxElement = (node, eventName = 'insert-element') => {
         // build out the properties to send along
         let props = {};
         // support basic styles
@@ -995,11 +1013,13 @@
           }
         }
         let element = {
-          "eventName": 'insert-element',
           "tag": node.tagName.toLowerCase(),
           "properties": props,
           "content": Polymer.HaxStore.getHAXSlot(node),
         };
+        if (eventName !== null) {
+          element.eventName = 'insert-element';
+        }
         return element;
       };
       /**
