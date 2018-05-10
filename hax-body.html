@@ -958,6 +958,11 @@ A LRN element that will change the world.
               if (typeof this.activeNode[detail.target.propertyToBind] !== typeof undefined) {
                 haxInputMixer.value = this.activeNode[detail.target.propertyToBind];
               }
+              // try to get an attribute bind
+              else {
+                haxInputMixer.value = this.activeNode.getAttribute(detail.target.propertyToBind);
+              }
+              // @todo need to be able to support slot binding
             }
             // make input mixer show up
             this._positionContextMenu(haxInputMixer, this.$.cecontextmenu, -6, -116);
@@ -990,6 +995,8 @@ A LRN element that will change the world.
           // we set the thing selected as the active element to work
           // on in the manager
           case 'hax-manager-configure':
+            // make sure input mixer is closed
+            this._hideContextMenu(this.$.haxinputmixer);
             // reset the manager
             Polymer.HaxStore.instance.haxManager.resetManager();
             // write activeElement updated so it'll go into the preview

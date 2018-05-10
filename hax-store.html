@@ -641,7 +641,8 @@
                 {
                   'type': 'link',
                   'source': 'href',
-                  'title': 'title',
+                  'title': 'innerText',
+                  'alt': 'title',
                 },
                 {
                   'type': 'inline',
@@ -1035,10 +1036,13 @@
             }
           }
         }
+        let slotContent = Polymer.HaxStore.getHAXSlot(node);
+        // special edge case for slot binding to a text element
+        props.innerText = slotContent;
         let element = {
           "tag": node.tagName.toLowerCase(),
           "properties": props,
-          "content": Polymer.HaxStore.getHAXSlot(node),
+          "content": slotContent,
         };
         if (eventName !== null) {
           element.eventName = 'insert-element';
