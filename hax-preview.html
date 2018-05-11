@@ -265,7 +265,6 @@ An element that can generate a form
                       this.previewNode.set(property, element.properties[property]);
                     }
                     catch(e) {
-
                     }
                   }
                 }
@@ -301,7 +300,7 @@ An element that can generate a form
           // see if we can get schema off of this.
           if (typeof newValue.tagName !== typeof undefined && typeof Polymer.HaxStore.instance.elementList[newValue.tagName.toLowerCase()] !== typeof undefined) {
             let element = this.element;
-            let props = Polymer.HaxStore.instance.elementList[this.previewNode.tagName.toLowerCase()];
+            let props = Polymer.HaxStore.instance.elementList[newValue.tagName.toLowerCase()];
             let schema = {};
             if (typeof newValue.getHaxJSONSchemaType === 'function') {
               schema = Polymer.HaxStore.instance.getHaxJSONSchema(this.formKey, props, newValue);

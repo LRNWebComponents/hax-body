@@ -230,7 +230,7 @@
            */
           validTagList: {
             type: Array,
-            value: ['p', 'div', 'ol', 'ul', 'li', 'a', 'strong', 'kbd', 'em', 'i', 'b', 'hr', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'code', 'figure', 'img', 'iframe', 'video', 'audio', 'section', 'hax-blox', 'template'],
+            value: ['p', 'div', 'ol', 'ul', 'li', 'a', 'strong', 'kbd', 'em', 'i', 'b', 'hr', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'code', 'figure', 'img', 'iframe', 'video', 'audio', 'section', 'hax-blox', 'template', 'webview'],
           },
           /**
            * Gizmo types which can be used to bridge apps to gizmos.
@@ -238,6 +238,25 @@
           validGizmoTypes: {
             type: Array,
             value: ['data','video','audio','text','link','file','pdf','image','csv','doc','content','text','inline'],
+          },
+          /**
+           * Sandboxed environment test
+           */
+          _isSandboxed: {
+            type: Boolean,
+            value: function() {
+              let test = document.createElement('webview');
+              // if this function exists it means that our deploy target
+              // is in a sandboxed environment and is not able to run iframe
+              // content with any real stability. This is beyond edge case but
+              // as this is an incredibly useful tag we want to make sure it
+              // can mutate to work in chromium and android environments
+              // which support such sandboxing
+              if (typeof test.reload === 'function') {
+                return true;
+              }
+              return false;
+            },
           },
         },
         /**
@@ -455,6 +474,42 @@
          * Build HAX property definitions for primitives that we support.
          */
         _buildPrimitiveDefinitions: function() {
+          // sandboxes need a webview definition
+          // we don't want people making them but we need to
+          // know how to edit them if asked
+          if (Polymer.HaxStore.instance._isSandboxed) {
+            let webview = {
+              'canScale': true,
+              'canPosition': true,
+              'canEditSource': false,
+              'settings': {
+                'quick': [
+                  {
+                    'attribute': 'src',
+                    'title': 'Source',
+                    'description': 'The URL for this video.',
+                    'inputMethod': 'textfield',
+                    'icon': 'link',
+                    'required': true,
+                    'validationType': 'url',
+                  },
+                ],
+                'configure': [
+                  {
+                    'attribute': 'src',
+                    'title': 'Source',
+                    'description': 'The URL for this video.',
+                    'inputMethod': 'textfield',
+                    'icon': 'link',
+                    'required': true,
+                    'validationType': 'url',
+                  },
+                ],
+                'advanced': []
+              }
+            };
+            this.setHaxProperties(webview, 'webview');
+          }
           let iframe = {
             'canScale': true,
             'canPosition': true,
@@ -488,20 +543,6 @@
                   'required': true,
                   'validationType': 'url',
                 },
-                {
-                  'attribute': 'height',
-                  'title': 'Height',
-                  'description': 'height in pixels of the item',
-                  'inputMethod': 'textfield',
-                  'icon': 'icons:swap-vert',
-                },
-                {
-                  'attribute': 'width',
-                  'title': 'Width',
-                  'description': 'width in pixels of the item',
-                  'inputMethod': 'textfield',
-                  'icon': 'icons:swap-horiz',
-                },
               ],
               'configure': [
                 {
@@ -512,20 +553,6 @@
                   'icon': 'link',
                   'required': true,
                   'validationType': 'url',
-                },
-                {
-                  'attribute': 'height',
-                  'title': 'Height',
-                  'description': 'height in pixels of the item',
-                  'inputMethod': 'textfield',
-                  'icon': 'icons:swap-vert',
-                },
-                {
-                  'attribute': 'width',
-                  'title': 'Width',
-                  'description': 'width in pixels of the item',
-                  'inputMethod': 'textfield',
-                  'icon': 'icons:swap-horiz',
                 },
               ],
               'advanced': []
@@ -1036,11 +1063,19 @@
             }
           }
         }
+        // support sandboxed environments which
+        // will hate iframe tags but love webview
+        let tag = node.tagName.toLowerCase();
+        if (Polymer.HaxStore.instance._isSandboxed && tag === 'iframe') {
+          tag = 'webview';
+        }
         let slotContent = Polymer.HaxStore.getHAXSlot(node);
-        // special edge case for slot binding to a text element
-        props.innerText = slotContent;
+        // special edge case for slot binding in a a tag
+        if (tag === 'a') {
+          props.innerText = slotContent;
+        }
         let element = {
-          "tag": node.tagName.toLowerCase(),
+          "tag": tag,
           "properties": props,
           "content": slotContent,
         };
@@ -1053,6 +1088,11 @@
        * Convert a haxElement to a DOM node.
        */
       Polymer.HaxStore.haxElementToNode = (tag, content, properties) => {
+        // support sandboxed environments which
+        // will hate iframe tags but love webview
+        if (Polymer.HaxStore.instance._isSandboxed && tag === 'iframe') {
+          tag = 'webview';
+        }
         var frag = document.createElement(tag);
         frag.innerHTML = content;
         // clone the fragment which will force an escalation to full node

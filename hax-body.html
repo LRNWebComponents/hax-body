@@ -492,9 +492,15 @@ A LRN element that will change the world.
           let clone = node.cloneNode(true);
           node = prototype.preProcessHaxNodeToContent(clone);
         }
+        let tag = node.tagName.toLowerCase();
+        // support sandboxed environments which
+        // will hate iframe tags but love webview
+        if (Polymer.HaxStore.instance._isSandboxed && tag === 'webview') {
+          tag = 'iframe';
+        }
         var content = '';
         // start to rebuild the same tag we got in a generalized way
-        content += '<' + node.tagName.toLowerCase();
+        content += '<' + tag;
         var propvals = {};
         // grab all of the original's attributes, and pass them to the replacement
         for (var j = 0, l = node.attributes.length; j < l; ++j){
@@ -576,6 +582,19 @@ A LRN element that will change the world.
             }
           }
         }
+        // specialized clean up for some that can leak through from above
+        // and are edge case things because hash tag, gotta love HTML attributes
+        // and the webview tag. facepalm.
+        let delProps = ['inner-text', 'tabindex', 'guestinstance'];
+        for (var delProp in delProps) {
+          if (typeof propvals[delProps[delProp]] !== typeof undefined) {
+            delete propvals[delProps[delProp]];
+          }
+        }
+        // remove id attribute if it's empty, somehow misses above
+        if (typeof propvals.id !== typeof undefined && propvals.id === '') {
+          delete propvals.id;
+        }
         // run through the properties
         for (var i in propvals) {
           if (propvals[i] === true) {
@@ -585,15 +604,16 @@ A LRN element that will change the world.
             content += ' ' + i + '="' + propvals[i] + '"';
           }
         }
-        // set the opening tag, support self-closing tags
-        if (node.tagName.toLowerCase() === 'hr' || node.tagName.toLowerCase() === 'br' || node.tagName.toLowerCase() === 'img') {
+        // set the opening tag, support self-closing void tags
+        let voidTags = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr'];
+        if (voidTags.includes(tag)) {
           content += '/>';
         }
         else {
           content += '>';
         }
         // account for things that say NOT to save slot values
-        let props = Polymer.HaxStore.instance.elementList[node.tagName.toLowerCase()];
+        let props = Polymer.HaxStore.instance.elementList[tag];
         // try and work against anything NOT a P tag
         if (typeof props === typeof undefined || !props.saveOptions.wipeSlot) {
           // get content that is in the slots
@@ -635,15 +655,15 @@ A LRN element that will change the world.
           }
         }
         // don't put return for span since it's an inline tag
-        if (node.tagName.toLowerCase() === 'span') {
-          content += '</' + node.tagName.toLowerCase() + '>';
+        if (tag === 'span') {
+          content += '</' + tag + '>';
         }
-        else if (node.tagName.toLowerCase() === 'hr' || node.tagName.toLowerCase() === 'br' || node.tagName.toLowerCase() === 'img') {
+        else if (tag === 'hr' || tag === 'br' || tag === 'img') {
           // do nothing for self-closing tags they'll resolve themselves
         }
         // close the tag, placing a return in output for block elements
         else {
-          content += '</' + node.tagName.toLowerCase() + '>' + "\n";
+          content += '</' + tag + '>' + "\n";
         }
         if (this.globalPreferences.haxDeveloperMode) {
           console.log(content);
@@ -663,6 +683,9 @@ A LRN element that will change the world.
         this.hideContextMenus();
         this._hideContextMenu(this.$.inlinetracker);
         var nodeClone = Polymer.dom(node).cloneNode(true);
+        if (nodeClone.tagName.toLowerCase() === 'webview' && Polymer.HaxStore.instance._isSandboxed && typeof nodeClone.guestinstance !== typeof undefined) {
+          delete nodeClone.guestinstance;
+        }
         // shouldn't be possible but might as well check
         if (node !== null) {
           Polymer.dom(parent).insertBefore(nodeClone, Polymer.dom(node).nextSibling);
@@ -695,7 +718,11 @@ A LRN element that will change the world.
        * Reposition context menus to match an element.
        */
       positionContextMenus: function(node, container) {
-        let props = Polymer.HaxStore.instance.elementList[node.tagName.toLowerCase()];
+        let tag = node.tagName.toLowerCase();
+        if (Polymer.HaxStore.instance._isSandboxed && tag === 'webview') {
+          tag = 'iframe';
+        }
+        let props = Polymer.HaxStore.instance.elementList[tag];
         // get width from window size and do very minor responsive inline support
         let w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
         let offsetmenu = -44;
@@ -862,7 +889,24 @@ A LRN element that will change the world.
           for (var i=0; i<children.length; i++) {
             // verify this tag is a valid one
             if (typeof children[i].tagName !== typeof undefined && validTags.includes(children[i].tagName.toLowerCase())) {
-              Polymer.dom(this).appendChild(children[i]);
+              // ensure import doesn't import non-sandbox safe things!
+              if (Polymer.HaxStore.instance._isSandboxed && children[i].tagName.toLowerCase() === 'iframe') {
+                // Create a replacement tag of the desired type
+                var replacement = document.createElement('webview');
+                // Grab all of the original's attributes, and pass them to the replacement
+                for(var j = 0, l = children[i].attributes.length; j < l; ++j){
+                  var nodeName  = children[i].attributes.item(j).nodeName;
+                  var value = children[i].attributes.item(j).value;
+                  if (nodeName === 'height' || nodeName === 'width') {
+                    replacement.style[nodeName] == value;
+                  }
+                  replacement.setAttribute(nodeName, value);
+                }
+                Polymer.dom(this).appendChild(replacement);
+              }
+              else {
+                Polymer.dom(this).appendChild(children[i]);
+              }
             }
           }
         }, 250);
