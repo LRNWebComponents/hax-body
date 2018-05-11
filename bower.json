@@ -64,7 +64,7 @@
     "pdf-element": "LRNWebcomponents/pdf-element#^1.3.0",
     "aframe-player": "LRNWebComponents/aframe-player#^0.0.1",
     "lrndesign-chart": "LRNWebComponents/lrndesign-chart",
-    "video-player": "LRNWebComponents/video-player#^1.8.0",
+    "video-player": "LRNWebComponents/video-player#^1.9.0",
     "lrn-math": "LRNWebComponents/lrn-math#^1.0.0",
     "to-do": "LRNWebComponents/to-do#^1.0.2",
     "simple-timer": "annsonn/simple-timer#^1.0.2",
