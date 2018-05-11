@@ -45,7 +45,7 @@ These elements all live at the "app level" that you will create in order to util
 
 ## Systems that integrate with HAX
 - ELMS:LN - https://github.com/elmsln/elmsln
-- Drupal (6 and 7) - https://www.drupal.org/project/hax
+- Drupal (6, 7, 8) - https://www.drupal.org/project/hax
   + Drupal 7 via Champion distro - https://www.youtube.com/watch?v=ifIg7FiXYCc&index=8&list=PLJQupiji7J5eTqv8JFiW8SZpSeKouZACH
   + Drupal 6 - https://www.youtube.com/watch?v=ojlF3YxqXTo&list=PLJQupiji7J5eTqv8JFiW8SZpSeKouZACH&index=6
 - Backdrop - https://backdropcms.org/project/hax
@@ -53,6 +53,12 @@ These elements all live at the "app level" that you will create in order to util
 - GravCMS - https://github.com/elmsln/grav-plugin-hax
   + Integration and showcase - https://www.youtube.com/watch?v=Z2chE4DuJf8&list=PLJQupiji7J5eTqv8JFiW8SZpSeKouZACH&index=5
 - Your system! (see next step)
+
+## Can I build my own elements for HAX?
+YES! HAX's "gizmo" and "app store" systems are 100% pluggable. The app store concept has it's own API for creation which can best be modeled by looking at the example appstore.json from the demo (all the CMSs that integrate with HAX also can serve up this store data). [See example here](https://github.com/LRNWebComponents/hax-body/blob/master/demo/appstore.json#L61-L124).
+
+### What about Gizmo's tho...
+Gizmo's are just a silly word for Custom Elements (so we don't use that word over and over again). To make a Gizmo you just make a custom element. The HAX playlist has tons of examples of doing this across the many elements we demonstrate in the demo. To build your own it's probably best to see the integration in one of those videos or you can read the integration specification from [hax-body-behaviors](https://github.com/LRNWebComponents/hax-body-behaviors/blob/master/hax-body-behaviors.html#L12-L113). HAX can talk to anything and your implementation of HAX can specify exactly the custom tags you want it to understand.
 
 ### Polymer tutorials
 https://www.youtube.com/watch?v=QGOPsqVjGjU - learn polymer from the people making this
@@ -66,6 +72,7 @@ HAX is designed to integrate with any system by being about authoring HTML that 
 If you think you can use HAX, try one of the methods below of integration. HAX is a pretty deep dive into Polymer / Webcomponents so these areas might be good starting points and then working down from there if you find it useful.
 
 #### Drop in integrations
+- Working on a desktop or mobile app? Use the `app-editor-hax` tag - https://github.com/LRNWebComponents/app-editor-hax
 - Faster HAX integration into a CMS setting. Use the `cms-hax` tag - https://github.com/LRNWebComponents/cms-hax
 - Want CKEditor style replacement (integration wise). Use `wysiwyg-hax` tag - https://github.com/LRNWebComponents/wysiwyg-hax
 
