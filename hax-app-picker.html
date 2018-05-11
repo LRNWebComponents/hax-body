@@ -265,6 +265,9 @@
           // haxElement is a unique case
           if (this.pickerType == 'gizmo') {
             Polymer.HaxStore.write('activeHaxElement', this._elements[key], this);
+            if (this._elements[key].__type === '__convert') {
+              Polymer.HaxStore.instance.haxManager.editExistingNode = true;
+            }
             // ensure this is open even though it should be
             Polymer.HaxStore.instance.haxManager.open();
             Polymer.HaxStore.instance.haxManager.selectStep('configure');

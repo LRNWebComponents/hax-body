@@ -935,6 +935,56 @@ A LRN element that will change the world.
             this.positionContextMenus(this.activeNode, this.activeContainerNode);
           break;
           // grid plate based operations
+          // allow for transforming this haxElement into another one
+          case 'grid-plate-convert':
+            let element = Polymer.HaxStore.nodeToHaxElement(this.activeNode, null);
+            let type = '*';
+            let skipPropMatch = false;
+            // special support for place holder which defines exactly
+            // what the user wants this replaced with
+            if (element.tag === 'place-holder' && typeof element.properties['type'] !== typeof undefined) {
+              type = element.properties['type'];
+              skipPropMatch = true;
+            }
+            var props = {};
+            // get the haxProperties for this item
+            let gizmo = Polymer.HaxStore.instance.elementList[element.tag].gizmo;
+            // see if we have a gizmo as it's not a requirement to registration
+            // as well as having handlers since mapping is not required either
+            if (gizmo !== false && typeof gizmo.handles !== typeof undefined && gizmo.handles.length > 0) {
+              // walk through each handler
+              for (var i = 0; i < gizmo.handles.length; i++) {
+                // walk the properties defined as they would be to the
+                // left side of the ledger and tell us which property to
+                // mesh with. This effectively rehydrates / inverts that
+                // relationship where we have an element and want to say
+                // "oh ya, but what could have handled this" so that we
+                // can use that translation to offer up convertion to a
+                // new element. This is insane.
+                for (var prop in gizmo.handles[i]) {
+                  // type is a reserved handler but any other property
+                  // which we actually have in our element let's go for it
+                  if (prop !== 'type' && typeof element.properties[gizmo.handles[i][prop]] !== typeof undefined) {
+                    // The cake is a lie... oh wait... no it's not.
+                    // This will completely bend your mind when it comes to
+                    // what HTML is, how it should operate and what universe
+                    // we can now contort as a result. This effectively allows
+                    // reverse engineering any element on the page into any
+                    // other compatible element based on the properties in
+                    // each element claiming to be compatible.
+                    props[prop] = element.properties[gizmo.handles[i][prop]];
+                  }
+                }
+              }
+            }
+            let haxElements = Polymer.HaxStore.guessGizmo(type, props, skipPropMatch);
+            // see if we got anything
+            if (haxElements.length > 0) {
+              // hand off to hax-app-picker to deal with the rest of this
+              Polymer.HaxStore.instance.haxAppPicker.presentOptions(haxElements, '__convert', 'Pick how to present this inline gizmo', 'gizmo');
+            }
+          break;
+          // duplicate the active item or container
           case 'grid-plate-duplicate':
             if (this.activeNode === this.activeContainerNode) {
               this.haxDuplicateNode(this.activeNode);
