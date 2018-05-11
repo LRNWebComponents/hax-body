@@ -36,10 +36,10 @@ A LRN element that will change the world.
         position: relative;
         visibility: hidden;
         opacity: 0;
-        transition: all .6s ease;
+        transition: all .3s ease;
         z-index: 3;
-        display: none;
         float: left;
+        display: block;
       }
       :host #bodycontainer ::slotted(#haxinputmixer) {
         z-index: 10000000;
@@ -47,23 +47,21 @@ A LRN element that will change the world.
       :host #bodycontainer ::slotted(.hax-context-visible) {
         visibility: visible;
         opacity: 1;
-        display: block;
       }
       :host[edit-mode] #bodycontainer ::slotted(*[data-editable]) {
         outline: none;
         transition:
           .6s width ease-in-out,
           .6s height ease-in-out,
-          .6s margin ease-in-out,
-          .3s outline linear;
+          .6s margin ease-in-out;
       }
       :host[edit-mode] #bodycontainer ::slotted(*[data-editable]):hover {
-        outline: 2px dashed #d3d3d3;
-        outline-offset: 4px;
+        outline: 1px dotted #d3d3d3;
+        outline-offset: 2px;
       }
       :host[edit-mode] #bodycontainer ::slotted(* [data-editable]):hover {
-        outline: 2px dashed #d3d3d3;
-        outline-offset: 4px;
+        outline: 1px dotted #d3d3d3;
+        outline-offset: 2px;
       }
       :host[edit-mode] #bodycontainer ::slotted(*[data-editable])::before {
         content: '';
@@ -87,12 +85,12 @@ A LRN element that will change the world.
       }
       :host[edit-mode] #bodycontainer ::slotted(*.hax-active[data-editable]) {
         cursor: text !important;
-        outline: 2px dashed #c3c3c3 !important;
+        outline: 1px dashed #c3c3c3 !important;
         outline-offset: 4px;
       }
       :host[edit-mode] #bodycontainer ::slotted(*[data-editable] .hax-active) {
         cursor: text !important;
-        outline: 2px dashed #c3c3c3 !important;
+        outline: 1px dashed #c3c3c3 !important;
         outline-offset: 4px;
       }
       :host[edit-mode] #bodycontainer ::slotted(*.hax-active[data-editable])::before {
@@ -139,7 +137,7 @@ A LRN element that will change the world.
         display: none;
       }
       :host[edit-mode][hax-ray-mode] #bodycontainer ::slotted(*[data-editable]) {
-        outline: 2px dashed #d3d3d3;
+        outline: 1px dashed #d3d3d3;
         outline-offset: 4px;
       }
       :host[edit-mode][hax-ray-mode] #bodycontainer ::slotted(*[data-editable])::before {
@@ -235,15 +233,6 @@ A LRN element that will change the world.
           type: Object,
           value: null,
           notify: true,
-        },
-        /**
-         * A reference to the currently hovered node in the slot.
-         */
-        activeHover: {
-          type: Object,
-          value: {},
-          notify: true,
-          observer: '_activeHoverChanged',
         },
       },
       /**
@@ -749,7 +738,7 @@ A LRN element that will change the world.
         this._positionContextMenu(this.__activeContextType, container, offsetmenu, -54);
         this._positionContextMenu(this.$.platecontextmenu, container, offsetplate, -8, false);
         // special case for node not matching container
-        if (node !== container) {
+        if (!this._HTMLPrimativeTest(node) && node !== container) {
           container.contentEditable = false;
         }
         else if (this._HTMLPrimativeTest(container)) {
@@ -839,16 +828,23 @@ A LRN element that will change the world.
         // shift active to a viable replacement
         if (this.activeContainerNode != null && this.activeContainerNode.previousElementSibling !== null) {
           this.activeContainerNode.previousElementSibling.focus();
-          // @todo cursor at the END of the element
-          /*setTimeout( () => {
-            if (this.activeNode.tagName === 'P') {
-              // select everything
-              this.activeNode.select();
-              var sel = window.getSelection();
-              let range = selection.getRangeAt(0);
-              range.setStart(this.activeNode, range.endOffset);
+          setTimeout( () => {
+            // cursor at the END of the element assuming not empty
+            if (Polymer.HaxStore.instance.isTextElement(this.activeContainerNode) && Polymer.dom(this.activeContainerNode).textContent !== '') {
+              try {
+                var range = document.createRange();
+                var sel = window.getSelection();
+                range.setStart(this.activeContainerNode, 1);
+                range.collapse(true);
+                sel.removeAllRanges();
+                sel.addRange(range);
+                this.activeContainerNode.focus();
+              }
+              catch(e) {
+                console.log(e);
+              }
             }
-          }, 250);*/
+          }, 100);
         }
         else if (this.activeContainerNode != null && this.activeContainerNode.nextElementSibling !== null) {
           this.activeContainerNode.nextElementSibling.focus();
@@ -865,7 +861,6 @@ A LRN element that will change the world.
         }
         catch(e) {
           console.log(e);
-          return {};
         }
       },
       /**
@@ -1109,6 +1104,10 @@ A LRN element that will change the world.
             else if (!Polymer.HaxStore.instance.isGridPlateElement(containerNode)) {
               activeNode = containerNode;
             }
+            // won't deal with lists inside of p tags
+            else if (['UL','OL','LI', 'P'].includes(containerNode.tagName) && ['UL','OL','LI'].includes(activeNode.tagName)) {
+              activeNode = containerNode;
+            }
             // ensure this is a tag we care about / have support for and
             // that it is a new value
             if (this.activeContainerNode !== containerNode && tags.includes(containerNode.tagName.toLowerCase()) && !containerNode.classList.contains('ignore-activation')) {
@@ -1122,7 +1121,7 @@ A LRN element that will change the world.
             if (this.activeNode !== activeNode && tags.includes(containerNode.tagName.toLowerCase()) && !activeNode.classList.contains('ignore-activation')) {
               setTimeout( () => {
                 Polymer.HaxStore.write('activeNode', activeNode, this);
-              }, 100);
+              }, 50);
               e.stopPropagation();
             }
           }
@@ -1191,13 +1190,13 @@ A LRN element that will change the world.
           // remove the menu, establish the new active, then reapply
           // this is nessecary because the context menu gets appended into
           // the document
-          this.hideContextMenus();
+          // only hide if we change containers
           newValue.classList.add('hax-active');
           this.$.textcontextmenu.selectedValue = newValue.tagName.toLowerCase();
           // position the operations / in context element
           setTimeout( () => {
             this.positionContextMenus(newValue, Polymer.HaxStore.instance.activeContainerNode);
-          }, 150);
+          }, 25);
           if (newValue.style.textAlign == 'right') {
             this.$.textcontextmenu.justifyIcon = 'editor:format-align-right';
             this.$.textcontextmenu.justifyValue = 'text-align-right';
@@ -1227,21 +1226,9 @@ A LRN element that will change the world.
         }
       },
       /**
-       * React to a new node being hovered over.
-       */
-      _activeHoverChanged: function (newValue, oldValue) {
-        // if we have actually hovered on the element that's active, trigger
-        // the grid plate context menu to show up
-        if (typeof newValue !== typeof undefined && newValue !== null && this.activeNode === newValue) {
-          // position the operations / in context element
-          this._positionContextMenu(this.$.platecontextmenu, newValue, -66, -8, false);
-        }
-      },
-      /**
        * Handle display and position of the context menu
        */
       _positionContextMenu: function (menu, target, xoffset, yoffset, matchStyle = true) {
-        menu.classList.add('hax-context-visible');
         try {
           Polymer.dom(this).insertBefore(menu, target);
         }
@@ -1263,6 +1250,7 @@ A LRN element that will change the world.
         if (yoffset != null) {
           menu.style["margin-top"] = yoffset + 'px';
         }
+        menu.classList.add('hax-context-visible');
       },
       /**
        * Simple hide / reset of whatever menu it's handed.
@@ -1309,6 +1297,30 @@ A LRN element that will change the world.
             e.stopPropagation();
             this.haxDeleteNode(this.activeContainerNode);
           }
+          else {
+            // test selection to see if we are at beginning of
+            // whatever element this is
+            var selection = window.getSelection();
+            let range = selection.getRangeAt(0).cloneRange();
+            // ensure our range is not inside of a list item
+            let tagTest = range.commonAncestorContainer.tagName;
+            if (typeof tagTest === typeof undefined) {
+              tagTest = range.commonAncestorContainer.parentNode.tagName;
+            }
+            if (range.startOffset === 0 && !['UL','OL','LI'].includes(tagTest)) {
+              e.preventDefault();
+              e.stopPropagation();
+              this.hideContextMenus();
+              setTimeout( () => {
+                while (this.activeContainerNode.firstChild) {
+                  this.activeContainerNode.previousElementSibling.appendChild(this.activeContainerNode.firstChild);
+                }
+                // delay so the above can fully populate if it's a large
+                // element that we just mashed into this one.
+                this.haxDeleteNode(this.activeContainerNode);
+              }, 100);
+            }
+          }
         }
       },
       /**
@@ -1321,7 +1333,13 @@ A LRN element that will change the world.
           let focus = false;
           let node = this.activeContainerNode;
           const activeNodeTagName = this.activeContainerNode.tagName;
-          if (['UL','OL'].includes(activeNodeTagName)) {
+          var selection = window.getSelection();
+          let range = selection.getRangeAt(0).cloneRange();
+          var tagTest = range.commonAncestorContainer.tagName;
+          if (typeof tagTest === typeof undefined) {
+            tagTest = range.commonAncestorContainer.parentNode.tagName;
+          }
+          if (['UL','OL','LI'].includes(activeNodeTagName) || ['UL','OL','LI'].includes(tagTest)) {
             if (this.polyfillSafe) {
               document.execCommand('indent');
             }
@@ -1350,10 +1368,11 @@ A LRN element that will change the world.
         if (this.editMode) {
           e.preventDefault();
           e.stopPropagation();
-          let focus = false;
-          let node = Polymer.dom(this.activeNode).previousSibling;
-          const activeNodeTagName = this.activeNode.tagName;
-          if (['UL','OL'].includes(activeNodeTagName)) {
+          let node = Polymer.dom(this.activeContainerNode).previousSibling;
+          const activeNodeTagName = this.activeContainerNode.tagName;
+          var selection = window.getSelection();
+          let range = selection.getRangeAt(0).cloneRange();
+          if (['UL','OL','LI'].includes(activeNodeTagName) || ['UL','OL','LI'].includes(range.commonAncestorContainer.parentElement.tagName)) {
             if (this.polyfillSafe) {
               document.execCommand('outdent');
             }

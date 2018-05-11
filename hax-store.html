@@ -273,12 +273,13 @@
           return false;
         },
         /**
-         * test for being a valid grid plate
+         * test for being a valid grid plate, li is here because
+         * nested lists make this really complicated
          */
         isGridPlateElement: function(node) {
           let tag = node.tagName.toLowerCase();
           if (this.validTagList.includes(tag)) {
-            if (['p', 'ol', 'ul', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'code', 'figure', 'hax-blox'].includes(tag)) {
+            if (['p', 'ol', 'ul', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'code', 'figure', 'hax-blox'].includes(tag)) {
               return true;
             }
           }
@@ -360,14 +361,19 @@
             // process it or inject a new p tag
             if (keyName === 'Enter' && Polymer.HaxStore.instance.editMode && Polymer.HaxStore.instance.activeNode !== null && Polymer.HaxStore.instance.activeContainerNode === Polymer.HaxStore.instance.activeNode) {
               const activeNodeTagName = Polymer.HaxStore.instance.activeContainerNode.tagName;
-              if (['P','H1','H2','H3','H4','H5','H6'].includes(activeNodeTagName)) {
-                event.preventDefault();
+              var selection = window.getSelection();
+              const range = selection.getRangeAt(0).cloneRange();
+              var tagTest = range.commonAncestorContainer.tagName;
+              if (typeof tagTest === typeof undefined) {
+                tagTest = range.commonAncestorContainer.parentNode.tagName;
+              }
+              // test if we want to touch Enter based on tag name and range
+              // we ignore Enter for our purposes when in a list
+              if (['P','H1','H2','H3','H4','H5','H6'].includes(activeNodeTagName) && !['UL','OL','LI'].includes(tagTest)) {
                 // we need to do goofy stuff for p tags since people
                 // will expect to be able to split them mid typing
-                if (activeNodeTagName === 'P') {
-                  // find that damn cursor
-                  var selection = window.getSelection();
-                  let range = selection.getRangeAt(0).cloneRange();
+                if (range.endOffset !== this.activeContainerNode.textContent.length) {
+                  event.preventDefault();
                   // create a cloned range where it's sitting
                   range.setStart(selection.focusNode, range.startOffset);
                   // generate a completely fake element and insert it so we
@@ -380,9 +386,15 @@
                   const limit = Polymer.HaxStore.instance.activeContainerNode;
                   var node = Polymer.dom(Polymer.HaxStore.instance.activeContainerNode).querySelector('hax-split-point');
                   // run a split node function as modified from stackoverflow
-                  this.__splitNode(node, limit);
+                  try {
+                    this.__splitNode(node, limit);
+                  }
+                  catch (e) {
+
+                  }
                 }
                 else {
+                  event.preventDefault();
                   Polymer.HaxStore.instance.fire('hax-insert-content', {
                     tag: 'p',
                     content: '',
