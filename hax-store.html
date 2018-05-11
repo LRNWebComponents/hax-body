@@ -29,6 +29,7 @@
         display: none;
       }
     </style>
+    <slot></slot>
     <iron-ajax
     id="appstore"
     url="[[appStore.url]]"
@@ -211,6 +212,13 @@
             value: [],
           },
           /**
+           * Available hax blox which are grid plate / layout elements
+           */
+          bloxList: {
+            type: Array,
+            value: [],
+          },
+          /**
            * Global preferences that HAX can write to and
            * other elements can use to go off of.
            */
@@ -237,7 +245,7 @@
            */
           validGizmoTypes: {
             type: Array,
-            value: ['data','video','audio','text','link','file','pdf','image','csv','doc','content','text','inline'],
+            value: ['data','video','audio','text','link','file','pdf','image','csv','doc','content','text','inline', '*'],
           },
           /**
            * Sandboxed environment test
@@ -306,24 +314,6 @@
          */
         _loadAppStoreData: function(newValue, oldValue) {
           if (typeof newValue !== typeof undefined) {
-            // load apps automatically
-            if (typeof newValue.apps !== typeof undefined) {
-              var apps = newValue.apps;
-              for (var i = 0; i < apps.length; i++) {
-                let app = document.createElement('hax-app');
-                app.data = apps[i];
-                document.body.appendChild(app);
-              }
-            }
-            // load in stax dynamically
-            if (typeof newValue.stax !== typeof undefined) {
-              var staxs = newValue.stax;
-              for (var i = 0; i < staxs.length; i++) {
-                let stax = document.createElement('hax-stax');
-                stax.data = staxs[i];
-                document.body.appendChild(stax);
-              }
-            }
             // autoload elements
             if (typeof newValue.autoloader !== typeof undefined) {
               // edge case, wait till haxAutoloader has been registered
@@ -340,6 +330,33 @@
                   let loader = document.createElement(newValue.autoloader[i]);
                   Polymer.dom(this.haxAutoloader).appendChild(loader);
                 }
+              }
+            }
+            // load apps automatically
+            if (typeof newValue.apps !== typeof undefined) {
+              var apps = newValue.apps;
+              for (var i = 0; i < apps.length; i++) {
+                let app = document.createElement('hax-app');
+                app.data = apps[i];
+                Polymer.HaxStore.instance.appendChild(app);
+              }
+            }
+            // load in stax dynamically
+            if (typeof newValue.stax !== typeof undefined) {
+              var staxs = newValue.stax;
+              for (var i = 0; i < staxs.length; i++) {
+                let stax = document.createElement('hax-stax');
+                stax.data = staxs[i];
+                Polymer.HaxStore.instance.appendChild(stax);
+              }
+            }
+            // load in blox dynamically
+            if (typeof newValue.blox !== typeof undefined) {
+              var bloxs = newValue.blox;
+              for (var i = 0; i < bloxs.length; i++) {
+                let blox = document.createElement('hax-blox');
+                blox.data = bloxs[i];
+                Polymer.HaxStore.instance.appendChild(blox);
               }
             }
           }
@@ -462,25 +479,46 @@
          * Created life-cycle to ensure a single global store.
          */
         created: function() {
+          // claim the instance spot. This way we can easily
+          // be referenced globally
           if (!Polymer.HaxStore.instance) {
             Polymer.HaxStore.instance = this;
           }
-          // write data to the store
-          document.body.addEventListener('hax-store-write', this._writeHaxStore.bind(this));
           // notice hax property definitions coming from anywhere
           document.body.addEventListener('hax-register-properties', this._haxStoreRegisterProperties.bind(this));
-          document.body.addEventListener('hax-register-manager', this._haxStoreRegisterManager.bind(this));
-          document.body.addEventListener('hax-register-autoloader', this._haxStoreRegisterAutoloader.bind(this));
-          document.body.addEventListener('hax-register-body', this._haxStoreRegisterBody.bind(this));
-          document.body.addEventListener('hax-register-panel', this._haxStoreRegisterPanel.bind(this));
+          // app registration can come in automatically from app-stores
+          // or through direct definition in the DOM
           document.body.addEventListener('hax-register-app', this._haxStoreRegisterApp.bind(this));
-          document.body.addEventListener('hax-register-app-picker', this._haxStoreRegisterAppPicker.bind(this));
+          // register stax which are groupings of haxElements
           document.body.addEventListener('hax-register-stax', this._haxStoreRegisterStax.bind(this));
+          // register blox which are grid plate configurations
+          // with lots of sane visual defaults
+          document.body.addEventListener('hax-register-blox', this._haxStoreRegisterBlox.bind(this));
+          // register the pieces of the body of what we call HAX
+          // think of this like the core of the system required
+          // to do anything like have buttons or state management
+
+          // write data to the store
+          document.body.addEventListener('hax-store-write', this._writeHaxStore.bind(this));
+          // register the manager panel / modal
+          document.body.addEventListener('hax-register-manager', this._haxStoreRegisterManager.bind(this));
+          // register the autoloader area for elements
+          document.body.addEventListener('hax-register-autoloader', this._haxStoreRegisterAutoloader.bind(this));
+          // register a body, kind of a big deal
+          document.body.addEventListener('hax-register-body', this._haxStoreRegisterBody.bind(this));
+          // register the interaction panel / menu
+          document.body.addEventListener('hax-register-panel', this._haxStoreRegisterPanel.bind(this));
+          // register the app picker for contextual setting / option
+          document.body.addEventListener('hax-register-app-picker', this._haxStoreRegisterAppPicker.bind(this));
+          // stax modal
           document.body.addEventListener('hax-register-stax-picker', this._haxStoreRegisterStaxPicker.bind(this));
+          // preferences modal
+          document.body.addEventListener('hax-register-preferences', this._haxStoreRegisterPreferences.bind(this));
+          // export modal
+          document.body.addEventListener('hax-register-export', this._haxStoreRegisterExport.bind(this));
+
           // notice content insert and help it along to the body
           document.body.addEventListener('hax-insert-content', this._haxStoreInsertContent.bind(this));
-          document.body.addEventListener('hax-register-preferences', this._haxStoreRegisterPreferences.bind(this));
-          document.body.addEventListener('hax-register-export', this._haxStoreRegisterExport.bind(this));
         },
         /**
          * Build HAX property definitions for primitives that we support.
@@ -946,6 +984,11 @@
           if (e.detail) {
             e.detail.index = this.appList.length;
             this.push('appList', e.detail);
+            Polymer.HaxStore.write('appList', this.appList, this);
+            // we don't care about this after it's launched
+            if (typeof e.target.parentElement !== typeof undefined && e.target.parentElement.tagName === 'HAX-STORE') {
+              Polymer.dom(e.target.parentElement).removeChild(e.target);
+            }
           }
         },
         /**
@@ -956,6 +999,24 @@
             e.detail.index = this.staxList.length;
             this.push('staxList', e.detail);
             Polymer.HaxStore.write('staxList', this.staxList, this);
+            // we don't care about this after it's launched
+            if (typeof e.target.parentElement !== typeof undefined && e.target.parentElement.tagName === 'HAX-STORE') {
+              Polymer.dom(e.target.parentElement).removeChild(e.target);
+            }
+          }
+        },
+        /**
+         * Notice that a blox was set in HAX; register it
+         */
+        _haxStoreRegisterBlox: function(e) {
+          if (e.detail) {
+            e.detail.index = this.bloxList.length;
+            this.push('bloxList', e.detail);
+            Polymer.HaxStore.write('bloxList', this.bloxList, this);
+            // we don't care about this after it's launched
+            if (typeof e.target.parentElement !== typeof undefined && e.target.parentElement.tagName === 'HAX-STORE') {
+              Polymer.dom(e.target.parentElement).removeChild(e.target);
+            }
           }
         },
         /**
@@ -972,6 +1033,11 @@
                 let gizmos = this.gizmoList;
                 gizmos.push(gizmo);
                 Polymer.HaxStore.write('gizmoList', gizmos, this);
+                // delete this tag if it was in the autoloader
+                // as it has served it's purpose.
+                if (typeof e.target.parentElement !== typeof undefined && e.target.parentElement.tagName === 'HAX-AUTOLOADER') {
+                  Polymer.dom(e.target.parentElement).removeChild(e.target);
+                }
               }
               this.set('elementList.' + e.detail.tag, e.detail.properties);
               this.push('validTagList', e.detail.tag);
@@ -1092,7 +1158,7 @@
           "content": slotContent,
         };
         if (eventName !== null) {
-          element.eventName = 'insert-element';
+          element.eventName = eventName;
         }
         return element;
       };
@@ -1197,14 +1263,16 @@
             return 'video';
           }
           else {
-            return 'data';
+            // we don't know how to handle this so let's just
+            // try ANYTHING that matches
+            return '*';
           }
         }
       };
       /**
        * Try and guess the Gizmo based on what we were just handed
        */
-      Polymer.HaxStore.guessGizmo = (guess, values) => {
+      Polymer.HaxStore.guessGizmo = (guess, values, skipPropMatch = false) => {
         var matches = [];
         if (typeof guess !== typeof undefined) {
           var store = Polymer.HaxStore.instance;
@@ -1215,13 +1283,11 @@
             for (var gizmoposition in store.gizmoList) {
               var gizmo = store.gizmoList[gizmoposition];
               var props = {};
-              var match;
+              // reset match per gizmo
+              var match = false;
               for (var i = 0; i < gizmo.handles.length; i++) {
-                // reset match per potential handler though most things
-                // will only have 1 handler but still..
-                match = false;
                 // WHAT!??!?!?!?!
-                if (guess === gizmo.handles[i].type) {
+                if (guess === gizmo.handles[i].type || (guess === '*' && !match)) {
                   for (var property in gizmo.handles[i]) {
                     // ignore type.. but again.. WHAT?!?!?!
                     if (property !== 'type') {
@@ -1234,7 +1300,7 @@
                     }
                   }
                   // omg... we just found a match on a property from who knows where!
-                  if (match) {
+                  if (match || skipPropMatch) {
                     matches.push(Polymer.HaxStore.haxElementPrototype(gizmo, props, ''));
                   }
                 }
