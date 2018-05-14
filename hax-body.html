@@ -981,7 +981,10 @@ A LRN element that will change the world.
             // see if we got anything
             if (haxElements.length > 0) {
               // hand off to hax-app-picker to deal with the rest of this
-              Polymer.HaxStore.instance.haxAppPicker.presentOptions(haxElements, '__convert', 'Pick how to present this inline gizmo', 'gizmo');
+              Polymer.HaxStore.instance.haxAppPicker.presentOptions(haxElements, '__convert', 'What do you want to conver this gizmo to', 'gizmo');
+            }
+            else {
+              Polymer.HaxStore.toast('Sorry, this can\'t be converted to anything automatically!', 5000);
             }
           break;
           // duplicate the active item or container

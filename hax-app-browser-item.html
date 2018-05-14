@@ -30,38 +30,56 @@ A button on the hax-app-browser display
       :host {
         display: inline-flex;
       }
+      :host[elevation="1"] {
+        -webkit-transform: scale(1, 1);
+        transform: scale(1, 1);
+      }
+      :host[elevation="2"] {
+        -webkit-transform: scale(1.4, 1.4);
+        transform: scale(1.4, 1.4);
+      }
       paper-card {
         margin: 4px 0;
+        border-radius: 4px;
       }
       paper-button {
         color: rgba(0,0,0,0.66);
         text-transform: none;
         margin:0;
         background-color: #ffffff;
-        height: 96px !important;
-        width : 96px !important;
+        height: 64px !important;
+        width : 64px !important;
         display: flex;
         border-radius: 4px;
         border-style: solid;
         border-width: 1px;
+        min-width: unset;
       }
       paper-button .item-title {
-        font-size: 12px;
+        font-size: 9px;
         margin-top: 4px;
       }
       paper-button .button-inner {
-        padding-top: 8px;
+        padding-top: 4px;
         text-align: center;
       }
       paper-button iron-icon {
-        height: 48px;
-        width: 40px;
+        height: 28px;
+        width: 26px;
       }
       .flip-icon {
         transform: rotateY(180deg);
       }
+      :host[small] paper-button {
+        height: 52px !important;
+        width : 52px !important;
+      }
+      :host[small] paper-button iron-icon {
+        height: 20px;
+        width: 20px;
+      }
     </style>
-    <paper-card id="card" elevation="2">
+    <paper-card id="card" elevation="[[elevation]]">
       <paper-button id="button" data-voicecommand$="select [[title]]" class$="[[color]] lighten-5 [[color]]-border">
         <div class="button-inner">
           <iron-icon icon="[[icon]]" class$="[[color]]-text text-darken-3" hidden$="[[!icon]]"></iron-icon>
@@ -87,7 +105,8 @@ A button on the hax-app-browser display
         'mousedown': 'tapEventOn',
         'mouseover': 'tapEventOn',
         'mouseout': 'tapEventOff',
-        'button.focused-changed': 'focusToggle',
+        'button.focusin': 'tapEventOn',
+        'button.focusout': 'tapEventOff',
       },
       properties: {
         /**
@@ -150,29 +169,26 @@ A button on the hax-app-browser display
         status: {
           type: Array
         },
+        /**
+         * Elevation off the UI
+         */
+        elevation: {
+          type: Number,
+          value: 1,
+          reflectToAttribute: true,
+        },
       },
       /**
        * special handling for taps on the thing
        */
       tapEventOn: function(e) {
-        this.$.card.elevation = 2;
+        this.elevation = 2;
       },
       /**
        * Hover off stop showing the deeper shadow.
        */
       tapEventOff: function(e) {
-        this.$.card.elevation = 1;
-      },
-      /**
-       * Toggle through focus so keyboard gets same interactions.
-       */
-      focusToggle: function(e) {
-        if (this.$.card.elevation == 2) {
-          this.$.card.elevation = 1;
-        }
-        else {
-          this.$.card.elevation = 2;
-        }
+        this.elevation = 1;
       },
       /**
        * Fire an event that includes the eventName of what was just pressed.

@@ -73,7 +73,7 @@
     "media-image": "LRNWebComponents/media-image#^1.0.2",
     "wikipedia-query": "LRNWebComponents/wikipedia-query#^1.4.0",
     "lrn-vocab": "LRNWebComponents/lrn-vocab#^1.1.1",
-    "citation-element": "LRNWebComponents/citation-element#^1.0.2",
+    "citation-element": "LRNWebComponents/citation-element#^1.0.3",
     "magazine-cover": "LRNWebcomponents/magazine-cover#^1.1.4",
     "a11y-gif-player": "LRNWebcomponents/a11y-gif-player#^1.0.3",
     "lrn-calendar": "LRNWebcomponents/lrn-calendar#^0.1.0",
@@ -83,7 +83,8 @@
     "multiple-choice": "LRNWebComponents/multiple-choice#^1.0.0",
     "tab-list": "LRNWebComponents/tab-list#^0.1.0",
     "self-check": "LRNWebComponents/self-check#^1.0.1",
-    "q-r": "LRNWebComponents/q-r#^1.0.3"
+    "q-r": "LRNWebComponents/q-r#^1.0.3",
+    "license-element": "LRNWebComponents/license-element#^1.0.0"
   },
   "resolutions": {
     "webcomponentsjs": "^0.7.24",

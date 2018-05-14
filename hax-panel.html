@@ -133,18 +133,18 @@ as the events being bubbled up include HTML nodes to inject into something
         event-name="hax-manager-open"
         value="2"></hax-panel-item>
       <hax-panel-item
+        icon="view-agenda"
+        icon-class="amber-text"
+        label="Templates"
+        event-name="hax-stax-picker-open"
+        voice-command="insert stack"></hax-panel-item>
+      <hax-panel-item
         disabled
         icon="view-quilt"
         icon-class="amber-text text-darken-3"
         label="Layout"
         event-name="layout"
         voice-command="insert block"></hax-panel-item>
-      <hax-panel-item
-        icon="view-agenda"
-        icon-class="amber-text"
-        label="Template"
-        event-name="hax-stax-picker-open"
-        voice-command="insert stack"></hax-panel-item>
       <hax-panel-item
         icon="editor:text-fields"
         icon-class="light-blue-text"
@@ -359,7 +359,7 @@ as the events being bubbled up include HTML nodes to inject into something
           case 'hax-manager-open':
             Polymer.HaxStore.write('activeHaxElement', {}, this);
             Polymer.HaxStore.instance.haxManager.resetManager(parseInt(detail.value));
-            Polymer.HaxStore.instance.haxManager.toggleDialog();
+            Polymer.HaxStore.instance.haxManager.toggleDialog(false);
           break;
           case 'hax-stax-picker-open':
             Polymer.HaxStore.instance.haxStaxPicker.toggleDialog();
@@ -412,6 +412,9 @@ as the events being bubbled up include HTML nodes to inject into something
       toggle: function(e) {
         Polymer.HaxStore.write('editMode', !this.editMode, this);
         this.$.drawer.opened = this.editMode;
+        if (!this.$.drawer.opened) {
+          Polymer.HaxStore.instance.closeAllDrawers();
+        }
       }
     });
   </script>

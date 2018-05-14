@@ -831,7 +831,7 @@
         _injectToast: function() {
           var toast = document.createElement('paper-toast');
           toast.id = "haxtoast";
-          toast.duration = 5;
+          toast.duration = 3000;
           // move this object to the body level so it doesn't
           // run into stack order context issues
           document.body.appendChild(toast);
@@ -872,6 +872,28 @@
         _haxStoreRegisterStaxPicker: function(e) {
           if (e.detail && typeof this.haxStaxPicker === typeof undefined) {
             this.haxStaxPicker = e.detail;
+          }
+        },
+        /**
+         * Close all drawers
+         */
+        closeAllDrawers: function(active = false) {
+          // walk all drawers, close everything
+          // except active. This also will allow them
+          // to close everything then.
+          let drawers = [
+            'haxStaxPicker',
+            'haxExport',
+            'haxPreferences',
+            'haxManager'
+          ];
+          for (var i in drawers) {
+            if (active === this[drawers[i]]) {
+              active.open();
+            }
+            else {
+              this[drawers[i]].close();
+            }
           }
         },
         /**
@@ -1361,7 +1383,8 @@
       /**
        * Global toast
        */
-      Polymer.HaxStore.toast = (message) => {
+      Polymer.HaxStore.toast = (message, duration = 3000) => {
+        Polymer.HaxStore.instance.haxToast.duration = duration;
         Polymer.HaxStore.instance.haxToast.show(message);
       };
       /**
