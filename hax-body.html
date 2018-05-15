@@ -354,6 +354,7 @@ A LRN element that will change the world.
             newNode.style.margin = Polymer.HaxStore.instance.activePlaceHolder.style.margin;
             newNode.style.display = Polymer.HaxStore.instance.activePlaceHolder.style.display;
             this.haxReplaceNode(Polymer.HaxStore.instance.activePlaceHolder, newNode);
+            Polymer.HaxStore.instance.activePlaceHolder = null;
           }
           // insert at active insert point if we have one
           else if (this.activeContainerNode !== null) {
@@ -597,8 +598,13 @@ A LRN element that will change the world.
       haxReplaceNode: function (node, replacement, parent = this) {
         // ensure we're not in the document tree for the replaced node
         this.hideContextMenus();
-        // Switch!
-        Polymer.dom(parent).replaceChild(replacement, node);
+        // Switch, try loop in case we screwed up elsewhere
+        try {
+          Polymer.dom(parent).replaceChild(replacement, node);
+        }
+        catch(e) {
+          console.log(e);
+        }
         return replacement;
       },
       /**
