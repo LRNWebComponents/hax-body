@@ -5,6 +5,7 @@
 <link rel="import" href="../iron-ajax/iron-ajax.html">
 <link rel="import" href="hax-app.html">
 <link rel="import" href="hax-stax.html">
+<link rel="import" href="hax-blox.html">
 
 <!--
 `hax-store`
@@ -238,7 +239,7 @@
            */
           validTagList: {
             type: Array,
-            value: ['p', 'div', 'ol', 'ul', 'li', 'a', 'strong', 'kbd', 'em', 'i', 'b', 'hr', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'code', 'figure', 'img', 'iframe', 'video', 'audio', 'section', 'hax-blox', 'template', 'webview'],
+            value: ['p', 'div', 'ol', 'ul', 'li', 'a', 'strong', 'kbd', 'em', 'i', 'b', 'hr', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'code', 'figure', 'img', 'iframe', 'video', 'audio', 'section', 'grid-plate', 'template', 'webview'],
           },
           /**
            * Gizmo types which can be used to bridge apps to gizmos.
@@ -287,7 +288,7 @@
         isGridPlateElement: function(node) {
           let tag = node.tagName.toLowerCase();
           if (this.validTagList.includes(tag)) {
-            if (['p', 'ol', 'ul', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'code', 'figure', 'hax-blox'].includes(tag)) {
+            if (['p', 'ol', 'ul', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'code', 'figure', 'grid-plate'].includes(tag)) {
               return true;
             }
           }
@@ -1232,6 +1233,212 @@
           }
         }
         return newNode;
+      };
+      /**
+       * Convert a node to the correct content object for saving.
+       */
+      Polymer.HaxStore.haxNodeToContent = (node) => {
+        if (Polymer.HaxStore.instance.activeHaxBody.globalPreferences.haxDeveloperMode) {
+          console.log(node);
+        }
+        // ensure we have access to all the member functions of the custom element
+        let prototype = Object.getPrototypeOf(node);
+        // support for deep API call
+        if (typeof prototype.preProcessHaxNodeToContent !== typeof undefined) {
+          let clone = node.cloneNode(true);
+          node = prototype.preProcessHaxNodeToContent(clone);
+        }
+        let tag = node.tagName.toLowerCase();
+        // support sandboxed environments which
+        // will hate iframe tags but love webview
+        if (Polymer.HaxStore.instance._isSandboxed && tag === 'webview') {
+          tag = 'iframe';
+        }
+        var content = '';
+        // start to rebuild the same tag we got in a generalized way
+        content += '<' + tag;
+        var propvals = {};
+        // grab all of the original's attributes, and pass them to the replacement
+        for (var j = 0, l = node.attributes.length; j < l; ++j){
+          var nodeName  = node.attributes.item(j).nodeName;
+          var value = node.attributes.item(j).value;
+          // encode objects and arrays because they are special
+          if (nodeName != 'style' && (typeof value === typeof Object || value.constructor === Array)) {
+            propvals[nodeName] = JSON.stringify(value).replace(new RegExp('"', 'g'), '&quot;');
+          }
+          // only write things that aren't empty
+          else if (value != null && value != 'null') {
+            if (value === true || value === "true") {
+              propvals[nodeName] = true;
+            }
+            else if (value === false) {
+              // do nothing, no reason to record false unless written as text
+              // in which case below will capture it
+            }
+            else {
+              // ensure that value doesn't have " in it unencoded
+              if (typeof value === 'string' && value !== '') {
+                value = value.replace(new RegExp('"', 'g'), '&quot;');
+                propvals[nodeName] = value;
+              }
+              // special handling for empty string cause it might mean boolean
+              // or it might be a string
+              else if (value === '') {
+                if (value == '' && node.attributes.item(j).value != '') {
+                  value = node.attributes.item(j).value;
+                }
+                propvals[nodeName] = value;
+              }
+              else {
+                propvals[nodeName] = value;
+              }
+            }
+          }
+        }
+        // now look through properties
+        if (typeof node.properties !== typeof undefined) {
+          for (var j in node.properties){
+            var nodeName = Polymer.HaxStore.camelToDash(j);
+            var value = null;
+            // prefer local value over properties object if possible
+            if (typeof node[j] !== typeof undefined) {
+              value = node[j];
+            }
+            // encode objects and arrays because they are special
+            if (value != null && (typeof value === typeof Object || value.constructor === Array)) {
+              propvals[nodeName] = JSON.stringify(value).replace(new RegExp('"', 'g'), '&quot;');
+            }
+            // only write things that aren't empty
+            else if (value != null && value != 'null') {
+              if (value === true || value === "true") {
+                propvals[nodeName] = true;
+              }
+              else if (value === false) {
+                // do nothing, no reason to record false unless written as text
+                // in which case below will capture it
+              }
+              else {
+                // ensure that value doesn't have " in it unencoded
+                if (typeof value === 'string' && value !== '') {
+                  value = value.replace(new RegExp('"', 'g'), '&quot;');
+                  propvals[nodeName] = value;
+                }
+                // special handling for empty string cause it might mean boolean
+                // or it might be a string
+                else if (value === '') {
+                  if (value == '' && node.properties[j].value != '') {
+                    value = node.properties[j].value;
+                  }
+                  propvals[nodeName] = value;
+                }
+                else {
+                  propvals[nodeName] = value;
+                }
+              }
+            }
+          }
+        }
+        // specialized clean up for some that can leak through from above
+        // and are edge case things because hash tag, gotta love HTML attributes
+        // and the webview tag. facepalm.
+        let delProps = ['inner-text', 'tabindex', 'guestinstance'];
+        for (var delProp in delProps) {
+          if (typeof propvals[delProps[delProp]] !== typeof undefined) {
+            delete propvals[delProps[delProp]];
+          }
+        }
+        // remove id attribute if it's empty, somehow misses above
+        if (typeof propvals.id !== typeof undefined && propvals.id === '') {
+          delete propvals.id;
+        }
+        // run through the properties
+        for (var i in propvals) {
+          if (propvals[i] === true) {
+            content += ' ' + i;
+          }
+          else {
+            content += ' ' + i + '="' + propvals[i] + '"';
+          }
+        }
+        // set the opening tag, support self-closing void tags
+        let voidTags = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr'];
+        if (voidTags.includes(tag)) {
+          content += '/>';
+        }
+        else {
+          content += '>';
+        }
+        // account for things that say NOT to save slot values
+        let props = Polymer.HaxStore.instance.elementList[tag];
+        // try and work against anything NOT a P tag
+        if (typeof props === typeof undefined || !props.saveOptions.wipeSlot) {
+          // get content that is in the slots
+          let slotnodes = Polymer.dom(node).getEffectiveChildNodes();
+          // ensure there's something inside of this
+          if (slotnodes.length > 0) {
+            // loop through everything found in the slotted area and put it back in
+            for (var j = 0, len2 = slotnodes.length; j < len2; j++) {
+              if (typeof slotnodes[j].tagName !== typeof undefined) {
+                // if we're a custom element, keep digging, otherwise a simple
+                // self append is fine unless template tag cause it's a special
+                // case for the web in general as it'll register as not a primative
+                // even though it is...
+                if (!Polymer.HaxStore.HTMLPrimativeTest(slotnodes[j].tagName) && slotnodes[j].tagName !== 'TEMPLATE') {
+                  content += Polymer.HaxStore.haxNodeToContent(slotnodes[j]);
+                }
+                else {
+                  // possible copy and paste glitch, ignore this at all costs
+                  if (slotnodes[j].tagName === 'SPAN' && slotnodes[j].id === 'inlinetracker') {
+                  }
+                  else {
+                    slotnodes[j].setAttribute('data-editable', false);
+                    slotnodes[j].removeAttribute('data-hax-ray');
+                    slotnodes[j].contentEditable = false;
+                    content += slotnodes[j].outerHTML;
+                  }
+                }
+              }
+              // keep comments with a special case since they need wrapped
+              else if (slotnodes[j].nodeType === 8) {
+                content += '<!-- ' + slotnodes[j].textContent + ' -->';
+              }
+              // keep everything NOT an element at this point, this helps
+              // preserve whitespace because we're crazy about accuracy
+              else if (slotnodes[j].nodeType !== 1 && typeof slotnodes[j].textContent !== typeof undefined && slotnodes[j].textContent !== 'undefined') {
+                content += slotnodes[j].textContent;
+              }
+            }
+          }
+        }
+        // don't put return for span since it's an inline tag
+        if (tag === 'span') {
+          content += '</' + tag + '>';
+        }
+        else if (tag === 'hr' || tag === 'br' || tag === 'img') {
+          // do nothing for self-closing tags they'll resolve themselves
+        }
+        // close the tag, placing a return in output for block elements
+        else {
+          content += '</' + tag + '>' + "\n";
+        }
+        if (Polymer.HaxStore.instance.activeHaxBody.globalPreferences.haxDeveloperMode) {
+          console.log(content);
+        }
+        // support postProcess text rewriting for the node that's been
+        // converted to a string for storage
+        if (node.postProcesshaxNodeToContent === 'function') {
+          content = node.postProcesshaxNodeToContent(content);
+        }
+        return content;
+      };
+      /**
+       * Basic HTML Primitives test
+       */
+      Polymer.HaxStore.HTMLPrimativeTest = (node) => {
+        if (typeof node.tagName !== typeof undefined && node.tagName.indexOf('-') == -1) {
+          return true;
+        }
+        return false;
       };
       /**
        * Slot content w/ support for custom elements in slot.

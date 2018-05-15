@@ -137,6 +137,12 @@ A button on the hax-gizmo-browser app display
           type: Array
         },
         /**
+         * Number of areas this has
+         */
+        areas: {
+          type: Number
+        },
+        /**
          * Tag
          */
         tag: {
@@ -161,9 +167,20 @@ A button on the hax-gizmo-browser app display
        * Fire an event that includes the eventName of what was just pressed.
        */
       _fireEvent: function(e) {
+        let content = '';
         for (var i=0; i< this.blox.length; i++) {
-          this.fire('hax-insert-content', this.blox[i]);
+          let node = Polymer.HaxStore.haxElementToNode(this.blox[i].tag, this.blox[i].content, this.blox[i].properties);
+          content += Polymer.HaxStore.haxNodeToContent(node);
         }
+        // generate a hax element
+        let blox = {
+          'tag': 'grid-plate',
+          'properties': {
+            'areas': this.areas
+          },
+          'content': content,
+        };
+        this.fire('hax-insert-content', blox);
         Polymer.HaxStore.instance.haxBloxPicker.close();
       },
     });

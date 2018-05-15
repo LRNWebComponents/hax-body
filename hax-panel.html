@@ -140,6 +140,7 @@ as the events being bubbled up include HTML nodes to inject into something
         event-name="hax-stax-picker-open"
         voice-command="insert stack"></hax-panel-item>
       <hax-panel-item
+        disabled$="[[!haxDeveloperMode]]"
         icon="view-quilt"
         icon-class="amber-text"
         label="Layouts"
@@ -227,6 +228,13 @@ as the events being bubbled up include HTML nodes to inject into something
           value: false,
         },
         /**
+         * Show developer mode
+         */
+        haxDeveloperMode: {
+          type: Boolean,
+          value: false,
+        },
+        /**
          * Showing preferences area.
          */
         hidePreferencesButton: {
@@ -270,6 +278,9 @@ as the events being bubbled up include HTML nodes to inject into something
         if (typeof value !== typeof undefined) {
           if (value.value != null && typeof value.value.haxShowExportButton !== typeof undefined) {
             this.hideExportButton = !value.value.haxShowExportButton;
+          }
+          if (value.value != null && typeof value.value.haxDeveloperMode !== typeof undefined) {
+            this.haxDeveloperMode = value.value.haxDeveloperMode;
           }
         }
       },
@@ -347,14 +358,6 @@ as the events being bubbled up include HTML nodes to inject into something
           case 'blockquote':
             detail.tag = 'blockquote';
             detail.content = '';
-            this.fire('hax-insert-content', detail);
-          break;
-          case 'layout':
-            detail.tag = 'hax-blox';
-            detail.content = '<p slot="area1">Column 1 content</p><p slot="area2">Column 2 content</p>';
-            detail.properties = {
-              'layout': 'cols-50-50',
-            };
             this.fire('hax-insert-content', detail);
           break;
           case 'hax-manager-open':

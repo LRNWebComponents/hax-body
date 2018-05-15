@@ -1342,6 +1342,7 @@
   ],
   "autoloader": [
     "license-element",
+    "grid-plate",
     "q-r",
     "self-check",
     "tab-list",
