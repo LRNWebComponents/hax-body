@@ -353,7 +353,7 @@ A LRN element that will change the world.
             newNode.style.float = Polymer.HaxStore.instance.activePlaceHolder.style.float;
             newNode.style.margin = Polymer.HaxStore.instance.activePlaceHolder.style.margin;
             newNode.style.display = Polymer.HaxStore.instance.activePlaceHolder.style.display;
-            this.haxReplaceNode(Polymer.HaxStore.instance.activePlaceHolder, newNode);
+            this.haxReplaceNode(Polymer.HaxStore.instance.activePlaceHolder, newNode, Polymer.dom(Polymer.HaxStore.instance.activePlaceHolder).parentNode);
             Polymer.HaxStore.instance.activePlaceHolder = null;
           }
           // insert at active insert point if we have one
