@@ -128,7 +128,7 @@
         }
       }
     },
-        {
+    {
       "details": {
         "title": "Flickr",
         "icon": "image:collections",
@@ -342,7 +342,7 @@
         }
       }
     },
-        {
+    {
       "details": {
         "title": "Sketchfab",
         "icon": "icons:3d-rotation",
@@ -835,7 +835,63 @@
           }
         }
       }
+    },
+    {
+    "details": {
+      "title": "Wikipedia",
+      "icon": "account-balance",
+      "color": "grey",
+      "author": "Wikimedia",
+      "description": "Encyclopedia of the world.",
+      "status": "available",
+      "tags": ["content", "encyclopedia", "wiki"]
+    },
+    "connection": {
+      "protocol": "https",
+      "url": "en.wikipedia.org",
+      "data": {
+        "action": "query",
+        "list": "search",
+        "format": "json"
+      },
+      "operations": {
+        "browse": {
+          "method": "GET",
+          "endPoint": "w\/api.php",
+          "pagination": {
+            "style": "offset",
+            "props": {
+              "offset": "sroffset"
+            }
+          },
+          "search": {
+            "srsearch": {
+              "title": "Search",
+              "type": "string"
+            }
+          },
+          "data": {},
+          "resultMap": {
+            "defaultGizmoType": "content",
+            "items": "query.search",
+            "preview": {
+              "title": "title",
+              "details": "snippet",
+              "image": "pageid",
+              "id": "pageid"
+            },
+            "gizmo": {
+              "_url_source": "https:\/\/en.wikipedia.org\/wiki\/\u003C%= id %\u003E",
+              "id": "title",
+              "title": "title",
+              "caption": "snippet",
+              "description": "snippet"
+            }
+          }
+        }
+      }
     }
+  }
   ],
   "stax": [
     {
@@ -1152,6 +1208,68 @@
             "prefix": "oer:http://oerschema.org/ schema:http://schema.org/ dc:http://purl.org/dc/terms/ foaf:http://xmlns.com/foaf/0.1/ cc:http://creativecommons.org/ns# bib:http://bib.schema.org "
           },
           "content": ""
+        }
+      ]
+    },
+    {
+      "details": {
+        "title": "Example Assignment",
+        "image": "",
+        "author": "ELMS:LN",
+        "description": "An example assignment with OER Schema.",
+        "status": "available",
+        "rating": "0",
+        "tags": ["example"]
+      },
+      "stax": [
+        {
+          "tag": "h2",
+          "properties": {},
+          "content": "\n\n"
+        },
+        {
+          "tag": "h3",
+          "properties": {
+            "class": " "
+          },
+          "content": "Description"
+        },
+        {
+          "tag": "p",
+          "properties": {},
+          "content": "\n\n"
+        },
+        {
+          "tag": "h3",
+          "properties": {},
+          "content": "Learning Objectives"
+        },
+        {
+          "tag": "ol",
+          "properties": {},
+          "content": "  <li><oer-schema resource=\"#76d6ed4d-57f1-5c2f-fdf9\" prefix=\"oer:http://oerschema.org/ schema:http://schema.org/ dc:http://purl.org/dc/terms/ foaf:http://xmlns.com/foaf/0.1/ cc:http://creativecommons.org/ns# bib:http://bib.schema.org \" text=\"Gain understanding of critical writing discourse.\" oer-property=\"name\" typeof=\"oer:LearningObjective\" related-resource=\"#550ea966-578a-cf6e-388c\">\n    \n    <link property=\"oer:forComponent\" class=\"style-scope oer-schema\" content=\"#550ea966-578a-cf6e-388c\">\n    <span property=\"oer:name\" class=\"style-scope oer-schema\">\n      \n      Gain understanding of critical writing discourse.\n    </span>\n  </oer-schema>\n\n</li>\n\n\n  <li><oer-schema resource=\"#d038ac12-7a86-d867-55eb\" prefix=\"oer:http://oerschema.org/ schema:http://schema.org/ dc:http://purl.org/dc/terms/ foaf:http://xmlns.com/foaf/0.1/ cc:http://creativecommons.org/ns# bib:http://bib.schema.org \" text=\"Apply relevant course topics and issues in a writing context.\" oer-property=\"name\" typeof=\"oer:LearningObjective\" related-resource=\"#550ea966-578a-cf6e-388c\">\n    \n    <link property=\"oer:forComponent\" class=\"style-scope oer-schema\" content=\"#550ea966-578a-cf6e-388c\">\n    <span property=\"oer:name\" class=\"style-scope oer-schema\">\n      \n      Apply relevant course topics and issues in a writing context.\n    </span>\n  </oer-schema>\n\n</li>\n\n\n"
+        },
+        {
+          "tag": "h3",
+          "properties": {},
+          "content": "Learning Resources"
+        },
+        {
+          "tag": "p",
+          "properties": {},
+          "content": "  <i><oer-schema resource=\"#2e347347-c973-000c-004f\" prefix=\"oer:http://oerschema.org/ schema:http://schema.org/ dc:http://purl.org/dc/terms/ foaf:http://xmlns.com/foaf/0.1/ cc:http://creativecommons.org/ns# bib:http://bib.schema.org \" text=\"Writing Essays for Dummies. Mary Page; Carrie Winstanley. Wiley. January, 2012\" oer-property=\"name\" typeof=\"oer:SupportingMaterial\">\n    \n    <link property=\"oer:forComponent\" class=\"style-scope oer-schema\">\n    <span property=\"oer:name\" class=\"style-scope oer-schema\">\n      \n      Writing Essays for Dummies. Mary Page; Carrie Winstanley. Wiley. January, 2012\n    </span>\n  </oer-schema>\n\n</i>\n\n\n:   <a href=\"http://google.com\" title=\"Download link\">Download&nbsp;Link</a>\n\n\n"
+        },
+        {
+          "tag": "h3",
+          "properties": {
+            "class": " "
+          },
+          "content": "Instructions"
+        },
+        {
+          "tag": "ol",
+          "properties": {},
+          "content": "  <li><oer-schema resource=\"#56d8be38-4088-995a-4d2c\" prefix=\"oer:http://oerschema.org/ schema:http://schema.org/ dc:http://purl.org/dc/terms/ foaf:http://xmlns.com/foaf/0.1/ cc:http://creativecommons.org/ns# bib:http://bib.schema.org \" text=\"Read the course texts and choose two critical issues to discuss.\" oer-property=\"name\" typeof=\"oer:Task\" related-resource=\"#550ea966-578a-cf6e-388c\">\n    \n    <link property=\"oer:forComponent\" class=\"style-scope oer-schema\" content=\"#550ea966-578a-cf6e-388c\">\n    <span property=\"oer:name\" class=\"style-scope oer-schema\">\n      \n      Read the course texts and choose two critical issues to discuss.\n    </span>\n  </oer-schema>\n\n</li>\n\n\n  <li><oer-schema resource=\"#7587e535-b185-d8bf-939d\" prefix=\"oer:http://oerschema.org/ schema:http://schema.org/ dc:http://purl.org/dc/terms/ foaf:http://xmlns.com/foaf/0.1/ cc:http://creativecommons.org/ns# bib:http://bib.schema.org \" text=\"&nbsp;Write a 400 word paper discussing these critical issues.\" oer-property=\"name\" typeof=\"oer:Task\" related-resource=\"#550ea966-578a-cf6e-388c\">\n    \n    <link property=\"oer:forComponent\" class=\"style-scope oer-schema\" content=\"#550ea966-578a-cf6e-388c\">\n    <span property=\"oer:name\" class=\"style-scope oer-schema\">\n      \n      &nbsp;Write a 400 word paper discussing these critical issues.\n    </span>\n  </oer-schema>\n\n</li>\n\n\n  <li><oer-schema resource=\"#3564f93f-b211-3d8b-6aeb\" prefix=\"oer:http://oerschema.org/ schema:http://schema.org/ dc:http://purl.org/dc/terms/ foaf:http://xmlns.com/foaf/0.1/ cc:http://creativecommons.org/ns# bib:http://bib.schema.org \" text=\"Proof read your writing.\" oer-property=\"name\" typeof=\"oer:Task\" related-resource=\"#550ea966-578a-cf6e-388c\">\n    \n    <link property=\"oer:forComponent\" class=\"style-scope oer-schema\" content=\"#550ea966-578a-cf6e-388c\">\n    <span property=\"oer:name\" class=\"style-scope oer-schema\">\n      \n      Proof read your writing.\n    </span>\n  </oer-schema>\n\n</li>\n\n\n  <li><oer-schema resource=\"#0dbd4872-90ff-681d-c572\" prefix=\"oer:http://oerschema.org/ schema:http://schema.org/ dc:http://purl.org/dc/terms/ foaf:http://xmlns.com/foaf/0.1/ cc:http://creativecommons.org/ns# bib:http://bib.schema.org \" text=\"Submit the digital file to the dropbox.\" oer-property=\"name\" typeof=\"oer:Task\" related-resource=\"#550ea966-578a-cf6e-388c\">\n    \n    <link property=\"oer:forComponent\" class=\"style-scope oer-schema\" content=\"#550ea966-578a-cf6e-388c\">\n    <span property=\"oer:name\" class=\"style-scope oer-schema\">\n      \n      Submit the digital file to the dropbox.\n    </span>\n  </oer-schema>\n\n</li>\n\n\n"
         }
       ]
     }

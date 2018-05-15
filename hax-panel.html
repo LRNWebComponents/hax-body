@@ -5,6 +5,7 @@
 <link rel="import" href="hax-panel-item.html">
 <link rel="import" href="hax-preferences-dialog.html">
 <link rel="import" href="hax-stax-picker.html">
+<link rel="import" href="hax-blox-picker.html">
 
 <!--
 `hax-panel`
@@ -139,11 +140,10 @@ as the events being bubbled up include HTML nodes to inject into something
         event-name="hax-stax-picker-open"
         voice-command="insert stack"></hax-panel-item>
       <hax-panel-item
-        disabled
         icon="view-quilt"
-        icon-class="amber-text text-darken-3"
-        label="Layout"
-        event-name="layout"
+        icon-class="amber-text"
+        label="Layouts"
+        event-name="hax-blox-picker-open"
         voice-command="insert block"></hax-panel-item>
       <hax-panel-item
         icon="editor:text-fields"
@@ -188,8 +188,9 @@ as the events being bubbled up include HTML nodes to inject into something
         event-name="cancel"
         voice-command="cancel hax"></hax-panel-item>
     </app-drawer>
-    <hax-preferences-dialog></hax-preferences-dialog>
     <hax-stax-picker></hax-stax-picker>
+    <hax-blox-picker></hax-blox-picker>
+    <hax-preferences-dialog></hax-preferences-dialog>
   </template>
   <script>
     Polymer({
@@ -363,6 +364,9 @@ as the events being bubbled up include HTML nodes to inject into something
           break;
           case 'hax-stax-picker-open':
             Polymer.HaxStore.instance.haxStaxPicker.toggleDialog();
+          break;
+          case 'hax-blox-picker-open':
+            Polymer.HaxStore.instance.haxBloxPicker.toggleDialog();
           break;
           case 'undo':
             document.execCommand('undo');

@@ -275,8 +275,8 @@
               Polymer.HaxStore.instance.haxManager.editExistingNode = true;
             }
             // ensure this is open even though it should be
-            Polymer.HaxStore.instance.haxManager.open();
             Polymer.HaxStore.instance.haxManager.selectStep('configure');
+            Polymer.HaxStore.instance.haxManager.open();
           }
           else if (this.pickerType == 'delete') {
             if (this._elements[key]['title'] === 'Yes') {

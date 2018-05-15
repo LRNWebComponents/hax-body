@@ -512,6 +512,8 @@
           document.body.addEventListener('hax-register-app-picker', this._haxStoreRegisterAppPicker.bind(this));
           // stax modal
           document.body.addEventListener('hax-register-stax-picker', this._haxStoreRegisterStaxPicker.bind(this));
+          // blox modal
+          document.body.addEventListener('hax-register-blox-picker', this._haxStoreRegisterBloxPicker.bind(this));
           // preferences modal
           document.body.addEventListener('hax-register-preferences', this._haxStoreRegisterPreferences.bind(this));
           // export modal
@@ -875,6 +877,15 @@
           }
         },
         /**
+         * Set the blox picker so that we have an element in charge
+         * of the listing of available blox.
+         */
+        _haxStoreRegisterBloxPicker: function(e) {
+          if (e.detail && typeof this.haxBloxPicker === typeof undefined) {
+            this.haxBloxPicker = e.detail;
+          }
+        },
+        /**
          * Close all drawers
          */
         closeAllDrawers: function(active = false) {
@@ -882,10 +893,11 @@
           // except active. This also will allow them
           // to close everything then.
           let drawers = [
+            'haxManager',
+            'haxBloxPicker',
             'haxStaxPicker',
-            'haxExport',
             'haxPreferences',
-            'haxManager'
+            'haxExport'
           ];
           for (var i in drawers) {
             if (active === this[drawers[i]]) {

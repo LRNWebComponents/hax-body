@@ -27,7 +27,7 @@
     "juicy-html": "Juicy/juicy-html#^2.0.2",
     "iron-a11y-keys": "PolymerElements/iron-a11y-keys#^2.1.1",
     "grafitto-filter": "grafitto/grafitto-filter#^0.0.3",
-    "schema-behaviors": "LRNWebcomponents/schema-behaviors#^0.2.0",
+    "schema-behaviors": "LRNWebComponents/schema-behaviors#^1.0.0",
     "iron-image": "PolymerElements/iron-image#^2.1.2",
     "dropdown-select": "LRNWebComponents/dropdown-select#^1.0.3",
     "materializecss-styles": "LRNWebcomponents/materializecss-styles#^1.2.1",
