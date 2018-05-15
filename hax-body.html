@@ -870,28 +870,25 @@ A LRN element that will change the world.
        * internal whitelist.
        */
       importContent: function(html, clear = true) {
-        const validTags = Polymer.HaxStore.instance.validTagList;
-        let fragment = document.createElement('div');
-        fragment.innerHTML = html;
-        const children = fragment.childNodes;
         // kill the slot of the active body, all of it
         if (clear) {
           Polymer.HaxStore.wipeSlot(this, '*');
         }
         // pause quickly to ensure wipe goes through successfully
         setTimeout( () => {
-          // loop over the new nodes
-          for (var i=0; i<children.length; i++) {
-            // verify this tag is a valid one
-            if (typeof children[i].tagName !== typeof undefined && validTags.includes(children[i].tagName.toLowerCase())) {
+          const validTags = Polymer.HaxStore.instance.validTagList;
+          let fragment = document.createElement('div');
+          fragment.insertAdjacentHTML( 'beforeend', html );
+          while (fragment.firstChild !== null) {
+            if (typeof fragment.firstChild.tagName !== typeof undefined && validTags.includes(fragment.firstChild.tagName.toLowerCase())) {
               // ensure import doesn't import non-sandbox safe things!
-              if (Polymer.HaxStore.instance._isSandboxed && children[i].tagName.toLowerCase() === 'iframe') {
+              if (Polymer.HaxStore.instance._isSandboxed && fragment.firstChild.tagName.toLowerCase() === 'iframe') {
                 // Create a replacement tag of the desired type
                 var replacement = document.createElement('webview');
                 // Grab all of the original's attributes, and pass them to the replacement
-                for(var j = 0, l = children[i].attributes.length; j < l; ++j){
-                  var nodeName  = children[i].attributes.item(j).nodeName;
-                  var value = children[i].attributes.item(j).value;
+                for(var j = 0, l = fragment.firstChild.attributes.length; j < l; ++j){
+                  var nodeName  = fragment.firstChild.attributes.item(j).nodeName;
+                  var value = fragment.firstChild.attributes.item(j).value;
                   if (nodeName === 'height' || nodeName === 'width') {
                     replacement.style[nodeName] == value;
                   }
@@ -900,11 +897,15 @@ A LRN element that will change the world.
                 Polymer.dom(this).appendChild(replacement);
               }
               else {
-                Polymer.dom(this).appendChild(children[i]);
+                Polymer.dom(this).appendChild(fragment.firstChild);
               }
             }
+            else {
+              // this tag didn't pass the test, get rid of it
+              fragment.removeChild(fragment.firstChild);
+            }
           }
-        }, 250);
+        }, 200);
       },
       /**
        * Respond to hax operations.
@@ -947,11 +948,11 @@ A LRN element that will change the world.
               skipPropMatch = true;
             }
             var props = {};
-            // get the haxProperties for this item
-            let gizmo = Polymer.HaxStore.instance.elementList[element.tag].gizmo;
             // see if we have a gizmo as it's not a requirement to registration
             // as well as having handlers since mapping is not required either
-            if (gizmo !== false && typeof gizmo.handles !== typeof undefined && gizmo.handles.length > 0) {
+            if (typeof Polymer.HaxStore.instance.elementList[element.tag] !== typeof undefined && Polymer.HaxStore.instance.elementList[element.tag].gizmo !== false && typeof Polymer.HaxStore.instance.elementList[element.tag].gizmo.handles !== typeof undefined && Polymer.HaxStore.instance.elementList[element.tag].gizmo.handles.length > 0) {
+              // get the haxProperties for this item
+              let gizmo = Polymer.HaxStore.instance.elementList[element.tag].gizmo;
               // walk through each handler
               for (var i = 0; i < gizmo.handles.length; i++) {
                 // walk the properties defined as they would be to the
