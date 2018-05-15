@@ -1274,7 +1274,72 @@
       ]
     }
   ],
-  "blox": [],
+  "blox": [
+    {
+      "details": {
+        "title": "Two column",
+        "image": "",
+        "author": "ELMS:LN",
+        "description": "",
+        "status": "available",
+        "areas": 2
+      },
+      "blox": [
+        {
+          "tag": "place-holder",
+          "properties": {
+            "slot": "area1",
+            "type": "text"
+          },
+          "content": ""
+        },
+        {
+          "tag": "place-holder",
+          "properties": {
+            "slot": "area2",
+            "type": "video"
+          },
+          "content": ""
+        }
+      ]
+    },
+    {
+      "details": {
+        "title": "Three column",
+        "image": "",
+        "author": "ELMS:LN",
+        "description": "",
+        "status": "available",
+        "areas": 3
+      },
+      "blox": [
+        {
+          "tag": "place-holder",
+          "properties": {
+            "slot": "area1",
+            "type": "image"
+          },
+          "content": ""
+        },
+        {
+          "tag": "place-holder",
+          "properties": {
+            "slot": "area2",
+            "type": "image"
+          },
+          "content": ""
+        },
+        {
+          "tag": "place-holder",
+          "properties": {
+            "slot": "area3",
+            "type": "image"
+          },
+          "content": ""
+        }
+      ]
+    }
+  ],
   "autoloader": [
     "license-element",
     "q-r",
