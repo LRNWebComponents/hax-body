@@ -1245,7 +1245,7 @@
         let prototype = Object.getPrototypeOf(node);
         // support for deep API call
         if (typeof prototype.preProcessHaxNodeToContent !== typeof undefined) {
-          let clone = node.cloneNode(true);
+          let clone = node.cloneNode();
           node = prototype.preProcessHaxNodeToContent(clone);
         }
         let tag = node.tagName.toLowerCase();
