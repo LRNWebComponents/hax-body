@@ -86,7 +86,8 @@
     "self-check": "LRNWebComponents/self-check#^1.0.1",
     "q-r": "LRNWebComponents/q-r#^1.0.3",
     "license-element": "LRNWebComponents/license-element#^1.0.0",
-    "document-register-element": "WebReflection/document-register-element#^1.8.1"
+    "document-register-element": "WebReflection/document-register-element#^1.8.1",
+    "simple-concept-network": "LRNWebComponents/simple-concept-network#^1.0.0"
   },
   "resolutions": {
     "webcomponentsjs": "^0.7.24",

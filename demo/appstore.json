@@ -1415,6 +1415,7 @@
     }
   ],
   "autoloader": [
+    "simple-concept-network",
     "license-element",
     "grid-plate",
     "q-r",
