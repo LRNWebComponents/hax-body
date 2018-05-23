@@ -1257,6 +1257,8 @@
         var content = '';
         // start to rebuild the same tag we got in a generalized way
         content += '<' + tag;
+                // account for things that say NOT to save slot values
+        var props = Polymer.HaxStore.instance.elementList[tag];
         var propvals = {};
         // grab all of the original's attributes, and pass them to the replacement
         for (var j = 0, l = node.attributes.length; j < l; ++j){
@@ -1338,8 +1340,16 @@
             }
           }
         }
+        // support for tag defining which properties NOT to save
+        // for simplification, everything is an attribute during this
+        // operation
+        if (typeof props !== typeof undefined && typeof props.saveOptions.unsetAttributes !== typeof undefined) {
+          for (var i in props.saveOptions.unsetAttributes) {
+            delete propvals[props.saveOptions.unsetAttributes[i]];
+          }
+        }
         // specialized clean up for some that can leak through from above
-        // and are edge case things because hash tag, gotta love HTML attributes
+        // and are edge case things because #hashtag gotta love HTML attributes
         // and the webview tag. facepalm.
         let delProps = ['inner-text', 'tabindex', 'guestinstance'];
         for (var delProp in delProps) {
@@ -1368,8 +1378,6 @@
         else {
           content += '>';
         }
-        // account for things that say NOT to save slot values
-        let props = Polymer.HaxStore.instance.elementList[tag];
         // try and work against anything NOT a P tag
         if (typeof props === typeof undefined || !props.saveOptions.wipeSlot) {
           // get content that is in the slots
