@@ -84,7 +84,7 @@
     "multiple-choice": "LRNWebComponents/multiple-choice#^1.0.0",
     "tab-list": "LRNWebComponents/tab-list#^0.1.0",
     "self-check": "LRNWebComponents/self-check#^1.0.1",
-    "q-r": "LRNWebComponents/q-r#^1.0.3",
+    "q-r": "LRNWebComponents/q-r#^1.0.5",
     "license-element": "LRNWebComponents/license-element#^1.0.0",
     "document-register-element": "WebReflection/document-register-element#^1.8.1",
     "simple-concept-network": "LRNWebComponents/simple-concept-network#^1.0.0"
