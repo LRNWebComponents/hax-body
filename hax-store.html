@@ -373,7 +373,7 @@
             }
           }
           // capture events and intercept them globally
-          document.addEventListener('keypress', (event) => {
+          window.addEventListener('keypress', (event) => {
             const keyName = event.key;
             // if we are editing and enter is pressed see if we should
             // process it or inject a new p tag
