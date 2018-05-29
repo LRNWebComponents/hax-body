@@ -46,7 +46,7 @@
     "paper-styles": "PolymerElements/paper-styles#^2.1.0",
     "app-datepicker": "motss/app-datepicker#^2.12.0",
     "paper-collapse-item": "Collaborne/paper-collapse-item#^2.3.0",
-    "paper-icon-picker": "LRNWebComponents/paper-icon-picker#^1.0.2",
+    "paper-icon-picker": "LRNWebComponents/paper-icon-picker#^1.0.3",
     "paper-input-flagged": "LRNWebComponents/paper-input-flagged#^1.0.1",
     "grid-plate": "LRNWebComponents/grid-plate#^0.0.2"
   },
