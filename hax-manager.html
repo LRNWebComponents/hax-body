@@ -446,6 +446,15 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
           item.type = this._resolveObjectPath(map.gizmo.type, data);
         }
         this.$.url.value = item.url;
+        // @todo put in logic to support the response actually
+        // just outright returning a haxElement. This is rare
+        // but if the HAX developer has control over the endpoint
+        // then they could get HAX to streamline some workflows
+        // or by-pass the gizmo selection step to improve UX
+        // for end users even further. Examples could be a media
+        // management system that has remote rendering (cms-token)
+        // or a highly specific endpoint that we know we can only
+        // present in one way effectively Box / Google doc viewer.
         this.newAssetConfigure();
       },
       /**
