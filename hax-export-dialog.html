@@ -169,6 +169,7 @@ Export dialog with all export options and settings provided.
         if (full) {
           let elementList = Polymer.HaxStore.instance.elementList;
           // @todo obviously not sustainable
+          let url = 'https://lrnwebcomponents.github.io/hax-body/components';
           content = `
           <!doctype html>
           <html lang="en">
@@ -176,7 +177,10 @@ Export dialog with all export options and settings provided.
               <meta charset="utf-8">
               <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
               <title>hax-body demo</title>
-            <script src="https://lrnwebcomponents.github.io/hax-body/components/webcomponentsjs/webcomponents-lite.js"><\/script>
+            <script src="${url}/webcomponentsjs/webcomponents-lite.js">`;
+          content += '</';
+          content += 'script>';
+          content += `
             <style>
             body {
               padding: 32px;
@@ -188,8 +192,9 @@ Export dialog with all export options and settings provided.
               dom: 'shady',
               lazyRegister: true
             };
-          <\/script>`;
-          let url = 'https://lrnwebcomponents.github.io/hax-body/components';
+          `;
+          content += '</';
+          content += 'script>';
           var ignoreList = ['iframe', 'a', 'img', 'hr', 'p'];
           for (var index in elementList) {
             if (ignoreList.indexOf(index) === -1) {
