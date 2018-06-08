@@ -229,8 +229,10 @@
           <meme-maker image-url="https://media1.giphy.com/media/3o7TKMOy5zz1nuD71u/giphy.gif" top-text="Sup, suuuuuun?" alt="sun moon GIF by Amy Ciavolino" bottom-text="Hax, Moon. Hax." style="width: 50%; margin: 0px auto; display: block;"></meme-maker>
           <code-editor title="See a web component on code pen!" show-code-pen>
             <template>
-              <link rel="import" href="https://lrnwebcomponents.github.io/hax-body/components/video-player/video-player.html">
-              <video-player source="https://www.youtube.com/watch?v=zq8pt4dyDiw" width="560" height="315" caption="This isn't just an iFrame, it's a web component!" responsive secondary-color-class="cyan darken-4"></video-player>
+                <script src="https://cdn.rawgit.com/LRNWebComponents/hax-builds/0.17.0/builds/bower_components/webcomponentsjs/webcomponents.min.js"></script>
+                <script src="https://cdn.rawgit.com/LRNWebComponents/hax-builds/0.17.0/builds/bower_components/document-register-element/build/document-register-element.js"></script>
+                <link rel="import" href="https://cdn.rawgit.com/LRNWebComponents/hax-builds/0.17.0/builds/wysiwyg-hax.html">
+                <wysiwyg-hax open-default="" align="left" app-store-connection="{&quot;url&quot;:&quot;example-store.json&quot;}"></wysiwyg-hax>
             </template>
           </code-editor>
         </hax-body>

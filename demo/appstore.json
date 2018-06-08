@@ -1356,13 +1356,41 @@
         "author": "ELMS:LN",
         "description": "",
         "status": "available",
-        "areas": 2
+        "layout": "6/6"
       },
       "blox": [
         {
+          "tag": "h2",
+          "properties": {
+            "slot": "col-1"
+          },
+          "content": "See what I did here"
+        },
+        {
+          "tag": "h2",
+          "properties": {
+            "slot": "col-2"
+          },
+          "content": "area2"
+        },
+        {
+          "tag": "p",
+          "properties": {
+            "slot": "col-3"
+          },
+          "content": "paragraph col 3"
+        },
+        {
+          "tag": "p",
+          "properties": {
+            "slot": "col-4"
+          },
+          "content": "paragraph col 4th"
+        },
+        {
           "tag": "place-holder",
           "properties": {
-            "slot": "area1",
+            "slot": "col-1",
             "type": "text"
           },
           "content": ""
@@ -1370,7 +1398,7 @@
         {
           "tag": "place-holder",
           "properties": {
-            "slot": "area2",
+            "slot": "col-2",
             "type": "video"
           },
           "content": ""
@@ -1384,13 +1412,13 @@
         "author": "ELMS:LN",
         "description": "",
         "status": "available",
-        "areas": 3
+        "layout": "4/4/4"
       },
       "blox": [
         {
           "tag": "place-holder",
           "properties": {
-            "slot": "area1",
+            "slot": "col-1",
             "type": "image"
           },
           "content": ""
@@ -1398,7 +1426,7 @@
         {
           "tag": "place-holder",
           "properties": {
-            "slot": "area2",
+            "slot": "col-2",
             "type": "image"
           },
           "content": ""
@@ -1406,7 +1434,35 @@
         {
           "tag": "place-holder",
           "properties": {
-            "slot": "area3",
+            "slot": "col-3",
+            "type": "image"
+          },
+          "content": ""
+        }
+      ]
+    },
+    {
+      "details": {
+        "title": "66/33 Layout",
+        "image": "",
+        "author": "ELMS:LN",
+        "description": "",
+        "status": "available",
+        "layout": "8/4"
+      },
+      "blox": [
+        {
+          "tag": "place-holder",
+          "properties": {
+            "slot": "col-1",
+            "type": "text"
+          },
+          "content": ""
+        },
+        {
+          "tag": "place-holder",
+          "properties": {
+            "slot": "col-2",
             "type": "image"
           },
           "content": ""
