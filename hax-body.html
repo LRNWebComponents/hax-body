@@ -870,6 +870,7 @@ A LRN element that will change the world.
             }
             // make input mixer show up
             this._positionContextMenu(haxInputMixer, this.$.cecontextmenu, -6, -116);
+            haxInputMixer.style.width = null;
           break;
           // directional / proportion operations
           case 'hax-align-left':
@@ -910,6 +911,10 @@ A LRN element that will change the world.
             Polymer.HaxStore.instance.haxManager.editExistingNode = true;
             Polymer.HaxStore.instance.haxManager.selectStep('configure');
             Polymer.HaxStore.instance.haxManager.toggleDialog();
+            // accessibility enhancement to keyboard focus configure button
+            setTimeout( () => {
+              Polymer.HaxStore.instance.haxManager.$.preview.$.configurebutton.focus();
+            }, 100);
           break;
           // container / layout settings button has been activated
           case 'hax-manager-configure-container':
@@ -925,6 +930,10 @@ A LRN element that will change the world.
             Polymer.HaxStore.instance.haxManager.editExistingNode = true;
             Polymer.HaxStore.instance.haxManager.selectStep('configure');
             Polymer.HaxStore.instance.haxManager.toggleDialog();
+            // accessibility enhancement to keyboard focus configure button
+            setTimeout( () => {
+              Polymer.HaxStore.instance.haxManager.$.preview.$.configurebutton.focus();
+            }, 100);
           break;
         }
       },
