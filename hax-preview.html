@@ -60,7 +60,7 @@ An element that can generate a form
       }
       #preview {
         padding: 8px;
-        background-color: #e5e5e5;
+        background-color: #f8f8f8;
       }
       #preview ::slotted(*) {
         float: unset !important;
@@ -119,22 +119,37 @@ An element that can generate a form
         text-align: center;
         font-size: 16px;
       }
+      .preview-buttons {
+        height: 80px;
+        padding: 16px;
+        color: #222222;
+        border-bottom: 1px var(--hax-manager-steps-color) solid;
+        background-color: #f8f8f8;
+        margin: 0 auto;
+        text-align: center;
+        box-sizing: content-box;
+      }
+      .preview-buttons paper-button {
+        min-width: unset;
+        width: 40%;
+      }
     </style>
     <vaadin-split-layout class="panel-wrapper">
       <!-- critique panel -->
       <div class="vaadin-split-layout-panel">
-        <slot></slot>
+        <div class="preview-buttons">
+          <paper-button id="insert" raised>[[editTitle]]</paper-button>
+          <paper-button id="cancel" raised>Cancel</paper-button>
+        </div>
         <div class="preview-text"><iron-icon icon="icons:arrow-drop-down"></iron-icon><iron-icon icon="icons:arrow-drop-down"></iron-icon><iron-icon icon="icons:arrow-drop-down"></iron-icon>[[humanName]] preview<iron-icon icon="icons:arrow-drop-down"></iron-icon><iron-icon icon="icons:arrow-drop-down"></iron-icon><iron-icon icon="icons:arrow-drop-down"></iron-icon></div>
         <div id="preview"></div>
         <div class="preview-text preview-text-bottom"><iron-icon icon="icons:arrow-drop-up"></iron-icon><iron-icon icon="icons:arrow-drop-up"></iron-icon><iron-icon icon="icons:arrow-drop-up"></iron-icon>end preview<iron-icon icon="icons:arrow-drop-up"></iron-icon><iron-icon icon="icons:arrow-drop-up"></iron-icon><iron-icon icon="icons:arrow-drop-up"></iron-icon></div>
       </div>
       <div class="vaadin-split-layout-panel">
-        <template is="dom-if" if="[[haspreviewNode]]">
-          <paper-tabs id="modetabs" selected="{{modeTab}}" attr-for-selected="data-mode">
-            <paper-tab data-mode="configure"><paper-button raised noink>Configure</paper-button></paper-tab>
-            <paper-tab data-mode="advanced"><paper-button raised noink>Advanced</paper-button></paper-tab>
-          </paper-tabs>
-        </template>
+        <paper-tabs hidden$="[[!haspreviewNode]]" id="modetabs" selected="{{modeTab}}" attr-for-selected="data-mode">
+          <paper-tab id="configurebutton" data-mode="configure"><paper-button raised noink>Configure</paper-button></paper-tab>
+          <paper-tab id="advancedbutton" data-mode="advanced"><paper-button raised noink>Advanced</paper-button></paper-tab>
+        </paper-tabs>
         <paper-card class="form-wrapper">
           <eco-json-schema-object id="form" schema="[[schema]]" value="{{value}}"></eco-json-schema-object>
         </paper-card>
@@ -147,6 +162,10 @@ An element that can generate a form
       observers: [
         '_valueChanged(value.*, formKey)'
       ],
+      listeners: {
+        'cancel.tap': 'cancel',
+        'insert.tap': 'insert',
+      },
       properties: {
         /**
          * A reference to the previewNode so we can do data binding correctly.
@@ -171,6 +190,13 @@ An element that can generate a form
           type: String,
           value: 'configure',
           observer: '_editorModeChanged',
+        },
+        /**
+         * Edit title since it can change based on the operation
+         */
+        editTitle: {
+          type: String,
+          value: 'Update',
         },
         /**
          * The element to work against expressing the structure of the DOM element
@@ -225,6 +251,18 @@ An element that can generate a form
         humanName: {
           type: String,
         },
+      },
+      /**
+       * Trigger cancel on manager as it is the parent here.
+       */
+      cancel: function(e) {
+        Polymer.HaxStore.instance.haxManager.cancel(e);
+      },
+       /**
+       * Trigger insert on manager as it is the parent here.
+       */
+      insert: function(e) {
+        Polymer.HaxStore.instance.haxManager.insertHaxElement(e);
       },
       /**
        * Make a boolean to match the preview node's existance.
