@@ -38,7 +38,7 @@
     "media-behaviors": "LRNWebcomponents/media-behaviors#^1.1.3",
     "a11y-behaviors": "LRNWebcomponents/a11y-behaviors#^1.0.2",
     "lrnsys-layout": "LRNWebcomponents/lrnsys-layout#^1.4.4",
-    "responsive-grid": "LRNWebComponents/responsive-grid#^0.2.0",
+    "responsive-grid": "LRNWebcomponents/responsive-grid#^1.0.0",
     "place-holder": "LRNWebComponents/place-holder#^1.0.0",
     "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^2.1.0",
     "juicy-ace-editor": "Juicy/juicy-ace-editor#^2.0.5",
@@ -48,7 +48,7 @@
     "paper-collapse-item": "Collaborne/paper-collapse-item#^2.3.0",
     "paper-icon-picker": "LRNWebComponents/paper-icon-picker#^1.0.3",
     "paper-input-flagged": "LRNWebComponents/paper-input-flagged#^1.0.1",
-    "grid-plate": "LRNWebComponents/grid-plate#^0.0.3"
+    "grid-plate": "LRNWebcomponents/grid-plate#^0.0.4"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

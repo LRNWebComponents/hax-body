@@ -722,6 +722,7 @@ A LRN element that will change the world.
        */
       _haxContextOperation: function(e) {
         let detail = e.detail;
+        var haxElement;
         // support a simple insert event to bubble up or everything else
         switch(detail.eventName) {
           // text based operations for primatives
@@ -903,7 +904,22 @@ A LRN element that will change the world.
             // reset the manager
             Polymer.HaxStore.instance.haxManager.resetManager();
             // write activeElement updated so it'll go into the preview
-            let haxElement = Polymer.HaxStore.nodeToHaxElement(Polymer.HaxStore.instance.activeNode);
+            haxElement = Polymer.HaxStore.nodeToHaxElement(Polymer.HaxStore.instance.activeNode);
+            Polymer.HaxStore.write('activeHaxElement', haxElement, this);
+            // clean up the manager before opening
+            Polymer.HaxStore.instance.haxManager.editExistingNode = true;
+            Polymer.HaxStore.instance.haxManager.selectStep('configure');
+            Polymer.HaxStore.instance.haxManager.toggleDialog();
+          break;
+          // container / layout settings button has been activated
+          case 'hax-manager-configure-container':
+            Polymer.HaxStore.write('activeNode', Polymer.HaxStore.instance.activeContainerNode, this);
+            // make sure input mixer is closed
+            this._hideContextMenu(this.$.haxinputmixer);
+            // reset the manager
+            Polymer.HaxStore.instance.haxManager.resetManager();
+            // write activeElement updated so it'll go into the preview
+            haxElement = Polymer.HaxStore.nodeToHaxElement(Polymer.HaxStore.instance.activeNode);
             Polymer.HaxStore.write('activeHaxElement', haxElement, this);
             // clean up the manager before opening
             Polymer.HaxStore.instance.haxManager.editExistingNode = true;

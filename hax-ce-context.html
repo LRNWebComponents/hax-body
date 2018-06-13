@@ -35,9 +35,14 @@ required for populating input.
       <slot></slot>
       <hax-context-item
         slot="primary"
-        icon="settings"
+        icon="icons:settings"
         label="Settings"
         event-name="hax-manager-configure" hidden$="[[!__hasSettingsForm]]"></hax-context-item>
+      <hax-context-item
+        slot="primary"
+        icon="icons:view-quilt"
+        label="Layout settings"
+        event-name="hax-manager-configure-container" hidden$="[[!__hasParentSettingsForm]]"></hax-context-item>
     </hax-toolbar>
   </template>
 
@@ -100,6 +105,11 @@ required for populating input.
           }
           else {
             this.__hasSettingsForm = false;
+          }
+          this.__hasParentSettingsForm = false;
+          // test for parent being different from child
+          if (Polymer.HaxStore.instance.activeContainerNode !== Polymer.HaxStore.instance.activeNode){
+            this.__hasParentSettingsForm = true;
           }
           var item;
           // @todo kick stuff into the local dom as options
