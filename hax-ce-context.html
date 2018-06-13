@@ -54,7 +54,7 @@ required for populating input.
       <hax-context-item
         slot="primary"
         icon="icons:view-quilt"
-        label="Layout settings"
+        label="[[__parentName]]"
         event-name="hax-manager-configure-container" hidden$="[[!__hasParentSettingsForm]]"></hax-context-item>
     </hax-toolbar>
   </template>
@@ -129,6 +129,20 @@ required for populating input.
           // test for parent being different from child
           if (Polymer.HaxStore.instance.activeContainerNode !== Polymer.HaxStore.instance.activeNode){
             this.__hasParentSettingsForm = true;
+            switch (Polymer.HaxStore.instance.activeContainerNode.tagName) {
+              case 'P':
+              case 'UL':
+              case 'OL':
+              case 'DIV':
+                this.__parentName = 'Text block settings';
+              break;
+              case 'GRID-PLATE':
+                this.__parentName = 'Layout settings';
+              break;
+              default:
+                this.__parentName = Polymer.HaxStore.instance.activeContainerNode.tagName.replace('-', ' ').toLowerCase(); + ' settings';
+              break;
+            }
           }
           // generate a human name for this
           if (typeof newValue.gizmo.title === typeof undefined) {
