@@ -803,10 +803,10 @@
               ],
               'configure': [
                 {
-                  'slot': '',
+                  'attribute': 'innerHTML',
                   'title': 'Content',
                   'description': 'Content of the paragraph',
-                  'inputMethod': 'textfield',
+                  'inputMethod': 'code-editor',
                   'icon': 'editor:short-text',
                   'required': true,
                 },
@@ -815,6 +815,48 @@
             }
           };
           this.setHaxProperties(p, 'p');
+          let ul = {
+            'canScale': false,
+            'canPosition': false,
+            'canEditSource': true,
+            'settings': {
+              'quick': [
+              ],
+              'configure': [
+                {
+                  'attribute': 'innerHTML',
+                  'title': 'Content',
+                  'description': 'Content of the tag',
+                  'inputMethod': 'code-editor',
+                  'icon': 'editor:short-text',
+                  'required': true,
+                },
+              ],
+              'advanced': []
+            }
+          };
+          this.setHaxProperties(ul, 'ul');
+          let ol = {
+            'canScale': false,
+            'canPosition': false,
+            'canEditSource': true,
+            'settings': {
+              'quick': [
+              ],
+              'configure': [
+                {
+                  'attribute': 'innerHTML',
+                  'title': 'Content',
+                  'description': 'Content of the tag',
+                  'inputMethod': 'code-editor',
+                  'icon': 'editor:short-text',
+                  'required': true,
+                },
+              ],
+              'advanced': []
+            }
+          };
+          this.setHaxProperties(ol, 'ol');
           let hr = {
             'canScale': true,
             'canPosition': false,
@@ -903,6 +945,7 @@
           for (var i in drawers) {
             if (active === this[drawers[i]]) {
               active.open();
+              active.focus();
             }
             else {
               this[drawers[i]].close();
@@ -1183,9 +1226,12 @@
           tag = 'webview';
         }
         let slotContent = Polymer.HaxStore.getHAXSlot(node);
-        // special edge case for slot binding in a a tag
+        // special edge case for slot binding in primatives
         if (tag === 'a') {
           props.innerText = slotContent;
+        }
+        else if (tag === 'p' || tag === 'ol' || tag === 'ul' || tag === 'div') {
+          props.innerHTML = slotContent;
         }
         let element = {
           "tag": tag,
