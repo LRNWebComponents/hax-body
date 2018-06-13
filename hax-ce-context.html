@@ -30,7 +30,20 @@ required for populating input.
         margin: 0;
         height: 40px;
       }
+      .human-name {
+        font-size: 16px;
+        margin: -36px 0px 0 38px;
+        line-height: 16px;
+        background-color: black;
+        color: white;
+        padding: 10px;
+        font-family: serif;
+        width: -webkit-fit-content;
+        width:  -moz-max-content;
+        width: fit-content;
+      }
     </style>
+    <div class="human-name">[[humanName]]</div>
     <hax-toolbar hax-properties="[[haxProperties]]" size="{{ceSize}}">
       <slot></slot>
       <hax-context-item
@@ -66,6 +79,12 @@ required for populating input.
           type: Object,
           value: {},
           observer: '_haxPropertiesChanged',
+        },
+        /**
+         * Active Name from the properties
+         */
+        humanName: {
+          type: String,
         },
       },
       /**
@@ -110,6 +129,13 @@ required for populating input.
           // test for parent being different from child
           if (Polymer.HaxStore.instance.activeContainerNode !== Polymer.HaxStore.instance.activeNode){
             this.__hasParentSettingsForm = true;
+          }
+          // generate a human name for this
+          if (typeof newValue.gizmo.title === typeof undefined) {
+            this.humanName = Polymer.HaxStore.instance.activeNode.tagName.replace('-', ' ').toLowerCase();
+          }
+          else {
+            this.humanName = newValue.gizmo.title;
           }
           var item;
           // @todo kick stuff into the local dom as options

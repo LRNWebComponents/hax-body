@@ -59,7 +59,14 @@ An element that can generate a form
         }
       }
       #preview {
-        padding:8px;
+        padding: 8px;
+        background-color: #e5e5e5;
+      }
+      #preview ::slotted(*) {
+        float: unset !important;
+        float: unset !important;
+        margin: unset !important;
+        width: unset !important;
       }
       .preview-text {
         font-size: 11px;
@@ -107,19 +114,21 @@ An element that can generate a form
         min-width: unset;
         width: 100%;
       }
+      .human-name {
+        width: 100%;
+        text-align: center;
+        font-size: 16px;
+      }
     </style>
     <vaadin-split-layout class="panel-wrapper">
       <!-- critique panel -->
       <div class="vaadin-split-layout-panel">
         <slot></slot>
-        <div class="preview-text"><iron-icon icon="icons:arrow-drop-down"></iron-icon><iron-icon icon="icons:arrow-drop-down"></iron-icon><iron-icon icon="icons:arrow-drop-down"></iron-icon>start preview<iron-icon icon="icons:arrow-drop-down"></iron-icon><iron-icon icon="icons:arrow-drop-down"></iron-icon><iron-icon icon="icons:arrow-drop-down"></iron-icon></div>
+        <div class="preview-text"><iron-icon icon="icons:arrow-drop-down"></iron-icon><iron-icon icon="icons:arrow-drop-down"></iron-icon><iron-icon icon="icons:arrow-drop-down"></iron-icon>[[humanName]] preview<iron-icon icon="icons:arrow-drop-down"></iron-icon><iron-icon icon="icons:arrow-drop-down"></iron-icon><iron-icon icon="icons:arrow-drop-down"></iron-icon></div>
         <div id="preview"></div>
         <div class="preview-text preview-text-bottom"><iron-icon icon="icons:arrow-drop-up"></iron-icon><iron-icon icon="icons:arrow-drop-up"></iron-icon><iron-icon icon="icons:arrow-drop-up"></iron-icon>end preview<iron-icon icon="icons:arrow-drop-up"></iron-icon><iron-icon icon="icons:arrow-drop-up"></iron-icon><iron-icon icon="icons:arrow-drop-up"></iron-icon></div>
       </div>
-      <!-- critique panel -->
       <div class="vaadin-split-layout-panel">
-
-        <!-- editor mode -->
         <template is="dom-if" if="[[haspreviewNode]]">
           <paper-tabs id="modetabs" selected="{{modeTab}}" attr-for-selected="data-mode">
             <paper-tab data-mode="configure"><paper-button raised noink>Configure</paper-button></paper-tab>
@@ -209,6 +218,12 @@ An element that can generate a form
           type: String,
           computed: '_computedFormKey(advancedForm)',
           observer: '_formKeyChanged',
+        },
+        /**
+         * Active Name from the properties
+         */
+        humanName: {
+          type: String,
         },
       },
       /**
@@ -320,6 +335,13 @@ An element that can generate a form
             }
             else {
               schema = Polymer.HaxStore.instance.getHaxJSONSchema(this.formKey, props);
+            }
+            // generate a human name for this
+            if (typeof props.gizmo.title === typeof undefined) {
+              this.humanName = newValue.tagName.replace('-', ' ').toLowerCase();
+            }
+            else {
+              this.humanName = props.gizmo.title;
             }
             // first, allow element properties to dictate defaults
             for (var property in element.properties) {
