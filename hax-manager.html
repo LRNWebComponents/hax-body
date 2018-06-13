@@ -68,20 +68,6 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
       #activepage {
         margin-top: 32px;
       }
-      .preview-buttons {
-        height: 80px;
-        padding: 16px;
-        color: #222222;
-        border-bottom: 1px var(--hax-manager-steps-color) solid;
-        background-color: #f8f8f8;
-        margin: 0 auto;
-        text-align: center;
-        box-sizing: content-box;
-      }
-      .preview-buttons paper-button {
-        min-width: unset;
-        width: 40%;
-      }
       #preview {
         height: 100%;
       }
@@ -200,12 +186,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
             </iron-pages>
           </div>
           <div style="height:100%;">
-            <hax-preview id="preview" element="{{activeHaxElement}}">
-              <div class="preview-buttons">
-                <paper-button id="insert" raised>[[editTitle]]</paper-button>
-                <paper-button id="cancel" raised>Cancel</paper-button>
-              </div>
-            </hax-preview>
+            <hax-preview id="preview" element="{{activeHaxElement}}"></hax-preview>
           </div>
         </iron-pages>
       </div>
@@ -218,11 +199,9 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
 
       is: 'hax-manager',
       listeners: {
-        'cancel.tap': 'cancel',
         'dialog.iron-overlay-canceled': 'close',
         'dialog.iron-overlay-closed': 'close',
         'newassetconfigure.tap': 'newAssetConfigure',
-        'insert.tap': 'insertHaxElement',
         'fileupload.upload-before': '_fileAboutToUpload',
         'fileupload.upload-response': '_fileUploadResponse',
       },
