@@ -1305,25 +1305,30 @@ A LRN element that will change the world.
           let node = Polymer.dom(this.activeContainerNode).previousSibling;
           const activeNodeTagName = this.activeContainerNode.tagName;
           var selection = window.getSelection();
-          let range = selection.getRangeAt(0).cloneRange();
-          if (['UL','OL','LI'].includes(activeNodeTagName) || ['UL','OL','LI'].includes(range.commonAncestorContainer.parentElement.tagName)) {
-            if (this.polyfillSafe) {
-              document.execCommand('outdent');
-              this.__tabTrap = true;
-            }
-          }
-          else {
-            if (node != null) {
-              // step back ignoring hax- prefixed elements
-              while (node != null && !this._haxElementTest(node)) {
-                node = Polymer.dom(node).previousSibling;
+          try {
+            let range = selection.getRangeAt(0).cloneRange();
+            if (['UL','OL','LI'].includes(activeNodeTagName) || ['UL','OL','LI'].includes(range.commonAncestorContainer.parentElement.tagName)) {
+              if (this.polyfillSafe) {
+                document.execCommand('outdent');
+                this.__tabTrap = true;
               }
             }
-            if (node != null) {
-              setTimeout( () => {
-                node.focus();
-              }, 100);
+            else {
+              if (node != null) {
+                // step back ignoring hax- prefixed elements
+                while (node != null && !this._haxElementTest(node)) {
+                  node = Polymer.dom(node).previousSibling;
+                }
+              }
+              if (node != null) {
+                setTimeout( () => {
+                  node.focus();
+                }, 100);
+              }
             }
+          }
+          catch (e) {
+
           }
         }
       },
