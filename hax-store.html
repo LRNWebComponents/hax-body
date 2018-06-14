@@ -799,71 +799,18 @@
             'canPosition': false,
             'canEditSource': true,
             'settings': {
-              'quick': [
-              ],
-              'configure': [
-                {
-                  'attribute': 'innerHTML',
-                  'title': 'Content',
-                  'description': 'Content of the paragraph',
-                  'inputMethod': 'code-editor',
-                  'icon': 'editor:short-text',
-                  'required': true,
-                },
-              ],
+              'quick': [],
+              'configure': [],
               'advanced': []
             }
           };
           this.setHaxProperties(p, 'p');
-          let ul = {
-            'canScale': false,
-            'canPosition': false,
-            'canEditSource': true,
-            'settings': {
-              'quick': [
-              ],
-              'configure': [
-                {
-                  'attribute': 'innerHTML',
-                  'title': 'Content',
-                  'description': 'Content of the tag',
-                  'inputMethod': 'code-editor',
-                  'icon': 'editor:short-text',
-                  'required': true,
-                },
-              ],
-              'advanced': []
-            }
-          };
-          this.setHaxProperties(ul, 'ul');
-          let ol = {
-            'canScale': false,
-            'canPosition': false,
-            'canEditSource': true,
-            'settings': {
-              'quick': [
-              ],
-              'configure': [
-                {
-                  'attribute': 'innerHTML',
-                  'title': 'Content',
-                  'description': 'Content of the tag',
-                  'inputMethod': 'code-editor',
-                  'icon': 'editor:short-text',
-                  'required': true,
-                },
-              ],
-              'advanced': []
-            }
-          };
-          this.setHaxProperties(ol, 'ol');
           let hr = {
             'canScale': true,
             'canPosition': false,
             'canEditSource': false,
             'settings': {
-              'quick': [
-              ],
+              'quick': [],
               'configure': [],
               'advanced': []
             }
@@ -945,7 +892,16 @@
           for (var i in drawers) {
             if (active === this[drawers[i]]) {
               active.open();
-              active.focus();
+              if (drawers[i] === 'haxManager') {
+                setTimeout( () => {
+                  active.querySelector('#activepage .iron-selected paper-input').focus();
+                }, 200);
+              }
+              else {
+                setTimeout( () => {
+                  active.querySelector('paper-checkbox,paper-input').focus();
+                }, 100);
+              }
             }
             else {
               this[drawers[i]].close();
