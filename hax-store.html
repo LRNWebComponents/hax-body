@@ -162,6 +162,13 @@
             value: false,
           },
           /**
+           * Boolean for if this instance has backends that support uploading
+           */
+          canSupportUploads: {
+            type: Boolean,
+            value: false,
+          },
+          /**
            * skip the exit trap to prevent losing data
            */
           skipExitTrap: {
@@ -339,6 +346,11 @@
               for (var i = 0; i < apps.length; i++) {
                 let app = document.createElement('hax-app');
                 app.data = apps[i];
+                // see if anything coming across claims to be a backend for adding items
+                // and then enable the upload button
+                if (typeof apps[i].connection.operations.add !== typeof undefined) {
+                  Polymer.HaxStore.write('canSupportUploads', true, this);
+                }
                 Polymer.HaxStore.instance.appendChild(app);
               }
             }

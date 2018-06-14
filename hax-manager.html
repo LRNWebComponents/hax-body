@@ -171,7 +171,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
                 <div class="url-description">A full URL with http:// referencing a link that already exists on the web.</div>
                 </div>
                 <div class="add-upload-area">
-                  <vaadin-upload form-data-name="file-upload" id="fileupload"></vaadin-upload>
+                  <vaadin-upload form-data-name="file-upload" id="fileupload" hidden$="[[!canSupportUploads]]"></vaadin-upload>
                 </div>
                 <paper-button id="newassetconfigure" raised>Configure item</paper-button>
               </div>
@@ -261,6 +261,14 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
           reflectToAttribute: true,
           value: 0,
           observer: '_activePageChanged',
+        },
+        /**
+         * If this can support uploads or not based on presense of a backend
+         * this property is synced down from the store
+         */
+        canSupportUploads: {
+          type: Boolean,
+          value: false,
         },
         /**
          * Active element
