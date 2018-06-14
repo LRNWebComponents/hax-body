@@ -1471,18 +1471,18 @@
     }
   ],
   "autoloader": [
+    "grid-plate",
+    "tab-list",
+    "magazine-cover",
+    "video-player",
+    "image-compare-slider",
     "simple-concept-network",
     "license-element",
-    "grid-plate",
-    "q-r",
     "self-check",
-    "tab-list",
     "multiple-choice",
     "oer-schema",
     "hero-banner",
-    "magazine-cover",
     "task-list",
-    "video-player",
     "lrn-table",
     "media-image",
     "lrndesign-blockquote",
@@ -1490,8 +1490,6 @@
     "a11y-gif-player",
     "paper-audio-player",
     "wikipedia-query",
-    "wave-player",
-    "pdf-element",
     "lrn-vocab",
     "lrn-math",
     "person-testimonial",
@@ -1499,6 +1497,9 @@
     "lrn-calendar",
     "code-editor",
     "place-holder",
+    "q-r",
+    "wave-player",
+    "pdf-element",
     "aframe-player"
   ]
 }
