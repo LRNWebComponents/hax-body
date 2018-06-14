@@ -237,6 +237,7 @@ A LRN element that will change the world.
           type: Object,
           value: null,
           notify: true,
+          observer: '_activeContainerNodeChanged',
         },
       },
       /**
@@ -682,6 +683,10 @@ A LRN element that will change the world.
         this.hideContextMenus();
         // Switch, try loop in case we screwed up elsewhere
         try {
+          // test for slots to match
+          if (node.getAttribute('slot') != null) {
+            replacement.setAttribute('slot', node.getAttribute('slot'));
+          }
           Polymer.dom(parent).replaceChild(replacement, node);
         }
         catch(e) {
@@ -1089,8 +1094,11 @@ A LRN element that will change the world.
       /**
        * Walk everything we find and either enable or disable editable state.
        */
-      _applyContentEditable: function(status) {
-        let children = Polymer.dom(this.$.body).getDistributedNodes();
+      _applyContentEditable: function(status, target = this.$.body) {
+        let children = Polymer.dom(target).getDistributedNodes();
+        if (children.length === 0) {
+          children = Polymer.dom(target).getEffectiveChildNodes();
+        }
         for (var i = 0, len = children.length; i < len; i++) {
           // we have to tell the browser that primatives are editable
           if (this._HTMLPrimativeTest(children[i])) {
@@ -1104,6 +1112,19 @@ A LRN element that will change the world.
         }
       },
       /**
+       * Container has changed
+       */
+      _activeContainerNodeChanged: function (newValue, oldValue) {
+        if (this.editMode && typeof newValue !== typeof undefined && newValue !== null) {
+          let tag = newValue.tagName.toLowerCase();
+          // special case for the grid plate since it brings in dom nodes
+          // nested in it
+          if (tag === 'grid-plate') {
+            this._applyContentEditable(this.editMode, newValue);
+          }
+        }
+      },
+      /**
        * React to a new node being set to active.
        */
       _activeNodeChanged: function (newValue, oldValue) {
@@ -1112,12 +1133,13 @@ A LRN element that will change the world.
           oldValue.classList.remove('hax-active');
         }
         if (this.editMode && typeof newValue !== typeof undefined && newValue !== null) {
+          let tag = newValue.tagName.toLowerCase();
           // remove the menu, establish the new active, then reapply
           // this is nessecary because the context menu gets appended into
           // the document
           // only hide if we change containers
           newValue.classList.add('hax-active');
-          this.$.textcontextmenu.selectedValue = newValue.tagName.toLowerCase();
+          this.$.textcontextmenu.selectedValue = tag;
           // position the operations / in context element
           setTimeout( () => {
             this.positionContextMenus(newValue, Polymer.HaxStore.instance.activeContainerNode);
