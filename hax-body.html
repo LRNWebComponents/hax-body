@@ -180,7 +180,10 @@ A LRN element that will change the world.
     </div>
     <iron-a11y-keys target="[[activeContainerNode]]" keys="esc" on-keys-pressed="_escKeyPressed" stop-keyboard-event-propagation></iron-a11y-keys>
     <iron-a11y-keys target="[[activeContainerNode]]" keys="del backspace" on-keys-pressed="_delKeyPressed"></iron-a11y-keys>
-    <iron-a11y-keys target="[[activeContainerNode]]" keys="shift+tab" on-keys-pressed="_tabBackKeyPressed" stop-keyboard-event-propagation></iron-a11y-keys>    <iron-a11y-keys target="[[activeContainerNode]]" keys="tab" on-keys-pressed="_tabKeyPressed" stop-keyboard-event-propagation></iron-a11y-keys>
+    <iron-a11y-keys target="[[activeContainerNode]]" keys="shift+tab" on-keys-pressed="_tabBackKeyPressed" stop-keyboard-event-propagation></iron-a11y-keys>
+    <iron-a11y-keys target="[[activeContainerNode]]" keys="tab" on-keys-pressed="_tabKeyPressed" stop-keyboard-event-propagation></iron-a11y-keys>
+    <iron-a11y-keys target="[[activeContainerNode]]" keys="up" on-keys-pressed="_upKeyPressed" stop-keyboard-event-propagation></iron-a11y-keys>
+    <iron-a11y-keys target="[[activeContainerNode]]" keys="down" on-keys-pressed="_downKeyPressed" stop-keyboard-event-propagation></iron-a11y-keys>
 
   </template>
 
@@ -473,8 +476,6 @@ A LRN element that will change the world.
       haxToContent: function() {
         // remove from the body area so we can generate a legit html structure
         this.hideContextMenus();
-        // special hide just for the inline tracker for the caret
-        this._hideContextMenu(this.$.inlinetracker);
         var __active = this.activeNode;
         // null this to drop hax based classes
         Polymer.HaxStore.write('activeNode', null, this);
@@ -557,7 +558,6 @@ A LRN element that will change the world.
       haxDuplicateNode: function(node, parent = this) {
         // move the context menu before duplicating!!!!
         this.hideContextMenus();
-        this._hideContextMenu(this.$.inlinetracker);
         var nodeClone = Polymer.dom(node).cloneNode(true);
         if (nodeClone.tagName.toLowerCase() === 'webview' && Polymer.HaxStore.instance._isSandboxed && typeof nodeClone.guestinstance !== typeof undefined) {
           delete nodeClone.guestinstance;
@@ -582,6 +582,8 @@ A LRN element that will change the world.
        * Hide all context menus.
        */
       hideContextMenus: function() {
+        // tracking pixel highest priority to move
+        this._hideContextMenu(this.$.inlinetracker);
         // primary context menus
         this._hideContextMenu(this.$.textcontextmenu);
         this._hideContextMenu(this.$.cecontextmenu);
@@ -589,6 +591,8 @@ A LRN element that will change the world.
         this._hideContextMenu(this.$.inlinecontextmenu);
         this._hideContextMenu(this.$.platecontextmenu);
         this._hideContextMenu(this.$.haxinputmixer);
+        // force context menu state to closed
+        this.$.inlinecontextmenu.opened = false;
       },
       /**
        * Reposition context menus to match an element.
@@ -720,27 +724,24 @@ A LRN element that will change the world.
       haxDeleteNode: function(node, parent = this) {
         // move the context menu before deleting!!!!
         this.hideContextMenus();
-        this._hideContextMenu(this.$.inlinetracker);
         // shift active to a viable replacement
         if (this.activeContainerNode != null && this.activeContainerNode.previousElementSibling !== null) {
           this.activeContainerNode.previousElementSibling.focus();
-          setTimeout( () => {
-            // cursor at the END of the element assuming not empty
-            if (Polymer.HaxStore.instance.isTextElement(this.activeContainerNode) && Polymer.dom(this.activeContainerNode).textContent !== '') {
-              try {
-                var range = document.createRange();
-                var sel = window.getSelection();
-                range.setStart(this.activeContainerNode, 1);
-                range.collapse(true);
-                sel.removeAllRanges();
-                sel.addRange(range);
-                this.activeContainerNode.focus();
-              }
-              catch(e) {
-                console.log(e);
-              }
+          // cursor at the END of the element assuming not empty
+          if (this.activeContainerNode != null && Polymer.HaxStore.instance.isTextElement(this.activeContainerNode) && Polymer.dom(this.activeContainerNode).textContent !== '') {
+            try {
+              var range = document.createRange();
+              var sel = window.getSelection();
+              range.setStart(this.activeContainerNode, 1);
+              range.collapse(true);
+              sel.removeAllRanges();
+              sel.addRange(range);
+              this.activeContainerNode.focus();
             }
-          }, 100);
+            catch(e) {
+              console.log(e);
+            }
+          }
         }
         else if (this.activeContainerNode != null && this.activeContainerNode.nextElementSibling !== null) {
           this.activeContainerNode.nextElementSibling.focus();
@@ -749,8 +750,6 @@ A LRN element that will change the world.
           Polymer.HaxStore.write('activeContainerNode', null, this);
           Polymer.HaxStore.write('activeNode', null, this);
         }
-        // close this menu just to be sure
-        this.$.inlinecontextmenu.opened = false;
         // @todo figure out why this is complaining
         try {
           return Polymer.dom(parent).removeChild(node);
@@ -1076,6 +1075,16 @@ A LRN element that will change the world.
       /**
        * Test if this is a HAX element or not
        */
+      _haxResolvePreviousElement: function(node) {
+        node = Polymer.dom(node).previousElementSibling;
+        while (typeof node.tagName !== typeof undefined && (node.tagName.substring(0, 4) === "HAX-")) {
+          node = Polymer.dom(node).previousElementSibling;
+        }
+        return node;
+      },
+      /**
+       * Test if this is a HAX element or not
+       */
       _haxElementTest: function(node) {
         if (typeof node.tagName !== typeof undefined && (node.tagName.substring(0, 4) !== "HAX-")) {
           return true;
@@ -1244,7 +1253,7 @@ A LRN element that will change the world.
             e.stopPropagation();
             this.haxDeleteNode(this.activeContainerNode);
           }
-          else {
+          else if (Polymer.HaxStore.instance.isTextElement(this._haxResolvePreviousElement(this.activeContainerNode))) {
             // test selection to see if we are at beginning of
             // whatever element this is
             var selection = window.getSelection();
@@ -1254,19 +1263,47 @@ A LRN element that will change the world.
             if (typeof tagTest === typeof undefined) {
               tagTest = range.commonAncestorContainer.parentNode.tagName;
             }
-            if (range.startOffset === 0 && !['UL','OL','LI'].includes(tagTest)) {
+            // must strictly be single placement cursor at start of tag
+            if (range.startOffset === 0 && range.endOffset === 0 && !['UL','OL','LI'].includes(tagTest)) {
               e.preventDefault();
               e.stopPropagation();
-              this.hideContextMenus();
+              while (this.activeContainerNode.firstChild) {
+                this._haxResolvePreviousElement(this.activeContainerNode).appendChild(this.activeContainerNode.firstChild);
+              }
               setTimeout( () => {
-                while (this.activeContainerNode.firstChild) {
-                  this.activeContainerNode.previousElementSibling.appendChild(this.activeContainerNode.firstChild);
-                }
-                // delay so the above can fully populate if it's a large
-                // element that we just mashed into this one.
                 this.haxDeleteNode(this.activeContainerNode);
               }, 100);
             }
+          }
+        }
+      },
+      /**
+       * Move between things pressing up and down if empty
+       */
+      _upKeyPressed: function (e) {
+        if (this.editMode && Polymer.dom(this.activeContainerNode).textContent === '') {
+          let node = this._haxResolvePreviousElement(this.activeContainerNode);
+          // see if we can focus it otherwise we were at the top
+          try {
+            node.focus();
+          }
+          catch (e) {
+            // if an error then we are at the top anyway
+          }
+        }
+      },
+      /**
+       * Move between things pressing up and down if empty
+       */
+      _downKeyPressed: function (e) {
+        if (this.editMode && Polymer.dom(this.activeContainerNode).textContent === '') {
+          let node = Polymer.dom(this.activeContainerNode);
+          // try and focus on the next thing
+          try {
+            node.nextElementSibling.focus();
+          }
+          catch (e) {
+            // do nothing, at bottom
           }
         }
       },
