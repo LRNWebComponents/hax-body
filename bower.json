@@ -48,7 +48,7 @@
     "paper-collapse-item": "Collaborne/paper-collapse-item#^2.3.0",
     "paper-icon-picker": "LRNWebComponents/paper-icon-picker#^1.0.3",
     "paper-input-flagged": "LRNWebComponents/paper-input-flagged#^1.0.1",
-    "grid-plate": "LRNWebcomponents/grid-plate#^0.0.4",
+    "grid-plate": "LRNWebComponents/grid-plate#^0.0.6",
     "image-compare-slider": "LRNWebComponents/image-compare-slider#^0.0.1"
   },
   "devDependencies": {
