@@ -1235,10 +1235,10 @@
             else if (properties[property] === false) {
               newNode.removeAttribute(attributeName);
             }
-            else if (properties[property] != null && properties[property].constructor === Array) {
+            else if (properties[property] != null && properties[property].constructor === Array && !frag.properties[property].readOnly) {
               newNode.set(attributeName, properties[property]);
             }
-            else if (properties[property] != null && properties[property].constructor === Object) {
+            else if (properties[property] != null && properties[property].constructor === Object && !frag.properties[property].readOnly) {
               newNode.set(attributeName, properties[property]);
             }
             else {
