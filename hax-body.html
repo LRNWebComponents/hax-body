@@ -489,10 +489,13 @@ A LRN element that will change the world.
           // see if this is a valid element or not, providing
           // some mild front-end sanitization
           if (this._haxElementTest(children[i])) {
-            children[i].setAttribute('data-editable', false);
+            children[i].removeAttribute('data-editable');
             children[i].removeAttribute('data-hax-ray');
             children[i].contentEditable = false;
             content += Polymer.HaxStore.haxNodeToContent(children[i]);
+            if (children[i].tagName.toLowerCase() === 'grid-plate') {
+              this._applyContentEditable(this.editMode, children[i]);
+            }
           }
           // keep comments with a special case since they need wrapped
           else if (children[i].nodeType === 8) {
@@ -508,8 +511,15 @@ A LRN element that will change the world.
         content = content.replace(/\scontenteditable=\"false\"/g, '');
         // remove the data-editable attribute
         content = content.replace(/\sdata-editable=\"true\"/g, '');
-        // remove the data-editable attribute
         content = content.replace(/\sdata-editable=\"false\"/g, '');
+        content = content.replace(/\sdata-editable=\""/g, '');
+        // remove other attributes that can linger in slots
+        content = content.replace(/\sdata-editable/g, '');
+        content = content.replace(/\scontenteditable/g, '');
+        content = content.replace(/\sdraggable/g, '');
+        content = content.replace(/\sdata-draggable/g, '');
+        // clean up stray hax-ray leftovers
+        content = content.replace(/\sdata-hax-ray=\".*?\"/g, '');
         // remove copy and paste glitch
         content = content.replace(/<span id=\"inlinetracker\" class=\"ignore-activation hax-inline-tracker-element style-scope hax-body\" style=\"font-size: 19.2px; pointer-events: none; opacity: 0; width: 0px; height: 0px;\"><\/span>/g, '');
         // remove HAX specific classes / scoping classes
@@ -1105,6 +1115,7 @@ A LRN element that will change the world.
        */
       _applyContentEditable: function(status, target = this.$.body) {
         let children = Polymer.dom(target).getDistributedNodes();
+        // fallback for content nodes if not polymer managed nodes above
         if (children.length === 0) {
           children = Polymer.dom(target).getEffectiveChildNodes();
         }
@@ -1115,8 +1126,14 @@ A LRN element that will change the world.
           }
           // this does the real targetting
           if (this._haxElementTest(children[i])) {
-            children[i].setAttribute('data-editable', status);
-            children[i].setAttribute('data-hax-ray', children[i].tagName);
+            if (status) {
+              children[i].setAttribute('data-editable', status);
+              children[i].setAttribute('data-hax-ray', children[i].tagName);
+            }
+            else {
+              children[i].removeAttribute('data-editable');
+              children[i].removeAttribute('data-hax-ray');
+            }
           }
         }
       },
@@ -1127,8 +1144,9 @@ A LRN element that will change the world.
         if (this.editMode && typeof newValue !== typeof undefined && newValue !== null) {
           let tag = newValue.tagName.toLowerCase();
           // special case for the grid plate since it brings in dom nodes
-          // nested in it
+          // nested in it and needs to be put into an editMode
           if (tag === 'grid-plate') {
+            newValue.editMode = this.editMode;
             this._applyContentEditable(this.editMode, newValue);
           }
         }

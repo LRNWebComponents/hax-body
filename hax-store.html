@@ -1224,6 +1224,7 @@
         frag.innerHTML = content;
         // clone the fragment which will force an escalation to full node
         var newNode = frag.cloneNode(true);
+        
         // support for properties if they exist
         for (var property in properties) {
           let attributeName = Polymer.HaxStore.camelToDash(property);
@@ -1320,35 +1321,42 @@
             if (typeof node[j] !== typeof undefined) {
               value = node[j];
             }
-            // encode objects and arrays because they are special
-            if (value != null && (typeof value === typeof Object || value.constructor === Array)) {
-              propvals[nodeName] = JSON.stringify(value).replace(new RegExp('"', 'g'), '&quot;');
-            }
-            // only write things that aren't empty
-            else if (value != null && value != 'null') {
-              if (value === true || value === "true") {
-                propvals[nodeName] = true;
+            // never allow read only things to recorded as they
+            // are run-time creation 99% of the time
+            if (!node.properties[j].readOnly && value !== node.properties[j].value) {
+              // encode objects and arrays because they are special
+              if (value != null && (typeof value === typeof Object || value.constructor === Array)) {
+                propvals[nodeName] = JSON.stringify(value).replace(new RegExp('"', 'g'), '&quot;');
               }
-              else if (value === false) {
-                // do nothing, no reason to record false unless written as text
-                // in which case below will capture it
-              }
-              else {
-                // ensure that value doesn't have " in it unencoded
-                if (typeof value === 'string' && value !== '') {
-                  value = value.replace(new RegExp('"', 'g'), '&quot;');
-                  propvals[nodeName] = value;
+              // only write things that aren't empty
+              else if (value != null && value != 'null') {
+                if (value === true || value === "true") {
+                  propvals[nodeName] = true;
                 }
-                // special handling for empty string cause it might mean boolean
-                // or it might be a string
-                else if (value === '') {
-                  if (value == '' && node.properties[j].value != '') {
-                    value = node.properties[j].value;
-                  }
-                  propvals[nodeName] = value;
+                else if (value === false) {
+                  // do nothing, no reason to record false unless written as text
+                  // in which case below will capture it
                 }
                 else {
-                  propvals[nodeName] = value;
+                  // ensure that value doesn't have " in it unencoded
+                  if (typeof value === 'string' && value !== '') {
+                    value = value.replace(new RegExp('"', 'g'), '&quot;');
+                    propvals[nodeName] = value;
+                  }
+                  // special handling for empty string cause it might mean boolean
+                  // or it might be a string
+                  else if (value === '') {
+                    if (value == '' && node.properties[j].value != '') {
+                      value = node.properties[j].value;
+                    }
+                    else if (value === '' && node.properties[j].value == '') {
+                      // do nothing, the default value is empty
+                      // so lets record less data
+                    }
+                  }
+                  else {
+                    propvals[nodeName] = value;
+                  }
                 }
               }
             }
@@ -1467,7 +1475,7 @@
        */
       Polymer.HaxStore.getHAXSlot = (node) => {
         let content = '';
-        let slotnodes = Polymer.dom(node).getEffectiveChildNodes();
+        var slotnodes = Polymer.dom(node).children;
         // ensure there's something inside of this
         if (slotnodes.length > 0) {
           // loop through everything found in the slotted area and put it back in
@@ -1476,7 +1484,7 @@
               // if we're a custom element, keep digging, otherwise a simple
               // self append is fine.
               if (slotnodes[j].tagName.indexOf('-') > 0) {
-                content += Polymer.HaxStore.getHAXSlot(slotnodes[j]);
+                content += '  ' + Polymer.HaxStore.haxNodeToContent(slotnodes[j]) + "\n";
               }
               else {
                 content += '  ' + slotnodes[j].outerHTML + "\n";
@@ -1492,6 +1500,7 @@
               content += slotnodes[j].textContent;
             }
           }
+
         }
         return content;
       };
