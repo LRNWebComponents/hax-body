@@ -444,7 +444,13 @@ A LRN element that will change the world.
           }
           // insert at active insert point if we have one
           else if (this.activeContainerNode !== null) {
-            Polymer.dom(this).insertBefore(newNode, this.activeContainerNode.nextElementSibling);
+            if (this.activeContainerNode.tagName === 'GRID-PLATE' && this.activeContainerNode !== this.activeNode) {
+              newNode.setAttribute('slot', this.activeNode.getAttribute('slot'));
+              Polymer.dom(this.activeContainerNode).insertBefore(newNode, this.activeNode);
+            }
+            else {
+              Polymer.dom(this).insertBefore(newNode, this.activeContainerNode.nextElementSibling);
+            }
           }
           else {
             // send this into the root, which should filter it back down into the slot

@@ -172,7 +172,6 @@ A context menu that provides common text based authoring options.
           // make sure we are in an edit mode
           if (window.__selectionLock && Polymer.HaxStore.instance.editMode && typeof Polymer.HaxStore.instance.activeNode !== typeof undefined && Polymer.HaxStore.instance.activeNode !== null && typeof Polymer.HaxStore.instance.activeNode.tagName !== typeof undefined && Polymer.HaxStore.instance.isTextElement(Polymer.HaxStore.instance.activeNode) && !Polymer.HaxStore.instance.haxManager.opened) {
             window.__selectionLock = false;
-            console.log('fired');
             try {
               Polymer.HaxStore.instance.activeHaxBody.$.inlinecontextmenu.opened = false;
               let selection = window.getSelection();
