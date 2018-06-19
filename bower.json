@@ -51,7 +51,8 @@
     "grid-plate": "LRNWebComponents/grid-plate#^1.0.3",
     "image-compare-slider": "LRNWebComponents/image-compare-slider#^0.0.1",
     "aframe-player": "LRNWebComponents/aframe-player#^1.0.3",
-    "video-player": "LRNWebComponents/video-player#^1.9.1"
+    "video-player": "LRNWebComponents/video-player#^1.9.1",
+    "iron-menu-behavior": "PolymerElements/iron-menu-behavior#^2.1.1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
