@@ -444,7 +444,8 @@ A LRN element that will change the world.
           }
           // insert at active insert point if we have one
           else if (this.activeContainerNode !== null) {
-            if (this.activeContainerNode.tagName === 'GRID-PLATE' && this.activeContainerNode !== this.activeNode) {
+            // allow for inserting things into things but not grid plate
+            if (newNode.tagName !== 'GRID-PLATE' && this.activeContainerNode.tagName === 'GRID-PLATE' && this.activeContainerNode !== this.activeNode) {
               newNode.setAttribute('slot', this.activeNode.getAttribute('slot'));
               Polymer.dom(this.activeContainerNode).insertBefore(newNode, this.activeNode);
             }
