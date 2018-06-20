@@ -29,27 +29,34 @@ A button on the hax-gizmo-browser app display
       :host {
         display: inline-flex;
       }
+      :host[elevation="1"] {
+        -webkit-transform: scale(1, 1);
+        transform: scale(1, 1);
+      }
+      :host[elevation="2"] {
+        -webkit-transform: scale(1.4, 1.4);
+        transform: scale(1.4, 1.4);
+      }
       paper-card {
-        margin: .25em 0;
+        margin: 4px 0;
+        border-radius: 10px;
       }
       paper-button {
-        color: rgba(0,0,0,0.66);
+        color: #000000;
         text-transform: none;
         margin:0;
         background-color: #ffffff;
-        height: 96px !important;
-        width: 96px !important;
+        height: 72px !important;
+        width: 72px !important;
         display: flex;
-        border-radius: 3px;
+        border-radius: 10px;
         border-style: solid;
-        border-width: 1px;
+        border-width: 4px;
       }
       paper-button .item-title {
-        font-size: 12px;
-        margin-top: 4px;
+        font-size: 10px;
       }
       paper-button .button-inner {
-        padding-top: 8px;
         text-align: center;
       }
       paper-button iron-icon {
@@ -85,7 +92,8 @@ A button on the hax-gizmo-browser app display
         'mousedown': 'tapEventOn',
         'mouseover': 'tapEventOn',
         'mouseout': 'tapEventOff',
-        'button.focused-changed': 'focusToggle',
+        'button.focusin': 'tapEventOn',
+        'button.focusout': 'tapEventOff',
       },
       properties: {
         /**
@@ -154,20 +162,26 @@ A button on the hax-gizmo-browser app display
         tag: {
           type: String,
         },
+        /**
+         * Elevation off the UI
+         */
+        elevation: {
+          type: Number,
+          value: 1,
+          reflectToAttribute: true,
+        },
       },
-      tapEventOn: function(e) {
-        this.$.card.elevation = 2;
+      /**
+       * special handling for taps on the thing
+       */
+      tapEventOn: function (e) {
+        this.elevation = 2;
       },
-      tapEventOff: function(e) {
-        this.$.card.elevation = 1;
-      },
-      focusToggle: function(e) {
-        if (this.$.card.elevation == 2) {
-          this.$.card.elevation = 1;
-        }
-        else {
-          this.$.card.elevation = 2;
-        }
+      /**
+       * Hover off stop showing the deeper shadow.
+       */
+      tapEventOff: function (e) {
+        this.elevation = 1;
       },
       /**
        * Fire an event that includes the eventName of what was just pressed.

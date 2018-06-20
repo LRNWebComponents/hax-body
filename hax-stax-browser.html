@@ -1,13 +1,10 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-list/iron-list.html">
-<link rel="import" href="../paper-input/paper-input.html">
-<link rel="import" href="../grafitto-filter/grafitto-filter.html">
-<link rel="import" href="../dropdown-select/dropdown-select.html">
 <link rel="import" href="hax-stax-browser-item.html">
 
 <!--
 `hax-stax-browser`
-Browse a list of stax. This provides a listing of custom elements for people to search and select based on what have been defined as stax for users to select.
+Select a stack / template to insert
 
 @demo demo/index.html
 
@@ -23,43 +20,30 @@ Browse a list of stax. This provides a listing of custom elements for people to 
       }
       hax-stax-browser-item {
         margin: 10px;
-      }
-      @media screen and (max-width: 550px) {
-        hax-stax-browser-item {
-          margin: 6px;
-        }
+        -webkit-transition: .3s all linear;
+        transition: .3s all linear;
       }
       #ironlist {
         min-height: 50vh;
       }
     </style>
-    <app-toolbar>
-      <dropdown-select id="filtertype" label="Filter templates by" value="details.title">
-        <paper-item value="details.title">Title</paper-item>
-      </dropdown-select>
-      <paper-input label="Filter" id="inputfilter" aria-controls="filter" value="" always-float-label></paper-input>
-    </app-toolbar>
-    <grafitto-filter id="filter" items="[[__staxList]]" like=""  where="details.title" as="filtered">
+    <iron-list id="ironlist" items="[[__staxList]]" as="stax" grid>
       <template>
-        <iron-list id="ironlist" items="[[filtered]]" as="stax" grid>
-          <template>
-            <div class="stax-container">
-              <hax-stax-browser-item
-                index="[[stax.index]]"
-                title="[[stax.details.title]]"
-                tag="[[stax.details.tag]]"
-                image="[[stax.details.image]]"
-                author="[[stax.details.author]]"
-                teaser="[[stax.details.teaser]]"
-                description="[[stax.details.description]]"
-                examples="[[stax.details.examples]]"
-                status="[[stax.details.status]]"
-                stax="[[stax.stax]]"></hax-stax-browser-item>
-            </div>
-          </template>
-        </iron-list>
+        <div class="stax-container">
+          <hax-stax-browser-item
+            index="[[stax.index]]"
+            title="[[stax.details.title]]"
+            tag="[[stax.details.tag]]"
+            image="[[stax.details.image]]"
+            author="[[stax.details.author]]"
+            teaser="[[stax.details.teaser]]"
+            description="[[stax.details.description]]"
+            examples="[[stax.details.examples]]"
+            status="[[stax.details.status]]"
+            stax="[[stax.stax]]"></hax-stax-browser-item>
+        </div>
       </template>
-    </grafitto-filter>
+    </iron-list>
   </template>
   <script>
     Polymer({
@@ -67,12 +51,6 @@ Browse a list of stax. This provides a listing of custom elements for people to 
       is: 'hax-stax-browser',
 
       properties: {
-        /**
-         * Search term
-         */
-        search: {
-          type: String,
-        },
         /**
          * The list of stax
          */
@@ -86,14 +64,6 @@ Browse a list of stax. This provides a listing of custom elements for people to 
        */
       attached: function() {
         this.resetBrowser();
-        this.$$('#inputfilter').addEventListener('value-changed', (e) => {
-          this.$$('#filter').like = e.target.value;
-        });
-        this.$$('#filtertype').addEventListener('change', (e) => {
-          this.$$('#inputfilter').value = '';
-          this.$$('#filter').where = e.detail.value;
-          this.$$('#filter').like = '';
-        });
         document.body.addEventListener('hax-store-property-updated', this._haxStorePropertyUpdated.bind(this));
       },
       /**
@@ -120,16 +90,8 @@ Browse a list of stax. This provides a listing of custom elements for people to 
        * Reset this browser.
        */
       resetBrowser: function() {
-        this.$.filter.$$('#ironlist').filtered = [];
-        this.$.filter.$$('#ironlist').filtered = this.__staxList;
-        this.$.inputfilter.value = '';
-        this.$.filtertype.value = 'details.title';
-        this.$.filter.value = '';
-        this.$.filter.filter();
-        this.$.filter.where = 'details.title';
-        this.$.filter.like = '';
         setTimeout( () => {
-          this.$.filter.$$('#ironlist').fire('iron-resize');
+          this.$.ironlist.fire('iron-resize');
           window.dispatchEvent(new Event('resize'));
         }, 100);
       },

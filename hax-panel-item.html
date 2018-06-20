@@ -8,6 +8,7 @@
 <link rel="import" href="../iron-icons/social-icons.html">
 <link rel="import" href="../iron-icons/av-icons.html">
 <link rel="import" href="../iron-icons/maps-icons.html">
+<link rel="import" href="../simple-colors/simple-colors.html">
 <link rel="import" href="../materializecss-styles/colors.html">
 
 <!--
@@ -29,7 +30,7 @@ A single button in the hax panel for consistency.
         display: inline-flex;
         margin: 0;
         padding: 0;
-        --hax-panel-hover: #34e79a;
+        --hax-panel-hover: var(--simple-colors-light-green-background1);
       }
       paper-button {
         color: rgba(0,0,0,0.66);
@@ -52,7 +53,7 @@ A single button in the hax panel for consistency.
         border-bottom-left-radius: 16px;
       }
       paper-button .label {
-        font-size: 12px;
+        font-size: 14px;
         margin: 0;
         max-height: 16px;
         background: transparent;
@@ -74,8 +75,13 @@ A single button in the hax panel for consistency.
         height: 32px;
         width: 24px;
       }
-      paper-button:hover .label {
+      paper-button:hover .label,
+      paper-button:focus .label {
         color: var(--hax-panel-hover);
+      }
+      paper-button:hover iron-icon,
+      paper-button:focus iron-icon {
+        color: var(--hax-panel-hover) !important;
       }
       paper-button[disabled] {
         opacity: .5;
@@ -95,7 +101,7 @@ A single button in the hax panel for consistency.
         }
         paper-button .label {
           max-height: 8px;
-          font-size: 10px;
+          font-size: 11px;
         }
       }
     </style>
@@ -109,9 +115,8 @@ A single button in the hax panel for consistency.
 
   <script>
     Polymer({
-
       is: 'hax-panel-item',
-
+      behaviors: [window.simpleColorsBehaviors],
       properties: {
         /**
          * Voice command to append for things that support data-voicecommand.
@@ -179,6 +184,12 @@ A single button in the hax panel for consistency.
           value: '',
           reflectToAttribute: true,
         },
+      },
+      /**
+       * Ready life cycle
+       */
+      ready: function() {
+        this.reset();
       },
       /**
        * Fire an event that includes the eventName of what was just pressed.

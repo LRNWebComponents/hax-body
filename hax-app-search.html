@@ -5,6 +5,7 @@
 <link rel="import" href="../iron-list/iron-list.html">
 <link rel="import" href="../iron-ajax/iron-ajax.html">
 <link rel="import" href="../elmsln-loading/elmsln-loading.html">
+<link rel="import" href="../simple-colors/simple-colors.html">
 <!--<link rel="import" href="hax-app-pagination.html">-->
 <link rel="import" href="hax-app-search-inputs.html">
 <link rel="import" href="hax-app-search-result.html">
@@ -57,7 +58,6 @@
         align-content: space-around;
         justify-content: center;
         position: absolute;
-        background-color: white;
         padding: 0;
         margin: 0;
         display: flex;
@@ -103,6 +103,11 @@
         justify-content: center;
         color: #222222;
       }
+      .loading-text {
+        font-size: 32px;
+        padding: 16px 0;
+        color: var(--simple-colors-light-green-background3);
+      }
     </style>
 
     <iron-ajax
@@ -120,8 +125,8 @@
     <hax-app-search-inputs label="[[label]]" schema="{{searchSchema}}" values="{{searchValues}}"></hax-app-search-inputs>
     <hax-app-pagination id="pagerbottom" request-data="[[requestData]]" pagination="[[pagination]]"></hax-app-pagination>
     <div id="loading" class="loading" hidden$="[[!loading]]">
-      <elmsln-loading color="blue-text text-darken-4" size="large"></elmsln-loading>
-      <h3 class="loading-text">Loading content..</h3>
+      <elmsln-loading color="light-green-text text-accent-3" size="large"></elmsln-loading>
+      <div class="loading-text">Loading content..</div>
     </div>
     <iron-list grid id="itemlist" items="[[media]]" as="resultData">
       <template>

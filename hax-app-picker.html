@@ -8,6 +8,7 @@
 <link rel="import" href="../neon-animation/animations/scale-up-animation.html">
 <link rel="import" href="../neon-animation/animations/scale-down-animation.html">
 <link rel="import" href="../materializecss-styles/materializecss-styles.html">
+<link rel="import" href="../simple-colors/simple-colors.html">
 <!--
  `hax-app-picker`
  A picker for selecting an item from a list of apps / hax gizmos which require
@@ -26,26 +27,29 @@
     <style include="materializecss-styles">
       :host {
         display: block;
+        --hax-app-picker-dialog-background-color: var(--simple-colors-light-green-background1);
       };
       #dialog {
         min-width: 25vw;
         min-height: 25vh;
-        background-color: var(--hax-app-picker-dialog-background-color, white);
+        background-color: rgba(0,0,0,.9);
         border-radius: 16px;
         z-index: 1000000;
+        border: 4px solid var(--simple-colors-light-green-background1);
         @apply --hax-app-picker-dialog;
       }
       #title, .element-button > div {
-        color: var(--hax-app-picker-dialog-text-color, black);
+        color: var(--hax-app-picker-dialog-text-color, #FFFFFF);
       }
       #title {
         padding: 16px;
         margin: 0;
+        color: var(--hax-app-picker-dialog-text-color, #FFFFFF);
         @apply --paper-font-title;
         @apply --hax-app-picker-dialog-title;
       }
       #buttonlist {
-        border-top: 1px solid rgba(128, 128, 128, .5);
+        border-top: 1px solid var(--simple-colors-light-green-background1);
         display: block;
         text-align: center;
         margin: auto;
@@ -81,7 +85,7 @@
       .element-button > div {
         @apply --paper-font-caption;
         margin-top: 8px;
-        color: black;
+        color: #FFFFFF;
         width: 100%;
         white-space: nowrap;
         overflow: hidden;
@@ -126,7 +130,7 @@
       }
     </style>
     <paper-dialog id="dialog">
-      <h2 id="title">[[title]]</h2>
+      <h3 id="title">[[title]]</h2>
       <paper-dialog-scrollable id="buttonlist">
       <template is="dom-repeat" items="[[selectionList]]" as="element">
         <div class="element-button" on-tap="_selected" data-selected$="[[index]]" title="[[element.title]]">
@@ -142,6 +146,7 @@
     Polymer({
 
       is: 'hax-app-picker',
+      behaviors: [window.simpleColorsBehaviors],
       listeners: {
         'dialog.iron-overlay-canceled': 'close',
         'dialog.iron-overlay-closed': 'close',
@@ -188,6 +193,7 @@
        * Attached life cycle
        */
       attached: function() {
+        this.reset();
         this.fire('hax-register-app-picker', this);
       },
       /**

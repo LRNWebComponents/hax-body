@@ -1,13 +1,11 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-list/iron-list.html">
-<link rel="import" href="../paper-input/paper-input.html">
-<link rel="import" href="../grafitto-filter/grafitto-filter.html">
-<link rel="import" href="../dropdown-select/dropdown-select.html">
 <link rel="import" href="hax-blox-browser-item.html">
+<link rel="import" href="hax-icons.html">
 
 <!--
 `hax-blox-browser`
-Browse a list of blox. This provides a listing of custom elements for people to search and select based on what have been defined as blox for users to select.
+List of layout blox to select from
 
 @demo demo/index.html
 
@@ -23,44 +21,31 @@ Browse a list of blox. This provides a listing of custom elements for people to 
       }
       hax-blox-browser-item {
         margin: 10px;
-      }
-      @media screen and (max-width: 550px) {
-        hax-blox-browser-item {
-          margin: 6px;
-        }
+        -webkit-transition: .3s all linear;
+        transition: .3s all linear;
       }
       #ironlist {
         min-height: 50vh;
       }
     </style>
-    <app-toolbar>
-      <dropdown-select id="filtertype" label="Filter layouts by" value="details.title">
-        <paper-item value="details.title">Title</paper-item>
-      </dropdown-select>
-      <paper-input label="Filter" id="inputfilter" aria-controls="filter" value="" always-float-label></paper-input>
-    </app-toolbar>
-    <grafitto-filter id="filter" items="[[__bloxList]]" like=""  where="details.title" as="filtered">
+    <iron-list id="ironlist" items="[[__bloxList]]" as="blox" grid>
       <template>
-        <iron-list id="ironlist" items="[[filtered]]" as="blox" grid>
-          <template>
-            <div class="blox-container">
-              <hax-blox-browser-item
-                index="[[blox.index]]"
-                layout="[[blox.details.layout]]"
-                title="[[blox.details.title]]"
-                tag="[[blox.details.tag]]"
-                image="[[blox.details.image]]"
-                author="[[blox.details.author]]"
-                teaser="[[blox.details.teaser]]"
-                description="[[blox.details.description]]"
-                examples="[[blox.details.examples]]"
-                status="[[blox.details.status]]"
-                blox="[[blox.blox]]"></hax-blox-browser-item>
-            </div>
-          </template>
-        </iron-list>
+        <div class="blox-container">
+          <hax-blox-browser-item
+            index="[[blox.index]]"
+            layout="[[blox.details.layout]]"
+            title="[[blox.details.title]]"
+            tag="[[blox.details.tag]]"
+            icon="[[blox.details.icon]]"
+            author="[[blox.details.author]]"
+            teaser="[[blox.details.teaser]]"
+            description="[[blox.details.description]]"
+            examples="[[blox.details.examples]]"
+            status="[[blox.details.status]]"
+            blox="[[blox.blox]]"></hax-blox-browser-item>
+        </div>
       </template>
-    </grafitto-filter>
+    </iron-list>
   </template>
   <script>
     Polymer({
@@ -68,12 +53,6 @@ Browse a list of blox. This provides a listing of custom elements for people to 
       is: 'hax-blox-browser',
 
       properties: {
-        /**
-         * Search term
-         */
-        search: {
-          type: String,
-        },
         /**
          * The list of blox
          */
@@ -87,14 +66,6 @@ Browse a list of blox. This provides a listing of custom elements for people to 
        */
       attached: function() {
         this.resetBrowser();
-        this.$$('#inputfilter').addEventListener('value-changed', (e) => {
-          this.$$('#filter').like = e.target.value;
-        });
-        this.$$('#filtertype').addEventListener('change', (e) => {
-          this.$$('#inputfilter').value = '';
-          this.$$('#filter').where = e.detail.value;
-          this.$$('#filter').like = '';
-        });
         document.body.addEventListener('hax-store-property-updated', this._haxStorePropertyUpdated.bind(this));
       },
       /**
@@ -121,16 +92,8 @@ Browse a list of blox. This provides a listing of custom elements for people to 
        * Reset this browser.
        */
       resetBrowser: function() {
-        this.$.filter.$$('#ironlist').filtered = [];
-        this.$.filter.$$('#ironlist').filtered = this.__bloxList;
-        this.$.inputfilter.value = '';
-        this.$.filtertype.value = 'details.title';
-        this.$.filter.value = '';
-        this.$.filter.filter();
-        this.$.filter.where = 'details.title';
-        this.$.filter.like = '';
         setTimeout( () => {
-          this.$.filter.$$('#ironlist').fire('iron-resize');
+          this.$.ironlist.fire('iron-resize');
           window.dispatchEvent(new Event('resize'));
         }, 100);
       },

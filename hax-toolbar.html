@@ -5,6 +5,7 @@
 <link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="../materializecss-styles/colors.html">
 <link rel="import" href="../iron-icons/editor-icons.html">
+<link rel="import" href="../simple-colors/simple-colors.html">
 <link rel="import" href="hax-toolbar-item.html">
 <link rel="import" href="hax-toolbar-menu.html">
 <link rel="import" href="hax-context-item.html">
@@ -57,9 +58,13 @@
       }
       paper-slider {
         background-color: #3e3e3e;
-        color: #c5c5c5;
+        color: #000000;
         height: 40px;
         min-width: 100px;
+        --paper-slider-font-color: #000000;
+        --paper-slider-active-color: var(--simple-colors-light-green-background1);
+        --paper-slider-knob-color: var(--simple-colors-light-green-background1);
+        --paper-slider-pin-color: var(--simple-colors-light-green-background1);
       }
       .duplicate-button {
         border-bottom: 1px solid #d3d3d3;
@@ -132,6 +137,7 @@
       listeners: {
         'hax-context-item-selected': '_haxContextOperation',
       },
+      behaviors: [window.simpleColorsBehaviors],
       properties: {
         /**
          * Selected value to match ce direction currently.
@@ -179,6 +185,12 @@
           value: '',
           notify: true,
         },
+      },
+      /**
+       * Ready life cycle.
+       */
+      ready: function() {
+        this.reset();
       },
       /**
        * If hax properties changes, let's see what the initial state

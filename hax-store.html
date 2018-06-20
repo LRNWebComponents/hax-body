@@ -51,14 +51,10 @@
           MediaBehaviors.Video,
           HAXBehaviors.PropertiesBehaviors,
         ],
+        observers: [
+          '_loadAppStoreData(__appStoreData, haxAutoloader, haxManager, haxStaxPicker, haxAppPicker)',
+        ],
         properties: {
-          /**
-           * Internal app store data property after request
-           */
-          __appStoreData: {
-            type: Object,
-            observer: '_loadAppStoreData',
-          },
           /**
            * Hax app picker element.
            */
@@ -274,6 +270,12 @@
               return false;
             },
           },
+          /**
+           * Internal app store data property after request
+           */
+          __appStoreData: {
+            type: Object,
+          },
         },
         /**
          * If this is a text node or not so we know if the inline context
@@ -320,29 +322,18 @@
         /**
          * Load and attach items from the app store.
          */
-        _loadAppStoreData: function(newValue, oldValue) {
-          if (typeof newValue !== typeof undefined) {
+        _loadAppStoreData: function(appDataResponse, haxAutoloader, haxManager, haxStaxPicker, haxAppPicker) {
+          if (typeof appDataResponse !== typeof undefined) {
             // autoload elements
-            if (typeof newValue.autoloader !== typeof undefined) {
-              // edge case, wait till haxAutoloader has been registered
-              if (typeof this.haxAutoloader === typeof undefined) {
-                setTimeout( () => {
-                  for (var i = 0; i < newValue.autoloader.length; i++) {
-                    let loader = document.createElement(newValue.autoloader[i]);
-                    Polymer.dom(this.haxAutoloader).appendChild(loader);
-                  }
-                }, 250);
-              }
-              else {
-                for (var i = 0; i < newValue.autoloader.length; i++) {
-                  let loader = document.createElement(newValue.autoloader[i]);
-                  Polymer.dom(this.haxAutoloader).appendChild(loader);
-                }
+            if (typeof appDataResponse.autoloader !== typeof undefined) {
+              for (var i = 0; i < appDataResponse.autoloader.length; i++) {
+                let loader = document.createElement(appDataResponse.autoloader[i]);
+                Polymer.dom(haxAutoloader).appendChild(loader);
               }
             }
             // load apps automatically
-            if (typeof newValue.apps !== typeof undefined) {
-              var apps = newValue.apps;
+            if (typeof appDataResponse.apps !== typeof undefined) {
+              var apps = appDataResponse.apps;
               for (var i = 0; i < apps.length; i++) {
                 let app = document.createElement('hax-app');
                 app.data = apps[i];
@@ -355,8 +346,8 @@
               }
             }
             // load in stax dynamically
-            if (typeof newValue.stax !== typeof undefined) {
-              var staxs = newValue.stax;
+            if (typeof appDataResponse.stax !== typeof undefined) {
+              var staxs = appDataResponse.stax;
               for (var i = 0; i < staxs.length; i++) {
                 let stax = document.createElement('hax-stax');
                 stax.data = staxs[i];
@@ -364,8 +355,8 @@
               }
             }
             // load in blox dynamically
-            if (typeof newValue.blox !== typeof undefined) {
-              var bloxs = newValue.blox;
+            if (typeof appDataResponse.blox !== typeof undefined) {
+              var bloxs = appDataResponse.blox;
               for (var i = 0; i < bloxs.length; i++) {
                 let blox = document.createElement('hax-blox');
                 blox.data = bloxs[i];
@@ -389,7 +380,7 @@
             const keyName = event.key;
             // if we are editing and enter is pressed see if we should
             // process it or inject a new p tag
-            if (keyName === 'Enter' && Polymer.HaxStore.instance.editMode && Polymer.HaxStore.instance.activeNode !== null && Polymer.HaxStore.instance.activeContainerNode === Polymer.HaxStore.instance.activeNode && !Polymer.HaxStore.instance.haxAppPicker.opened) {
+            if (typeof Polymer.HaxStore.instance.activeContainerNode !== typeof undefined && keyName === 'Enter' && Polymer.HaxStore.instance.editMode && Polymer.HaxStore.instance.activeNode !== null && Polymer.HaxStore.instance.activeContainerNode === Polymer.HaxStore.instance.activeNode && !Polymer.HaxStore.instance.haxAppPicker.opened) {
               const activeNodeTagName = Polymer.HaxStore.instance.activeContainerNode.tagName;
               var selection = window.getSelection();
               const range = selection.getRangeAt(0).cloneRange();
@@ -911,7 +902,7 @@
               }
               else {
                 setTimeout( () => {
-                  active.querySelector('paper-checkbox,paper-input,textarea').focus();
+                  active.querySelector('paper-checkbox,paper-input,textarea,paper-button').focus();
                 }, 100);
               }
             }

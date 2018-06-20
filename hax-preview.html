@@ -9,6 +9,7 @@
 <link rel="import" href="../paper-icon-picker/paper-icon-picker.html">
 <link rel="import" href="../paper-input-flagged/paper-input-flagged.html">
 <link rel="import" href="../vaadin-split-layout/vaadin-split-layout.html">
+<link rel="import" href="../simple-colors/simple-colors.html">
 <!--
 `hax-preview`
 An element that can generate a form
@@ -26,12 +27,14 @@ An element that can generate a form
     <style>
       :host {
         display: block;
+        background-color: rgba(0, 0, 0, .6);
       }
       paper-card.form-wrapper {
         margin: 0;
         padding: 8px;
         width: 100%;
         min-height: 160px;
+        background-color: transparent;
       }
 
       vaadin-split-layout {
@@ -39,7 +42,7 @@ An element that can generate a form
         justify-content: space-around;
         height: 100%;
         --vaadin-split-layout-splitter: {
-          background-color: #f8f8f8;
+          background-color: #FFFFFF;
         };
       }
       eco-json-schema-object {
@@ -59,8 +62,9 @@ An element that can generate a form
         }
       }
       #preview {
-        padding: 8px;
-        background-color: #f8f8f8;
+        padding: 16px;
+        color: #000000;
+        background-color: #FFFFFF;
       }
       #preview ::slotted(*) {
         float: unset !important;
@@ -69,22 +73,22 @@ An element that can generate a form
         width: unset !important;
       }
       .preview-text {
-        font-size: 11px;
+        font-size: 14px;
         font-family: sans-serif;
-        color: #CCCCCC;
+        color: #FFFFFF;
         font-style: italic;
         width: 100%;
         height: 24px;
-        line-height: 16px;
-        border-bottom: 1px solid #CCCCCC;
+        border-bottom: 1px solid #FFFFFF;
         text-align: center;
+        padding: 8px 0;
       }
       .preview-text iron-icon {
         margin: 0 8px;
       }
       .preview-text-bottom {
         border-bottom: unset;
-        border-top: 1px solid #CCCCCC;
+        border-top: 1px solid #FFFFFF;
       }
       @media screen and (max-width: 550px) {
         .hide-on-mobile {
@@ -98,14 +102,14 @@ An element that can generate a form
       #modetabs {
         height: 80px;
         border-bottom: 1px #e5e5e5 solid;
-        --paper-tabs-selection-bar-color: #34e79a;
+        --paper-tabs-selection-bar-color: var(--simple-colors-light-green-background1);
         --paper-tabs: {
-          background: #f8f8f8;
+          background: transparent;
         }
       }
 
       #modetabs paper-tab {
-        --paper-tab-ink: #34e79a;
+        --paper-tab-ink: var(--simple-colors-light-green-background1);
         --paper-tab: {
           font-size: 16px;
         }
@@ -120,18 +124,53 @@ An element that can generate a form
         font-size: 16px;
       }
       .preview-buttons {
-        height: 80px;
-        padding: 16px;
+        height: 64px;
+        padding: 0px;
         color: #222222;
         border-bottom: 1px var(--hax-manager-steps-color) solid;
-        background-color: #f8f8f8;
-        margin: 0 auto;
+        background-color: transparent;
+        margin: 16px 0 0 0;
         text-align: center;
         box-sizing: content-box;
+      }
+      eco-json-schema-object {
+        color: white;
+        --eco-json-schema-object-form : {
+          -ms-flex: unset;
+          -webkit-flex: unset;
+          flex: unset;
+          -webkit-flex-basis: unset;
+          flex-basis: unset;
+        };
+        --paper-icon-button: {
+          background-color: rgba(0,0,0,.9) !important;
+          border-radius: 50%;
+        }
+        --paper-checkbox-size: 22px;
+        --paper-checkbox-unchecked-color: var(--simple-colors-blue-grey-background1);
+        --paper-checkbox-checked-color: var(--simple-colors-light-green-foreground3);
+        --paper-checkbox-checked-ink-color: #FFFFFF;
+        --paper-checkbox-unchecked-ink-color: #FFFFFF;
+        --paper-checkbox-label-color: var(--simple-colors-blue-grey-background1);
+        --paper-checkbox-label-checked-color: var(--simple-colors-accent-background1);
+        --paper-checkbox-label: {
+          font-size: 22px;
+          line-height: 32px;
+        };
+        --paper-input-container-invalid-color: var(--simple-colors-red-foreground3);
+        --secondary-text-color: #FFFFFF;
+        --primary-text-color: #FFFFFF;
+        --primary-color: #FFFFFF;
+        --paper-input-container-input-color: #FFFFFF;
+        --paper-input-container-color: #FFFFFF !important;
+        --paper-input-container-focus-color: var(--simple-colors-light-green-background1) !important;
+        --paper-listbox-color: #000000;
       }
       .preview-buttons paper-button {
         min-width: unset;
         width: 40%;
+        color: #000000;
+        background-color: var(--simple-colors-light-green-background1);
       }
     </style>
     <vaadin-split-layout class="panel-wrapper">
@@ -159,6 +198,7 @@ An element that can generate a form
   <script>
     Polymer({
       is: 'hax-preview',
+      behaviors: [window.simpleColorsBehaviors],
       observers: [
         '_valueChanged(value.*, formKey)'
       ],

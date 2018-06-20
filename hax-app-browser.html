@@ -4,6 +4,7 @@
 <link rel="import" href="../grafitto-filter/grafitto-filter.html">
 <link rel="import" href="../dropdown-select/dropdown-select.html">
 <link rel="import" href="../iron-pages/iron-pages.html">
+<link rel="import" href="../simple-colors/simple-colors.html">
 <link rel="import" href="hax-app-browser-item.html">
 <link rel="import" href="hax-app-search.html">
 
@@ -27,18 +28,61 @@ Browse a list of apps. This provides a listing of our gizmos that we've integrat
       }
       #ironlist {
         min-height: 72px;
+        margin: 0;
       }
       hax-app-browser-item {
-        margin: 6px;
+        margin: 10px;
         -webkit-transition: .3s all linear;
         transition: .3s all linear;
       }
+      .title {
+        text-align: center;
+        padding: 16px 0;
+        margin: 0 64px 0 0;
+        font-size: 32px;
+        font-weight: bold;
+        color:var(--simple-colors-light-green-background1);
+        font-family: sans-serif;
+        text-transform: uppercase;
+        display: inline-flex;
+      }
+      dropdown-select {
+        color: #FFFFFF;
+        --paper-input-container-invalid-color: var(--simple-colors-red-foreground3);
+        --paper-input-container-input-color: #FFFFFF;
+        --paper-input-container-color: #FFFFFF;
+        --paper-input-container-focus-color: var(--simple-colors-light-green-background1);
+        --paper-listbox-color: #000000;
+      }
+      paper-item {
+        --secondary-text-color: #000000;
+        --primary-text-color: #000000;
+      }
+      paper-input {
+        color: #FFFFFF;
+        --paper-input-container-invalid-color: var(--simple-colors-red-foreground3);
+        --secondary-text-color: #FFFFFF;
+        --primary-text-color: #FFFFFF;
+        --paper-input-container-input-color: #FFFFFF;
+        --paper-input-container-color: #FFFFFF;
+        --paper-input-container-focus-color: var(--simple-colors-light-green-background1);
+      }
+      app-toolbar {
+        background-color: rgba(0,0,0,.5);
+      }
+      .toolbar-inner {
+        width: 100%;
+        display: inline-flex;
+      }
     </style>
     <app-toolbar>
-      <dropdown-select id="filtertype" label="Filter apps by" value="details.title">
+      <div class="toolbar-inner">
+      <h3 class="title">[[title]]</h3>
+      <dropdown-select id="filtertype" label="Filter by" value="details.title">
         <paper-item value="details.title">Title</paper-item>
       </dropdown-select>
       <paper-input label="Filter" id="inputfilter" aria-controls="filter" value="" always-float-label></paper-input>
+      </div>
     </app-toolbar>
     <grafitto-filter id="filter" items="[[__appList]]" like=""  where="details.title" as="filtered">
       <template>
@@ -46,7 +90,6 @@ Browse a list of apps. This provides a listing of our gizmos that we've integrat
           <template>
             <div class="app-container">
             <hax-app-browser-item
-              small
               index="[[app.index]]"
               title="[[app.details.title]]"
               icon="[[app.details.icon]]"
@@ -70,7 +113,7 @@ Browse a list of apps. This provides a listing of our gizmos that we've integrat
     Polymer({
 
       is: 'hax-app-browser',
-
+      behaviors: [window.simpleColorsBehaviors],
       properties: {
         /**
          * Search term
@@ -78,6 +121,13 @@ Browse a list of apps. This provides a listing of our gizmos that we've integrat
         search: {
           type: String,
         },
+        /**
+         * Title of the browser, for translation.
+         */
+         title: {
+           type: String,
+           value: 'Find',
+         },
         /**
          * Searching mode
          */
@@ -99,6 +149,7 @@ Browse a list of apps. This provides a listing of our gizmos that we've integrat
        * Attached
        */
       attached: function() {
+        this.reset();
         this.resetBrowser();
         this.$.inputfilter.addEventListener('value-changed', (e) => {
           this.$.filter.like = e.target.value;

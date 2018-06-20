@@ -20,49 +20,48 @@ A button on the hax-gizmo-browser app display
       :host {
         display: inline-flex;
       }
+      :host[elevation="1"] {
+        -webkit-transform: scale(1, 1);
+        transform: scale(1, 1);
+      }
+      :host[elevation="2"] {
+        -webkit-transform: scale(1.4, 1.4);
+        transform: scale(1.4, 1.4);
+      }
       paper-card {
         margin: 4px 0;
+        border-radius: 10px;
       }
       paper-button {
-        color: rgba(0,0,0,0.66);
+        color: #222222;
         text-transform: none;
         margin:0;
-        background-color: #ffffff;
-        height: 96px !important;
-        width: 96px !important;
+        background-color: #FFFFFF;
+        height: 80px !important;
+        width: 200px !important;
         display: flex;
-        border-radius: 3px;
-        border-style: solid;
-        border-width: 1px;
+        border-radius: 10px;
+        border: 4px solid #CCCCCC;
         min-width: unset;
       }
       paper-button .item-title {
-        font-size: 12px;
-        margin-top: 4px;
+        font-size: 14px;
+        display: inline-flex;
       }
       paper-button .button-inner {
-        padding-top: 8px;
         text-align: center;
       }
       .flip-icon {
         transform: rotateY(180deg);
       }
       @media screen and (max-width: 550px) {
-        paper-button {
-          height: 64px !important;
-          width: 64px !important;
-        }
         paper-button .item-title {
           font-size: 10px;
-          margin-top: 0px;
-        }
-        paper-button .button-inner {
-          padding-top: 2px;
         }
       }
     </style>
-    <paper-card id="card" elevation="2">
-      <paper-button id="button" on-tap="_fireEvent" data-voicecommand$="select [[title]]" class="blue lighten-5">
+    <paper-card id="card" elevation="[[elevation]]">
+      <paper-button id="button" on-tap="_fireEvent" data-voicecommand$="select [[title]]">
         <div class="button-inner">
           <iron-image src="[[image]]" preload sizing="cover" hidden$="[[!image]]"></iron-image>
           <div class="item-title">[[title]]</div>
@@ -85,7 +84,8 @@ A button on the hax-gizmo-browser app display
         'mousedown': 'tapEventOn',
         'mouseover': 'tapEventOn',
         'mouseout': 'tapEventOff',
-        'button.focused-changed': 'focusToggle',
+        'button.focusin': 'tapEventOn',
+        'button.focusout': 'tapEventOff',
       },
       properties: {
         /**
@@ -142,20 +142,26 @@ A button on the hax-gizmo-browser app display
         tag: {
           type: String,
         },
+        /**
+         * Elevation off the UI
+         */
+        elevation: {
+          type: Number,
+          value: 1,
+          reflectToAttribute: true,
+        },
       },
-      tapEventOn: function(e) {
-        this.$.card.elevation = 2;
+      /**
+       * special handling for taps on the thing
+       */
+      tapEventOn: function (e) {
+        this.elevation = 2;
       },
-      tapEventOff: function(e) {
-        this.$.card.elevation = 1;
-      },
-      focusToggle: function(e) {
-        if (this.$.card.elevation == 2) {
-          this.$.card.elevation = 1;
-        }
-        else {
-          this.$.card.elevation = 2;
-        }
+      /**
+       * Hover off stop showing the deeper shadow.
+       */
+      tapEventOff: function (e) {
+        this.elevation = 1;
       },
       /**
        * Fire an event that includes the eventName of what was just pressed.

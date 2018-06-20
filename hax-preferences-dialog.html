@@ -1,6 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../eco-json-schema-form/eco-json-schema-wizard.html">
 <link rel="import" href="../app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../simple-colors/simple-colors.html">
 
 <!--
 `hax-export-dialog`
@@ -19,20 +20,30 @@ Export dialog with all export options and settings provided.
         display: block;
       }
       #dialog {
-        --app-drawer-width: 320px;
         z-index: 1000;
         margin-top: 64px;
       }
-      .pref-title {
-        text-align: left;
-        padding: 8px 16px;
+      .title {
+        margin-top: 32px;
+        text-align: center;
+        padding: 16px;
         margin: 0;
-        font-size: 24px;
+        background-color: rgba(0, 0, 0, 0.5);
+        font-size: 32px;
         font-weight: bold;
+        font-family: sans-serif;
+        text-transform: uppercase;
+        color: #a0ff52;
       }
       .pref-container {
         text-align: left;
         padding: 16px;
+      }
+      app-drawer {
+        --app-drawer-content-container: {
+          background-color: rgba(0, 0, 0, 0.7);
+        };
+        --app-drawer-width: 320px;
       }
       eco-json-schema-object {
         --eco-json-schema-object-form : {
@@ -41,11 +52,22 @@ Export dialog with all export options and settings provided.
           flex: unset;
           -webkit-flex-basis: unset;
           flex-basis: unset;
-        }
+        };
+        --paper-checkbox-size: 22px;
+        --paper-checkbox-unchecked-color: var(--simple-colors-blue-grey-background1);
+        --paper-checkbox-checked-color: var(--simple-colors-light-green-foreground3);
+        --paper-checkbox-checked-ink-color: #FFFFFF;
+        --paper-checkbox-unchecked-ink-color: #FFFFFF;
+        --paper-checkbox-label-color: var(--simple-colors-blue-grey-background1);
+        --paper-checkbox-label-checked-color: var(--simple-colors-accent-background1);
+        --paper-checkbox-label: {
+          font-size: 22px;
+          line-height: 32px;
+        };
       }
     </style>
     <app-drawer id="dialog" align="right">
-      <h3 class="pref-title">[[title]]</h3>
+      <h3 class="title">[[title]]</h3>
       <div style="height: 100%; overflow: auto;" class="pref-container">
         <eco-json-schema-object schema="[[schema]]" value="{{preferences}}"></eco-json-schema-object>
       </div>
@@ -57,6 +79,7 @@ Export dialog with all export options and settings provided.
       observers: [
         '_preferencesChanged(preferences.*)'
       ],
+      behaviors: [window.simpleColorsBehaviors],
       properties: {
         /**
          * Title when open.
@@ -112,6 +135,8 @@ Export dialog with all export options and settings provided.
        * we exist and are the thing being edited.
        */
       attached: function() {
+        // force color values to apply
+        this.reset();
         this.fire('hax-register-preferences', this);
         document.body.addEventListener('hax-store-property-updated', this._haxStorePropertyUpdated.bind(this));
       },

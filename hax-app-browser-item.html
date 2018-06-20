@@ -40,43 +40,33 @@ A button on the hax-app-browser display
       }
       paper-card {
         margin: 4px 0;
-        border-radius: 4px;
+        border-radius: 10px;
       }
       paper-button {
-        color: rgba(0,0,0,0.66);
+        color: #000000;
         text-transform: none;
         margin:0;
         background-color: #ffffff;
-        height: 64px !important;
-        width : 64px !important;
+        height: 72px !important;
+        width: 72px !important;
         display: flex;
-        border-radius: 4px;
+        border-radius: 10px;
         border-style: solid;
-        border-width: 1px;
-        min-width: unset;
+        border-width: 4px;
+        font-weight: normal;
       }
       paper-button .item-title {
-        font-size: 9px;
-        margin-top: 4px;
+        font-size: 10px;
       }
       paper-button .button-inner {
-        padding-top: 4px;
         text-align: center;
       }
       paper-button iron-icon {
-        height: 28px;
-        width: 26px;
+        height: 32px;
+        width: 32px;
       }
       .flip-icon {
         transform: rotateY(180deg);
-      }
-      :host[small] paper-button {
-        height: 52px !important;
-        width : 52px !important;
-      }
-      :host[small] paper-button iron-icon {
-        height: 20px;
-        width: 20px;
       }
     </style>
     <paper-card id="card" elevation="[[elevation]]">
