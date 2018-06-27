@@ -122,8 +122,14 @@ Export dialog with all export options and settings provided.
       /**
        * Created life cycle.
        */
-      ready: function() {
+      created: function() {
         document.body.appendChild(this);
+      },
+      /**
+       * Ready life cycle.
+       */
+      ready: function() {
+        document.body.addEventListener('hax-store-property-updated', this._haxStorePropertyUpdated.bind(this));
       },
       /**
        * Attached to the DOM, now fire that we exist.
@@ -131,7 +137,6 @@ Export dialog with all export options and settings provided.
       attached: function() {
         // fire an event that this is the manager
         this.fire('hax-register-export', this);
-        document.body.addEventListener('hax-store-property-updated', this._haxStorePropertyUpdated.bind(this));
       },
       /**
        * Store updated, sync.

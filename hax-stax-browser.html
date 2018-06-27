@@ -60,11 +60,16 @@ Select a stack / template to insert
         }
       },
       /**
+       * Ready life cycle
+       */
+      ready: function() {
+        document.body.addEventListener('hax-store-property-updated', this._haxStorePropertyUpdated.bind(this));
+      },
+      /**
        * Attached
        */
       attached: function() {
         this.resetBrowser();
-        document.body.addEventListener('hax-store-property-updated', this._haxStorePropertyUpdated.bind(this));
       },
       /**
        * Store updated, sync.

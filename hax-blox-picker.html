@@ -39,15 +39,15 @@
         text-transform: uppercase;
         color: #a0ff52;
       }
-      .pref-container {
-        text-align: left;
-        padding: 16px;
-      }
       app-drawer {
         --app-drawer-content-container: {
           background-color: rgba(0, 0, 0, 0.7);
         };
         --app-drawer-width: 320px;
+      }
+      .pref-container {
+        text-align: left;
+        padding: 16px;
       }
     </style>
     <app-drawer id="dialog" align="left">
@@ -72,7 +72,7 @@
       /**
        * Ready life cycle.
        */
-      ready: function() {
+      created: function() {
         document.body.appendChild(this);
       },
       /**
@@ -82,15 +82,10 @@
         this.fire('hax-register-blox-picker', this);
       },
       /**
-       * Open the dialog
-       */
-      open: function() {
-        this.$.bloxbrowser.resetBrowser();
-      },
-      /**
        * open the dialog
        */
       open: function() {
+        this.$.bloxbrowser.resetBrowser();
         this.$.dialog.open();
       },
       /**

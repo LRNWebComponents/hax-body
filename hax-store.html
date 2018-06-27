@@ -5,7 +5,10 @@
 <link rel="import" href="../iron-ajax/iron-ajax.html">
 <link rel="import" href="hax-app.html">
 <link rel="import" href="hax-stax.html">
+<link rel="import" href="hax-stax-browser.html">
 <link rel="import" href="hax-blox.html">
+<link rel="import" href="hax-blox-browser.html">
+
 
 <!--
 `hax-store`
@@ -52,7 +55,7 @@
           HAXBehaviors.PropertiesBehaviors,
         ],
         observers: [
-          '_loadAppStoreData(__appStoreData, haxAutoloader, haxManager, haxStaxPicker, haxAppPicker)',
+          '_loadAppStoreData(__appStoreData, haxAutoloader)',
         ],
         properties: {
           /**
@@ -322,7 +325,7 @@
         /**
          * Load and attach items from the app store.
          */
-        _loadAppStoreData: function(appDataResponse, haxAutoloader, haxManager, haxStaxPicker, haxAppPicker) {
+        _loadAppStoreData: function(appDataResponse, haxAutoloader) {
           if (typeof appDataResponse !== typeof undefined) {
             // autoload elements
             if (typeof appDataResponse.autoloader !== typeof undefined) {
@@ -897,12 +900,16 @@
               active.open();
               if (drawers[i] === 'haxManager') {
                 setTimeout( () => {
-                  active.querySelector('#activepage .iron-selected paper-input').focus();
+                  if (active.querySelector('#activepage .iron-selected paper-input') != null) {
+                    active.querySelector('#activepage .iron-selected paper-input').focus();
+                  }
                 }, 200);
               }
               else {
                 setTimeout( () => {
-                  active.querySelector('paper-checkbox,paper-input,textarea,paper-button').focus();
+                  if (active.querySelector('paper-checkbox,paper-input,textarea,paper-button') != null) {
+                    active.querySelector('paper-checkbox,paper-input,textarea,paper-button').focus();
+                  }
                 }, 100);
               }
             }
@@ -965,7 +972,7 @@
          * Set the haxPanel so we know what to insert into.
          */
         _haxStoreRegisterPanel: function(e) {
-          if (e.detail) {
+          if (e.detail && typeof this.haxPanel === typeof undefined) {
             this.haxPanel = e.detail;
           }
         },
@@ -973,7 +980,7 @@
          * Set the haxExport so we know who to call for exporting
          */
         _haxStoreRegisterExport: function(e) {
-          if (e.detail) {
+          if (e.detail && typeof this.haxExport === typeof undefined) {
             this.haxExport = e.detail;
           }
         },
@@ -981,7 +988,7 @@
          * Set the haxPreferences so we know what has global preferences
          */
         _haxStoreRegisterPreferences: function(e) {
-          if (e.detail) {
+          if (e.detail && typeof this.haxPreferences === typeof undefined) {
             this.haxPreferences = e.detail;
           }
         },
