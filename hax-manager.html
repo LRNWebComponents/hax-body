@@ -115,6 +115,10 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         --vaadin-upload-file-list: {
           padding: 16px;
           margin: 0;
+          color: #FFFFFF;
+        };
+        --vaadin-upload-file: {
+          color: #FFFFFF;
         };
       }
       vaadin-upload[dragover] {
@@ -498,6 +502,8 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
             this.resetManager();
           }
           else {
+            // reset files so it doesn't bloat up
+            this.$.fileupload.set('files', []);
             this.$.dialog.scrollTop = 0;
             this.selectStep('configure');
           }
