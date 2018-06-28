@@ -193,7 +193,6 @@
         <magazine-cover header="Endless possibilities" image="https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e000676/GSFC_20171208_Archive_e000676~thumb.jpg" subheader="Click the edit button to get started" text="Welcome to HAX. An entirely different way to author, edit and create content. HAX solves the problem your content contributors always complain about - getting things on the internet. It's 20xx, and yet much of the internet is still constrained to WYSIWYG editors started in 2001. They are better then nothing; but we can build so much more then that now! HAX stands for Headless Authoring eXperience. Because authoring experience makes and breaks any platform!" action="Let's get HAXing" icon="launch" link="https://github.com/LRNWebComponents/hax-body" event-data="{&quot;eventName&quot;:&quot;open-panel&quot;}" event-name="hax-panel-operation" style="width: 75%; margin: 0px auto; display: block;">
         </magazine-cover><a11y-gif-player resource="#97337826-c75c-6577-cfe4" prefix="oer:http://oerschema.org/ schema:http://schema.org/ dc:http://purl.org/dc/terms/ foaf:http://xmlns.com/foaf/0.1/ cc:http://creativecommons.org/ns# bib:http://bib.schema.org " src="https://media3.giphy.com/media/5GoVLqeAOo6PK/giphy.gif" src-without-animation="https://media3.giphy.com/media/5GoVLqeAOo6PK/480w_s.jpg" alt="Happy Jonah hill because he just discovered Web components." style="width: 25%; float: right;">
         </a11y-gif-player>
-
         <h2>Need more convincing?</h2>
 
         <p>This is Jonah Hill. He's been on my Netflix recently and can't stop freaking out about HAX. Go ahead, click him and see. He may look static right now for accessibility reasons but the second you select him I assure you he's going to wig out over...and over... and over again. Dude never drops his love for HAX.</p><h2>Really? Still need more. Client endorsements, people love those!</h2><p>And some actual additional useful links, why not, just for kicks.</p><person-testimonial accent-color-class="orange darken-1" elevation="1" style="width: 50%; float: right;" accent-color="#fb8c00" image="https://www.elmsln.org/sites/redesign/files/styles/square-profile-portrait/public/20150618_134134_222.png?itok=HemzD3WU" name="@cgldevel" position="Core contributor">  <span>  I made this custom element called person-testimonial and now btopro won't stop using it.
@@ -237,7 +236,16 @@
         </span>
         </person-testimonial><lrndesign-blockquote depth="4" citation="btopro, July 26th 2011" resource="#24eca336-60b1-94cc-b2cb" prefix="oer:http://oerschema.org/ schema:http://schema.org/ dc:http://purl.org/dc/terms/ foaf:http://xmlns.com/foaf/0.1/ cc:http://creativecommons.org/ns# bib:http://bib.schema.org " style="width: 50%; margin: 0px auto; display: block;"><span>Disrupt, innovate out of your job. Pay everything forward. Collapse local inefficiencies. Pay forward via analysis of process. Collapse larger inefficiencies... Collapse edge industries. Rinse, repeat in other areas.</span>
         </lrndesign-blockquote>
-        <meme-maker image-url="https://media1.giphy.com/media/3o7TKMOy5zz1nuD71u/giphy.gif" top-text="Sup, suuuuuun?" alt="sun moon GIF by Amy Ciavolino" bottom-text="Hax, Moon. Hax." style="width: 50%; margin: 0px auto; display: block;"></meme-maker>
+        <grid-plate layout="8/4">
+          <place-holder slot="col-1" type="text"></place-holder>
+          <place-holder slot="col-1" type="video"></place-holder>
+          <meme-maker slot="col-2" image-url="https://media1.giphy.com/media/3o7TKMOy5zz1nuD71u/giphy.gif" top-text="Sup, sun?"
+            alt="sun moon GIF by Amy Ciavolino" bottom-text="Nothing Moon"></meme-maker>
+          <meme-maker slot="col-2" image-url="https://media1.giphy.com/media/3o7TKMOy5zz1nuD71u/giphy.gif" top-text="Sup, suuuuuun?"
+            alt="sun moon GIF by Amy Ciavolino" bottom-text="Layouts Moon."></meme-maker>
+          <meme-maker slot="col-2" image-url="https://media1.giphy.com/media/3o7TKMOy5zz1nuD71u/giphy.gif" top-text="HAX does that?"
+              alt="sun moon GIF by Amy Ciavolino" bottom-text="*sigh* yes Moon."></meme-maker>
+        </grid-plate>
         <code-editor title="See a web component on code pen!" show-code-pen>
           <template>
               <script src="https://cdn.rawgit.com/LRNWebComponents/hax-builds/0.19.0/builds/bower_components/webcomponentsjs/webcomponents.min.js"></script>
