@@ -959,6 +959,8 @@
             this.haxBodies.push(e.detail);
             // default active the whatever is last here
             this.activeHaxBody = e.detail;
+            // needed so that higher order things can respond to us having a body
+            Polymer.HaxStore.write('activeHaxBody', this.activeHaxBody, this);
             Polymer.HaxStore.write('editMode', this.editMode, this);
           }
         },
