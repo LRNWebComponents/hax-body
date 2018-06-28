@@ -53,7 +53,8 @@
     "aframe-player": "LRNWebComponents/aframe-player#^1.0.3",
     "video-player": "LRNWebComponents/video-player#^1.9.1",
     "iron-menu-behavior": "PolymerElements/iron-menu-behavior#^2.1.1",
-    "simple-colors": "LRNWebComponents/simple-colors#^0.0.1"
+    "simple-colors": "LRNWebComponents/simple-colors#^0.0.1",
+    "iron-dropdown": "PolymerElements/iron-dropdown#^2.2.1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
@@ -135,6 +136,7 @@
     "iron-menu-behavior": "^2.1.1",
     "paper-progress": "^2.0.1",
     "paper-dialog-scrollable": "^2.2.0",
-    "paper-dialog": "^2.1.1"
+    "paper-dialog": "^2.1.1",
+    "iron-dropdown": "^2.2.1"
   }
 }
