@@ -577,7 +577,7 @@
               "defaultGizmoType": "image",
               "items": "results",
               "preview": {
-                "title": "",
+                "title": "tags.0.title",
                 "details": "description",
                 "image": "urls.thumb",
                 "id": "id"

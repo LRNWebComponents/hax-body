@@ -326,7 +326,7 @@
                 'map': {},
               };
               // strip HTML from details since it might contain complex content
-              if (typeof media[i].details !== typeof undefined) {
+              if (typeof media[i].details !== typeof undefined && media[i].details != null) {
                 media[i].details = media[i].details.replace(/(<([^>]+)>)/ig, "");
               }
               // allow id to use deeper logic to split it back out
