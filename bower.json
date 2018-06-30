@@ -93,7 +93,8 @@
     "q-r": "LRNWebComponents/q-r#^1.0.5",
     "license-element": "LRNWebComponents/license-element#^1.0.0",
     "document-register-element": "WebReflection/document-register-element#^1.8.1",
-    "simple-concept-network": "LRNWebComponents/simple-concept-network#^1.0.0"
+    "simple-concept-network": "LRNWebComponents/simple-concept-network#^1.0.0",
+    "stop-note": "LRNWebComponents/stop-note#^0.0.1"
   },
   "resolutions": {
     "webcomponentsjs": "^0.7.24",
