@@ -1451,6 +1451,7 @@
     }
   ],
   "autoloader": [
+    "lrn-aside",
     "grid-plate",
     "tab-list",
     "magazine-cover",
