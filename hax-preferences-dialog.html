@@ -140,15 +140,10 @@ Export dialog with all export options and settings provided.
         },
       },
       /**
-       * Created life cycle.
-       */
-      created: function() {
-        document.body.appendChild(this);
-      },
-      /**
        * Ready life cycle.
        */
       ready: function () {
+        document.body.appendChild(this);
         document.body.addEventListener('hax-store-property-updated', this._haxStorePropertyUpdated.bind(this));
       },
       /**
