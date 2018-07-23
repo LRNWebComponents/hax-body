@@ -2,6 +2,7 @@
 <link rel="import" href="../eco-json-schema-form/eco-json-schema-wizard.html">
 <link rel="import" href="../app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../simple-colors/simple-colors.html">
+<link rel="import" href="../simple-colors/simple-colors-behaviors.html">
 
 <!--
 `hax-export-dialog`
@@ -54,12 +55,12 @@ Export dialog with all export options and settings provided.
           flex-basis: unset;
         };
         --paper-checkbox-size: 22px;
-        --paper-checkbox-unchecked-color: var(--simple-colors-blue-grey-background1);
-        --paper-checkbox-checked-color: var(--simple-colors-light-green-foreground3);
-        --paper-checkbox-checked-ink-color: #FFFFFF;
-        --paper-checkbox-unchecked-ink-color: #FFFFFF;
-        --paper-checkbox-label-color: var(--simple-colors-blue-grey-background1);
-        --paper-checkbox-label-checked-color: var(--simple-colors-accent-background1);
+        --paper-checkbox-unchecked-color: var(--simple-colors-blue-grey-background1) !important;
+        --paper-checkbox-checked-color: var(--simple-colors-light-green-foreground3) !important;
+        --paper-checkbox-checked-ink-color: #FFFFFF !important;
+        --paper-checkbox-unchecked-ink-color: #FFFFFF !important;
+        --paper-checkbox-label-color: var(--simple-colors-blue-grey-background1) !important;
+        --paper-checkbox-label-checked-color: var(--simple-colors-accent-background1) !important;
         --paper-checkbox-label: {
           font-size: 22px;
           line-height: 32px;
@@ -93,7 +94,29 @@ Export dialog with all export options and settings provided.
          */
         schema: {
           type: Object,
-          value: {
+        },
+        /**
+         * Preferences managed for everything global about HAX.
+         */
+        preferences: {
+          type: Object,
+        },
+      },
+      /**
+       * Ready life cycle.
+       */
+      ready: function () {
+        document.body.appendChild(this);
+        document.body.addEventListener('hax-store-property-updated', this._haxStorePropertyUpdated.bind(this));
+      },
+      /**
+       * Attached to the DOM; now we can fire event to the store that
+       * we exist and are the thing being edited.
+       */
+      attached: function() {
+        // JSON schema object needs delayed to ensure page repaints the form
+        setTimeout(() => { 
+          let schema = {
             "$schema": "http://json-schema.org/schema#",
             "title": "HAX preferences",
             "type": "object",
@@ -129,44 +152,25 @@ Export dialog with all export options and settings provided.
                 },
               },
             }
-          },
-        },
-        /**
-         * Preferences managed for everything global about HAX.
-         */
-        preferences: {
-          type: Object,
-          value: {},
-        },
-      },
-      /**
-       * Ready life cycle.
-       */
-      ready: function () {
-        document.body.appendChild(this);
-        document.body.addEventListener('hax-store-property-updated', this._haxStorePropertyUpdated.bind(this));
-      },
-      /**
-       * Attached to the DOM; now we can fire event to the store that
-       * we exist and are the thing being edited.
-       */
-      attached: function() {
+          };
+          this.set('schema', schema);
+        }, 1000);
+        this.fire('hax-register-preferences', this);
         // force color values to apply
         this.reset();
-        this.fire('hax-register-preferences', this);
       },
       /**
        * Store updated, sync.
        */
       _haxStorePropertyUpdated: function(e) {
-        if (e.detail && typeof e.detail.value !== typeof undefined && e.detail.property) {
+        if (e.detail && typeof e.detail.value !== typeof undefined && e.detail.property && typeof this[e.detail.property] !== typeof undefined) {
           this.set(e.detail.property, e.detail.value);
         }
       },
       /**
        * Notice preferences have changed.
        */
-      _preferencesChanged: function() {
+      _preferencesChanged: function(prop) {
         Polymer.HaxStore.write('globalPreferences', this.preferences, this);
       },
       /**
