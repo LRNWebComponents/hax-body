@@ -64,6 +64,7 @@ A button on the hax-app-browser display
       paper-button iron-icon {
         height: 32px;
         width: 32px;
+        display: inline-block;
       }
       .flip-icon {
         transform: rotateY(180deg);
@@ -115,19 +116,20 @@ A button on the hax-app-browser display
          * Icon for the button, optional.
          */
         icon: {
-          type: String
+          type: String,
         },
         /**
          * Image for the button, optional.
          */
         image: {
-          type: String
+          type: String,
+          value: false,
         },
         /**
          * MaterializeCSS color name of the item
          */
         color: {
-          type: String
+          type: String,
         },
         /**
          * Author related to this app

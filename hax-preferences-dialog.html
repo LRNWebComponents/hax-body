@@ -2,7 +2,6 @@
 <link rel="import" href="../eco-json-schema-form/eco-json-schema-wizard.html">
 <link rel="import" href="../app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../simple-colors/simple-colors.html">
-<link rel="import" href="../simple-colors/simple-colors-behaviors.html">
 
 <!--
 `hax-export-dialog`
@@ -34,7 +33,7 @@ Export dialog with all export options and settings provided.
         font-weight: bold;
         font-family: sans-serif;
         text-transform: uppercase;
-        color: #a0ff52;
+        color: var(--hax-ui-headings, #d4ff77);
       }
       .pref-container {
         text-align: left;
@@ -158,6 +157,7 @@ Export dialog with all export options and settings provided.
         this.fire('hax-register-preferences', this);
         // force color values to apply
         this.reset();
+        this.updateStyles();
       },
       /**
        * Store updated, sync.

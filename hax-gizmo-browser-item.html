@@ -55,6 +55,7 @@ A button on the hax-gizmo-browser app display
       }
       paper-button .item-title {
         font-size: 10px;
+        line-height: 12px;
       }
       paper-button .button-inner {
         text-align: center;
@@ -62,6 +63,7 @@ A button on the hax-gizmo-browser app display
       paper-button iron-icon {
         height: 32px;
         width: 32px;
+        display: inline-block;
       }
       .flip-icon {
         transform: rotateY(180deg);
@@ -112,49 +114,50 @@ A button on the hax-gizmo-browser app display
          * Icon for the button, optional.
          */
         icon: {
-          type: String
+          type: String,
         },
         /**
          * Image for the button, optional.
          */
         image: {
-          type: String
+          type: String,
+          value: false,
         },
         /**
          * MaterializeCSS color name of the item
          */
         color: {
-          type: String
+          type: String,
         },
         /**
          * Author related to this gizmo
          */
         author: {
-          type: String
+          type: String,
         },
         /**
          * Teaser / headline.
          */
         teaser: {
-          type: String
+          type: String,
         },
         /**
          * Description for this.
          */
         description: {
-          type: String
+          type: String,
         },
         /**
          * Examples, a list of image links, optional.
          */
         examples: {
-          type: Array
+          type: Array,
         },
         /**
          * Status, whether disabled, enabled, or other future states.
          */
         status: {
-          type: Array
+          type: Array,
         },
         /**
          * Tag
