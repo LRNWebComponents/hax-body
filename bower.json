@@ -13,7 +13,6 @@
     "paper-icon-button": "PolymerElements/paper-icon-button#^2.0.1",
     "md-extra-icons": "LRNWebComponents/md-extra-icons#^0.0.4",
     "paper-input": "PolymerElements/paper-input#^2.2.2",
-    "paper-swatch-picker": "PolymerElements/paper-swatch-picker#^2.0.1",
     "paper-slider": "PolymerElements/paper-slider#^2.0.4",
     "paper-checkbox": "PolymerElements/paper-checkbox#^2.0.1",
     "hax-body-behaviors": "LRNWebComponents/hax-body-behaviors#^1.12.5",
