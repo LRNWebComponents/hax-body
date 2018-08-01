@@ -53,7 +53,7 @@
     "aframe-player": "LRNWebComponents/aframe-player#^1.0.3",
     "video-player": "LRNWebComponents/video-player#^1.9.1",
     "iron-menu-behavior": "PolymerElements/iron-menu-behavior#^2.1.1",
-    "simple-colors": "LRNWebComponents/simple-colors#0.0.1",
+    "simple-colors": "LRNWebComponents/simple-colors#1.0.3",
     "iron-dropdown": "PolymerElements/iron-dropdown#^2.2.1"
   },
   "devDependencies": {
