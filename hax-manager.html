@@ -28,7 +28,7 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
 
 <dom-module id="hax-manager">
   <template>
-    <style include="materializecss-styles">
+    <style is="custom-style" include="materializecss-styles">
       :host {
         display: block;
         --hax-manager-steps-color: #FFFFFF;
@@ -219,7 +219,6 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
     Polymer({
 
       is: 'hax-manager',
-      behaviors: [window.simpleColorsBehaviors],
       listeners: {
         'dialog.iron-overlay-canceled': 'close',
         'dialog.iron-overlay-closed': 'close',
@@ -313,12 +312,25 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
           type: Boolean,
           value: false,
         },
+        /**
+         * Support for JWTs if name of the JWT is used
+         */
+        appendJwt: {
+          type: String,
+          value: null,
+        },
+        /**
+         * Support for other data that's generated dynamically
+         */
+        appendUploadEndPoint: {
+          type: String,
+          value: null,
+        },
       },
       /**
        * Created life cycle.
        */
       ready: function() {
-        this.reset();
         document.body.appendChild(this);
       },
       /**
@@ -416,6 +428,13 @@ A LRN element for brokering the UI for api endpoints both in querying and upload
         // support local end point modification
         if (typeof connection.operations.add.endPoint !== typeof undefined) {
           requestEndPoint += connection.operations.add.endPoint;
+        }
+        // support jwt hijacking
+        if (this.appendUploadEndPoint != null) {
+          requestEndPoint += '?' + this.appendUploadEndPoint
+        }
+        if (this.appendJwt != null) {
+          requestEndPoint += '&' + this.appendJwt + '=' + localStorage.getItem(this.appendJwt);
         }
         this.$.fileupload.headers = connection.headers;
         this.$.fileupload.target = requestEndPoint;
