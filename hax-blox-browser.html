@@ -65,10 +65,16 @@ List of layout blox to select from
         document.body.addEventListener('hax-store-property-updated', this._haxStorePropertyUpdated.bind(this));
       },
       /**
-       * Attached
+       * Attached life cycle
        */
       attached: function() {
         this.resetBrowser();
+      },
+      /**
+       * Detached life cycle
+       */
+      detached: function () {
+        document.body.removeEventListener('hax-store-property-updated', this._haxStorePropertyUpdated.bind(this));
       },
       /**
        * Store updated, sync.
