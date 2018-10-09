@@ -106,6 +106,7 @@
       <slot></slot>
     </paper-button>
     <paper-tooltip
+      id="tooltip"
       for$="[[this]]"
       offset="14"
       position="[[tooltipDirection]]"
@@ -169,6 +170,7 @@
         tooltip: {
           type: String,
           value: '',
+          observer: '_tooltipChanged',
         },
         /**
          * Direction that the tooltip should flow
@@ -190,6 +192,17 @@
           value: "",
           reflectToAttribute: true,
         },
+      },
+      /**
+       * Keep accessibility inline with tooltip
+       */
+      _tooltipChanged: function (newValue, oldValue) {
+        if (newValue == '' || newValue == null) {
+          this.$.tooltip.setAttribute("aria-hidden", "true");
+        }
+        else {
+          this.$.tooltip.setAttribute("aria-hidden", "false");
+        }
       }
     });
   </script>
