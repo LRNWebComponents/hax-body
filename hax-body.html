@@ -630,7 +630,7 @@ A LRN element that will change the world.
         // get width from window size and do very minor responsive inline support
         let w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
         let offsetmenu = -44;
-        let offsetplate = -36;
+        let offsetplate = -34;
         // if we go below 800 break point, change menu positioning
         if ( w < 800) {
           offsetmenu = 0;
@@ -887,7 +887,7 @@ A LRN element that will change the world.
               // get the gizmo's title
               humanName = Polymer.HaxStore.instance.elementList[Polymer.HaxStore.instance.activeContainerNode.tagName].gizmo.title;
             }
-            Polymer.HaxStore.instance.haxAppPicker.presentOptions(options, '', `Delete this '${humanName}'?`, 'delete');
+            Polymer.HaxStore.instance.haxAppPicker.presentOptions(options, '', `Remove this '${humanName}'?`, 'delete');
           break;
           case 'grid-plate-first':
             this.haxMoveGridPlate('first', this.activeNode, this.activeContainerNode);
