@@ -364,10 +364,15 @@ A LRN element that will change the world.
         // see if we got anything
         if (haxElements.length > 0) {
           // hand off to hax-app-picker to deal with the rest of this
-          Polymer.HaxStore.instance.haxAppPicker.presentOptions(haxElements, '__convert', `Let's convert this element`, 'gizmo');
+          let tag = this.activeNode.tagName.toLowerCase();
+          let humanName = tag.replace('-', ' ');          
+          if (typeof Polymer.HaxStore.instance.elementList[tag] !== typeof undefined && Polymer.HaxStore.instance.elementList[tag].gizmo !== false) {
+            humanName = Polymer.HaxStore.instance.elementList[tag].gizmo.title;
+          }
+          Polymer.HaxStore.instance.haxAppPicker.presentOptions(haxElements, '__convert', `Transform ${humanName} to..`, 'gizmo');
         }
         else {
-          Polymer.HaxStore.toast('Sorry, this can\'t be converted to anything automatically!', 5000);
+          Polymer.HaxStore.toast('Sorry, this can not be transformed!', 5000);
         }
       },
       /**
@@ -882,12 +887,12 @@ A LRN element that will change the world.
                 'title': 'No',
               }
             ];
-            let humanName = this.activeContainerNode.tagName.replace('-', ' ').toLowerCase();
-            if (typeof Polymer.HaxStore.instance.elementList[Polymer.HaxStore.instance.activeContainerNode.tagName] !== typeof undefined && Polymer.HaxStore.instance.elementList[Polymer.HaxStore.instance.activeContainerNode.tagName].gizmo !== false) {
-              // get the gizmo's title
-              humanName = Polymer.HaxStore.instance.elementList[Polymer.HaxStore.instance.activeContainerNode.tagName].gizmo.title;
+            let tag = this.activeNode.tagName.toLowerCase();
+            let humanName = tag.replace('-', ' ');
+            if (typeof Polymer.HaxStore.instance.elementList[tag] !== typeof undefined && Polymer.HaxStore.instance.elementList[tag].gizmo !== false) {
+              humanName = Polymer.HaxStore.instance.elementList[tag].gizmo.title;
             }
-            Polymer.HaxStore.instance.haxAppPicker.presentOptions(options, '', `Remove this '${humanName}'?`, 'delete');
+            Polymer.HaxStore.instance.haxAppPicker.presentOptions(options, '', `Remove this \`${humanName}\`?`, 'delete');
           break;
           case 'grid-plate-first':
             this.haxMoveGridPlate('first', this.activeNode, this.activeContainerNode);
