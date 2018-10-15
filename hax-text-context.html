@@ -44,6 +44,16 @@ A context menu that provides common text based authoring options.
         padding: 8px;
         font-size: 12px;
       }
+      :host.hax-context-pin-top hax-toolbar {
+        position: fixed;
+        top: 64px;
+        opacity: .95;
+      }
+      :host.hax-context-pin-bottom hax-toolbar {
+        position: fixed;
+        bottom: 0;
+        opacity: .95;
+      }
     </style>
     <hax-toolbar selected="[[selection]]" hide-transform>
       <hax-context-item-menu
