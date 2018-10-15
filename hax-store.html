@@ -549,6 +549,7 @@
          * Created life-cycle to ensure a single global store.
          */
         created: function () {
+          window.__startedSelection = false;
           // claim the instance spot. This way we can easily
           // be referenced globally
           if (!Polymer.HaxStore.instance) {
@@ -591,7 +592,32 @@
 
           // notice content insert and help it along to the body
           document.body.addEventListener('hax-insert-content', this._haxStoreInsertContent.bind(this));
+          // selection change event
+          document.body.addEventListener("selectstart", this._selectionChange.bind(this));
+          document.body.addEventListener("mouseup", this._selectionMouseUp.bind(this));
+
           document.body.style.setProperty('--hax-ui-headings', '#d4ff77');
+        },
+        /**
+         * Selection changed
+         */
+        _selectionChange: function (e) {
+          window.__startedSelection = true;
+        },
+        _selectionMouseUp: function (e) {
+          if (window.__startedSelection) {
+            try {
+              let selection = window.getSelection();
+              let range = selection.getRangeAt(0);
+              let newRange = range.cloneRange();
+              window.__startedSelection = false;
+              if (newRange.startContainer.parentNode.parentNode.parentElement.tagName === 'HAX-BODY' ||
+              newRange.startContainer.parentNode.parentElement.tagName === 'HAX-BODY') {
+                Polymer.HaxStore.write('activePlaceHolder', newRange, this);
+              }
+            } catch (err) {
+            }
+          }
         },
         /**
          * Build HAX property definitions for primitives that we support.
@@ -793,11 +819,7 @@
                   'source': 'href',
                   'title': 'innerText',
                   'alt': 'title',
-                },
-                {
-                  'type': 'inline',
-                  'text': 'innerText',
-                },
+                }
               ],
               'meta': {
                 'author': 'W3C'

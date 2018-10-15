@@ -150,15 +150,6 @@ A context menu that provides common text based authoring options.
           notify: true,
         },
         /**
-         * Track expanded operations.
-         */
-        highlightOps: {
-          type: Boolean,
-          value: false,
-          reflectToAttribute: true,
-          observer: '_highlightOpsChanged',
-        },
-        /**
          * Selection tracking
          */
         selection: {
@@ -171,16 +162,6 @@ A context menu that provides common text based authoring options.
        */
       ready: function() {
         this.polyfillSafe = Polymer.HaxStore.instance.computePolyfillSafe();
-      },
-      /**
-       * Notice open or close state
-       */
-      _highlightOpsChanged: function (newValue, oldValue) {
-        // set to close now
-        if (oldValue && !newValue) {
-          // unset the active placeholder to avoid conflicts as the object
-          Polymer.HaxStore.instance.activePlaceHolder = null;
-        }
       },
       /**
        * Respond to simple modifications.
@@ -208,21 +189,10 @@ A context menu that provides common text based authoring options.
             this.$.formatsize.$.menu.hideMenu();
           break;
           case 'insert-inline-gizmo':
-          let range = {};
-          let newRange = {};
-            try {
-              range = selection.getRangeAt(0);
-              newRange = range.cloneRange();
-            } catch (err) {
-              // @todo this needs to more accurately pick what is highlighted
-              range = document.createRange();
-              newRange = range.cloneRange();
-            }
             // store placeholder because if this all goes through we'll want
             // to kill the originating text
-            Polymer.HaxStore.write('activePlaceHolder', newRange, this);
             let values = {
-              text: newRange.toString(),
+              text: Polymer.HaxStore.instance.activePlaceHolder.toString(),
             };
             let type = 'inline';
             let haxElements = Polymer.HaxStore.guessGizmo(type, values);
