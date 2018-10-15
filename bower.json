@@ -50,7 +50,7 @@
     "grid-plate": "LRNWebComponents/grid-plate#^1.0.5",
     "image-compare-slider": "LRNWebComponents/image-compare-slider#^0.0.1",
     "aframe-player": "LRNWebComponents/aframe-player#^1.0.3",
-    "video-player": "LRNWebComponents/video-player#^1.11.6",
+    "video-player": "LRNWebComponents/video-player#^1.11.8",
     "iron-menu-behavior": "PolymerElements/iron-menu-behavior#^2.1.1",
     "simple-colors": "LRNWebComponents/simple-colors#^1.0.5",
     "iron-dropdown": "PolymerElements/iron-dropdown#^2.2.1",
