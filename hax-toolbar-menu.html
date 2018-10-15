@@ -11,7 +11,7 @@
 <link rel="import" href="../paper-listbox/paper-listbox.html">
 <link rel="import" href="../paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
-
+<link rel="import" href="hax-toolbar-item.html">
 <dom-module id="hax-toolbar-menu">
   <template>
     <style>
@@ -72,7 +72,7 @@
       }
     </style>
     <paper-menu-button>
-      <hax-toolbar-item id="button" slot="dropdown-trigger" icon="[[icon]]" hidden$="[[!icon]]" slot="dropdown-trigger" class$="[[iconClass]]" tooltip="[[tooltip]]"></hax-toolbar-item>
+      <hax-toolbar-item corner="[[corner]]" id="button" slot="dropdown-trigger" icon="[[icon]]" hidden$="[[!icon]]" slot="dropdown-trigger" class$="[[iconClass]]" tooltip="[[tooltip]]"></hax-toolbar-item>
       <paper-listbox id="listbox" slot="dropdown-content" selected="{{selected}}">
         <slot></slot>
       </paper-listbox>
@@ -85,6 +85,14 @@
         'button.tap': '_menubuttonTap',
       },
       properties: {
+        /**
+         * corner
+         */
+        corner: {
+          type: String,
+          reflectToAttribute: true,
+          value: '',
+        },
         /**
          * Should we reset the selection after it is made
          */

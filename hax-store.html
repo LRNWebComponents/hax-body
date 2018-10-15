@@ -1004,17 +1004,13 @@
             }
             else if (typeof e.detail.__type !== typeof undefined && e.detail.__type === 'inline') {
               let node = Polymer.HaxStore.haxElementToNode(e.detail.tag, e.detail.content, properties);
-              // inserts where it needs to go!!!!!
-              Polymer.HaxStore.instance.activeHaxBody.$.inlinetracker.insertAdjacentElement('beforebegin', node);
-              // removes the selection even if the user lost focus
-              // which will appear to wipe the old text and replace it with the new
+              // replace what WAS the active selection w/ this new node              
               if (this.activePlaceHolder !== null) {
-                this.activePlaceHolder.extractContents();
+                this.activePlaceHolder.deleteContents();
+                this.activePlaceHolder.insertNode(node);
               }
               // set it to nothing
               this.activePlaceHolder = null;
-              // hide the inline context menu
-              Polymer.HaxStore.instance.activeHaxBody.$.inlinecontextmenu.opened = false;
             }
             else {
               this.activeHaxBody.haxInsert(e.detail.tag, e.detail.content, properties);
@@ -1484,15 +1480,10 @@
                   content += Polymer.HaxStore.haxNodeToContent(slotnodes[j]);
                 }
                 else {
-                  // possible copy and paste glitch, ignore this at all costs
-                  if (slotnodes[j].tagName === 'SPAN' && slotnodes[j].id === 'inlinetracker') {
-                  }
-                  else {
-                    slotnodes[j].setAttribute('data-editable', false);
-                    slotnodes[j].removeAttribute('data-hax-ray');
-                    slotnodes[j].contentEditable = false;
-                    content += slotnodes[j].outerHTML;
-                  }
+                  slotnodes[j].setAttribute('data-editable', false);
+                  slotnodes[j].removeAttribute('data-hax-ray');
+                  slotnodes[j].contentEditable = false;
+                  content += slotnodes[j].outerHTML;
                 }
               }
               // keep comments with a special case since they need wrapped

@@ -4,7 +4,6 @@
 <link rel="import" href="../grid-plate/grid-plate.html">
 <link rel="import" href="../iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="hax-text-context.html">
-<link rel="import" href="hax-inline-context.html">
 <link rel="import" href="hax-ce-context.html">
 <link rel="import" href="hax-plate-context.html">
 <link rel="import" href="hax-input-mixer.html">
@@ -34,7 +33,7 @@ A LRN element that will change the world.
       :host #bodycontainer ::slotted(.hax-context-menu) {
         padding: 0;
         margin: 0;
-        position: relative;
+        position: absolute;
         visibility: hidden;
         opacity: 0;
         transition: all .3s ease;
@@ -162,18 +161,11 @@ A LRN element that will change the world.
         float: left;
         line-height: 2;
       }
-      /*#inlinetracker {
-        border: 1px solid green;
-        width: 10px;
-        height: 10px;
-      }*/
     </style>
     <div id="bodycontainer" class="ignore-activation">
       <slot id="body"></slot>
     </div>
     <div id="contextcontainer">
-      <span id="inlinetracker" style="pointer-events: none; visibility: hidden; opacity: 0; width:0;height:0;" class="ignore-activation hax-inline-tracker-element" contenteditable="false"></span>
-      <hax-inline-context id="inlinecontextmenu" class="hax-context-menu ignore-activation"></hax-inline-context>
       <hax-text-context id="textcontextmenu" class="hax-context-menu ignore-activation"></hax-text-context>
       <hax-ce-context id="cecontextmenu" class="hax-context-menu ignore-activation"></hax-ce-context>
       <hax-plate-context id="platecontextmenu" class="hax-context-menu ignore-activation"></hax-plate-context>
@@ -472,7 +464,7 @@ A LRN element that will change the world.
             // send this into the root, which should filter it back down into the slot
             Polymer.dom(this).appendChild(newNode);
           }
-          this.$.inlinecontextmenu.opened = false;
+          this.$.textcontextmenu.highlightOps = false;
           // wait so that the DOM can have the node to then attach to
           setTimeout( () => {
             Polymer.HaxStore.write('activeContainerNode', newNode, this);
@@ -542,8 +534,6 @@ A LRN element that will change the world.
         content = content.replace(/\sdata-draggable/g, '');
         // clean up stray hax-ray leftovers
         content = content.replace(/\sdata-hax-ray=\".*?\"/g, '');
-        // remove copy and paste glitch
-        content = content.replace(/<span id=\"inlinetracker\" class=\"ignore-activation hax-inline-tracker-element style-scope hax-body\" style=\"font-size: 19.2px; pointer-events: none; opacity: 0; width: 0px; height: 0px;\"><\/span>/g, '');
         // remove HAX specific classes / scoping classes
         let parentTag = this.parentNode.tagName.toLowerCase();
         let string = 'style-scope ' + parentTag + ' x-scope';
@@ -616,17 +606,14 @@ A LRN element that will change the world.
        * Hide all context menus.
        */
       hideContextMenus: function() {
-        // tracking pixel highest priority to move
-        this._hideContextMenu(this.$.inlinetracker);
         // primary context menus
         this._hideContextMenu(this.$.textcontextmenu);
         this._hideContextMenu(this.$.cecontextmenu);
         // secondary menus and clean up areas
-        this._hideContextMenu(this.$.inlinecontextmenu);
         this._hideContextMenu(this.$.platecontextmenu);
         this._hideContextMenu(this.$.haxinputmixer);
         // force context menu state to closed
-        this.$.inlinecontextmenu.opened = false;
+        this.$.textcontextmenu.highlightOps = false;
       },
       /**
        * Reposition context menus to match an element.
@@ -639,8 +626,8 @@ A LRN element that will change the world.
         let props = Polymer.HaxStore.instance.elementList[tag];
         // get width from window size and do very minor responsive inline support
         let w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-        let offsetmenu = -44;
-        let offsetplate = -34;
+        let offsetmenu = -39;
+        let offsetplate = -31;
         // if we go below 800 break point, change menu positioning
         if ( w < 800) {
           offsetmenu = 0;
@@ -658,10 +645,9 @@ A LRN element that will change the world.
           // currently been set. it's by no means perfect but it'll
           // be a really good start
           this.__activeContextType = this.$.textcontextmenu;
-          this._positionContextMenu(this.$.inlinecontextmenu, container, offsetmenu, -54, false);
         }
-        this._positionContextMenu(this.__activeContextType, container, offsetmenu, -54);
-        this._positionContextMenu(this.$.platecontextmenu, container, offsetplate, -8, false);
+        this._positionContextMenu(this.__activeContextType, container, offsetmenu, -37);
+        this._positionContextMenu(this.$.platecontextmenu, container, offsetplate, 0, false);
         // special case for node not matching container
         if (!this._HTMLPrimativeTest(node) && node !== container) {
           container.contentEditable = false;
@@ -1271,8 +1257,8 @@ A LRN element that will change the world.
           e.preventDefault();
           e.stopPropagation();
           // support 1st press only closing the inline context menu
-          if (this.$.inlinecontextmenu.opened) {
-            this.$.inlinecontextmenu.opened = false;
+          if (this.$.textcontextmenu.highlightOps) {
+            this.$.textcontextmenu.highlightOps = false;
             // ensure these are the same
             Polymer.HaxStore.write('activeNode', this.activeContainerNode, this);
             this.activeContainerNode.focus();
