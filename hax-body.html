@@ -1032,7 +1032,9 @@ A LRN element that will change the world.
           break;
           case 'hax-size-change':
             this.activeNode.style.width = detail.value + '%';
-            this.positionContextMenus(this.activeNode, this.activeContainerNode);
+            setTimeout(() => {
+              this.positionContextMenus(this.activeNode, this.activeContainerNode);
+            }, 1000);
           break;
           // settings button selected from hax-ce-context bar
           // which means we should skip to the settings page after
@@ -1308,7 +1310,15 @@ A LRN element that will change the world.
         // account for the target using these layout busters
         if (matchStyle) {
           menu.style.width = target.style.width;
-          menu.style.float = target.style.float;
+        }
+        // make it account for the offset if it's floated over to one side
+        // or inside of something that's over that way
+        let style = target.currentStyle || window.getComputedStyle(target);
+        if (parseInt(style.marginLeft) != 0) {
+          xoffset = xoffset + parseInt(style.marginLeft);
+        }
+        else {
+          xoffset = xoffset + parseInt(target.offsetLeft) - this.offsetLeft;
         }
         if (xoffset != null) {
           menu.style["margin-left"] = xoffset + 'px';
