@@ -1,0 +1,22 @@
+language: node_js
+sudo: required
+before_script:
+- npm install -g bower polylint web-component-tester 
+- bower install
+- polylint
+node_js: stable
+addons:
+  firefox: '46'
+  codeclimate:
+    repo_token: f3f514915d46237814d41224645d066b73d6f57bfbdf5d914f15419120ab51cf
+  apt:
+    sources:
+    - google-chrome
+    packages:
+    - google-chrome-stable
+  sauce_connect: true
+script:
+- xvfb-run wct
+after_script:
+- codeclimate-test-reporter < lcov.info
+dist: trusty

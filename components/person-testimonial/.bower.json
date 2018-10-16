@@ -1,0 +1,31 @@
+{
+  "name": "person-testimonial",
+  "description": "A LRN element",
+  "main": "person-testimonial.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.10.1",
+    "hax-body-behaviors": "LRNWebComponents/hax-body-behaviors#^1.2.0",
+    "materializecss-styles": "LRNWebComponents/materializecss-styles#^1.0.0",
+    "schema-behaviors": "LRNWebComponents/schema-behaviors",
+    "paper-card": "PolymerElements/paper-card#^2.1.0",
+    "iron-icon": "PolymerElements/iron-icon#^2.1.0",
+    "iron-iconset-svg": "PolymerElements/iron-iconset-svg#^2.2.1"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "homepage": "https://github.com/LRNWebComponents/person-testimonial",
+  "version": "1.0.2",
+  "_release": "1.0.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.0.2",
+    "commit": "d3c083462b78918a60ada6b1fb658f4d16b64fce"
+  },
+  "_source": "https://github.com/LRNWebComponents/person-testimonial.git",
+  "_target": "^1.0.1",
+  "_originalSource": "LRNWebComponents/person-testimonial"
+}

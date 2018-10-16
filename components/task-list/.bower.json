@@ -1,0 +1,28 @@
+{
+  "name": "task-list",
+  "description": "A LRN element",
+  "main": "task-list.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.10.1",
+    "hax-body-behaviors": "LRNWebComponents/hax-body-behaviors#^1.11.3",
+    "materializecss-styles": "LRNWebComponents/materializecss-styles#^1.0.0",
+    "schema-behaviors": "LRNWebComponents/schema-behaviors"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "homepage": "https://github.com/LRNWebComponents/task-list",
+  "version": "0.1.3",
+  "_release": "0.1.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.1.3",
+    "commit": "30c93c5dc8ec8a4c952b70859f491723b309b7b5"
+  },
+  "_source": "https://github.com/LRNWebComponents/task-list.git",
+  "_target": "^0.1.3",
+  "_originalSource": "LRNWebComponents/task-list"
+}

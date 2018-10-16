@@ -1,0 +1,30 @@
+{
+  "name": "q-r",
+  "description": "A LRN element",
+  "main": "q-r.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.10.1",
+    "hax-body-behaviors": "LRNWebComponents/hax-body-behaviors#^1.2.0",
+    "qr-code": "educastellano/qr-code#^0.1.9"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^0.7.24"
+  },
+  "homepage": "https://github.com/LRNWebComponents/q-r",
+  "version": "1.0.5",
+  "_release": "1.0.5",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.0.5",
+    "commit": "dcb31db9dceb7de1aec40b86f112657603936f66"
+  },
+  "_source": "https://github.com/LRNWebComponents/q-r.git",
+  "_target": "^1.0.5",
+  "_originalSource": "LRNWebComponents/q-r"
+}

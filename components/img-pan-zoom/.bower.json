@@ -1,0 +1,27 @@
+{
+  "name": "img-pan-zoom",
+  "description": "Pan zoom polymer element, uses openseadragon Edit",
+  "main": "img-pan-zoom.html",
+  "dependencies": {
+    "paper-spinner": "PolymerElements/paper-spinner#1 - 2",
+    "polymer": "Polymer/polymer#1.9 - 2"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^2.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
+    "paper-button": "PolymerElements/paper-button#1 - 2",
+    "web-component-tester": "^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "homepage": "https://github.com/ryanburns23/img-pan-zoom",
+  "version": "2.0.0",
+  "_release": "2.0.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.0.0",
+    "commit": "e0f3356a262f697fb5e7895d40130507682797ea"
+  },
+  "_source": "https://github.com/ryanburns23/img-pan-zoom.git",
+  "_target": "^2.0.0",
+  "_originalSource": "ryanburns23/img-pan-zoom"
+}

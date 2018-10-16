@@ -1,0 +1,31 @@
+{
+  "name": "lrn-calendar",
+  "main": "lrn-calendar.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.4.0",
+    "hax-body-behaviors": "LRNWebcomponents/hax-body-behaviors#^1.4.0",
+    "materializecss-styles": "LRNWebcomponents/materializecss-styles#^1.2.0",
+    "paper-card": "PolymerElements/paper-card#^2.1.0",
+    "paper-menu-button": "PolymerElements/paper-menu-button#^2.1.0",
+    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^2.1.0",
+    "lrnsys-layout": "LRNWebComponents/lrnsys-layout#^1.4.5",
+    "web-animations-js": "^2.3.1"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "homepage": "https://github.com/LRNWebcomponents/lrn-calendar",
+  "version": "0.1.0",
+  "_release": "0.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.1.0",
+    "commit": "07d38b9c4bce09791e3c6879fd974f8cc015f77f"
+  },
+  "_source": "https://github.com/LRNWebcomponents/lrn-calendar.git",
+  "_target": "^0.1.0",
+  "_originalSource": "LRNWebcomponents/lrn-calendar"
+}

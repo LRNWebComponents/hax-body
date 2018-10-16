@@ -1,0 +1,29 @@
+{
+  "name": "code-editor",
+  "description": "A LRN element",
+  "main": "code-editor.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.10.1",
+    "hax-body-behaviors": "LRNWebComponents/hax-body-behaviors#^1.2.0",
+    "materializecss-styles": "LRNWebComponents/materializecss-styles#^1.0.0",
+    "schema-behaviors": "LRNWebComponents/schema-behaviors",
+    "juicy-ace-editor": "Juicy/juicy-ace-editor#^2.0.5"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "homepage": "https://github.com/LRNWebcomponents/code-editor",
+  "version": "1.0.2",
+  "_release": "1.0.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.0.2",
+    "commit": "72b3981bb5edcdad8197f09b4cbc5f6dd27781a1"
+  },
+  "_source": "https://github.com/LRNWebcomponents/code-editor.git",
+  "_target": "^1.0.1",
+  "_originalSource": "LRNWebcomponents/code-editor"
+}

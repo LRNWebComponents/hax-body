@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+	<head>
+		<title>paper-collapse-group</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+		<script src="../../web-component-tester/browser.js"></script>
+
+		<link rel="import" href="../paper-collapse-item.html">
+		<link rel="import" href="../paper-collapse-group.html">
+	</head>
+	<body>
+		<test-fixture id="Group">
+			<template>
+				<paper-collapse-group>
+					<paper-collapse-item></paper-collapse-item>
+					<paper-collapse-item></paper-collapse-item>
+				</paper-collapse-group>
+			</template>
+		</test-fixture>
+
+		<script>
+			suite('<paper-collapse-group>', function() {
+
+				setup(function() {
+					element = fixture('Group');
+				});
+
+				test('toggle works', function(done) {
+					flush(function() {
+						var items = element._items;
+
+						expect(items[0].opened).to.be.false;
+						expect(items[1].opened).to.be.false;
+
+						items[0]._toggleOpened();
+						expect(items[0].opened).to.be.true;
+						expect(items[1].opened).to.be.false;
+
+						items[1]._toggleOpened();
+						expect(items[0].opened).to.be.false;
+						expect(items[1].opened).to.be.true;
+						done();
+					});
+				});
+
+			});
+		</script>
+
+	</body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "name": "oer-schema",
+  "description": "Helpers for OER Schema integration",
+  "main": "oer-schema.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.4.0",
+    "hax-body-behaviors": "LRNWebComponents/hax-body-behaviors#^1.11.1",
+    "schema-behaviors": "LRNWebComponents/schema-behaviors#^0.2.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "homepage": "https://github.com/LRNWebComponents/oer-schema",
+  "version": "1.0.5",
+  "_release": "1.0.5",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.0.5",
+    "commit": "3423c8ff8300398d04bb1882b6515cb7fdfeb62d"
+  },
+  "_source": "https://github.com/LRNWebComponents/oer-schema.git",
+  "_target": "^1.0.5",
+  "_originalSource": "LRNWebComponents/oer-schema"
+}

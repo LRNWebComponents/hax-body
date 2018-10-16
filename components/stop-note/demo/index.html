@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>stop-note demo</title>
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../stop-note.html">
+
+  <style is="custom-style" include="demo-pages-shared-styles">
+  </style>
+</head>
+
+<body>
+  <div class="vertical-section-container">
+    <h3>Basic stop-note demo: Default</h3>
+    <demo-snippet>
+      <template>
+        <stop-note>
+          <span slot="message">You can write anything you want here (Chapters, Sections, or Pages).</span>
+        </stop-note>
+      </template>
+    </demo-snippet>
+  </div>
+  <div class="vertical-section-container">
+    <h3>Basic stop-note demo: URL</h3>
+    <demo-snippet>
+      <template>
+        <stop-note url="https://www.google.com">
+          <span slot="message">You can write anything you want here (Chapters, Sections, or Pages).</span>
+        </stop-note>
+      </template>
+    </demo-snippet>
+  </div>
+  <div class="vertical-section-container">
+    <h3>Basic stop-note demo: Warning</h3>
+    <demo-snippet>
+      <template>
+        <stop-note title="Warning Message" url="https://www.google.com" icon="stopnoteicons:warning-icon">
+          <span slot="message">You can write anything you want here (Chapters, Sections, or Pages).</span>
+        </stop-note>
+      </template>
+    </demo-snippet>
+  </div>
+  <div class="vertical-section-container">
+    <h3>Basic stop-note demo: Confirm</h3>
+    <demo-snippet>
+      <template>
+        <stop-note title="Confirmation Message" url="https://www.google.com" icon="stopnoteicons:confirm-icon">
+          <span slot="message">You can write anything you want here (Chapters, Sections, or Pages).</span>
+        </stop-note>
+      </template>
+    </demo-snippet>
+  </div>
+</body>
+
+</html>

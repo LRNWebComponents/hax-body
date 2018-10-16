@@ -1,0 +1,31 @@
+{
+  "name": "tab-list",
+  "description": "A LRN element",
+  "main": "tab-list.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.10.1",
+    "hax-body-behaviors": "LRNWebComponents/hax-body-behaviors#^1.2.0",
+    "materializecss-styles": "LRNWebComponents/materializecss-styles#^1.0.0",
+    "paper-tabs": "PolymerElements/paper-tabs#^2.1.1"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^0.7.24"
+  },
+  "homepage": "https://github.com/LRNWebComponents/tab-list",
+  "version": "0.1.0",
+  "_release": "0.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.1.0",
+    "commit": "9392220c5a553d06591e5cd1e7f58f7e807a5425"
+  },
+  "_source": "https://github.com/LRNWebComponents/tab-list.git",
+  "_target": "^0.1.0",
+  "_originalSource": "LRNWebComponents/tab-list"
+}

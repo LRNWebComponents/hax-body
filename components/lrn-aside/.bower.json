@@ -1,0 +1,27 @@
+{
+  "name": "lrn-aside",
+  "description": "A LRN element",
+  "main": "lrn-aside.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.11.0",
+    "lrndesign-panelcard": "LRNWebComponents/lrndesign-panelcard#^1.1.2",
+    "hax-body-behaviors": "LRNWebComponents/hax-body-behaviors#^1.12.5"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "homepage": "https://github.com/LRNWebComponents/lrn-aside",
+  "version": "1.0.5",
+  "_release": "1.0.5",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.0.5",
+    "commit": "7cadbc9eabb9624f8f0fd3335f8628917b21caa7"
+  },
+  "_source": "https://github.com/LRNWebComponents/lrn-aside.git",
+  "_target": "^1.0.5",
+  "_originalSource": "LRNWebComponents/lrn-aside"
+}

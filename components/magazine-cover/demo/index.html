@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>magazine-cover demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../magazine-cover.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+    .vertical-section-container {
+      max-width: 90%;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic magazine-cover demo</h3>
+      <demo-snippet>
+        <template>
+          <magazine-cover image="picture1.jpg" header="Devil horns" subheader="40s propaganda was very convincing" action="Touch to learn more" link="https://www.elmsln.org/">
+            In the early 1940s, the US had not yet entered world war 2. After entering though, propaganda went into hyperdrive.
+          </magazine-cover>
+        </template>
+      </demo-snippet>
+    </div>
+    <div class="vertical-section-container centered">
+      <h3>Basic magazine-cover demo with event binding in the link</h3>
+      <demo-snippet>
+        <template>
+          <magazine-cover image="picture2.jpg" header="Sunset" action="Click, Breath, Relax" event-name="magazine-cover" event-data='{"sunset": true}'>
+            A simple time, a simple life. America may be fast paced and brutal on health but in Canada, people enjoy sitting and watching the sunset. Learn how Canadians manage stress.
+          </magazine-cover>
+        </template>
+      </demo-snippet>
+    </div>
+    <div class="vertical-section-container centered">
+      <h3>Basic magazine-cover demo with link but event beats it</h3>
+      <demo-snippet>
+        <template>
+          <magazine-cover image="picture3.jpg" header="Polution" subheader="We are not in a sustainable situation, ICC 1890 report" action="Buy more Amazon products" text="We enjoy talking about Climate change, but no one seems to be taking the steps  in their own lives to actually prevent it from happening. Simple belief matters not if it is without action. What actions do we need to take to prevent possible futures from not coming true?" event-name="magazine-cover" event-data='{"amazon": "controls the world"}' link="https://www.amazon.com/"></magazine-cover>
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+</html>

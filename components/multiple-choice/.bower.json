@@ -1,0 +1,32 @@
+{
+  "name": "multiple-choice",
+  "description": "A LRN element",
+  "main": "multiple-choice.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.10.1",
+    "hax-body-behaviors": "LRNWebComponents/hax-body-behaviors#^1.11.3",
+    "materializecss-styles": "LRNWebComponents/materializecss-styles#^1.0.0",
+    "schema-behaviors": "LRNWebComponents/schema-behaviors",
+    "paper-radio-button": "PolymerElements/paper-radio-button#^2.1.0",
+    "paper-button": "PolymerElements/paper-button#^2.1.0",
+    "paper-toast": "PolymerElements/paper-toast#^2.1.0",
+    "paper-checkbox": "PolymerElements/paper-checkbox#^2.0.4"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "homepage": "https://github.com/LRNWebComponents/multiple-choice",
+  "version": "1.0.3",
+  "_release": "1.0.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.0.3",
+    "commit": "b458f6e9f1a60a3f29486629d72eb26b0ab7b573"
+  },
+  "_source": "https://github.com/LRNWebComponents/multiple-choice.git",
+  "_target": "^1.0.0",
+  "_originalSource": "LRNWebComponents/multiple-choice"
+}

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>responsive-utility demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../responsive-utility.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+      .vertical-section-container {
+        width: 95%;
+        max-width: unset;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic responsive-utility demo</h3>
+      <demo-snippet id="container1">
+        <template>
+          <p>
+            My width is 
+            <span show-for="xs xl">extra </span>
+            <span show-for="xs sm">small</span>
+            <span show-for="md">medium</span>
+            <span show-for="lg xl">large</span>.
+          </p>
+          <p>
+            If you note the previous statement, you know that my width is 
+            <span hide-for="md"><strong><em>NOT</em></strong></span> medium.
+          </p>
+          <style>
+            #container1 [show-for] {
+              display: none;
+            }
+            #container1[responsive-size="xs"] span[show-for~="xs"] {
+              display: inline;
+              background-color: #ffffaa;
+            }
+            #container1[responsive-size="sm"] span[show-for~="sm"] {
+              display: inline;
+              background-color: #ffffaa;
+            }
+            #container1[responsive-size="md"] span[show-for~="md"] {
+              display: inline;
+              background-color: #ffffaa;
+            }
+            #container1[responsive-size="lg"] span[show-for~="lg"] {
+              display: inline;
+              background-color: #ffffaa;
+            }
+            #container1[responsive-size="xl"] span[show-for~="xl"] {
+              display: inline;
+              background-color: #ffffaa;
+            }
+            #container1 [hide-for~='md'] {
+              background-color: #ffffaa;
+            }
+            #container1[responsive-size="md"] span[hide-for~="md"] {
+              display: none;
+            }
+          </style>
+          <script>
+            Polymer.ResponsiveUtility.requestAvailability();
+            var container1 = document.getElementById('container1');
+            container1.fire('responsive-element',{
+              "element": container1,
+              "attribute": "responsive-size"
+            });
+          </script>
+        </template>
+      </demo-snippet>
+      <h3>Responsive-utility with custom breakpoints demo</h3>
+      <demo-snippet id="container2">
+        <template>
+          <p style="max-width: 799px;">My width is 
+            <span show-for="xs">&lt; 800px.</span>
+            <span show-for="sm">&gt;= 800px.</span>
+            <span show-for="md">&gt;= 1200px.</span>
+            <span show-for="lg">&gt;= 1600px.</span>
+            <span show-for="xl">&gt;= 2000px.</span>
+          </p>
+          <style>
+            #container2 [show-for] {
+              display: none;
+            }
+            #container2[parent-size="xs"] span[show-for="xs"] {
+              display: inline;
+              background-color: #ffffaa;
+            }
+            #container2[parent-size="sm"] span[show-for="sm"] {
+              display: inline;
+              background-color: #ffffaa;
+            }
+            #container2[parent-size="md"] span[show-for="md"] {
+              display: inline;
+              background-color: #ffffaa;
+            }
+            #container2[parent-size="lg"] span[show-for="lg"] {
+              display: inline;
+              background-color: #ffffaa;
+            }
+            #container2[parent-size="xl"] span[show-for="xl"] {
+              display: inline;
+              background-color: #ffffaa;
+            }
+          </style>
+          <script>
+            Polymer.ResponsiveUtility.requestAvailability();
+            var container2 = document.getElementById('container2');
+            container2.fire('responsive-element',{
+              "element": container2,
+              "attribute": "parent-size",
+              "relativeToParent": true,
+              "sm": 400,
+              "md": 800,
+              "lg": 1200,
+              "xl": 1600,
+            });
+          </script>
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+</html>

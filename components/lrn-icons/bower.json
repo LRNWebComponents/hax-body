@@ -1,0 +1,23 @@
+{
+  "name": "lrn-icons",
+  "main": "lrn-icons.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.11.0",
+    "iron-icon": "PolymerElements/iron-icon#^2.0.0",
+    "iron-iconset-svg": "PolymerElements/iron-iconset-svg#^2.1.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "resolutions": {
+    "iron-flex-layout": "^2.0.1",
+    "iron-meta": "^2.0.3",
+    "iron-iconset": "^2.0.0",
+    "iron-icon": "^2.0.0",
+    "iron-iconset-svg": "^2.1.0",
+    "webcomponentsjs": "^0.7.24"
+  }
+}

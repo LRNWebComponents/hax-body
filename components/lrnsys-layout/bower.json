@@ -1,0 +1,28 @@
+{
+  "name": "lrnsys-layout",
+  "description": "A LRN element",
+  "main": "lrnsys-layout.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.4.0",
+    "simple-colors": "LRNWebComponents/simple-colors#^1.0.5",
+    "paper-avatar": "LRNWebComponents/paper-avatar#1.0.5-lrn",
+    "app-layout": "PolymerElements/app-layout#^2.1.1",
+    "paper-tooltip": "PolymerElements/paper-tooltip#^2.0.0",
+    "iron-collapse": "PolymerElements/iron-collapse#^2.0.0",
+    "paper-drawer-panel": "PolymerElements/paper-drawer-panel#^2.0.0",
+    "paper-dialog": "PolymerElements/paper-dialog#^2.0.0",
+    "paper-dialog-scrollable": "PolymerElements/paper-dialog-scrollable#^2.1.0",
+    "iron-image": "PolymerElements/iron-image#^2.2.1",
+    "lrn-icons": "LRNWebComponents/lrn-icons#^1.4.0",
+    "paper-button": "PolymerElements/paper-button#^2.0.0",
+    "neon-animation": "PolymerElements/neon-animation#^2.0.2",
+    "paper-input": "PolymerElements/paper-input#^2.1.1",
+    "web-animations-js": "web-animations/web-animations-js#^2.3.1"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  }
+}

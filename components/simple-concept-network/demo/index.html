@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>simple-concept-network demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../simple-concept-network.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+    </style>
+  </head>
+  <body>
+    <div class="vertical-section-container">
+      <h3>simple-concept-network 3d</h3>
+      <demo-snippet>
+        <template>
+          <simple-concept-network visualization="3d" nodes='[{"src":"http://online.elmsln.local","icon":"lrn:online","label":"Course Information System"},{"src":"http://courses.elmsln.local/sing100","icon":"lrn:courses","label":"Course content"},{"src":"http://media.elmsln.local","icon":"lrn:media","label":"Media management"},{"src":"http://blog.elmsln.local/sing100","icon":"lrn:blogs","label":"Blogs"},{"src":"http://inbox.elmsln.local/","icon":"lrn:calendar","label":"Calendar"},{"src":"http://studio.elmsln.local/sing100","icon":"lrn:studio","label":"Open studio"},{"src":"http://discuss.elmsln.local/sing100","icon":"lrn:editorial","label":"Discussions"},{"src":"http://online.elmsln.local","icon":"lrn:online","label":"Course Information System"},{"src":"http://courses.elmsln.local/sing100","icon":"lrn:courses","label":"Course content"},{"src":"http://media.elmsln.local","icon":"lrn:media","label":"Media management"},{"src":"http://blog.elmsln.local/sing100","icon":"lrn:blogs","label":"Blogs"},{"src":"http://inbox.elmsln.local/","icon":"lrn:calendar","label":"Calendar"},{"src":"http://studio.elmsln.local/sing100","icon":"lrn:studio","label":"Open studio"},{"src":"http://discuss.elmsln.local/sing100","icon":"lrn:editorial","label":"Discussions"},{"src":"http://online.elmsln.local","icon":"lrn:online","label":"Course Information System"},{"src":"http://courses.elmsln.local/sing100","icon":"lrn:courses","label":"Course content"},{"src":"http://media.elmsln.local","icon":"lrn:media","label":"Media management"},{"src":"http://blog.elmsln.local/sing100","icon":"lrn:blogs","label":"Blogs"},{"src":"http://inbox.elmsln.local/","icon":"lrn:calendar","label":"Calendar"},{"src":"http://studio.elmsln.local/sing100","icon":"lrn:studio","label":"Open studio"},{"src":"http://discuss.elmsln.local/sing100","icon":"lrn:editorial","label":"Discussions"}]'></simple-concept-network>
+        </template>
+      </demo-snippet>
+    </div>
+    <div class="vertical-section-container">
+      <h3>simple-concept-network network</h3>
+      <demo-snippet>
+        <template>
+          <simple-concept-network visualization="network" nodes='[{"src":"http://online.elmsln.local","icon":"lrn:online","label":"Course Information System"},{"src":"http://courses.elmsln.local/sing100","icon":"lrn:courses","label":"Course content"},{"src":"http://media.elmsln.local","icon":"lrn:media","label":"Media management"},{"src":"http://blog.elmsln.local/sing100","icon":"lrn:blogs","label":"Blogs"},{"src":"http://inbox.elmsln.local/","icon":"lrn:calendar","label":"Calendar"},{"src":"http://studio.elmsln.local/sing100","icon":"lrn:studio","label":"Open studio"},{"src":"http://discuss.elmsln.local/sing100","icon":"lrn:editorial","label":"Discussions"}]'></simple-concept-network>
+        </template>
+      </demo-snippet>
+    </div>
+    <div class="vertical-section-container">
+      <h3>simple-concept-network-node single node</h3>
+      <demo-snippet>
+        <template>
+        <simple-concept-network-node
+          src="https://google.com/"
+          icon="save"
+          label="Stuff"
+          ></simple-concept-network-node>
+          <simple-concept-network-node
+          visualization="network"
+          src="https://google.com/"
+          icon="save"
+          label="Stuff"
+          color="blue"
+          icon-color="green"
+          image="http://csshexagon.com/img/meow.jpg"
+          ></simple-concept-network-node>
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+</html>

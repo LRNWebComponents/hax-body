@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>a11y-media-player demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../a11y-media-player.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+      .vertical-section-container.centered > * {
+        --demo-snippet-demo: {
+          padding: 0;
+        };
+      }
+      .vertical-section-container.centered {
+        width: 100%;
+        max-width: unset !important;
+      }
+      .smaller-examples {
+        max-width: 75%;
+        min-width: 400px;
+        margin: 0 auto;
+      }
+      @media print {
+        demo-snippet {
+          height: undet;
+          overflow: visible;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h1>a11y-media-player YouTube Demo</h1>
+      <p>See <a href="../">documentation</a> and main <a href="../demo">demo</a> for more information.</p>
+
+      <h2>Multibitrate demo</h2>
+      <demo-snippet>
+        <template>
+          <a11y-media-player 
+            manifest="https://personal.psu.edu/lnm105/stclair_MpegDash/stclair_manifest.mpd">
+            <track label="English" kind="subtitles" srclang="en" src="samples/stclair.vtt" default>
+          </a11y-media-media-player>
+        </template>
+      </demo-snippet>
+  </body>
+</html>

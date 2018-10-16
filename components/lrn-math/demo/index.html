@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>lrn-math demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../paper-input/paper-input.html">
+    <link rel="import" href="../lrn-math.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+    </style>
+  </head>
+  <body>
+    <div class="vertical-section-container">
+      <h3>Basic lrn-math demo</h3>
+      <demo-snippet>
+        <template is="dom-bind">
+          <lrn-math>\int_0^{20} e^{x^2} dx</lrn-math>
+        </template>
+      </demo-snippet>
+      <h3>Inline lrn-math demo</h3>
+      <demo-snippet>
+        <template is="dom-bind">
+          <lrn-math inline>\int_0^{20} e^{x^2} dx</lrn-math>
+        </template>
+      </demo-snippet>
+      <h3>lrn-math demo w/ editor</h3>
+      <demo-snippet>
+        <template is="dom-bind">
+          <lrn-math editor>\int_0^{20} e^{x^2} dx</lrn-math>
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,36 @@
+{
+  "name": "magazine-cover",
+  "description": "A magazine cover.",
+  "main": "magazine-cover.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.9.3",
+    "iron-image": "PolymerElements/iron-image#^2.1.2",
+    "iron-icons": "PolymerElements/iron-icons#^2.0.1",
+    "paper-button": "PolymerElements/paper-button#^2.0.0",
+    "paper-styles": "PolymerElements/paper-styles#^2.0.0",
+    "hax-body-behaviors": "LRNWebComponents/hax-body-behaviors#^1.4.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "resolutions": {
+    "iron-icons": "^2.0.1",
+    "paper-button": "^2.0.0",
+    "paper-styles": "^2.0.0",
+    "webcomponentsjs": "^0.7.24"
+  },
+  "homepage": "https://github.com/LRNWebcomponents/magazine-cover",
+  "version": "1.1.4",
+  "_release": "1.1.4",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.1.4",
+    "commit": "aec02b5ee62aa823893d1e8541bcd087972e2618"
+  },
+  "_source": "https://github.com/LRNWebcomponents/magazine-cover.git",
+  "_target": "^1.1.4",
+  "_originalSource": "LRNWebcomponents/magazine-cover"
+}

@@ -1,0 +1,25 @@
+{
+  "name": "schema-behaviors",
+  "description": "A LRN element",
+  "main": "schema-behaviors.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.10.1"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "homepage": "https://github.com/LRNWebComponents/schema-behaviors",
+  "version": "1.0.0",
+  "_release": "1.0.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.0.0",
+    "commit": "02e7693cf26d05f706d7ffc907132b1f7aa62d58"
+  },
+  "_source": "https://github.com/LRNWebComponents/schema-behaviors.git",
+  "_target": "*",
+  "_originalSource": "LRNWebComponents/schema-behaviors"
+}

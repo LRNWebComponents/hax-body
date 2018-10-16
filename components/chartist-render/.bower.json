@@ -1,0 +1,26 @@
+{
+  "name": "chartist-render",
+  "description": "A LRN element",
+  "main": "chartist-render.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.10.1",
+    "chartist": "^0.11.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "homepage": "https://github.com/LRNWebComponents/chartist-render",
+  "version": "1.0.1",
+  "_release": "1.0.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.0.1",
+    "commit": "7a9606c6e4f988c0134f2e7722bd1e5982c63413"
+  },
+  "_source": "https://github.com/LRNWebComponents/chartist-render.git",
+  "_target": "*",
+  "_originalSource": "LRNWebComponents/chartist-render"
+}

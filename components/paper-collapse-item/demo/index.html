@@ -1,0 +1,116 @@
+<!--
+Sample image created by Tim Green (Creative Commons Attribution 2.0 Generic <https://creativecommons.org/licenses/by/2.0/>):
+https://www.flickr.com/photos/atoach/3750215018/
+-->
+<html>
+	<head>
+		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+		<link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+		<link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+		<link rel="import" href="../../iron-icons/iron-icons.html">
+		<link rel="import" href="../../paper-styles/demo-pages.html">
+		<link rel="import" href="../../paper-input/paper-input.html">
+		<link rel="import" href="../paper-collapse-item.html">
+		<link rel="import" href="../paper-collapse-group.html">
+	</head>
+
+	<body>
+		<h2>&lt;paper-collapse-item&gt;</h2>
+			
+		<h4>Items can have an icon or an image</h4>
+		<demo-snippet>
+			<template>
+				<paper-collapse-item icon="icons:favorite" header="Item with an icon" opened>
+					Lots of very interesting content.
+				</paper-collapse-item>
+				<paper-collapse-item src="face.jpg" header="Item with an image">
+					Lots of very interesting content.
+				</paper-collapse-item>
+				<paper-collapse-item header="Item without an icon/image">
+					Lots of very interesting content.
+				</paper-collapse-item>
+			</template>
+		</demo-snippet>
+
+		<h4>Items can have HTML in their header</h4>
+		<demo-snippet>
+			<template>
+				<paper-collapse-item icon="icons:help" header="<b>Header <u>with</u> HTML</b>">
+					Lots of very interesting content.
+				</paper-collapse-item>
+			</template>
+		</demo-snippet>
+
+		<h4>Items can contain inputs</h4>
+		<demo-snippet>
+			<template>
+				<paper-collapse-group>
+					<paper-collapse-item icon="icons:info" header="Item with input">
+						<paper-input label="I am input"></paper-input>
+					</paper-collapse-item>
+				</paper-collapse-group>
+			</template>
+		</demo-snippet>
+
+		<h4>Items fire events when they are toggled</h4>
+		<demo-snippet>
+			<template>
+				<dom-bind id="events">
+					<template>
+						<paper-collapse-item icon="icons:help" header="Item with toggle event" on-toggle="onToggle">
+							Lots of very interesting content.
+						</paper-collapse-item>
+
+						<script>
+							var scope = document.querySelector('#events');
+							scope.onToggle = function() {
+								alert('Toggled');
+							};
+						</script>
+					</template>
+				</dom-bind>
+			</template>
+		</demo-snippet>
+
+		<h4>Item header and content can be styled</h4>
+		<demo-snippet>
+			<template>
+				<custom-style>
+					<style is="custom-style">
+						.styled {
+							--paper-collapse-item-header: {
+								color: red;
+								font-size: large;
+							}
+							--paper-collapse-item-content: {
+								color: green;
+							}
+						}
+					</style>
+				</custom-style>
+				<paper-collapse-item class="styled" icon="icons:favorite" header="Item" opened>
+					Lots of very interesting content.
+				</paper-collapse-item>
+			</template>
+		</demo-snippet>
+
+		<h2>&lt;paper-collapse-group&gt;</h2>
+		
+		<h4>Item groups allow only one item to be opened</h4>
+		<demo-snippet>
+			<template>
+				<paper-collapse-group>
+					<paper-collapse-item icon="icons:info" header="Item 1">
+						Only one item will be opened inside a group
+					</paper-collapse-item>
+					<paper-collapse-item icon="icons:info" header="Item 2" opened>
+						Only one item will be opened inside a group
+					</paper-collapse-item>
+					<paper-collapse-item icon="icons:info" header="Item 3">
+						Only one item will be opened inside a group
+					</paper-collapse-item>
+				</paper-collapse-group>
+			</template>
+		</demo-snippet>
+	</body>
+</html>

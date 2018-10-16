@@ -1,0 +1,31 @@
+{
+  "name": "simple-timer",
+  "version": "1.0.2",
+  "description": "Simple timer.",
+  "main": "simple-timer.html",
+  "keywords": [
+    "web-components",
+    "polymer",
+    "simple",
+    "timer"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.4.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "homepage": "https://github.com/annsonn/simple-timer",
+  "_release": "1.0.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.0.2",
+    "commit": "170dd01143c95da63c55ba302002dab6ca6aa1c4"
+  },
+  "_source": "https://github.com/annsonn/simple-timer.git",
+  "_target": "^1.0.2",
+  "_originalSource": "annsonn/simple-timer"
+}

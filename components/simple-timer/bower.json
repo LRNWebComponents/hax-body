@@ -1,0 +1,18 @@
+{
+  "name": "simple-timer",
+  "version": "1.0.1",
+  "description": "Simple timer.",
+  "main": "simple-timer.html",
+  "keywords": [
+    "web-components", "polymer", "simple", "timer"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.4.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  }
+}

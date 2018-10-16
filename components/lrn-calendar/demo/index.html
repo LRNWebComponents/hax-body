@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>lrn-calendar-date demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../lrn-calendar.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+    </style>
+  </head>
+  <body>
+    <div class="vertical-section-container">
+    <h3>Basic lrn-calendar demos</h3>
+    <demo-snippet>
+      <template>
+        
+        <lrn-calendar date="2018/4/1"  file ="RecurTest.ics" view="month"></lrn-calendar>
+        <br /><br /><br /><br />
+      </template>
+    </demo-snippet>
+  </div>
+
+
+  <div class="vertical-section-container">
+    <h3>Basic lrn-calendar demos</h3>
+    <demo-snippet>
+      <template>
+        <paper-button raised id="first">Calendar One</paper-button>
+        <paper-button raised id="second">Calendar Two</paper-button>
+        <lrn-calendar id="cal" date="2018/3/25" view="month"></lrn-calendar>
+        <script>
+            document.querySelector("#first").addEventListener("click", function () {
+              console.log("SELECT 1");
+              document.getElementById("cal").setAttribute("file", "./sampleCal.ics");
+            });
+            document.querySelector("#second").addEventListener("click", function () {
+              document.getElementById("cal").setAttribute("file", "./sample2.ics");
+            });
+          </script>
+      </template>
+    </demo-snippet>
+  </div>
+
+  </body>
+</html>

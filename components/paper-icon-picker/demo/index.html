@@ -1,0 +1,75 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+  <head>
+    <title>paper-icon-picker demo</title>
+
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../paper-icon-picker.html">
+    <link rel="import" href="../../iron-icons/iron-icons.html">
+    <link rel="import" href="../../iron-icons/av-icons.html">
+    <link rel="import" href="../../iron-icons/communication-icons.html">
+    <link rel="import" href="../../iron-icons/device-icons.html">
+    <link rel="import" href="../../iron-icons/editor-icons.html">
+    <link rel="import" href="../../iron-icons/hardware-icons.html">
+    <link rel="import" href="../../iron-icons/image-icons.html">
+    <link rel="import" href="../../iron-icons/maps-icons.html">
+    <link rel="import" href="../../iron-icons/notification-icons.html">
+    <link rel="import" href="../../iron-icons/social-icons.html">
+    <link rel="import" href="../../iron-icons/places-icons.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+      paper-icon-picker {
+        margin: 0 10px;
+      }
+    </style>
+  </head>
+  <body unresolved>
+    <div class="vertical-section-container centered">
+      <h3>A icon picker of all the Material Design icons</h3>
+      <demo-snippet class="centered-demo">
+        <template>
+          <paper-icon-picker></paper-icon-picker>
+          <paper-icon-picker icon="icons:extension"></paper-icon-picker>
+          <!-- Disable the ripple on the color picker button -->
+          <paper-icon-picker icon="icons:grade" noink></paper-icon-picker>
+        </template>
+      </demo-snippet>
+
+      <h3>The palette used by the icon picker can be configured</h3>
+      <demo-snippet class="centered-demo">
+        <template>
+          <paper-icon-picker column-count=5 icon-list='["icons:cloud", "icons:face", "icons:work", "icons:pets", "icons:perm-contact-calendar", "icons:redo", "icons:refresh", "icons:subdirectory-arrow-left", "icons:subdirectory-arrow-right", "icons:swap-vert"]' ></paper-icon-picker>
+        </template>
+      </demo-snippet>
+
+      <h3>The picker can be styled using custom properties</h3>
+      <demo-snippet class="centered-demo">
+        <template>
+          <style is="custom-style">
+            paper-icon-picker.fancy {
+              --paper-icon-picker-icon-size: 40px;
+              --paper-icon-picker-size: 40px;
+            }
+          </style>
+          <paper-icon-picker class="fancy"></paper-icon-picker>
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+</html>

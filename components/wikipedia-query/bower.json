@@ -1,0 +1,18 @@
+{
+  "name": "wikipedia-query",
+  "description": "Render an article from wikipedia in context.",
+  "main": "wikipedia-query.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.4.0",
+    "iron-ajax": "PolymerElements/iron-ajax#^2.0.6",
+    "schema-behaviors": "LRNWebComponents/schema-behaviors#^0.2.0",
+    "hax-body-behaviors": "LRNWebComponents/hax-body-behaviors#^1.12.0",
+    "citation-element": "LRNWebComponents/citation-element#^1.0.1"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  }
+}

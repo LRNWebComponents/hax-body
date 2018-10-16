@@ -1,0 +1,30 @@
+{
+  "name": "dropdown-select",
+  "description": "A LRN element",
+  "main": "dropdown-select.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.10.1",
+    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^2.1.0",
+    "paper-listbox": "PolymerElements/paper-listbox#^2.1.0",
+    "paper-item": "PolymerElements/paper-item#^2.0.0",
+    "neon-animation": "PolymerElements/neon-animation#^1.2.5",
+    "web-animations-js": "web-animations/web-animations-js#^2.2"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "homepage": "https://github.com/LRNWebComponents/dropdown-select",
+  "version": "1.0.6",
+  "_release": "1.0.6",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.0.6",
+    "commit": "6c87fd7ef611cc140abafa1994bacfc25d51e6c4"
+  },
+  "_source": "https://github.com/LRNWebComponents/dropdown-select.git",
+  "_target": "^1.0.5",
+  "_originalSource": "LRNWebComponents/dropdown-select"
+}

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>task-list demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../task-list.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+    </style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic task-list demo</h3>
+      <demo-snippet>
+        <template>
+          <task-list name="Steps to get ready" related-resource="#Ffff-fs22-555-fed" tasks='[{"name": "Read the readings.","link": "http://btopro.com/"},{"name": "Create the project."},{"name": "Submit the project"}]'></task-list>
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+</html>
